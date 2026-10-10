@@ -1,0 +1,16 @@
+node_modules
+dist
+.git
+.env*
+data
+sources
+outputs
+output
+outplay_backend
+work
+tmp
+test-results
+playwright-report
+.pytest_cache
+OUTPLAY_CORE_REQUIREMENTS.md
+AGENTS.md

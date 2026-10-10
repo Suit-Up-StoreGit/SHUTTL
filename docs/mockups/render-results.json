@@ -1,0 +1,45 @@
+{
+  "measurements": [
+    {
+      "concept": "?concept=passport",
+      "overflow": false,
+      "fonts": [
+        "Manrope",
+        "Barlow"
+      ]
+    },
+    {
+      "concept": "?concept=court",
+      "overflow": false,
+      "fonts": [
+        "Manrope",
+        "Barlow"
+      ]
+    },
+    {
+      "concept": "?concept=circle",
+      "overflow": false,
+      "fonts": [
+        "Manrope",
+        "Barlow"
+      ]
+    },
+    {
+      "concept": "?concept=arena",
+      "overflow": false,
+      "fonts": [
+        "Manrope",
+        "Barlow"
+      ]
+    },
+    {
+      "concept": "?concept=editorial",
+      "overflow": false,
+      "fonts": [
+        "Manrope",
+        "Barlow"
+      ]
+    }
+  ],
+  "errors": []
+}
