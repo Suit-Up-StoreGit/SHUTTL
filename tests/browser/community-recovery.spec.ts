@@ -279,7 +279,8 @@ test("invitation creation locks repeated actions and QR/copy fallback track the 
       .click();
     await started;
     const create = page.getByRole("button", {
-      name: "Create private invitation",
+      name: "Creating private invitation…",
+      exact: true,
     });
     await expect(create).toBeDisabled();
     await expect(
@@ -667,7 +668,7 @@ test("group recap retry clears old errors and cancelled identity drafts never ov
       memberPage.getByLabel("Transfer ownership", { exact: true }),
     ).toHaveCount(0);
     await expect(
-      memberPage.getByRole("button", { name: "Add a player", exact: true }),
+      memberPage.getByRole("button", { name: "Invite to group", exact: true }),
     ).toHaveCount(0);
   } finally {
     await memberContext.close();

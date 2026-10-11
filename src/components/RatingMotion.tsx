@@ -37,7 +37,7 @@ export function RatingMotion({
     frame.current = requestAnimationFrame(step);
   }
   return (
-    <>
+    <div className="rating-motion">
       <strong>
         <span className="sr-only">
           Published rating {after.toLocaleString("en")}
@@ -54,6 +54,6 @@ export function RatingMotion({
           Replay change
         </button>
       )}
-    </>
+    </div>
   );
 }

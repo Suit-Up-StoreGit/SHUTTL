@@ -11,10 +11,20 @@ export function comparable(a: PublicRating, b: PublicRating) {
 }
 
 export function comparisonCopy(a: PublicRating, b: PublicRating) {
-  if (a.score === null || b.score === null)
-    return "Five confirmed results reveal each estimate";
+  if (a.score === null || b.score === null) {
+    const placement = (r: PublicRating) =>
+      r.count < 5 ? `${r.count} of 5 confirmed results` : "rating pending";
+    if (a.score === null && b.score === null)
+      return `Your reveal: ${placement(a)} · theirs: ${placement(b)}`;
+    return a.score === null
+      ? `Your reveal: ${placement(a)}`
+      : `Their reveal: ${placement(b)}`;
+  }
+  if (a.category !== b.category) return "Choose the same category to compare";
+  if (a.status === "Pair-linked" || b.status === "Pair-linked")
+    return "A regular partnership makes individual comparison unclear";
   if (!comparable(a, b))
-    return "Separate estimates · direct comparison not yet supported";
+    return "Your playing histories do not yet support a direct comparison";
   const gap = b.score - a.score;
   return gap === 0
     ? "Level estimates in shared playing evidence"
@@ -25,6 +35,10 @@ export function ownChange(result: any) {
   return result.ratingChanges
     ? (Object.values(result.ratingChanges)[0] as any)
     : null;
+}
+
+export function publishedPlayedAt(result: any): string {
+  return result.publishedResult?.playedAt ?? result.playedAt;
 }
 
 export function resultMoment(result: any) {
@@ -62,12 +76,13 @@ export function periodSummary(
     .filter((r) => r.category === category && r.publishedRevisionId)
     .sort(
       (a, b) =>
-        a.playedAt.localeCompare(b.playedAt) || a.id.localeCompare(b.id),
+        publishedPlayedAt(a).localeCompare(publishedPlayedAt(b)) ||
+        a.id.localeCompare(b.id),
     );
   const period = rows.filter(
     (r) =>
-      Date.parse(r.playedAt) >= now - days * 86400000 &&
-      Date.parse(r.playedAt) <= now,
+      Date.parse(publishedPlayedAt(r)) >= now - days * 86400000 &&
+      Date.parse(publishedPlayedAt(r)) <= now,
   );
   const visible = period.map(ownChange).filter((c) => c?.count >= 5);
   const first = visible[0],

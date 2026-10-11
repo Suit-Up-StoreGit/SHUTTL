@@ -125,6 +125,201 @@ test("authentication mode changes retain username and clear stale errors and sec
   await expect(page.getByLabel("Private recovery code")).toHaveValue("");
 });
 
+test("an interrupted committed registration offers sign-in without losing the private invitation or chosen username", async ({
+  page,
+  browser,
+}) => {
+  test.setTimeout(90000);
+  const fixture = await browser.newContext({ baseURL: origin });
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let captured!: () => void;
+  const committed = new Promise<void>((resolve) => {
+    captured = resolve;
+  });
+  try {
+    const author = await fixture.request.post("/api/auth/register", {
+      headers: { origin },
+      data: {
+        username: "invite_" + randomUUID().slice(0, 8),
+        name: "Interrupted registration inviter fixture",
+        password,
+        adult: true,
+        timezone: "UTC",
+      },
+    });
+    expect(author.status()).toBe(200);
+    const authorIdentity = await (await fixture.request.get("/api/me")).json();
+    const invitation = await fixture.request.post("/api/guests", {
+      headers: apiHeaders(authorIdentity.csrf),
+      data: { name: "Interrupted registration invited fixture" },
+    });
+    expect(invitation.status()).toBe(200);
+    const invitePath = (await invitation.json()).invitePath;
+    await page.goto(invitePath);
+    await page
+      .getByRole("button", {
+        name: "Sign in and keep this exact invitation",
+        exact: true,
+      })
+      .click();
+    const username = "acct_" + randomUUID().slice(0, 8);
+    await page
+      .getByLabel("Your display name")
+      .fill("Interrupted registration recipient fixture");
+    await page.getByLabel("Username", { exact: true }).fill(username);
+    await page.getByLabel("Password", { exact: true }).fill(password);
+    await page.getByRole("checkbox", { name: /I am 18 or older/ }).check();
+    let registered: any;
+    await page.route("**/api/auth/register", async (route) => {
+      const response = await route.fetch();
+      expect(response.status()).toBe(200);
+      registered = await response.json();
+      captured();
+      await gate;
+      await route.abort("failed");
+    });
+    await page
+      .getByRole("button", { name: "Create my player identity", exact: true })
+      .click();
+    await committed;
+    await expect(
+      page.getByRole("button", {
+        name: "Creating your player identity…",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    await expect(page.getByLabel("Username", { exact: true })).toBeDisabled();
+    release();
+    await expect(page.getByRole("alert")).toContainText(
+      "Your account may already exist",
+    );
+    await page
+      .getByRole("button", {
+        name: "Sign in to check this account",
+        exact: true,
+      })
+      .click();
+    await expect(page.getByLabel("Username", { exact: true })).toHaveValue(
+      username,
+    );
+    await expect(page.getByLabel("Password", { exact: true })).toHaveValue("");
+    await expect(
+      page.getByText(/Your private player invitation stays with you/),
+    ).toBeVisible();
+    expect(new URL(page.url()).pathname).toBe(invitePath);
+    await page.getByLabel("Password", { exact: true }).fill(password);
+    await page
+      .getByRole("button", { name: "Sign in", exact: true })
+      .last()
+      .click();
+    await expect(
+      page.getByRole("button", {
+        name: "This invitation is for me",
+        exact: true,
+      }),
+    ).toBeVisible();
+    expect(new URL(page.url()).pathname).toBe(invitePath);
+    expect((await (await page.request.get("/api/me")).json()).id).toBe(
+      registered.user.id,
+    );
+  } finally {
+    release();
+    await fixture.close();
+  }
+});
+
+test("an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once", async ({
+  page,
+}) => {
+  const username = await startSignup(page, "Interrupted recovery fixture");
+  const oldCode = await page.getByLabel("Private recovery code").inputValue();
+  await finishSignup(page);
+  const identity = await (await page.request.get("/api/me")).json();
+  await page.goto("/profile?tab=settings");
+  await page
+    .getByRole("button", { name: "Sign out", exact: true })
+    .last()
+    .click();
+  await page
+    .getByRole("button", { name: "Sign in", exact: true })
+    .first()
+    .click();
+  await page
+    .getByRole("button", { name: "Use my recovery code", exact: true })
+    .click();
+  const newPassword = "Recovered-fixture-new-password-2026!";
+  await page.getByLabel("Username", { exact: true }).fill(username);
+  await page.getByLabel("Private recovery code").fill(oldCode);
+  await page.getByLabel("New password", { exact: true }).fill(newPassword);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let captured!: () => void;
+  const committed = new Promise<void>((resolve) => {
+    captured = resolve;
+  });
+  try {
+    await page.route("**/api/auth/recover", async (route) => {
+      const response = await route.fetch();
+      expect(response.status()).toBe(200);
+      captured();
+      await gate;
+      await route.abort("failed");
+    });
+    await page
+      .getByRole("button", { name: "Recover my account", exact: true })
+      .click();
+    await committed;
+    await expect(
+      page.getByRole("button", {
+        name: "Recovering your account…",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    release();
+    await expect(page.getByRole("alert")).toContainText(
+      "Your new password may already be active",
+    );
+    await page
+      .getByRole("button", {
+        name: "Sign in to check this account",
+        exact: true,
+      })
+      .click();
+    await expect(page.getByLabel("Username", { exact: true })).toHaveValue(
+      username,
+    );
+    await expect(page.getByLabel("Password", { exact: true })).toHaveValue("");
+    await expect(page.getByLabel("Private recovery code")).toHaveCount(0);
+    await page.getByLabel("Password", { exact: true }).fill(newPassword);
+    await page
+      .getByRole("button", { name: "Sign in", exact: true })
+      .last()
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Your game.", exact: true }),
+    ).toBeVisible();
+    expect((await (await page.request.get("/api/me")).json()).id).toBe(
+      identity.id,
+    );
+    const reused = await page.request.post("/api/auth/recover", {
+      headers: { origin },
+      data: {
+        username,
+        recoveryCode: oldCode,
+        password: "Fixture-unused-third-password-2026!",
+      },
+    });
+    expect(reused.status()).toBe(401);
+  } finally {
+    release();
+  }
+});
+
 test("a submitted result freezes its exact payload and clears only its matching local draft", async ({
   page,
   browser,
@@ -276,7 +471,7 @@ test("a lost response after commit shows the received result without duplicating
   }
 });
 
-test("an edited retry after an uncertain send preserves the draft and reveals the original received score", async ({
+test("an uncertain draft freezes edits and a legacy edited retry reveals the original received score", async ({
   page,
   browser,
 }) => {
@@ -310,14 +505,31 @@ test("an edited retry after an uncertain send preserves the draft and reveals th
     await expect(
       page.getByRole("button", { name: "Discard local draft" }),
     ).toHaveCount(0);
-    await page.getByLabel("Other side", { exact: true }).fill("18");
-    await page.getByRole("checkbox", { name: /I confirm these sides/ }).check();
+    await expect(page.getByLabel("Other side", { exact: true })).toBeDisabled();
+    await expect(page.getByLabel("Other side", { exact: true })).toHaveValue(
+      "17",
+    );
     const author = await (await page.request.get("/api/me")).json();
     const lateAccepted = await page.request.post("/api/results", {
       headers: apiHeaders(author.csrf, originalKey),
       data: originalPayload,
     });
     expect(lateAccepted.ok()).toBe(true);
+    await page.getByRole("button", { name: "Close dialog" }).click();
+    await expect(
+      page.getByRole("dialog", { name: "Record a result", exact: true }),
+    ).toHaveCount(0);
+    // Older app versions permitted score edits after an ambiguous submission.
+    // Restore such a local fixture while retaining its original immutable IDs.
+    await page.evaluate((owner) => {
+      const key = "shuttl:draft:" + owner;
+      const draft = JSON.parse(localStorage.getItem(key)!);
+      draft.scores = [["21", "18"]];
+      localStorage.setItem(key, JSON.stringify(draft));
+    }, author.id);
+    await page.getByRole("button", { name: /Continue your draft/ }).click();
+    await expect(page.getByLabel("Other side", { exact: true })).toBeDisabled();
+    await page.getByRole("checkbox", { name: /I confirm these sides/ }).check();
     await page
       .getByRole("button", { name: "Send for exact-score approval" })
       .click();

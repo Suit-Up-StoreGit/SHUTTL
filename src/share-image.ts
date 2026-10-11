@@ -62,7 +62,9 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
       ? "A PERSONAL BEST."
       : payload.template === "reveal"
         ? "MY STARTING POINT."
-        : "MY GAME. ON RECORD.";
+        : payload.template === "promotion"
+          ? "A LEAGUE MILESTONE."
+          : "MY GAME. ON RECORD.";
   ctx.fillStyle = "#14372c";
   ctx.font = `700 ${story ? 68 : 34}px Manrope`;
   wrapped(ctx, title, 75, story ? 300 : 205, 930, 84);
@@ -175,7 +177,9 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
       ? "Five results. A starting point, not a finish line."
       : payload.template === "best"
         ? "Your highest visible estimate in this category."
-        : "Play. Confirm. See your progress.",
+        : payload.template === "promotion"
+          ? `${payload.previousLeague} → ${payload.league}. Earned through confirmed play.`
+          : "Play. Confirm. See your progress.",
     75,
     footer,
     930,

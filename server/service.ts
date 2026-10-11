@@ -15,6 +15,7 @@ import {
   validateGames,
   publicRating,
   leagueFor,
+  LEAGUES,
   MODEL_VERSION,
   type Category,
   type Format,
@@ -345,12 +346,19 @@ export class Service {
       ratings: CATEGORIES.map((c) => this.rating(actor, c)),
     };
   }
-  milestone(actor: string, category: Category, template: "reveal" | "best") {
+  milestone(
+    actor: string,
+    category: Category,
+    template: "reveal" | "best" | "promotion",
+  ) {
     const rating = this.rating(actor, category);
     if (rating.score === null) return null;
     const field = `$."${actor}"`;
     const aliases = this.actorIds(actor),
       pool = `unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")}))`;
+    const floors = LEAGUES.map((league) => league.floor).filter(
+      Number.isFinite,
+    );
     const event =
       template === "reveal"
         ? this.db.get(
@@ -359,14 +367,27 @@ export class Service {
             ...aliases,
             field + ".count",
           )
-        : this.db.get(
-            `SELECT * FROM rating_events WHERE category=? AND ${pool} AND json_extract(changes,?)=? AND json_extract(changes,?)>=5 ORDER BY played_at DESC,unit_id DESC LIMIT 1`,
-            category,
-            ...aliases,
-            field + ".after",
-            rating.peak,
-            field + ".count",
-          );
+        : template === "promotion"
+          ? this.db.get(
+              `SELECT * FROM rating_events WHERE category=? AND ${pool} AND json_extract(changes,?)>5 AND (${floors.map(() => "(json_extract(changes,?)<? AND json_extract(changes,?)>=?)").join(" OR ")}) ORDER BY played_at DESC,unit_id DESC LIMIT 1`,
+              category,
+              ...aliases,
+              field + ".count",
+              ...floors.flatMap((floor) => [
+                field + ".before",
+                floor,
+                field + ".after",
+                floor,
+              ]),
+            )
+          : this.db.get(
+              `SELECT * FROM rating_events WHERE category=? AND ${pool} AND json_extract(changes,?)=? AND json_extract(changes,?)>=5 ORDER BY played_at DESC,unit_id DESC LIMIT 1`,
+              category,
+              ...aliases,
+              field + ".after",
+              rating.peak,
+              field + ".count",
+            );
     if (!event) return null;
     const change = JSON.parse(event.changes)[actor];
     return {
@@ -374,6 +395,9 @@ export class Service {
       league: leagueFor(change.after).name,
       asOf: event.played_at,
       count: change.count,
+      ...(template === "promotion"
+        ? { previousLeague: leagueFor(change.before).name }
+        : {}),
       status:
         category !== "Singles" && (change.partnerCount ?? 0) < 2
           ? ("Pair-linked" as const)

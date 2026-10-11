@@ -9,6 +9,7 @@ import {
   type Page,
 } from "./api.ts";
 import { type Category, type Player, FORMATS } from "./domain.ts";
+import { clearPreferenceDraft } from "./preference-draft.ts";
 import {
   Brand,
   Avatar,
@@ -70,32 +71,52 @@ function PublicView({
 }) {
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
+    [loadError, setLoadError] = useState(""),
+    [unavailable, setUnavailable] = useState(false),
+    [attempt, setAttempt] = useState(0),
     [busy, setBusy] = useState(false),
     [requested, setRequested] = useState(false);
   const token = location.pathname.split("/")[2],
     path = (claim ? "/claims/" : "/shares/") + encodeURIComponent(token);
+  const claimRequestKey = useRef(crypto.randomUUID());
   useEffect(() => {
     let active = true;
+    setLoadError("");
     api(path)
       .then((value) => {
         if (active) setData(value);
       })
       .catch((e) => {
-        if (active) setError(errorMessage(e));
+        if (active) {
+          setLoadError(errorMessage(e));
+          setUnavailable(e instanceof ApiError && e.status === 404);
+        }
       });
     return () => {
       active = false;
     };
-  }, [path]);
+  }, [path, attempt]);
   return (
     <main className={claim ? "claim-public" : "share-public"}>
       <Brand />
-      {!data && !error ? (
+      {!data && !loadError ? (
         <Spinner />
-      ) : error ? (
+      ) : loadError ? (
         <>
-          <h1>This link is unavailable.</h1>
-          <InlineError message={error} />
+          <h1>
+            {unavailable
+              ? "This link is unavailable."
+              : "We couldn’t open this link."}
+          </h1>
+          <InlineError message={loadError} />
+          {!unavailable && (
+            <button
+              className="button secondary"
+              onClick={() => setAttempt((v) => v + 1)}
+            >
+              Retry this link
+            </button>
+          )}
           <a className="button secondary" href="/home">
             Return to your court
           </a>
@@ -109,6 +130,7 @@ function PublicView({
             you before claiming it. The author verifies who joined; you still
             approve each exact score yourself.
           </p>
+          <InlineError message={error} />
           {data.results.map((r: any, i: number) => (
             <section className="panel settings-panel" key={i}>
               <strong>
@@ -139,8 +161,14 @@ function PublicView({
                   return;
                 }
                 setBusy(true);
+                setError("");
                 try {
-                  await api("/claims/" + token + "/request", {});
+                  await api(
+                    "/claims/" + token + "/request",
+                    {},
+                    "POST",
+                    claimRequestKey.current,
+                  );
                   setRequested(true);
                   notify(
                     "Your identity claim is awaiting the inviter’s check.",
@@ -170,6 +198,7 @@ function PublicView({
           </h1>
           <RatingCard
             category={data.category}
+            showHistoryContext={false}
             rating={{
               category: data.category,
               score: data.score,
@@ -188,9 +217,11 @@ function PublicView({
                 ? "A historical starting point"
                 : data.template === "best"
                   ? "A historical personal best"
-                  : data.isCurrent
-                    ? "This number matches the current rating"
-                    : "This is a historical snapshot"}
+                  : data.template === "promotion"
+                    ? `A historical league milestone · ${data.previousLeague} → ${data.league}`
+                    : data.isCurrent
+                      ? "This number matches the current rating"
+                      : "This is a historical snapshot"}
             </strong>
             {data.title && (
               <div className="notice">
@@ -344,6 +375,8 @@ function DesignReview() {
 }
 export function App() {
   const accountEpoch = useRef(0);
+  const activeAccount = useRef<string | null>(null);
+  const activeSession = useRef<string | null>(null);
   const inboxGeneration = useRef(0);
   const design = location.pathname === "/design";
   const publicClaim = location.pathname.startsWith("/claim/"),
@@ -353,6 +386,8 @@ export function App() {
     new URLSearchParams(location.search).get("player"),
   );
   const [sharedArrival, setSharedArrival] = useState<any>(null);
+  const [sharedArrivalError, setSharedArrivalError] = useState(""),
+    [arrivalAttempt, setArrivalAttempt] = useState(0);
   const [data, setData] = useState<any>(null),
     [inbox, setInbox] = useState<any>(null),
     [loading, setLoading] = useState(!design),
@@ -362,6 +397,7 @@ export function App() {
     [page, setCurrentPage] = useState<Page>(pageFromPath),
     [category, setCategoryState] = useState<Category>("Doubles");
   const [comparisonId, setComparisonId] = useState<string | null>(null);
+  const [shareRefresh, setShareRefresh] = useState(0);
   useEffect(() => {
     if (data && page === "home") recordResearch("home-view", data.me.id);
   }, [page, data?.me.id]);
@@ -369,15 +405,25 @@ export function App() {
     const token = new URLSearchParams(location.search).get("fromShare");
     if (!token) return;
     let active = true;
+    setSharedArrivalError("");
     api("/shares/" + encodeURIComponent(token))
       .then((v) => {
         if (active) setSharedArrival(v);
       })
-      .catch(() => {});
+      .catch((e) => {
+        if (active) setSharedArrivalError(errorMessage(e));
+      });
     return () => {
       active = false;
     };
-  }, []);
+  }, [arrivalAttempt]);
+  function consumeSharedArrival() {
+    setSharedArrival(null);
+    setSharedArrivalError("");
+    const url = new URL(location.href);
+    url.searchParams.delete("fromShare");
+    history.replaceState({}, "", url.pathname + url.search);
+  }
   function setCategory(value: Category) {
     setCategoryState(value);
     if (data)
@@ -411,11 +457,24 @@ export function App() {
     [toast, setToast] = useState(""),
     [forceAuth, setForceAuth] = useState(false),
     [online, setOnline] = useState(navigator.onLine);
+  const renderedEpoch = accountEpoch.current;
   function notify(message: string) {
+    if (renderedEpoch !== accountEpoch.current) return;
     setToast(message);
   }
-  function forgetSession() {
+  function forgetSession(clearPendingActions = false) {
+    if (clearPendingActions && data?.me.id) {
+      clearPreferenceDraft(data.me.id);
+      try {
+        sessionStorage.removeItem("shuttl:pending-share:" + data.me.id);
+        sessionStorage.removeItem("shuttl:pending-circle:" + data.me.id);
+        localStorage.removeItem("shuttl:pending-share:" + data.me.id);
+        localStorage.removeItem("shuttl:pending-player-invite:" + data.me.id);
+      } catch {}
+    }
     accountEpoch.current += 1;
+    activeAccount.current = null;
+    activeSession.current = null;
     inboxGeneration.current += 1;
     setData(null);
     setInbox(null);
@@ -456,6 +515,42 @@ export function App() {
     try {
       const dashboard = await api("/dashboard");
       if (epoch !== accountEpoch.current) return;
+      const expectedAccount = activeAccount.current || data?.me.id;
+      if (
+        (expectedAccount && dashboard.me.id !== expectedAccount) ||
+        (activeSession.current &&
+          dashboard.sessionCsrf &&
+          dashboard.sessionCsrf !== activeSession.current)
+      ) {
+        forgetSession();
+        const transitionEpoch = accountEpoch.current;
+        setLoading(true);
+        setCurrentPage("home");
+        history.replaceState({}, "", "/home");
+        try {
+          const identity = await api("/me");
+          if (transitionEpoch !== accountEpoch.current) return;
+          if (
+            identity.id !== dashboard.me.id ||
+            (dashboard.sessionCsrf && identity.csrf !== dashboard.sessionCsrf)
+          )
+            throw new Error(
+              "Your account changed again. Retry to load your current court.",
+            );
+          setCsrf(identity.csrf);
+          activeAccount.current = identity.id;
+          activeSession.current = identity.csrf;
+          setDisplayTimezone(dashboard.me.timezone);
+          setData(dashboard);
+        } catch (error) {
+          if (transitionEpoch !== accountEpoch.current) return;
+          if (!(error instanceof ApiError && error.status === 401))
+            setInitialError(errorMessage(error));
+        } finally {
+          if (transitionEpoch === accountEpoch.current) setLoading(false);
+        }
+        return;
+      }
       if (
         resultId &&
         dashboard.me.id === data?.me.id &&
@@ -463,6 +558,8 @@ export function App() {
       )
         dashboard.results.unshift(await api("/results/" + resultId));
       if (epoch !== accountEpoch.current) return;
+      activeAccount.current = dashboard.me.id;
+      if (dashboard.sessionCsrf) activeSession.current = dashboard.sessionCsrf;
       setDisplayTimezone(dashboard.me.timezone);
       setData(dashboard);
       if (["inbox", "agreements"].includes(page)) {
@@ -489,6 +586,8 @@ export function App() {
         const me = await api("/me");
         if (!active || epoch !== accountEpoch.current) return;
         setCsrf(me.csrf);
+        activeAccount.current = me.id;
+        activeSession.current = me.csrf;
         await refresh(true);
       } catch (e) {
         if (epoch !== accountEpoch.current) return;
@@ -561,7 +660,10 @@ export function App() {
     window.addEventListener("popstate", back);
     return () => window.removeEventListener("popstate", back);
   }, []);
-  function setPage(next: Page, profileTab?: "history" | "settings") {
+  function setPage(
+    next: Page,
+    profileTab?: "history" | "settings" | "insights" | "goals",
+  ) {
     setCurrentPage(next);
     setResultId(null);
     setModal(null);
@@ -571,12 +673,17 @@ export function App() {
       "",
       "/" +
         next +
-        (next === "profile" && profileTab ? "?tab=" + profileTab : ""),
+        (next === "profile" && profileTab
+          ? profileTab === "goals"
+            ? `?tab=settings#goal-${category}`
+            : "?tab=" + profileTab
+          : ""),
     );
     window.scrollTo({ top: 0 });
     if (data) refresh();
   }
   async function logout() {
+    const epoch = accountEpoch.current;
     try {
       let endpoint: string | undefined;
       try {
@@ -585,7 +692,8 @@ export function App() {
           ?.endpoint;
       } catch {}
       await api("/logout", endpoint ? { endpoint } : {});
-      forgetSession();
+      if (epoch !== accountEpoch.current) return;
+      forgetSession(true);
       setCurrentPage("home");
       history.replaceState({}, "", "/");
     } catch (e) {
@@ -593,17 +701,30 @@ export function App() {
     }
   }
   async function authenticated(response: any) {
+    if (renderedEpoch !== accountEpoch.current) return;
     forgetSession();
+    const epoch = accountEpoch.current;
+    activeAccount.current = response.user?.id || null;
+    activeSession.current = response.csrf || null;
     setCsrf(response.csrf);
     setForceAuth(false);
-    if (response.recoveryCode) setRecovery(response.recoveryCode);
+    setLoading(true);
     try {
       await refresh(true);
+      if (
+        epoch === accountEpoch.current &&
+        response.recoveryCode &&
+        activeAccount.current === response.user?.id
+      )
+        setRecovery(response.recoveryCode);
     } catch (e) {
-      setInitialError(errorMessage(e));
+      if (epoch === accountEpoch.current) setInitialError(errorMessage(e));
+    } finally {
+      if (epoch === accountEpoch.current) setLoading(false);
     }
   }
   function completed(message: string) {
+    if (renderedEpoch !== accountEpoch.current) return;
     setModal(null);
     setCorrection(null);
     setResultId(null);
@@ -747,6 +868,24 @@ export function App() {
             </header>
             {page === "home" && (
               <>
+                {sharedArrivalError && (
+                  <section className="notice neutral">
+                    <strong>Your shared story couldn’t be opened.</strong>
+                    <InlineError message={sharedArrivalError} />
+                    <button
+                      className="text-button"
+                      onClick={() => setArrivalAttempt((v) => v + 1)}
+                    >
+                      Retry shared story
+                    </button>
+                    <button
+                      className="text-button"
+                      onClick={consumeSharedArrival}
+                    >
+                      Dismiss shared story
+                    </button>
+                  </section>
+                )}
                 {sharedArrival && (
                   <section className="notice">
                     <strong>
@@ -762,14 +901,14 @@ export function App() {
                       onClick={() => {
                         setCategory(sharedArrival.category);
                         setModal("record");
-                        setSharedArrival(null);
+                        consumeSharedArrival();
                       }}
                     >
                       Start my {sharedArrival.category.toLowerCase()} story
                     </button>
                     <button
                       className="text-button"
-                      onClick={() => setSharedArrival(null)}
+                      onClick={consumeSharedArrival}
                     >
                       Dismiss
                     </button>
@@ -782,6 +921,7 @@ export function App() {
                   setPage={setPage}
                   record={() => setModal("record")}
                   addFriend={() => setModal("friend")}
+                  share={() => setModal("share")}
                   open={open}
                   compare={(id) => {
                     setComparisonId(id);
@@ -817,6 +957,7 @@ export function App() {
               <ProfilePage
                 key={data.me.id}
                 data={data}
+                shareRefresh={shareRefresh}
                 refresh={refresh}
                 open={open}
                 share={() => setModal("share")}
@@ -825,7 +966,8 @@ export function App() {
                 preferredCategory={category}
                 setPreferredCategory={setCategory}
                 deleted={() => {
-                  forgetSession();
+                  if (renderedEpoch !== accountEpoch.current) return;
+                  forgetSession(true);
                   history.replaceState({}, "", "/");
                 }}
               />
@@ -903,6 +1045,7 @@ export function App() {
       )}
       {data && (modal === "record" || correction) && (
         <RecordResult
+          key={data.me.id}
           me={data.me}
           category={category}
           scopes={scopes}
@@ -929,6 +1072,7 @@ export function App() {
       )}
       {data && modal === "scope" && (
         <AgreementForm
+          key={data.me.id}
           me={data.me}
           close={() => setModal(null)}
           done={() =>
@@ -961,7 +1105,12 @@ export function App() {
       )}
       {data && modal === "share" && (
         <SharePassport
+          key={data.me.id}
           me={data.me}
+          onCreated={() => {
+            if (renderedEpoch === accountEpoch.current)
+              setShareRefresh((value) => value + 1);
+          }}
           initialCategory={category}
           close={() => setModal(null)}
           notify={notify}
@@ -969,6 +1118,7 @@ export function App() {
       )}
       {data && comparisonId && (
         <ComparisonDialog
+          key={data.me.id + ":" + comparisonId}
           data={data}
           playerId={comparisonId}
           category={category}

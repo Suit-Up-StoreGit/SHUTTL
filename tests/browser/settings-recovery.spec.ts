@@ -76,9 +76,32 @@ test("private control load failures and failed revocation remain visible and rec
   page,
 }) => {
   let loadFails = true,
-    revokeFails = true;
-  await page.route("**/api/my-shares", (route) =>
-    route.fulfill(
+    revokeFails = true,
+    revoked = false,
+    holdRead = false,
+    reads = 0;
+  let releaseRead!: () => void, readStarted!: () => void;
+  const readGate = new Promise<void>((resolve) => {
+    releaseRead = resolve;
+  });
+  const started = new Promise<void>((resolve) => {
+    readStarted = resolve;
+  });
+  const blockedFixture = {
+    id: randomUUID(),
+    name: "Synthetic blocked player",
+    username: "blocked_fixture",
+  };
+  await page.route("**/api/blocks", (route) =>
+    route.fulfill({ json: { players: [blockedFixture] } }),
+  );
+  await page.route("**/api/my-shares", async (route) => {
+    reads++;
+    if (holdRead) {
+      readStarted();
+      await readGate;
+    }
+    await route.fulfill(
       loadFails
         ? {
             status: 503,
@@ -86,45 +109,72 @@ test("private control load failures and failed revocation remain visible and rec
           }
         : {
             json: {
-              shares: [
-                {
-                  id: "synthetic-share",
-                  category: "Singles",
-                  score: 1500,
-                  asOf: "2026-10-10T12:00:00Z",
-                  revoked: false,
-                },
-              ],
+              shares: revoked
+                ? []
+                : [
+                    {
+                      id: "synthetic-share",
+                      category: "Singles",
+                      score: 1500,
+                      asOf: "2026-10-10T12:00:00Z",
+                      revoked: false,
+                    },
+                  ],
             },
           },
-    ),
-  );
-  await page.route("**/api/shares/synthetic-share", (route) =>
-    route.fulfill(
-      revokeFails
-        ? { status: 503, json: { error: "Synthetic revocation failure." } }
-        : { json: { ok: true } },
-    ),
-  );
+    );
+  });
+  await page.route("**/api/shares/synthetic-share", async (route) => {
+    if (revokeFails)
+      return route.fulfill({
+        status: 503,
+        json: { error: "Synthetic revocation failure." },
+      });
+    revoked = true;
+    await route.fulfill({ json: { ok: true } });
+  });
   await settings(page);
   await expect(
     page.getByRole("button", { name: "Retry account controls" }),
   ).toBeVisible();
   loadFails = false;
+  holdRead = true;
   await page.getByRole("button", { name: "Retry account controls" }).click();
+  await started;
+  try {
+    await expect(
+      page.getByRole("button", { name: "Block a player", exact: true }),
+    ).toBeDisabled();
+    await expect(
+      page.getByRole("button", { name: "Unblock", exact: true }),
+    ).toBeDisabled();
+  } finally {
+    releaseRead();
+  }
   await expect(
-    page.getByRole("button", { name: "Revoke", exact: true }),
+    page.getByRole("button", { name: /^Revoke Rating snapshot Singles link / }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Revoke", exact: true }).click();
+  await page
+    .getByRole("button", { name: /^Revoke Rating snapshot Singles link / })
+    .click();
   await expect(
     page.getByText("Synthetic revocation failure.", { exact: true }).first(),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Revoke", exact: true }),
+    page.getByRole("button", { name: /^Revoke Rating snapshot Singles link / }),
   ).toBeVisible();
   revokeFails = false;
-  await page.getByRole("button", { name: "Revoke", exact: true }).click();
+  await page
+    .getByRole("button", { name: /^Revoke Rating snapshot Singles link / })
+    .click();
   await expect(
-    page.getByRole("button", { name: "Revoke", exact: true }),
+    page.getByRole("button", { name: /^Revoke Rating snapshot Singles link / }),
+  ).toHaveCount(0);
+  await expect.poll(() => reads).toBeGreaterThanOrEqual(3);
+  await expect(
+    page.getByRole("button", { name: "Block a player", exact: true }),
+  ).toBeEnabled();
+  await expect(
+    page.getByRole("button", { name: /^Revoke Rating snapshot Singles link / }),
   ).toHaveCount(0);
 });

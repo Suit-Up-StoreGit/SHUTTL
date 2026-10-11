@@ -4,6 +4,7 @@ import {
   comparable,
   comparisonCopy,
   periodSummary,
+  publishedPlayedAt,
   recentRosters,
   resultMoment,
 } from "../src/experience.ts";
@@ -38,6 +39,24 @@ test("direct rivalry requires same category and supported shared evidence", () =
     );
   }
   assert.match(comparisonCopy(rating(1600), rating(1600)), /Level estimates/);
+  assert.equal(
+    comparisonCopy(
+      { ...rating(null), count: 1 },
+      { ...rating(null), count: 3 },
+    ),
+    "Your reveal: 1 of 5 confirmed results · theirs: 3 of 5 confirmed results",
+  );
+  assert.equal(
+    comparisonCopy(rating(1600), { ...rating(null), count: 2 }),
+    "Their reveal: 2 of 5 confirmed results",
+  );
+  assert.match(
+    comparisonCopy(rating(1600), {
+      ...rating(1620, null),
+      status: "Pair-linked",
+    }),
+    /regular partnership makes individual comparison unclear/,
+  );
 });
 const result = (
   id: string,
@@ -83,6 +102,17 @@ test("reveal and period change use a visible baseline, with deterministic equal-
   assert.equal(
     resultMoment({ ...later, status: "correction_pending" })?.kind,
     "previous",
+  );
+  const corrected = {
+    ...later,
+    status: "correction_pending",
+    playedAt: "2026-11-11T00:00:00Z",
+    publishedResult: { playedAt: timestamp },
+  };
+  assert.equal(publishedPlayedAt(corrected), timestamp);
+  assert.deepEqual(
+    periodSummary([corrected, reveal], "Singles", 7, Date.parse(timestamp)),
+    { ...summary, rows: [reveal, corrected] },
   );
 });
 test("recent roster maps a claimed identity and preserves actual sides", () => {

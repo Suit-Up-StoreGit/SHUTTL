@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-11",
+  "scope": "Seven finite local functional journeys originally assessed at9.0 clarity; concrete changes and final combined representative checks now support9.5 local expert clarity. This is not independent human or global150 acceptance.",
+  "baselineAssessmentRun": "verified-full65-2026-10-11-1637",
+  "baselineLocalExpertAverage": 9.43,
+  "target": 9.5,
+  "targetNotAutomaticallyAwarded": true,
+  "currentSessionBoundaryFixPending": false,
+  "items": [
+    {
+      "journey": "registration_recovery",
+      "source": "src/components/Flows.tsx Auth",
+      "observedConstraint": "An interrupted registration/recovery response leaves the original form submit active beneath a long instruction to sign in. The busy label also says the court is getting ready for all three different operations.",
+      "minimalImprovement": "Offer a direct Sign in to check this account action for unknown registration/recovery outcomes; retain username and invitation context, clear secret fields by the existing mode-change rule, and provide concise operation-specific busy/next-step wording.",
+      "evidenceToReassess": "Hold and lose a real committed registration/recovery response. Click the visible sign-in continuation, confirm preserved identity/context and cleared secrets, sign in with the chosen password, and verify no second identity or silent reset is created.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "recording_drafts",
+      "source": "src/components/Flows.tsx RecordResult",
+      "observedConstraint": "The compact roster and score sections are separated from the final acknowledgement by time and earlier-agreement controls. On a phone, checking the complete sides and score can require scrolling back.",
+      "minimalImprovement": "Show a compact read-only review of actual sides/names, complete final games and entered start/timezone immediately before the exact acknowledgement. Preserve the existing immutable draft and acknowledgement binding; do not add another submit step.",
+      "evidenceToReassess": "Inspect and assert Singles, Doubles, Mixed and best-of-three review content after edits and third-game changes; acknowledge, change a field, and confirm the review updates while the earlier acknowledgement clears.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "exact_consent",
+      "source": "src/components/Flows.tsx AgreementForm and RecordResult earlier-scope selector",
+      "observedConstraint": "The player chooses an eight-hour or 30-day agreement, but the form does not foreground its actual dates/times. Scope options show the start date and acceptance count without a clear end time. The before-play and exact-score stages are explained across separate surfaces.",
+      "minimalImprovement": "Show the actual start-to-end window and an explicit two-stage summary: every player chooses covered rated play before the match; the author and an eligible opponent confirm the later exact score. Include useful window/acceptance metadata in scope options. Preserve historical acceptance-time checks and do not infer historical coverage solely from the current acceptance count.",
+      "evidenceToReassess": "Create both durations through UI and compare shown windows with the actual returned scope. Assert all-player prior consent, one-opponent exact confirmation, retrospective fallback and revocation still retain their existing timing and permission rules.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "corrections_disputes",
+      "source": "src/components/Flows.tsx ResultReview and correction form",
+      "observedConstraint": "The same result review title and scoreboard serve published, proposed-correction and disputed states. The two secondary actions do not directly explain which type of problem each resolves or what to do after a review request.",
+      "minimalImprovement": "Label a pending replacement as Proposed correction, keep the currently counted score visibly separate, and give short entry-error versus disagreement guidance next to Correct the score and Ask for review. While review is pending, state where the eventual decision appears without inventing a resolution time or promising an unsupported notification.",
+      "evidenceToReassess": "Actual UI correction, exact fresh approval, independent review and appeal cases assert proposed versus counted score labels, legitimate next actions and the unchanged published-rating/reviewer boundaries.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "groups_ownership",
+      "source": "src/pages/Pages.tsx Friends",
+      "observedConstraint": "Circle contains accepted friends and independent existing-group member lists. Owners can discover the transfer-before-leaving requirement only after a rejected Leave action.",
+      "minimalImprovement": "Make friends versus selected group membership explicit at the relevant header/helper, keeping group membership separate from friendship and score consent. Explain the existing ownership transfer requirement before an owner with remaining members attempts to leave, with a direct route to the current transfer selector.",
+      "evidenceToReassess": "Inspect no-group and selected-group states; assert membership does not create friendship or approve a score. The owner-with-members UI explains its safe next step, the owner transfer still requires explicit confirmation, and a nonowner can leave normally.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "comparison_history",
+      "source": "src/experience.ts comparisonCopy; src/pages/Pages.tsx PlayerComparison and MatchHistory",
+      "observedConstraint": "Generic comparison qualifiers do not use the actual placement counts or explain individual pair-linked/shared-history limits plainly. Find a player in your history sounds global while the implemented filter applies only to loaded rows; its truthful limitation is lower on the page.",
+      "minimalImprovement": "Use actual per-player placement progress and plain state-specific explanations without guaranteed win counts or unsupported rankings. Put the loaded-history scope beside the filter and label that filter accurately, preserving visible Load older history and its category/generation guards.",
+      "evidenceToReassess": "Assert each placement/pair-linked/disconnected/comparable branch with synthetic service data and unchanged comparison permissions; filter loaded rows, retain filters while loading older rows, and verify a stale older-category response never enters the current view.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    },
+    {
+      "journey": "privacy_account",
+      "source": "src/pages/Pages.tsx Profile private/public-link controls",
+      "observedConstraint": "The earlier review incorrectly inferred accessibility from stored snapshot payload alone. Existing server policy already revokes all owned links when public name or public district is turned off; the old UI did not explain that stronger consequence or identify captured link metadata clearly.",
+      "minimalImprovement": "Explain that snapshots retain captured rating/profile details, while saving public name or district off revokes every existing public link automatically. Identify each active link by actual template, captured name/area and snapshot/shared timestamps. Distinguish automatic all-link withdrawal from explicit revocation of one fresh active link. Preserve sticky Save and immediate device-choice help.",
+      "evidenceToReassess": "Through UI withdraw public name/area, verify all that owner’s old named and anonymous links become404 and another owner’s link stays accessible. Create fresh private snapshots and revoke the intended one through its recognizable UI target; verify its sibling remains accessible. Held authoritative reads freeze private controls and successful mutations refetch; those additional guards passed full70. Actual OS sharing and remote notification-device identity remain separate.",
+      "implementationStatus": "source_implemented_representative_final_combined_checks_passed"
+    }
+  ],
+  "assessmentRule": "After implementation and representative checks, reassess the five local expert dimensions critically. Passing checks and adding copy do not automatically raise clarity to 9.5; original 150 metric acceptance and independent player/device outcomes remain unchanged.",
+  "latestCompletedEvidenceRun": "final-affected11-2026-10-11-1750",
+  "currentAdditionalSourceVerificationPending": false,
+  "reviewCorrections": [
+    {
+      "finding": "Captured payload does not imply continued public accessibility",
+      "correction": "Existing server profile withdrawal policy automatically revokes all existing owned public links. The failed68 test asserted the wrong weaker privacy contract; corrected separate-actor coverage passed69 without relaxing server privacy."
+    }
+  ],
+  "reevaluationCandidates": {
+    "status": "completed_qualified_local_expert_reassessment",
+    "scoringDimensions": [
+      "completion",
+      "clarity and feedback",
+      "failure recovery",
+      "continuity and pending-state safety",
+      "consent and permission safety"
+    ],
+    "rule": "Retain original9.43 and recorded five-dimension judgments. Reassess the actual seven identified clarity defects after final source verification; inherent domain concepts or missing empirical outcomes alone neither prove a local defect nor justify an automatic score increase.",
+    "concreteReviewedSourceEvidence": [
+      "Registration/recovery unknown outcomes have an explicit sign-in continuation and operation-specific pending feedback.",
+      "The final exact result review puts complete sides, scores and actual start/timezone beside the acknowledgement.",
+      "Rated-play agreements show actual start/end window and distinguish all-player prior consent from author-plus-opponent exact-score approval.",
+      "Proposed corrections label the replacement separately from the score currently counted; review/appeal guidance identifies the valid action and pending decision surface.",
+      "Friends and independently accepted group membership are explicit; owner-transfer guidance appears before Leave and accepted member count/role are actual.",
+      "Placement and unsupported comparison reasons use the actual player context; loaded-history filtering is accurately labelled beside the filter.",
+      "Profile visibility withdrawal explains its real automatic all-link revocation; private snapshots identify included fields and exact revocation target."
+    ],
+    "humanAndPhysicalOutcomeScores": null
+  },
+  "finalEvidenceRunIds": [
+    "initial-full70-2026-10-11-1744",
+    "final-affected11-2026-10-11-1750"
+  ],
+  "finalQualifiedLocalExpertAverage": 9.5,
+  "allOriginalOutcomeAcceptanceUnchanged": true,
+  "evidenceDocumentsFrozen": true
+}

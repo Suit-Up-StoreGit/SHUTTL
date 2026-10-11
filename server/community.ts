@@ -207,27 +207,79 @@ export function registerCommunity(
     };
   });
   app.post("/api/player-invites", async (req) => {
-    z.object({}).strict().parse(req.body);
-    requireThat(
-      db.get(
-        "SELECT count(*) AS n FROM player_invites WHERE owner=? AND revoked=0 AND expires>?",
-        req.actor.id,
-        now(),
-      )!.n < 10,
-      "Revoke an old invitation before creating another.",
-      429,
-    );
-    const token = randomBytes(24).toString("base64url"),
-      expires = new Date(Date.now() + 7 * 86400000).toISOString(),
+    const input = z
+      .object({
+        token: z
+          .string()
+          .regex(/^[A-Za-z0-9_-]{32}$/)
+          .optional(),
+      })
+      .strict()
+      .parse(req.body);
+    const token = input.token || randomBytes(24).toString("base64url"),
       key = hash(token);
-    db.run(
-      "INSERT INTO player_invites VALUES(?,?,?,0,?)",
-      key,
+    const create = () => {
+      const existing = db.get("SELECT * FROM player_invites WHERE id=?", key);
+      if (existing) {
+        requireThat(
+          existing.owner === req.actor.id &&
+            !existing.revoked &&
+            existing.expires > now(),
+          "This invitation is unavailable. Create another invitation.",
+          409,
+        );
+        return { id: key, expires: existing.expires };
+      }
+      requireThat(
+        db.get(
+          "SELECT count(*) AS n FROM player_invites WHERE owner=? AND revoked=0 AND expires>?",
+          req.actor.id,
+          now(),
+        )!.n < 10,
+        "Revoke an old invitation before creating another.",
+        429,
+      );
+      const expires = new Date(Date.now() + 7 * 86400000).toISOString();
+      db.run(
+        "INSERT INTO player_invites VALUES(?,?,?,0,?)",
+        key,
+        req.actor.id,
+        expires,
+        now(),
+      );
+      return { id: key, expires };
+    };
+    // The browser keeps its pending token to replay a lost response. Neither the
+    // invitation table nor the replay record stores this bearer secret.
+    let created = false;
+    const result = service.mutation(
       req.actor.id,
-      expires,
+      String(req.headers["idempotency-key"] || ""),
+      "player-invite",
+      input.token ? { tokenHash: key } : {},
+      () => {
+        const result = create();
+        created = true;
+        return result;
+      },
+    );
+    const current = db.get(
+      "SELECT 1 FROM player_invites WHERE id=? AND owner=? AND revoked=0 AND expires>?",
+      result.id,
+      req.actor.id,
       now(),
     );
-    return { id: key, path: "/connect/" + token, expires };
+    requireThat(
+      current,
+      "This invitation is unavailable. Create another invitation.",
+      409,
+    );
+    requireThat(
+      input.token || created,
+      "Your earlier invitation was created, but this older request cannot recover its secret link. Manage or revoke it from your player code before creating another.",
+      409,
+    );
+    return { ...result, path: "/connect/" + token };
   });
   const invitation = (token: string) => {
     requireThat(

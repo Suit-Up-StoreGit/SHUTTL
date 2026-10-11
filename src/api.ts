@@ -46,6 +46,8 @@ export async function api<T = any>(
     }
     if (!response.ok)
       throw new ApiError(data.error || "Please try again.", response.status);
+    const sessionCsrf = response.headers.get("X-SHUTTL-CSRF");
+    if (path === "/dashboard" && sessionCsrf) data.sessionCsrf = sessionCsrf;
     return data;
   } catch (e) {
     if (e instanceof ApiError) throw e;

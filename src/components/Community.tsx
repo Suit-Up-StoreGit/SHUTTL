@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Copy, Heart, UsersRound } from "lucide-react";
-import { api, dateLabel, errorMessage } from "../api.ts";
+import { api, ApiError, dateLabel, errorMessage } from "../api.ts";
 import type { Category, Player } from "../domain.ts";
 import { Avatar, Brand, InlineError, Modal, Spinner } from "./UI.tsx";
 import { recordResearch } from "./Preferences.tsx";
@@ -58,9 +58,51 @@ export function PlayerCode({
     [invitation, setInvitation] = useState<any>(null),
     [invitations, setInvitations] = useState<any[]>([]),
     [invitationRevision, setInvitationRevision] = useState(0),
+    [pendingCreation, setPendingCreation] = useState<{
+      token: string;
+      requestId: string;
+    } | null>(null),
+    [pendingSaved, setPendingSaved] = useState(false),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [busyAction, setBusyAction] = useState<"create" | "revoke" | null>(null);
   const mutationInFlight = useRef(false);
+  const pendingInvitation = useRef<{
+    token: string;
+    requestId: string;
+  } | null>(null);
+  const storageKey = "shuttl:pending-player-invite:" + me.id;
+  useEffect(() => {
+    let value: { token: string; requestId: string } | null = null;
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (
+        saved &&
+        /^[A-Za-z0-9_-]{32}$/.test(saved.token) &&
+        /^[a-f0-9-]{36}$/.test(saved.requestId)
+      )
+        value = saved;
+    } catch {
+      // A blocked device store still permits an in-tab retry.
+    }
+    pendingInvitation.current = value;
+    setPendingCreation(value);
+    setPendingSaved(!!value);
+    setInvitation(null);
+    return () => {
+      pendingInvitation.current = null;
+    };
+  }, [storageKey]);
+  function clearPendingCreation() {
+    pendingInvitation.current = null;
+    setPendingCreation(null);
+    setPendingSaved(false);
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      // Successful confirmation remains usable in this tab.
+    }
+  }
   const link = invitation
     ? location.origin + invitation.path
     : location.origin + "/home?player=" + encodeURIComponent(me.username);
@@ -105,6 +147,7 @@ export function PlayerCode({
     if (mutationInFlight.current) return;
     mutationInFlight.current = true;
     setBusy(true);
+    setBusyAction(id ? "revoke" : "create");
     setError("");
     try {
       if (id) {
@@ -112,14 +155,45 @@ export function PlayerCode({
         setInvitations((old) => old.filter((p) => p.id !== id));
         if (invitation?.id === id) setInvitation(null);
         notify("Invitation revoked.");
-      } else setInvitation(await api("/player-invites", {}));
+      } else {
+        const pending = pendingInvitation.current || {
+          token: btoa(
+            String.fromCharCode(...crypto.getRandomValues(new Uint8Array(24))),
+          )
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_"),
+          requestId: crypto.randomUUID(),
+        };
+        pendingInvitation.current = pending;
+        setPendingCreation(pending);
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(pending));
+          setPendingSaved(true);
+        } catch {
+          setPendingSaved(false);
+          setError(
+            "This browser cannot save the retry draft. Keep this tab open until the invitation is confirmed.",
+          );
+        }
+        const response = await api(
+          "/player-invites",
+          { token: pending.token },
+          "POST",
+          pending.requestId,
+        );
+        setInvitation(response);
+        clearPendingCreation();
+      }
       setInvitationRevision((old) => old + 1);
       setError("");
     } catch (e) {
+      if (!id && e instanceof ApiError && [400, 409, 429].includes(e.status))
+        clearPendingCreation();
       setError(errorMessage(e));
     } finally {
       mutationInFlight.current = false;
       setBusy(false);
+      setBusyAction(null);
     }
   }
   return (
@@ -137,9 +211,12 @@ export function PlayerCode({
         <Modal
           title="Meet on court. Connect here."
           close={() => setOpen(false)}
+          dismissible={!busy}
         >
           <div className="player-code">
-            {qr?.link === link ? (
+            {pendingCreation && !invitation ? (
+              <p>Confirm your private invitation to show its player code.</p>
+            ) : qr?.link === link ? (
               <img
                 src={qr.image}
                 width="260"
@@ -169,11 +246,20 @@ export function PlayerCode({
               Score consent stays separate.
             </p>
           )}
+          {pendingCreation && !invitation && (
+            <p className="notice">
+              Your private invitation has not been confirmed. Retry returns the
+              same invitation, even if the earlier request arrived.{" "}
+              {pendingSaved
+                ? "Its retry draft stays on this device until confirmation or sign-out."
+                : "Keep this tab open: this browser could not save the retry draft."}
+            </p>
+          )}
           <InlineError message={error} />
           <div className="dialog-actions">
             <button
               className="button"
-              disabled={busy}
+              disabled={busy || !!pendingCreation}
               onClick={async () => {
                 setError("");
                 try {
@@ -193,10 +279,18 @@ export function PlayerCode({
               disabled={busy}
               onClick={() => changeInvitation(invitation?.id)}
             >
-              {invitation ? "Revoke invitation" : "Create private invitation"}
+              {invitation
+                ? busyAction === "revoke"
+                  ? "Revoking invitation…"
+                  : "Revoke invitation"
+                : busyAction === "create"
+                  ? "Creating private invitation…"
+                  : pendingCreation
+                    ? "Retry private invitation"
+                    : "Create private invitation"}
             </button>
           </div>
-          <details>
+          <details hidden={!!pendingCreation && !invitation}>
             <summary>Connection link</summary>
             <p className="wrap-anywhere">{link}</p>
             <label htmlFor="player-connection-link">
@@ -263,7 +357,8 @@ export function PlayerArrival({
 }) {
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [loadAttempt, setLoadAttempt] = useState(0);
   const connectionMutation = useRef(false);
   useEffect(() => {
     let active = true;
@@ -279,9 +374,13 @@ export function PlayerArrival({
     return () => {
       active = false;
     };
-  }, [username]);
+  }, [username, loadAttempt]);
   return (
-    <Modal title="Your next playing connection" close={close}>
+    <Modal
+      title="Your next playing connection"
+      close={close}
+      dismissible={!busy}
+    >
       {!data && !error ? (
         <Spinner />
       ) : (
@@ -364,6 +463,18 @@ export function PlayerArrival({
                       notify("Friend request cancelled.");
                     } catch (e) {
                       setError(errorMessage(e));
+                      if (e instanceof ApiError && e.status === 409) {
+                        try {
+                          const current = await api(
+                            "/players/by-username/" +
+                              encodeURIComponent(username),
+                          );
+                          setData(current);
+                          refresh();
+                        } catch (loadError) {
+                          setError(errorMessage(loadError));
+                        }
+                      }
                     } finally {
                       connectionMutation.current = false;
                       setBusy(false);
@@ -378,6 +489,15 @@ export function PlayerArrival({
         )
       )}
       <InlineError message={error} />
+      {error && (
+        <button
+          className="button secondary"
+          disabled={busy}
+          onClick={() => setLoadAttempt((value) => value + 1)}
+        >
+          Retry loading connection
+        </button>
+      )}
     </Modal>
   );
 }
@@ -393,7 +513,8 @@ export function InvitationLanding({
   const token = location.pathname.split("/")[2];
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [loadAttempt, setLoadAttempt] = useState(0);
   const requestInFlight = useRef(false);
   const currentInvitation = useRef({ token, loggedIn });
   currentInvitation.current = { token, loggedIn };
@@ -414,7 +535,7 @@ export function InvitationLanding({
     return () => {
       active = false;
     };
-  }, [token, loggedIn]);
+  }, [token, loggedIn, loadAttempt]);
   const status = data?.status || "available";
   return (
     <main className="claim-public">
@@ -430,9 +551,9 @@ export function InvitationLanding({
               : `${data.name} invited you.`}
           </h1>
           <p>
-            Join their playing circle through a friendship request. The inviter
-            reviews your identity. This invitation approves no scores and
-            creates no rated-play agreement.
+            Connect to compare your badminton progress. {data.name} reviews your
+            friendship request before you connect. This invitation adds no group
+            membership and approves no rated play or scores.
           </p>
           <p className="form-help">Expires {dateLabel(data.expires)}.</p>
           {status !== "available" ? (
@@ -511,7 +632,16 @@ export function InvitationLanding({
           )}
         </>
       ) : (
-        <h1>This invitation is unavailable.</h1>
+        <>
+          <h1>We couldn’t open this invitation.</h1>
+          <button
+            className="button secondary"
+            disabled={busy}
+            onClick={() => setLoadAttempt((value) => value + 1)}
+          >
+            Retry invitation
+          </button>
+        </>
       )}
       <InlineError message={error} />
       <a href="/home" className="text-button">
@@ -526,12 +656,14 @@ export function GroupRecap({
   me,
   open,
   refresh,
+  inNamedGroup = false,
 }: {
   circle: any;
   category: Category;
   me: any;
   open: (id: string) => void;
   refresh: () => void;
+  inNamedGroup?: boolean;
 }) {
   const [data, setData] = useState<any>(null),
     [period, setPeriod] = useState("week"),
@@ -601,12 +733,18 @@ export function GroupRecap({
       <div className="group-passport-header">
         <Crest kind={data?.identity.crest} />
         <div>
-          <span className="eyebrow">YOUR GROUP PASSPORT</span>
-          <h2>{circle.name}</h2>
-          <p>
-            {data?.identity.tagline ||
-              "A shared picture, earned in your existing group."}
-          </p>
+          <span className="eyebrow">
+            {inNamedGroup
+              ? category.toUpperCase() + " / SHARED PLAY"
+              : "YOUR GROUP PASSPORT"}
+          </span>
+          <h2>{inNamedGroup ? "Group recap" : circle.name}</h2>
+          {(data?.identity.tagline || !inNamedGroup) && (
+            <p>
+              {data?.identity.tagline ||
+                "A shared picture, earned in your existing group."}
+            </p>
+          )}
         </div>
       </div>
       <div
@@ -662,6 +800,11 @@ export function GroupRecap({
                 ? " This recap covers the latest 2,000 whole-group results."
                 : ""}
             </p>
+            <p className="form-help">
+              Rating points compare the first and last group match in this
+              period, including other rated play between them. A dash means
+              those ratings were not visible yet.
+            </p>
             <div className="notice">
               <strong>
                 Your{" "}
@@ -693,10 +836,16 @@ export function GroupRecap({
                     {p.results} results · {p.wins} recorded wins
                   </small>
                 </div>
-                <span>
+                <span
+                  aria-label={
+                    p.visibleChange === null
+                      ? "Rating change unavailable for this period"
+                      : `${p.visibleChange >= 0 ? "+" : ""}${p.visibleChange} rating points in this period`
+                  }
+                >
                   {p.visibleChange === null
-                    ? "Placement"
-                    : `${p.visibleChange >= 0 ? "+" : ""}${p.visibleChange} visible change`}
+                    ? "— rating change"
+                    : `${p.visibleChange >= 0 ? "+" : ""}${p.visibleChange} rating pts`}
                 </span>
               </div>
             ))}
@@ -889,9 +1038,12 @@ export function Encouragement({ result }: { result: any }) {
               }
             }}
           >
-            <Heart size={16} />
+            <Heart
+              size={16}
+              fill={sent.has(p.canonicalId || p.id) ? "currentColor" : "none"}
+            />
             {sent.has(p.canonicalId || p.id)
-              ? "Respect given"
+              ? `Respect given · ${p.name}`
               : `Well played, ${p.name}`}
           </button>
         ))}

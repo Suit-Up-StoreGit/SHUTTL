@@ -1,18 +1,41 @@
 import { useEffect, useState } from "react";
 import { startRegistration } from "@simplewebauthn/browser";
-import { api, errorMessage } from "../api.ts";
+import { api, ApiError, errorMessage } from "../api.ts";
 import { InlineError } from "./UI.tsx";
 
+const temporaryAppearance: Record<string, string> = {};
+let appearanceStorageUnavailable = false;
+function appearanceValue(key: string, fallback: string) {
+  if (temporaryAppearance[key]) return temporaryAppearance[key];
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch {
+    appearanceStorageUnavailable = true;
+    return fallback;
+  }
+}
+function saveAppearance(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value);
+    delete temporaryAppearance[key];
+    return true;
+  } catch {
+    temporaryAppearance[key] = value;
+    return false;
+  }
+}
 export function applyAppearance() {
-  const theme = localStorage.getItem("shuttl-appearance") || "system";
+  const theme = appearanceValue("shuttl-appearance", "system");
   document.documentElement.dataset.theme = theme;
   document.documentElement.dataset.palette =
     theme === "dark" ||
     (theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
       ? "dark"
       : "light";
-  document.documentElement.dataset.textSize =
-    localStorage.getItem("shuttl-text-size") || "normal";
+  document.documentElement.dataset.textSize = appearanceValue(
+    "shuttl-text-size",
+    "normal",
+  );
 }
 export const passkeysSupported = () =>
   typeof PublicKeyCredential !== "undefined" &&
@@ -26,11 +49,14 @@ if (typeof matchMedia !== "undefined")
     } catch {}
   });
 export function AppearanceChoices() {
-  const [theme, setTheme] = useState(
-      localStorage.getItem("shuttl-appearance") || "system",
+  const [theme, setTheme] = useState(() =>
+      appearanceValue("shuttl-appearance", "system"),
     ),
-    [text, setText] = useState(
-      localStorage.getItem("shuttl-text-size") || "normal",
+    [text, setText] = useState(() =>
+      appearanceValue("shuttl-text-size", "normal"),
+    ),
+    [storageWarning, setStorageWarning] = useState(
+      appearanceStorageUnavailable,
     );
   return (
     <section className="appearance-choices">
@@ -43,7 +69,9 @@ export function AppearanceChoices() {
             value={theme}
             onChange={(e) => {
               setTheme(e.target.value);
-              localStorage.setItem("shuttl-appearance", e.target.value);
+              setStorageWarning(
+                !saveAppearance("shuttl-appearance", e.target.value),
+              );
               applyAppearance();
             }}
           >
@@ -59,7 +87,9 @@ export function AppearanceChoices() {
             value={text}
             onChange={(e) => {
               setText(e.target.value);
-              localStorage.setItem("shuttl-text-size", e.target.value);
+              setStorageWarning(
+                !saveAppearance("shuttl-text-size", e.target.value),
+              );
               applyAppearance();
             }}
           >
@@ -68,6 +98,12 @@ export function AppearanceChoices() {
           </select>
         </div>
       </div>
+      {storageWarning && (
+        <p className="form-help" role="status">
+          Your appearance choices apply for this visit. This browser could not
+          save them for your next visit.
+        </p>
+      )}
       <p className="form-help">
         Appearance stays on this browser. Reduced motion follows your device’s
         preference.
@@ -151,12 +187,17 @@ export function PortraitChoice({
           className="text-button"
           disabled={busy}
           onClick={async () => {
+            if (busy) return;
+            setBusy(true);
+            setError("");
             try {
               await api("/account/portrait", {}, "DELETE");
               refresh();
               notify("Portrait removed.");
             } catch (err) {
               setError(errorMessage(err));
+            } finally {
+              setBusy(false);
             }
           }}
         >
@@ -172,14 +213,38 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
     [error, setError] = useState(""),
     [password, setPassword] = useState(""),
     [label, setLabel] = useState("My passkey"),
-    [busy, setBusy] = useState(false);
-  const load = () =>
-    api("/account/passkeys")
-      .then(setData)
-      .catch((e) => setError(errorMessage(e)));
+    [busy, setBusy] = useState(false),
+    [loading, setLoading] = useState(true),
+    [attempt, setAttempt] = useState(0);
+  const load = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      setData(await api("/account/passkeys"));
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    load();
-  }, []);
+    let active = true;
+    setLoading(true);
+    setError("");
+    api("/account/passkeys")
+      .then((value) => {
+        if (active) setData(value);
+      })
+      .catch((e) => {
+        if (active) setError(errorMessage(e));
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [attempt]);
   return (
     <section className="passkey-choices">
       <h3>Your other way back</h3>
@@ -189,13 +254,31 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
         private recovery code for another fallback. No biometric data is sent to
         SHUTTL.
       </p>
-      {data?.available && typeof PublicKeyCredential !== "undefined" ? (
+      {loading && (
+        <p className="form-help" role="status">
+          Checking your passkeys…
+        </p>
+      )}
+      {!data && !loading && error && (
+        <p className="form-help">Your saved passkeys could not be checked.</p>
+      )}
+      {error && !loading && (
+        <button
+          className="button secondary"
+          disabled={busy}
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry passkey controls
+        </button>
+      )}
+      {data?.available && passkeysSupported() ? (
         <>
           <label htmlFor="passkey-label">Passkey label</label>
           <input
             id="passkey-label"
             value={label}
             maxLength={40}
+            disabled={busy || loading}
             onChange={(e) => setLabel(e.target.value)}
           />
           <label htmlFor="passkey-password">
@@ -206,11 +289,12 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
             type="password"
             autoComplete="current-password"
             value={password}
+            disabled={busy || loading}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button
             className="button secondary"
-            disabled={busy || !password || !label.trim()}
+            disabled={busy || loading || !password || !label.trim()}
             onClick={async () => {
               setBusy(true);
               setError("");
@@ -230,6 +314,7 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
                 await load();
                 notify("Passkey added. You can use it at sign in.");
               } catch (e) {
+                if (e instanceof ApiError && e.status === 0) setData(null);
                 setError(errorMessage(e));
               } finally {
                 setBusy(false);
@@ -243,9 +328,10 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
               <strong>{p.label}</strong>
               <button
                 className="text-button"
-                disabled={busy || !password}
+                disabled={busy || loading || !password}
                 onClick={async () => {
                   setBusy(true);
+                  setError("");
                   try {
                     await api(
                       "/account/passkeys/" + encodeURIComponent(p.id),
@@ -256,6 +342,7 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
                     await load();
                     notify("Passkey removed from SHUTTL.");
                   } catch (e) {
+                    if (e instanceof ApiError && e.status === 0) setData(null);
                     setError(errorMessage(e));
                   } finally {
                     setBusy(false);
@@ -268,10 +355,12 @@ export function PasskeyChoices({ notify }: { notify: (s: string) => void }) {
           ))}
         </>
       ) : (
-        <p className="form-help">
-          Passkeys need a supported browser and a secure origin. Your password
-          and recovery code remain available.
-        </p>
+        data && (
+          <p className="form-help">
+            Passkeys need a supported browser and a secure origin. Your password
+            and recovery code remain available.
+          </p>
+        )
       )}
       <InlineError message={error} />
     </section>
@@ -281,15 +370,29 @@ export function ResearchChoice() {
   const [enabled, setEnabled] = useState(false),
     [ready, setReady] = useState(false),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [loading, setLoading] = useState(true),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError("");
     api("/account/research")
       .then((v) => {
+        if (!active) return;
         setEnabled(v.enabled);
         setReady(true);
       })
-      .catch((e) => setError(errorMessage(e)));
-  }, []);
+      .catch((e) => {
+        if (active) setError(errorMessage(e));
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [attempt]);
   return (
     <section className="research-choice">
       <h3>Optional pilot research</h3>
@@ -303,14 +406,16 @@ export function ResearchChoice() {
       </p>
       <button
         className="button secondary"
-        disabled={!ready || busy}
+        disabled={!ready || busy || loading}
         onClick={async () => {
           setBusy(true);
+          setError("");
           try {
             await api("/account/research", { enabled: !enabled }, "PUT");
             setEnabled(!enabled);
           } catch (e) {
             setError(errorMessage(e));
+            setReady(false);
           } finally {
             setBusy(false);
           }
@@ -321,10 +426,23 @@ export function ResearchChoice() {
           : "Opt in to pilot view research"}
       </button>
       <p role="status">
-        {enabled
-          ? "Research participation is on."
-          : "Research participation is off."}
+        {loading
+          ? "Checking your research choice…"
+          : !ready
+            ? "Your research choice could not be checked."
+            : enabled
+              ? "Research participation is on."
+              : "Research participation is off."}
       </p>
+      {error && !loading && (
+        <button
+          className="button secondary"
+          disabled={busy}
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry research choice
+        </button>
+      )}
       <InlineError message={error} />
     </section>
   );

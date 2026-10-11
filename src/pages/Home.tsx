@@ -1,5 +1,10 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { comparable, comparisonCopy, periodSummary } from "../experience.ts";
+import {
+  comparable,
+  comparisonCopy,
+  periodSummary,
+  publishedPlayedAt,
+} from "../experience.ts";
 import {
   RatingGuide,
   ProgressChart,
@@ -25,7 +30,7 @@ import {
   SectionHeading,
   Empty,
 } from "../components/UI.tsx";
-import { api, dateLabel, type Page } from "../api.ts";
+import { api, dateLabel, errorMessage, type Page } from "../api.ts";
 import {
   CATEGORIES,
   leagueFor,
@@ -63,10 +68,12 @@ export function RatingCard({
   rating,
   category,
   compact = false,
+  showHistoryContext = true,
 }: {
   rating: PublicRating;
   category: Category;
   compact?: boolean;
+  showHistoryContext?: boolean;
 }) {
   const league = rating.score === null ? null : leagueFor(rating.score),
     gap =
@@ -123,9 +130,7 @@ export function RatingCard({
             ? "Your next chapter starts here"
             : rating.status === "Placement"
               ? "Finding your starting point"
-              : rating.status === "Established"
-                ? "Independent playing evidence"
-                : "Your developing estimate"}
+              : "Player-confirmed estimate"}
         </span>
         <Evidence rating={rating} />
       </div>
@@ -170,9 +175,20 @@ export function RatingCard({
               <span style={{ width: progress + "%" }} />
             </div>
           )}
-          <p className="passport-footnote">
-            Earned on court. Player-confirmed.
-          </p>
+          {showHistoryContext ? (
+            <div className="passport-evidence-line">
+              <span>
+                Personal best <b>{rating.peak?.toLocaleString("en") ?? "—"}</b>
+              </span>
+              <span>
+                <b>{rating.count}</b> confirmed results
+              </span>
+            </div>
+          ) : (
+            <p className="passport-footnote">
+              Earned on court. Player-confirmed.
+            </p>
+          )}
         </div>
       )}
     </section>
@@ -185,6 +201,7 @@ export function Home({
   setPage,
   record,
   addFriend,
+  share,
   open = () => {},
   compare = () => {},
   variant = "passport",
@@ -193,9 +210,13 @@ export function Home({
   data: any;
   category: Category;
   setCategory: (c: Category) => void;
-  setPage: (p: Page, profileTab?: "history" | "settings") => void;
+  setPage: (
+    p: Page,
+    profileTab?: "history" | "settings" | "insights" | "goals",
+  ) => void;
   record: () => void;
   addFriend: () => void;
+  share?: () => void;
   open?: (id: string) => void;
   compare?: (id: string) => void;
   variant?: string;
@@ -217,7 +238,8 @@ export function Home({
         Math.abs(b.rating.score - rating.score!),
     );
   const [pinned, setPinned] = useState<string | null>(null);
-  const rival = supported.find((p: any) => p.id === pinned) || supported[0];
+  const chosen = friends.find((p: any) => p.id === pinned);
+  const rival = chosen || supported[0];
   useEffect(() => {
     try {
       setPinned(localStorage.getItem(`shuttl:rival:${me.id}:${category}`));
@@ -226,11 +248,17 @@ export function Home({
   const results = data.results.filter((r: any) => r.category === category);
   const latest = [...results]
     .filter((r: any) => r.publishedRevisionId)
-    .sort((a, b) => b.playedAt.localeCompare(a.playedAt))[0];
+    .sort((a, b) =>
+      publishedPlayedAt(b).localeCompare(publishedPlayedAt(a)),
+    )[0];
   const pending = data.results.filter(
     (r: any) =>
       ["pending", "correction_pending"].includes(r.status) &&
       !r.approvals.includes(r.ownParticipant),
+  );
+  const waitingPlacement = results.find(
+    (r: any) =>
+      !r.publishedRevisionId && ["pending", "confirmed"].includes(r.status),
   );
   const groups = new Map<string, any[]>();
   for (const f of data.feed.filter((f: any) => f.category === category)) {
@@ -239,19 +267,24 @@ export function Home({
   }
   const feed = [...groups.values()].slice(0, 3);
   const [week, setWeek] = useState<any>(null);
+  const [weekError, setWeekError] = useState("");
+  const [weekAttempt, setWeekAttempt] = useState(0);
   useEffect(() => {
     if (mock) return;
     let active = true;
     setWeek(null);
+    setWeekError("");
     api(`/insights?category=${category}&period=7`)
       .then((v) => {
         if (active) setWeek(v);
       })
-      .catch(() => {});
+      .catch((error) => {
+        if (active) setWeekError(errorMessage(error));
+      });
     return () => {
       active = false;
     };
-  }, [me.id, category, rating.count, rating.score, mock]);
+  }, [me.id, category, rating.count, rating.score, mock, weekAttempt]);
   const summary =
     week?.category === category ? week : periodSummary(data.results, category);
   const goal = me.goals?.[category],
@@ -264,20 +297,20 @@ export function Home({
       const d = JSON.parse(
         localStorage.getItem("shuttl:draft:" + me.id) || "null",
       );
-      return d && Date.now() - d.savedAt < 7 * 86400000;
+      return (
+        d && (d.submissionUncertain || Date.now() - d.savedAt < 7 * 86400000)
+      );
     } catch {
       return false;
     }
   })();
   const rivalry = !me.breakMode && (
-    <section className="rival-strip" aria-label="Closest supported comparison">
+    <section className="rival-strip" aria-label="Your friend comparison">
       {rival ? (
         <>
           <div className="rival-kicker">
             <span className="eyebrow">
-              {pinned === rival.id
-                ? "YOUR CHOSEN COMPARISON"
-                : "CLOSEST SUPPORTED RIVAL"}
+              {chosen ? "YOUR CHOSEN COMPARISON" : "CLOSEST COMPARABLE FRIEND"}
             </span>
             <span className="pill">{category}</span>
           </div>
@@ -287,10 +320,26 @@ export function Home({
               <strong>{rival.name}</strong>
               <p>{comparisonCopy(rating, rival.rating)}</p>
             </div>
-            <b>{rival.rating.score}</b>
+            <b>
+              {rival.rating.score === null
+                ? "—"
+                : rival.rating.score.toLocaleString("en")}
+            </b>
             <ChevronRight size={18} />
           </button>
-          <p className="rival-note">From shared playing evidence.</p>
+          <p className="rival-note">
+            {comparable(rating, rival.rating)
+              ? chosen
+                ? "Chosen by you · a supported comparison in this category."
+                : "The nearest supported estimate among your accepted friends."
+              : "Your chosen friend stays here while the evidence develops."}
+          </p>
+          <button
+            className="text-button rival-choice"
+            onClick={() => setPage("friends")}
+          >
+            Choose a comparison <ArrowUpRight size={16} />
+          </button>
         </>
       ) : (
         <>
@@ -346,6 +395,20 @@ export function Home({
             : "Every result adds context. This recap covers the recent history loaded here."
           : "A quiet week is okay. Your rating does not decay for taking time away."}
       </p>
+      {weekError && (
+        <div className="weekly-retry" role="status">
+          <p className="form-help">
+            The full recap could not load. These facts cover only the recent
+            results loaded here. {weekError}
+          </p>
+          <button
+            className="text-button"
+            onClick={() => setWeekAttempt((value) => value + 1)}
+          >
+            Retry weekly recap <ArrowUpRight size={16} />
+          </button>
+        </div>
+      )}
     </section>
   );
   return (
@@ -399,6 +462,26 @@ export function Home({
           {variant === "court" && weeklyRecap}
           <RatingCard rating={rating} category={category} />
           <RatingGuide category={category} />
+          {latest && (
+            <section className="latest-result">
+              <SectionHeading
+                title="Your latest result"
+                action="Open result"
+                onClick={() => open(latest.id)}
+              />
+              <ResultReward result={latest} small share={share} />
+              <p className="form-help">
+                {dateLabel(publishedPlayedAt(latest), me.timezone)} ·{" "}
+                {(latest.publishedResult?.games || latest.games)
+                  .map((g: number[]) => g.join("–"))
+                  .join(" / ")}{" "}
+                ·{" "}
+                {latest.status === "rated"
+                  ? "Published"
+                  : "Published history has a pending change"}
+              </p>
+            </section>
+          )}
           {!me.breakMode && data.competitionUpdate && (
             <button className="lead-update" onClick={() => setPage("friends")}>
               <MoveUpRight size={20} />
@@ -428,26 +511,6 @@ export function Home({
               </span>
               <ChevronRight size={17} />
             </a>
-          )}
-          {latest && (
-            <section className="latest-result">
-              <SectionHeading
-                title="Your latest chapter"
-                action="Open result"
-                onClick={() => open(latest.id)}
-              />
-              <ResultReward result={latest} small />
-              <p className="form-help">
-                {dateLabel(latest.playedAt, me.timezone)} ·{" "}
-                {(latest.publishedResult?.games || latest.games)
-                  .map((g: number[]) => g.join("–"))
-                  .join(" / ")}{" "}
-                ·{" "}
-                {latest.status === "rated"
-                  ? "Published"
-                  : "Published history has a pending change"}
-              </p>
-            </section>
           )}
           {rating.count === 0 && (
             <section className="first-court">
@@ -504,7 +567,7 @@ export function Home({
         <aside className="home-aside">
           <section className="panel circle-panel">
             <SectionHeading
-              title="Your circle"
+              title="Your friends"
               action="View all"
               onClick={() => setPage("friends")}
             />
@@ -544,7 +607,7 @@ export function Home({
             id="court-activity"
             tabIndex={-1}
           >
-            <SectionHeading title="Around your court" />
+            <SectionHeading title="Friends’ recent play" />
             {feed.length ? (
               feed.map((group: any[]) => (
                 <div
@@ -584,6 +647,36 @@ export function Home({
                           ),
                       )}
                     </div>
+                    {group.some((f) => f.milestone && f.score !== null) && (
+                      <div className="feed-milestones">
+                        {group
+                          .filter((f) => f.milestone && f.score !== null)
+                          .map((f) => (
+                            <span key={f.id}>
+                              {f.player.name} ·{" "}
+                              {f.milestone === "reveal"
+                                ? "First rating"
+                                : "Personal best"}{" "}
+                              {f.score}
+                            </span>
+                          ))}
+                      </div>
+                    )}
+                    <button
+                      className="text-button feed-open"
+                      onClick={() => {
+                        const ownResult = results.find(
+                          (r: any) => r.id === group[0].unitId,
+                        );
+                        if (ownResult) open(ownResult.id);
+                        else compare(group[0].player.id);
+                      }}
+                    >
+                      {results.some((r: any) => r.id === group[0].unitId)
+                        ? "Open shared result"
+                        : "View player progress"}{" "}
+                      <ArrowUpRight size={14} />
+                    </button>
                   </div>
                 </div>
               ))
@@ -603,22 +696,45 @@ export function Home({
             <h3>
               {goalGap === null
                 ? rating.score === null
-                  ? `${Math.max(0, 5 - rating.count)} results to your reveal.`
+                  ? `${Math.max(0, 5 - rating.count)} confirmed ${5 - rating.count === 1 ? "result" : "results"} to your reveal.`
                   : "Set a goal that matters to you."
                 : goalGap === 0
                   ? "Your goal is reached."
                   : `${goalGap} points to your goal.`}
             </h3>
             <p>
-              {rating.status === "Pair-linked"
-                ? "Your doubles estimate is linked to your partnership. Naturally varied partners add useful evidence."
-                : "Progress at your pace. A target is an aspiration, not a promised number of wins."}
+              {rating.score === null
+                ? `${rating.count} of 5 confirmed ${category.toLowerCase()} results. ${waitingPlacement ? (waitingPlacement.status === "confirmed" ? "A confirmed result is processing." : "A recorded result is waiting for approval.") : "Record a completed match with the people you played."}`
+                : goalGap === 0
+                  ? `${category} target ${goal} · current rating ${rating.score}. Choose your next target when you are ready.`
+                  : rating.status === "Pair-linked"
+                    ? "Your doubles estimate is linked to your partnership. Naturally varied partners add useful evidence."
+                    : "Progress at your pace. A target is an aspiration, not a promised number of wins."}
             </p>
             <button
               className="text-button"
-              onClick={() => setPage("profile", "settings")}
+              onClick={
+                rating.score === null
+                  ? waitingPlacement
+                    ? () => open(waitingPlacement.id)
+                    : record
+                  : rating.status === "Pair-linked" && goalGap !== 0
+                    ? () => setPage("profile", "insights")
+                    : () => setPage("profile", "goals")
+              }
             >
-              Manage your goals <ArrowUpRight size={16} />
+              {rating.score === null
+                ? waitingPlacement
+                  ? "View awaiting result"
+                  : draft
+                    ? "Open saved draft"
+                    : "Record a completed result"
+                : rating.status === "Pair-linked" && goalGap !== 0
+                  ? "View playing insights"
+                  : goalGap === 0
+                    ? "Choose your next target"
+                    : "Manage your goals"}{" "}
+              <ArrowUpRight size={16} />
             </button>
           </section>
           <div className="court-footnote">

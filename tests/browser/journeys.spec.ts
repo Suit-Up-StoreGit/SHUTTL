@@ -211,7 +211,7 @@ test("signup, local draft offline retry, cross-account Singles approval and cate
       .click();
     await expect(
       page.locator(".profile-rating-line").filter({ hasText: "Singles" }),
-    ).toContainText("1 confirmed results");
+    ).toContainText("1 confirmed result");
     await expect(
       page.locator(".profile-rating-line").filter({ hasText: "Doubles" }),
     ).toContainText("0 confirmed results");

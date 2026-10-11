@@ -27,6 +27,7 @@ import { CATEGORIES, FORMATS, type Category } from "../src/domain.ts";
 import { localityKey, localityLabel, validCountry } from "../src/location.ts";
 import { registerCommunity } from "./community.ts";
 import { registerPasskeys } from "./passkeys.ts";
+import { preferenceSnapshot } from "../src/preference-draft.ts";
 import { RatingRunner } from "./rating-runner.ts";
 declare module "fastify" {
   interface FastifyRequest {
@@ -551,6 +552,7 @@ export async function buildApp(
     { stamp: string; expires: number; json: string }
   >();
   app.get("/api/dashboard", async (req, reply) => {
+    reply.header("X-SHUTTL-CSRF", req.actor.csrf);
     const stamp =
         String(db.get("PRAGMA data_version")!.data_version) +
         ":" +
@@ -894,7 +896,7 @@ export async function buildApp(
       req,
       z.object({ name: z.string().trim().min(3).max(60) }).strict(),
     );
-    return mutate(req, "circle.create", input, () => {
+    const response = mutate(req, "circle.create", input, () => {
       const circle = randomUUID();
       db.run(
         "INSERT INTO circles VALUES(?,?,?,?)",
@@ -911,6 +913,16 @@ export async function buildApp(
       );
       return { id: circle };
     });
+    requireThat(
+      db.get(
+        "SELECT 1 FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE c.id=? AND m.user_id=? AND m.status='accepted'",
+        response.id,
+        req.actor.id,
+      ),
+      "This earlier group is no longer available to you. Review your groups before creating another.",
+      409,
+    );
+    return response;
   });
   app.get("/api/circles/:id", async (req) => {
     requireThat(
@@ -929,6 +941,7 @@ export async function buildApp(
       );
     return {
       ...circle,
+      acceptedCount: members.length,
       members: members
         .filter((m) => !service.blocked(req.actor.id, m.user_id))
         .map((m) => ({
@@ -1016,11 +1029,18 @@ export async function buildApp(
         )!.n === 1,
       "Transfer ownership before leaving your circle.",
     );
-    db.run(
-      "DELETE FROM circle_members WHERE circle_id=? AND user_id=?",
-      circle.id,
-      req.actor.id,
-    );
+    db.transaction(() => {
+      if (circle.owner === req.actor.id) {
+        db.run("DELETE FROM circle_members WHERE circle_id=?", circle.id);
+        db.run("DELETE FROM circles WHERE id=?", circle.id);
+        service.audit(req.actor.id, "circle.closed", circle.id, {});
+      } else
+        db.run(
+          "DELETE FROM circle_members WHERE circle_id=? AND user_id=?",
+          circle.id,
+          req.actor.id,
+        );
+    });
     return { ok: true };
   });
   app.post("/api/circles/:id/owner", async (req) => {
@@ -1126,7 +1146,7 @@ export async function buildApp(
         "claim",
         "Verify who joined your invitation",
         `${req.actor.username} is asking to claim an invited player.`,
-        `claim:${claim.token}`,
+        `claim:${claim.token}:${String(req.headers["idempotency-key"])}`,
       );
       return { status: "awaiting_author" };
     }),
@@ -1175,11 +1195,19 @@ export async function buildApp(
           "Review and agree to each exact score before it counts.",
           `verified:${claim.token}`,
         );
-      } else
+      } else {
         db.run(
           "UPDATE guest_claims SET state='invited',claimant=NULL WHERE token=?",
           claim.token,
         );
+        service.notification(
+          claim.claimant,
+          "claim",
+          "Your identity could not be verified",
+          "The inviter did not verify this identity claim. No score was approved and your rating is unchanged.",
+          `claim-rejected:${claim.token}:${String(req.headers["idempotency-key"])}`,
+        );
+      }
       service.audit(req.actor.id, "identity.claim_reviewed", claim.guest_id, {
         accepted: input.accept,
       });
@@ -1309,6 +1337,7 @@ export async function buildApp(
             .optional(),
           city: z.string().trim().max(80).optional(),
           publicPortrait: z.boolean().optional(),
+          expectedPreferences: z.string().max(4096).optional(),
           publicName: z.boolean(),
           publicDistrict: z.boolean(),
           publicHistory: z.boolean(),
@@ -1334,6 +1363,13 @@ export async function buildApp(
       throw new Problem(400, "Choose a valid timezone.");
     }
     return mutate(req, "profile", input, () => {
+      if (input.expectedPreferences !== undefined)
+        requireThat(
+          input.expectedPreferences ===
+            preferenceSnapshot(service.profile(req.actor.id)),
+          "Your saved preferences changed elsewhere. Review the latest choices before saving.",
+          409,
+        );
       const country =
           input.country ?? (req.actor.country || (input.district ? "SG" : "")),
         city =
@@ -1451,11 +1487,13 @@ export async function buildApp(
           category,
           includeName: z.boolean(),
           includeDistrict: z.boolean(),
-          template: z.enum(["passport", "reveal", "best"]).optional(),
+          template: z
+            .enum(["passport", "reveal", "best", "promotion"])
+            .optional(),
         })
         .strict(),
     );
-    return mutate(req, "share", input, () => {
+    const response = mutate(req, "share", input, () => {
       const rating = service.rating(req.actor.id, input.category);
       requireThat(
         rating.score !== null,
@@ -1508,12 +1546,23 @@ export async function buildApp(
       );
       return { id: share, path: "/share/" + share, payload };
     });
+    requireThat(
+      db.get(
+        "SELECT 1 FROM shares WHERE id=? AND owner=? AND revoked=0",
+        response.id,
+        req.actor.id,
+      ),
+      "This earlier snapshot was revoked or removed. Choose your current privacy options and create a fresh snapshot.",
+      409,
+    );
+    return response;
   });
   app.get("/api/milestones", async (req) => {
     const input = z.object({ category }).strict().parse(req.query);
     return {
       reveal: service.milestone(req.actor.id, input.category, "reveal"),
       best: service.milestone(req.actor.id, input.category, "best"),
+      promotion: service.milestone(req.actor.id, input.category, "promotion"),
     };
   });
   app.get("/api/shares/:id", async (req) => {
@@ -1649,6 +1698,11 @@ export async function buildApp(
       );
       db.run("DELETE FROM connections WHERE a=? OR b=?", actor, actor);
       db.run("DELETE FROM notifications WHERE user_id=?", actor);
+      db.run(
+        "DELETE FROM circle_members WHERE circle_id IN(SELECT id FROM circles WHERE owner=?)",
+        actor,
+      );
+      db.run("DELETE FROM circles WHERE owner=?", actor);
       db.run("DELETE FROM circle_members WHERE user_id=?", actor);
       db.run("DELETE FROM blocks WHERE actor=? OR target=?", actor, actor);
       db.run("UPDATE shares SET revoked=1 WHERE owner=?", actor);

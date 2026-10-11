@@ -82,7 +82,17 @@ export function Gem({
   league?: string | null;
   size?: number;
 }) {
-  const l = LEAGUES.find((l) => l.name === league) || LEAGUES[0];
+  const l = LEAGUES.find((l) => l.name === league);
+  if (!l)
+    return (
+      <span
+        className="gem gem-placeholder"
+        aria-hidden="true"
+        style={{ width: size, height: size }}
+      >
+        —
+      </span>
+    );
   return (
     <img
       className="gem"

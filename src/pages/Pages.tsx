@@ -13,7 +13,20 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-import { api, dateLabel, errorMessage } from "../api.ts";
+import {
+  api,
+  ApiError,
+  dateLabel,
+  dateTimeLabel,
+  errorMessage,
+} from "../api.ts";
+import {
+  preferenceValues,
+  preferenceSnapshot,
+  preferenceDraftKey,
+  readPreferenceDraft,
+  clearPreferenceDraft,
+} from "../preference-draft.ts";
 import {
   CATEGORIES,
   FORMATS,
@@ -134,9 +147,13 @@ export function ComparisonDialog({
 }) {
   const [loaded, setLoaded] = useState<any>(null),
     [category, setCategory] = useState(initialCategory),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [attempt, setAttempt] = useState(0),
+    [removing, setRemoving] = useState(false);
   useEffect(() => {
     let active = true;
+    setError("");
+    setLoaded(null);
     api("/comparisons/" + playerId)
       .then((v) => {
         if (active) setLoaded(v);
@@ -147,7 +164,7 @@ export function ComparisonDialog({
     return () => {
       active = false;
     };
-  }, [playerId]);
+  }, [playerId, attempt]);
   const player = loaded?.player;
   const own = data.me.ratings.find(
       (r: PublicRating) => r.category === category,
@@ -175,9 +192,18 @@ export function ComparisonDialog({
           : "Your shared playing picture"
       }
       close={close}
+      dismissible={!removing}
       wide
     >
       <InlineError message={error} />
+      {error && !loaded && (
+        <button
+          className="button secondary"
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry player comparison
+        </button>
+      )}
       {!loaded && !error ? (
         <Spinner />
       ) : (
@@ -204,7 +230,12 @@ export function ComparisonDialog({
               <p>
                 {comparable(own, peer)
                   ? "A shared playing picture supports this comparison. It remains an estimate, not a certified level or a prediction of your next match."
-                  : "See each player’s progress independently. Fixed partnerships and disconnected playing groups can leave a direct comparison unclear."}
+                  : own.score === null || peer.score === null
+                    ? "Each category reveals a rating after five player-confirmed results. Until then, follow each player’s placement progress."
+                    : own.status === "Pair-linked" ||
+                        peer.status === "Pair-linked"
+                      ? "Results with different partners help distinguish each player’s contribution. You can still follow both players’ progress separately."
+                      : "Results connecting your playing groups can support a comparison. For now, follow each player’s progress separately."}
               </p>
             </div>
             {isFriend && comparable(own, peer) && (
@@ -267,7 +298,11 @@ export function ComparisonDialog({
                 <p>Removing the connection keeps valid match history intact.</p>
                 <button
                   className="text-button danger"
+                  disabled={removing}
                   onClick={async () => {
+                    if (removing) return;
+                    setRemoving(true);
+                    setError("");
                     try {
                       await api("/friends/" + playerId, {}, "DELETE");
                       refresh();
@@ -275,6 +310,8 @@ export function ComparisonDialog({
                       notify("Connection removed. Valid match history stays.");
                     } catch (e) {
                       setError(errorMessage(e));
+                    } finally {
+                      setRemoving(false);
                     }
                   }}
                 >
@@ -344,14 +381,25 @@ function CareerHistory({
       <CategoryTabs value={category} onChange={setCategory} />
       <div className="history-filters">
         <div className="field">
-          <label htmlFor="history-search">Find a player in your history</label>
+          <label htmlFor="history-search">
+            Find a player in loaded results
+          </label>
           <input
             id="history-search"
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name or username"
+            aria-describedby="history-search-scope"
           />
+          {!busy && !error && (
+            <p className="form-help" id="history-search-scope">
+              Searches {rows.length} loaded {category} results.{" "}
+              {next
+                ? "Load older history below to search earlier matches."
+                : "All history in this category is loaded."}
+            </p>
+          )}
         </div>
         <div className="field">
           <label htmlFor="history-state">Result status</label>
@@ -449,15 +497,39 @@ export function FriendsPage({
       () => new URLSearchParams(location.search).get("circle") || "",
     ),
     [circleLoading, setCircleLoading] = useState(false),
+    [leaving, setLeaving] = useState(false),
     [createBusy, setCreateBusy] = useState(false),
     [nextOwner, setNextOwner] = useState(""),
     [confirmOwner, setConfirmOwner] = useState(false),
     [ownerBusy, setOwnerBusy] = useState(false),
     [creating, setCreating] = useState(false),
-    [name, setName] = useState(""),
+    [creationAttempt, setCreationAttempt] = useState<{
+      owner: string;
+      name: string;
+      requestId: string;
+    } | null>(() => {
+      try {
+        const saved = JSON.parse(
+          sessionStorage.getItem("shuttl:pending-circle:" + data.me.id) ||
+            "null",
+        );
+        if (
+          saved?.owner === data.me.id &&
+          typeof saved.name === "string" &&
+          saved.name.trim().length >= 3 &&
+          saved.name.length <= 60 &&
+          /^[a-f0-9-]{36}$/.test(saved.requestId)
+        )
+          return saved;
+      } catch {}
+      return null;
+    }),
+    [name, setName] = useState(() => creationAttempt?.name || ""),
+    [creationSaved, setCreationSaved] = useState(!!creationAttempt),
     [lookup, setLookup] = useState(false),
     [error, setError] = useState("");
   const circleGeneration = useRef(0);
+  const creationRunning = useRef(false);
   function selectCircle(id: string) {
     const url = new URL(location.href);
     if (id) url.searchParams.set("circle", id);
@@ -502,19 +574,54 @@ export function FriendsPage({
   }, []);
   async function create(e: FormEvent) {
     e.preventDefault();
-    if (createBusy) return;
+    if (creationRunning.current) return;
+    creationRunning.current = true;
     setCreateBusy(true);
     setError("");
+    const attempt = creationAttempt || {
+      owner: data.me.id,
+      name: name.trim(),
+      requestId: crypto.randomUUID(),
+    };
+    setCreationAttempt(attempt);
     try {
-      const response = await api("/circles", { name });
+      sessionStorage.setItem(
+        "shuttl:pending-circle:" + data.me.id,
+        JSON.stringify(attempt),
+      );
+      setCreationSaved(true);
+    } catch {
+      setCreationSaved(false);
+    }
+    try {
+      const response = await api(
+        "/circles",
+        { name: attempt.name },
+        "POST",
+        attempt.requestId,
+      );
+      setCreationAttempt(null);
+      try {
+        sessionStorage.removeItem("shuttl:pending-circle:" + data.me.id);
+      } catch {}
       setCreating(false);
       setName("");
       refresh();
       selectCircle(response.id);
       notify("Your comparison circle is ready.");
     } catch (e) {
+      if (
+        e instanceof ApiError &&
+        [400, 403, 404, 409, 422, 429].includes(e.status)
+      ) {
+        setCreationAttempt(null);
+        try {
+          sessionStorage.removeItem("shuttl:pending-circle:" + data.me.id);
+        } catch {}
+      }
       setError(errorMessage(e));
     } finally {
+      creationRunning.current = false;
       setCreateBusy(false);
     }
   }
@@ -541,10 +648,16 @@ export function FriendsPage({
   const players = circle
     ? circle.members.filter((p: Player) => p.id !== data.me.id)
     : data.friends;
+  const acceptedCount = circle
+    ? (circle.acceptedCount ??
+      data.circles.find((c: any) => c.id === circle.id)?.members ??
+      circle.members.length)
+    : 0;
+  const mustTransfer = circle?.owner === data.me.id && acceptedCount > 1;
   return (
     <>
       <PageHeading
-        eyebrow="REAL PLAYERS. SHARED PROGRESS."
+        eyebrow={circle ? "YOUR EXISTING GROUP" : "FRIENDS & EXISTING GROUPS"}
         title={circle ? circle.name : "Your circle"}
       >
         {(!circle || circle.owner === data.me.id) && (
@@ -553,14 +666,14 @@ export function FriendsPage({
             onClick={circle ? () => setLookup(true) : add}
           >
             <Plus size={16} />
-            Add a player
+            {circle ? "Invite to group" : "Add a player"}
           </button>
         )}
       </PageHeading>
       <p className="page-subtitle">
-        Compare your own progress with the people you play with. Developing
-        estimates help start the conversation; they are not certified skill
-        levels.
+        {circle
+          ? `${acceptedCount} accepted ${acceptedCount === 1 ? "member" : "members"}, including you · ${circle.owner === data.me.id ? "You own this group" : "You joined this group"}. Compare the progress of the players in this group.`
+          : "Your friends are personal connections. Your existing groups are separate memberships, joined by invitation."}
       </p>
       {circle && (
         <button className="text-button" onClick={() => selectCircle("")}>
@@ -576,11 +689,14 @@ export function FriendsPage({
           me={data.me}
           open={open}
           refresh={refresh}
+          inNamedGroup
         />
       )}
       <div className="page-grid">
         <section className="panel">
-          <SectionHeading title={circle ? "Circle members" : "Your players"} />
+          <SectionHeading
+            title={circle ? "Other group members" : "Your friends"}
+          />
           {players.length ? (
             players.map((p: any) => {
               const r = p.ratings.find(
@@ -603,6 +719,20 @@ export function FriendsPage({
                 </div>
               );
             })
+          ) : circle ? (
+            <Empty
+              title="Your group starts here"
+              action={
+                circle.owner === data.me.id
+                  ? "Invite a group member"
+                  : undefined
+              }
+              onClick={() => setLookup(true)}
+            >
+              {circle.owner === data.me.id
+                ? "Invite a player from your existing group. They appear here after accepting."
+                : "No other group members are visible here yet. The group owner can invite players."}
+            </Empty>
           ) : (
             <Empty
               title="Good rivals make better games"
@@ -614,7 +744,8 @@ export function FriendsPage({
           )}
           <p className="form-help">
             Numbers reveal after five confirmed results in this category. Fixed
-            partnerships can leave individual comparisons unclear.
+            partnerships can leave individual comparisons unclear. Ratings are
+            developing estimates, not certified skill levels.
           </p>
         </section>
         <div>
@@ -625,7 +756,8 @@ export function FriendsPage({
               onClick={() => setCreating(true)}
             />
             <p className="panel-intro">
-              A clearer level conversation for your current group.
+              Adding a friend does not join a group. Group members can compare
+              ratings here without becoming friends.
             </p>
             <div className="list-stack" style={{ marginTop: 15 }}>
               {data.circles.map((c: any) => (
@@ -660,8 +792,20 @@ export function FriendsPage({
           {circle && (
             <section className="panel settings-panel">
               <SectionHeading title="Circle membership" />
+              <p className="form-help">
+                Group membership creates no friendship and approves no rated
+                play or scores.
+              </p>
               {circle.owner === data.me.id && (
                 <>
+                  {mustTransfer && (
+                    <p className="form-help" id="circle-leave-guidance">
+                      Transfer ownership to another accepted member before
+                      leaving this group.
+                      {!players.length &&
+                        " Invite a new member if no one is available to choose here."}
+                    </p>
+                  )}
                   <div className="field">
                     <label htmlFor="next-owner">Transfer ownership</label>
                     <select
@@ -690,7 +834,14 @@ export function FriendsPage({
               )}
               <button
                 className="text-button danger"
+                disabled={leaving || mustTransfer}
+                aria-describedby={
+                  mustTransfer ? "circle-leave-guidance" : undefined
+                }
                 onClick={async () => {
+                  if (leaving) return;
+                  setLeaving(true);
+                  setError("");
                   try {
                     await api(
                       "/circles/" + circle.id + "/membership",
@@ -702,11 +853,19 @@ export function FriendsPage({
                     notify("You left this circle.");
                   } catch (e) {
                     setError(errorMessage(e));
+                  } finally {
+                    setLeaving(false);
                   }
                 }}
               >
                 Leave this circle
               </button>
+              {circle.owner === data.me.id && acceptedCount === 1 && (
+                <p className="form-help">
+                  Leaving as the last member closes this group and removes its
+                  pending invitations. Recorded matches remain.
+                </p>
+              )}
             </section>
           )}
         </div>
@@ -719,8 +878,19 @@ export function FriendsPage({
         >
           <p className="form-help">
             Compare the players in an existing badminton group. This creates no
-            games, bookings or tournaments.
+            games, bookings or tournaments. Invite members after creating it;
+            your friends do not join automatically.
           </p>
+          {creationAttempt && !createBusy && (
+            <p className="notice">
+              This circle request has not been confirmed. Recover it to return
+              the same group, even if the earlier request arrived. Its name is
+              kept unchanged until confirmation.{" "}
+              {creationSaved
+                ? "The retry stays in this browser tab through navigation and reload, until confirmation or sign-out."
+                : "Keep this circle page open: this browser could not save its retry for navigation or reload."}
+            </p>
+          )}
           <form onSubmit={create}>
             <div className="field">
               <label htmlFor="circle-name">Circle name</label>
@@ -731,13 +901,17 @@ export function FriendsPage({
                 minLength={3}
                 maxLength={60}
                 required
-                disabled={createBusy}
+                disabled={createBusy || !!creationAttempt}
                 placeholder="Tampines Tuesday crew"
               />
             </div>
             <InlineError message={error} />
             <button className="button block" disabled={createBusy}>
-              Create comparison circle
+              {createBusy
+                ? "Creating your circle…"
+                : creationAttempt
+                  ? "Recover this circle"
+                  : "Create comparison circle"}
               <Plus size={16} />
             </button>
           </form>
@@ -786,6 +960,8 @@ export function FriendsPage({
       {lookup && circle && (
         <PlayerLookup
           invite={false}
+          title={"Invite to " + circle.name}
+          intro="This sends a group invitation. They join after accepting in their inbox; friendship and rated-play consent stay separate."
           excludeIds={[data.me.id, ...circle.members.map((p: Player) => p.id)]}
           close={() => setLookup(false)}
           choose={async (p) => {
@@ -812,10 +988,12 @@ export function RankingsPage({
 }) {
   const [circle, setCircle] = useState(""),
     [ranking, setRanking] = useState<any>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let active = true;
     setRanking(null);
+    setError("");
     api("/rankings?category=" + category + (circle ? "&circle=" + circle : ""))
       .then((r) => {
         if (active) setRanking(r);
@@ -826,7 +1004,15 @@ export function RankingsPage({
     return () => {
       active = false;
     };
-  }, [category, circle, data.me.district, data.me.localOptIn]);
+  }, [
+    category,
+    circle,
+    data.me.country,
+    data.me.city,
+    data.me.district,
+    data.me.localOptIn,
+    attempt,
+  ]);
   return (
     <>
       <PageHeading eyebrow="A LEAD WORTH EARNING" title="Your local picture" />
@@ -853,9 +1039,17 @@ export function RankingsPage({
         </select>
       </div>
       <InlineError message={error} />
-      {!ranking ? (
+      {error && (
+        <button
+          className="button secondary"
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry comparison pool
+        </button>
+      )}
+      {!ranking && !error ? (
         <Spinner />
-      ) : (
+      ) : ranking ? (
         <div className="page-grid">
           <section className="panel">
             <SectionHeading title={ranking.name} />
@@ -936,7 +1130,7 @@ export function RankingsPage({
             )}
           </section>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
@@ -1106,6 +1300,7 @@ export function InboxPage({
     } catch (e) {
       setError(errorMessage(e));
       notify(errorMessage(e));
+      if (e instanceof ApiError && [404, 409].includes(e.status)) refresh();
     } finally {
       actionLock.current = false;
       setActionBusy("");
@@ -1458,6 +1653,7 @@ export function ProfilePage({
   signOut,
   preferredCategory,
   setPreferredCategory,
+  shareRefresh = 0,
 }: {
   data: any;
   refresh: () => void;
@@ -1468,6 +1664,7 @@ export function ProfilePage({
   signOut: () => void;
   preferredCategory: Category;
   setPreferredCategory: (c: Category) => void;
+  shareRefresh?: number;
 }) {
   const [tab, setTabState] = useState(() => {
     const value = new URLSearchParams(location.search).get("tab");
@@ -1481,7 +1678,11 @@ export function ProfilePage({
     url.searchParams.set("tab", value);
     history.replaceState({}, "", url.pathname + url.search);
   }
-  const [form, setForm] = useState({ ...data.me }),
+  const [restoredPreferences] = useState(() => readPreferenceDraft(data.me));
+  const [form, setForm] = useState({
+      ...data.me,
+      ...restoredPreferences?.values,
+    }),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false),
     [password, setPassword] = useState(""),
@@ -1499,28 +1700,35 @@ export function ProfilePage({
     [privateLoading, setPrivateLoading] = useState(false),
     [privateAttempt, setPrivateAttempt] = useState(0),
     [privateAction, setPrivateAction] = useState(""),
-    [accountBusy, setAccountBusy] = useState(false);
-  const preferenceKeys = [
-    "name",
-    "district",
-    "publicName",
-    "publicDistrict",
-    "publicHistory",
-    "discoverable",
-    "localOptIn",
-    "breakMode",
-    "timezone",
-    "goals",
-    "country",
-    "city",
-    "publicPortrait",
-  ];
-  const preferenceSnapshot = (value: any) =>
-    JSON.stringify(preferenceKeys.map((key) => value[key]));
+    [accountBusy, setAccountBusy] = useState(false),
+    [draftWarning, setDraftWarning] = useState("");
   const [savedPreferences, setSavedPreferences] = useState(() =>
     preferenceSnapshot(data.me),
   );
+  const [latestSavedPreferences, setLatestSavedPreferences] = useState({
+    ...data.me,
+  });
+  const [preferenceBase, setPreferenceBase] = useState(() =>
+    restoredPreferences &&
+    preferenceSnapshot(restoredPreferences.values) !==
+      preferenceSnapshot(data.me)
+      ? restoredPreferences.base
+      : preferenceSnapshot(data.me),
+  );
+  const serverPreferences = preferenceSnapshot(data.me);
   const preferencesDirty = preferenceSnapshot(form) !== savedPreferences;
+  const preferencesStale =
+    preferencesDirty && preferenceBase !== savedPreferences;
+  useEffect(() => {
+    if (
+      tab !== "settings" ||
+      !/^#goal-(Singles|Doubles|Mixed)$/.test(location.hash)
+    )
+      return;
+    const input = document.getElementById(location.hash.slice(1));
+    input?.focus({ preventScroll: true });
+    input?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [tab]);
   useEffect(() => {
     if (tab === "history" || tab === "insights")
       recordResearch(
@@ -1529,13 +1737,40 @@ export function ProfilePage({
       );
   }, [tab, data.me.id]);
   useEffect(() => {
-    setForm({ ...data.me });
-    setSavedPreferences(preferenceSnapshot(data.me));
-  }, [data.me.id]);
+    if (serverPreferences === savedPreferences) return;
+    setLatestSavedPreferences({ ...data.me });
+    if (!preferencesDirty || preferenceSnapshot(form) === serverPreferences) {
+      setForm({ ...data.me });
+      setPreferenceBase(serverPreferences);
+    }
+    setSavedPreferences(serverPreferences);
+  }, [serverPreferences]);
+  useEffect(() => {
+    try {
+      if (!preferencesDirty) clearPreferenceDraft(data.me.id);
+      else
+        sessionStorage.setItem(
+          preferenceDraftKey(data.me.id),
+          JSON.stringify({
+            version: 1,
+            owner: data.me.id,
+            savedAt: Date.now(),
+            base: preferenceBase,
+            values: preferenceValues(form),
+          }),
+        );
+      setDraftWarning("");
+    } catch {
+      setDraftWarning(
+        "This tab cannot keep unsaved preferences after you leave. Save or discard them before navigating away.",
+      );
+    }
+  }, [preferenceSnapshot(form), preferenceBase, savedPreferences, data.me.id]);
   useEffect(() => {
     let active = true;
     setPrivateLoading(true);
     setPrivateError("");
+    setShares([]);
     Promise.allSettled([
       api("/blocks"),
       api("/my-shares"),
@@ -1557,7 +1792,13 @@ export function ProfilePage({
     return () => {
       active = false;
     };
-  }, [data.me.id, privateAttempt]);
+  }, [
+    data.me.id,
+    privateAttempt,
+    data.me.publicName,
+    data.me.publicDistrict,
+    shareRefresh,
+  ]);
   async function privateMutation(
     key: string,
     path: string,
@@ -1566,11 +1807,18 @@ export function ProfilePage({
     success: () => void,
   ) {
     if (privateAction) return;
+    if (privateLoading) {
+      const message =
+        "Your account controls are being checked. Try again when loading finishes.";
+      setPrivateError(message);
+      throw new Error(message);
+    }
     setPrivateAction(key);
     setPrivateError("");
     try {
       await api(path, payload, method);
       success();
+      setPrivateAttempt((value) => value + 1);
     } catch (e) {
       setPrivateError(errorMessage(e));
       throw e;
@@ -1580,7 +1828,7 @@ export function ProfilePage({
   }
   async function save(e: FormEvent) {
     e.preventDefault();
-    if (saving) return;
+    if (saving || preferencesStale) return;
     setSaving(true);
     setError("");
     try {
@@ -1599,7 +1847,7 @@ export function ProfilePage({
         city,
         publicPortrait,
       } = form;
-      await api(
+      const updated = await api(
         "/profile",
         {
           name,
@@ -1615,14 +1863,27 @@ export function ProfilePage({
           country,
           city,
           publicPortrait,
+          expectedPreferences: preferenceBase,
         },
         "PATCH",
       );
-      setSavedPreferences(preferenceSnapshot(form));
+      const snapshot = preferenceSnapshot(updated);
+      setForm({ ...updated });
+      setLatestSavedPreferences({ ...updated });
+      setSavedPreferences(snapshot);
+      setPreferenceBase(snapshot);
+      clearPreferenceDraft(data.me.id);
       refresh();
       notify("Your player preferences are saved.");
     } catch (e) {
       setError(errorMessage(e));
+      if (e instanceof ApiError && e.status === 409) {
+        try {
+          const latest = await api("/me");
+          setLatestSavedPreferences({ ...latest });
+          setSavedPreferences(preferenceSnapshot(latest));
+        } catch {}
+      }
     } finally {
       setSaving(false);
     }
@@ -1636,12 +1897,12 @@ export function ProfilePage({
     [
       "publicName",
       "Public display name",
-      "Accepted friends already see your display name. Other players see your username unless you choose this.",
+      "Accepted friends already see your display name. Other signed-in players see your username unless you choose this. Turning this off also revokes all existing public share links when you save.",
     ],
     [
       "publicDistrict",
       "Public declared district",
-      "Share only your selected district, never precise location.",
+      "Show your declared playing area on your player identity. No GPS is collected. Turning this off also revokes all existing public share links when you save.",
     ],
     [
       "discoverable",
@@ -1712,7 +1973,8 @@ export function ProfilePage({
                     <div>
                       <strong>{r.category}</strong>
                       <small>
-                        {r.status} · {r.count} confirmed results
+                        {r.status} · {r.count} confirmed{" "}
+                        {r.count === 1 ? "result" : "results"}
                       </small>
                     </div>
                     <b>{r.score ?? "—"}</b>
@@ -1774,12 +2036,68 @@ export function ProfilePage({
             <SectionHeading title="Your choices" />
             <form onSubmit={save}>
               <fieldset disabled={saving} className="form-lock">
+                {preferencesDirty && (
+                  <div className="notice neutral preferences-draft-notice">
+                    <strong>
+                      {preferencesStale
+                        ? "Your saved preferences changed elsewhere."
+                        : draftWarning
+                          ? "Unsaved preferences are only on this page."
+                          : "Unsaved account choices"}
+                    </strong>
+                    <p>
+                      {preferencesStale
+                        ? "Review the latest saved choices before replacing them with this draft."
+                        : "Save to apply these account choices. Your draft stays in this tab for up to one day; signing out here clears it."}
+                    </p>
+                    <InlineError message={draftWarning} />
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => {
+                        const snapshot = preferenceSnapshot(
+                          latestSavedPreferences,
+                        );
+                        setForm({ ...latestSavedPreferences });
+                        setSavedPreferences(snapshot);
+                        setPreferenceBase(snapshot);
+                        clearPreferenceDraft(data.me.id);
+                        setError("");
+                      }}
+                    >
+                      Discard unsaved preferences
+                    </button>
+                    {preferencesStale && (
+                      <button
+                        type="button"
+                        className="text-button"
+                        onClick={async () => {
+                          try {
+                            const latest = await api("/me");
+                            const snapshot = preferenceSnapshot(latest);
+                            setLatestSavedPreferences({ ...latest });
+                            setSavedPreferences(snapshot);
+                            setPreferenceBase(snapshot);
+                            setForm({ ...latest });
+                            clearPreferenceDraft(data.me.id);
+                            setError("");
+                          } catch (e) {
+                            setError(errorMessage(e));
+                          }
+                        }}
+                      >
+                        Use latest saved preferences
+                      </button>
+                    )}
+                  </div>
+                )}
                 <div className="field">
                   <label htmlFor="preferred-category">
                     Preferred category on this device
                   </label>
                   <select
                     id="preferred-category"
+                    aria-describedby="preferred-category-help"
                     value={preferredCategory}
                     onChange={(e) =>
                       setPreferredCategory(e.target.value as Category)
@@ -1789,6 +2107,9 @@ export function ProfilePage({
                       <option key={c}>{c}</option>
                     ))}
                   </select>
+                  <p className="form-help" id="preferred-category-help">
+                    Applies immediately on this device.
+                  </p>
                 </div>
                 <div className="field">
                   <label htmlFor="profile-name">Display name</label>
@@ -1945,21 +2266,28 @@ export function ProfilePage({
                     />
                   </div>
                 ))}
-                <InlineError message={error} />
-                <p className="form-help" role="status">
-                  {saving
-                    ? "Saving your preferences…"
-                    : preferencesDirty
-                      ? "You have unsaved preferences."
-                      : "Your preferences are saved."}
-                </p>
-                <button
-                  className="button block"
-                  disabled={saving || !preferencesDirty}
+                <div
+                  className={
+                    "preferences-save-bar " +
+                    (preferencesDirty || saving ? "has-changes" : "")
+                  }
                 >
-                  {saving ? "Saving preferences…" : "Save my preferences"}
-                  <Check size={16} />
-                </button>
+                  <InlineError message={error} />
+                  <p className="form-help" role="status">
+                    {saving
+                      ? "Saving your preferences…"
+                      : preferencesDirty
+                        ? "You have unsaved preferences."
+                        : "Your preferences are saved."}
+                  </p>
+                  <button
+                    className="button block"
+                    disabled={saving || !preferencesDirty || preferencesStale}
+                  >
+                    {saving ? "Saving preferences…" : "Save my preferences"}
+                    <Check size={16} />
+                  </button>
+                </div>
               </fieldset>
             </form>
           </section>
@@ -1976,6 +2304,12 @@ export function ProfilePage({
           </section>
           <section className="panel settings-panel">
             <SectionHeading title="Your public links" />
+            <p className="form-help" id="public-links-policy">
+              Shared snapshots do not update when your rating or profile details
+              change. Turning off Public display name or Public declared
+              district automatically revokes all existing share links when you
+              save. You can also revoke one link below.
+            </p>
             {privateLoading && (
               <p className="form-help" role="status">
                 Loading private account controls…
@@ -1993,50 +2327,95 @@ export function ProfilePage({
             )}
             {shares
               .filter((s) => !s.revoked)
-              .map((s) => (
-                <div className="field-row" key={s.id}>
-                  <span>
-                    <strong style={{ fontSize: 12 }}>
-                      {s.category} · {s.score}
-                    </strong>
-                    <small
-                      style={{
-                        display: "block",
-                        color: "var(--muted)",
-                        marginTop: 5,
+              .map((s, index) => {
+                const template =
+                  (
+                    {
+                      passport: "Player passport",
+                      reveal: "First rating",
+                      promotion: "League reached",
+                      best: "Personal best",
+                    } as Record<string, string>
+                  )[s.template] || "Rating snapshot";
+                const sharedAt = s.createdAt || s.asOf;
+                return (
+                  <div
+                    className="field-row public-share-entry"
+                    key={s.id}
+                    data-share-id={s.id}
+                  >
+                    <span>
+                      <strong style={{ fontSize: 12 }}>
+                        {template} · {s.category} · {s.score}
+                      </strong>
+                      <small
+                        style={{
+                          display: "block",
+                          color: "var(--muted)",
+                          marginTop: 5,
+                        }}
+                      >
+                        Rating snapshot: {dateTimeLabel(s.asOf)}
+                      </small>
+                      {s.createdAt && (
+                        <small
+                          style={{
+                            display: "block",
+                            color: "var(--muted)",
+                            marginTop: 5,
+                          }}
+                        >
+                          Shared: {dateTimeLabel(s.createdAt)}
+                        </small>
+                      )}
+                      <small
+                        className="public-share-inclusions"
+                        style={{
+                          display: "block",
+                          color: "var(--muted)",
+                          marginTop: 5,
+                        }}
+                      >
+                        {Object.hasOwn(s, "name")
+                          ? `Name: ${s.name}`
+                          : "Name omitted"}
+                        {" · "}
+                        {Object.hasOwn(s, "district")
+                          ? `Area: ${s.district || "No area entered"}`
+                          : "Area omitted"}
+                      </small>
+                    </span>
+                    <button
+                      className="text-button danger"
+                      aria-label={`Revoke ${template} ${s.category} link ${index + 1}, ${dateTimeLabel(sharedAt)}`}
+                      aria-describedby="public-links-policy"
+                      disabled={privateLoading || !!privateAction}
+                      onClick={async () => {
+                        try {
+                          await privateMutation(
+                            "share:" + s.id,
+                            "/shares/" + s.id,
+                            "DELETE",
+                            {},
+                            () => {
+                              setShares((previous) =>
+                                previous.map((v) =>
+                                  v.id === s.id ? { ...v, revoked: true } : v,
+                                ),
+                              );
+                              notify("The public link is revoked.");
+                            },
+                          );
+                        } catch (e) {
+                          notify(errorMessage(e));
+                        }
                       }}
                     >
-                      {dateLabel(s.asOf)} snapshot
-                    </small>
-                  </span>
-                  <button
-                    className="text-button danger"
-                    disabled={!!privateAction}
-                    onClick={async () => {
-                      try {
-                        await privateMutation(
-                          "share:" + s.id,
-                          "/shares/" + s.id,
-                          "DELETE",
-                          {},
-                          () => {
-                            setShares((previous) =>
-                              previous.map((v) =>
-                                v.id === s.id ? { ...v, revoked: true } : v,
-                              ),
-                            );
-                            notify("The public link is revoked.");
-                          },
-                        );
-                      } catch (e) {
-                        notify(errorMessage(e));
-                      }
-                    }}
-                  >
-                    Revoke
-                  </button>
-                </div>
-              ))}
+                      Revoke
+                    </button>
+                  </div>
+                );
+              })}
             <p className="form-help">
               A public link can be revoked. Downloaded or reposted images cannot
               be recalled from someone else’s device.
@@ -2058,7 +2437,11 @@ export function ProfilePage({
             >
               Create a new private recovery code
             </button>
-            <button className="text-button" onClick={() => setBlocking(true)}>
+            <button
+              className="text-button"
+              disabled={privateLoading || !!privateAction}
+              onClick={() => setBlocking(true)}
+            >
               Block a player
             </button>
             {blocks.map((p) => (
@@ -2066,7 +2449,7 @@ export function ProfilePage({
                 <span style={{ fontSize: 12 }}>{p.name}</span>
                 <button
                   className="text-button"
-                  disabled={!!privateAction}
+                  disabled={privateLoading || !!privateAction}
                   onClick={async () => {
                     try {
                       await privateMutation(
@@ -2213,7 +2596,17 @@ export function ProfilePage({
               setError("");
               try {
                 await api("/account", { password, confirmation }, "DELETE");
-                localStorage.removeItem("shuttl:draft:" + data.me.id);
+                try {
+                  localStorage.removeItem("shuttl:draft:" + data.me.id);
+                } catch {}
+                try {
+                  sessionStorage.removeItem(
+                    "shuttl:guest-attempt:" + data.me.id,
+                  );
+                  sessionStorage.removeItem(
+                    "shuttl:agreement-attempt:" + data.me.id,
+                  );
+                } catch {}
                 deleted();
               } catch (e) {
                 setError(errorMessage(e));
@@ -2256,33 +2649,93 @@ export function ProfilePage({
     </>
   );
 }
+type PendingShare = {
+  owner: string;
+  key: string;
+  started: number;
+  selection: {
+    category: Category;
+    includeName: boolean;
+    includeDistrict: boolean;
+    template: "passport" | "reveal" | "best" | "promotion";
+    shape: "feed" | "story";
+  };
+};
+function readPendingShare(owner: string): PendingShare | null {
+  try {
+    const stored = JSON.parse(
+      localStorage.getItem("shuttl:pending-share:" + owner) || "null",
+    );
+    const s = stored?.selection;
+    return stored?.owner === owner &&
+      typeof stored.key === "string" &&
+      /^[a-f0-9-]{36}$/.test(stored.key) &&
+      typeof stored.started === "number" &&
+      Number.isFinite(stored.started) &&
+      stored.started > 0 &&
+      CATEGORIES.includes(s?.category) &&
+      typeof s.includeName === "boolean" &&
+      typeof s.includeDistrict === "boolean" &&
+      ["passport", "reveal", "best", "promotion"].includes(s.template) &&
+      ["feed", "story"].includes(s.shape)
+      ? stored
+      : null;
+  } catch {
+    return null;
+  }
+}
 export function SharePassport({
   me,
   close,
   notify,
   initialCategory = "Doubles",
+  onCreated,
 }: {
   me: any;
   close: () => void;
   notify: (message: string) => void;
   initialCategory?: Category;
+  onCreated?: () => void;
 }) {
-  const [category, setCategory] = useState<Category>(initialCategory),
-    [includeName, setIncludeName] = useState(false),
-    [includeDistrict, setIncludeDistrict] = useState(false),
-    [shape, setShape] = useState<"feed" | "story">("story"),
+  const [pendingShare, setPendingShare] = useState(() =>
+    readPendingShare(me.id),
+  );
+  const [createdShare, setCreatedShare] = useState<any>(null);
+  const shareRunning = useRef(false);
+  const shareMounted = useRef(true);
+  useEffect(() => {
+    shareMounted.current = true;
+    return () => {
+      shareMounted.current = false;
+    };
+  }, [me.id]);
+  const [category, setCategory] = useState<Category>(
+      pendingShare?.selection.category || initialCategory,
+    ),
+    [includeName, setIncludeName] = useState(
+      pendingShare?.selection.includeName || false,
+    ),
+    [includeDistrict, setIncludeDistrict] = useState(
+      pendingShare?.selection.includeDistrict || false,
+    ),
+    [shape, setShape] = useState<"feed" | "story">(
+      pendingShare?.selection.shape || "story",
+    ),
     [error, setError] = useState(""),
     [milestoneError, setMilestoneError] = useState(""),
+    [milestoneLoading, setMilestoneLoading] = useState(true),
+    [milestoneAttempt, setMilestoneAttempt] = useState(0),
     [busy, setBusy] = useState(false),
     [link, setLink] = useState("");
-  const [template, setTemplate] = useState<"passport" | "reveal" | "best">(
-      "passport",
-    ),
+  const [template, setTemplate] = useState<
+      "passport" | "reveal" | "best" | "promotion"
+    >(pendingShare?.selection.template || "passport"),
     [milestones, setMilestones] = useState<any>(null);
   useEffect(() => {
     let active = true;
     setMilestones(null);
     setMilestoneError("");
+    setMilestoneLoading(true);
     api("/milestones?category=" + category)
       .then((v) => {
         if (active) {
@@ -2292,40 +2745,91 @@ export function SharePassport({
       })
       .catch((e) => {
         if (active) setMilestoneError(errorMessage(e));
+      })
+      .finally(() => {
+        if (active) setMilestoneLoading(false);
       });
     return () => {
       active = false;
     };
-  }, [category]);
+  }, [category, milestoneAttempt]);
   useEffect(() => {
     setLink("");
+    setCreatedShare(null);
     setError("");
   }, [category, template, includeName, includeDistrict]);
   const rating = me.ratings.find((r: PublicRating) => r.category === category);
   const milestone = template === "passport" ? null : milestones?.[template];
-  const preview = milestone ? { ...rating, ...milestone } : rating;
+  const storyReady =
+    template === "passport" || (!milestoneLoading && !!milestone);
+  const snapshotReady =
+    !!pendingShare || !!createdShare || (rating.score !== null && storyReady);
+  const showPreview = !!createdShare?.payload || (!pendingShare && storyReady);
+  const preview = createdShare?.payload
+    ? { ...rating, ...createdShare.payload }
+    : milestone
+      ? { ...rating, ...milestone }
+      : rating;
+  useEffect(() => {
+    if (!me.publicName) setIncludeName(false);
+    if (!me.publicDistrict) setIncludeDistrict(false);
+  }, [me.publicName, me.publicDistrict]);
   async function create(download: boolean) {
-    if (busy || rating.score === null) return;
+    if (shareRunning.current || !snapshotReady) return;
+    shareRunning.current = true;
     setError("");
     setBusy(true);
-    const selection = {
+    const selection = pendingShare?.selection || {
       category,
       includeName,
       includeDistrict,
       template,
       shape,
     };
+    const attempt: PendingShare = pendingShare || {
+      owner: me.id,
+      key: crypto.randomUUID(),
+      started: Date.now(),
+      selection,
+    };
     try {
-      const response = await api("/shares", {
-        category: selection.category,
-        includeName: selection.includeName,
-        includeDistrict: selection.includeDistrict,
-        template: selection.template,
-      });
+      let response = createdShare;
+      if (!response) {
+        setPendingShare(attempt);
+        try {
+          localStorage.setItem(
+            "shuttl:pending-share:" + me.id,
+            JSON.stringify(attempt),
+          );
+        } catch {
+          setError(
+            "This browser can keep this retry only while this dialog stays open.",
+          );
+        }
+        response = await api(
+          "/shares",
+          {
+            category: selection.category,
+            includeName: selection.includeName,
+            includeDistrict: selection.includeDistrict,
+            template: selection.template,
+          },
+          "POST",
+          attempt.key,
+        );
+        if (!shareMounted.current) return;
+        setCreatedShare(response);
+        onCreated?.();
+        setPendingShare(null);
+        try {
+          localStorage.removeItem("shuttl:pending-share:" + me.id);
+        } catch {}
+      }
       setLink(location.origin + response.path);
       if (download) {
         try {
           const blob = await ratingImage(response.payload, selection.shape);
+          if (!shareMounted.current) return;
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
@@ -2343,14 +2847,35 @@ export function SharePassport({
       }
     } catch (e) {
       setError(errorMessage(e));
+      if (e instanceof ApiError && e.status >= 400 && e.status < 500) {
+        setPendingShare(null);
+        try {
+          localStorage.removeItem("shuttl:pending-share:" + me.id);
+        } catch {}
+      }
     } finally {
       setBusy(false);
+      shareRunning.current = false;
     }
   }
   return (
     <Modal title="A number worth earning" close={close} dismissible={!busy}>
+      {pendingShare && !busy && (
+        <div className="notice neutral">
+          <strong>Recover your earlier snapshot request.</strong>
+          <p>
+            Its outcome is unconfirmed. Retry the same category and privacy
+            choices to retrieve the original link without creating another
+            snapshot.
+          </p>
+          <InlineError message={error} />
+          <button className="button secondary" onClick={() => create(false)}>
+            Recover this snapshot link
+          </button>
+        </div>
+      )}
       <fieldset
-        disabled={busy}
+        disabled={busy || !!pendingShare}
         style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
       >
         <CategoryTabs
@@ -2377,14 +2902,47 @@ export function SharePassport({
             <option value="best" disabled={!milestones?.best}>
               My personal best
             </option>
+            <option value="promotion" disabled={!milestones?.promotion}>
+              My latest league milestone
+            </option>
           </select>
+          {milestoneLoading && (
+            <p className="form-help" role="status">
+              Checking your available stories…
+            </p>
+          )}
+          <InlineError message={milestoneError} />
+          {(milestoneError || (milestoneLoading && milestoneAttempt > 0)) && (
+            <button
+              type="button"
+              className="button secondary"
+              disabled={busy || !!pendingShare || milestoneLoading}
+              onClick={() => {
+                if (busy || pendingShare || milestoneLoading) return;
+                setMilestoneAttempt((value) => value + 1);
+              }}
+            >
+              Retry available stories
+            </button>
+          )}
         </div>
-        <RatingCard rating={preview} category={category} compact />
+        {showPreview && (
+          <RatingCard
+            rating={preview}
+            category={category}
+            compact
+            showHistoryContext={false}
+          />
+        )}
         {milestone && (
           <p className="form-help">
-            {template === "best" ? "Personal best" : "Starting point"} · match
-            played {dateLabel(milestone.asOf)} · a dated milestone; your current
-            rating may differ.
+            {template === "best"
+              ? "Personal best"
+              : template === "promotion"
+                ? `${milestone.previousLeague} → ${milestone.league}`
+                : "Starting point"}{" "}
+            · match played {dateLabel(milestone.asOf)} · a dated milestone; your
+            current rating may differ.
           </p>
         )}
         <div className="field-row">
@@ -2433,10 +2991,10 @@ export function SharePassport({
             <option value="feed">Feed · 1080 × 1080</option>
           </select>
         </div>
-        <InlineError message={error || milestoneError} />
+        <InlineError message={error} />
         <button
           className="button block"
-          disabled={rating.score === null || busy}
+          disabled={!snapshotReady || busy}
           onClick={() => create(true)}
         >
           <Download size={17} />
@@ -2445,7 +3003,7 @@ export function SharePassport({
         <button
           className="button secondary block"
           style={{ marginTop: 10 }}
-          disabled={rating.score === null || busy}
+          disabled={!snapshotReady || busy}
           onClick={() => create(false)}
         >
           <Share2 size={16} />

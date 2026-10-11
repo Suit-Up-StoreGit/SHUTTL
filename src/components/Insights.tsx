@@ -19,7 +19,8 @@ export function PlayingInsights({
 }) {
   const [period, setPeriod] = useState("30"),
     [data, setData] = useState<any>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let active = true;
     setData(null);
@@ -34,7 +35,7 @@ export function PlayingInsights({
     return () => {
       active = false;
     };
-  }, [category, period]);
+  }, [category, period, attempt]);
   return (
     <>
       <CategoryTabs value={category} onChange={setCategory} />
@@ -52,6 +53,14 @@ export function PlayingInsights({
         </select>
       </div>
       <InlineError message={error} />
+      {error && (
+        <button
+          className="button secondary"
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry playing insights
+        </button>
+      )}
       {!data && !error ? (
         <Spinner />
       ) : (

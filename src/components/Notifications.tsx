@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Bell, BellOff } from "lucide-react";
-import { api, dateLabel, errorMessage } from "../api.ts";
+import { api, dateTimeLabel, errorMessage } from "../api.ts";
 import { InlineError, SectionHeading } from "./UI.tsx";
 export function DeviceNotifications({
   owner,
@@ -14,7 +14,9 @@ export function DeviceNotifications({
   const [config, setConfig] = useState<any>(null),
     [deviceId, setDeviceId] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [loading, setLoading] = useState(true),
+    [attempt, setAttempt] = useState(0);
   const [preferences, setPreferences] = useState({
     actions: true,
     updates: false,
@@ -28,10 +30,13 @@ export function DeviceNotifications({
     window.isSecureContext;
   useEffect(() => {
     let active = true;
+    setLoading(true);
+    setError("");
     api("/push")
       .then((v) => {
         if (!active) return;
         setConfig(v);
+        setDeviceId(null);
         try {
           const id = localStorage.getItem("shuttl:push:" + owner),
             device = v.devices.find((d: any) => d.id === id);
@@ -43,11 +48,14 @@ export function DeviceNotifications({
       })
       .catch((e) => {
         if (active) setError(errorMessage(e));
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, [owner]);
+  }, [owner, attempt]);
   const enable = async () => {
     setBusy(true);
     setError("");
@@ -117,7 +125,9 @@ export function DeviceNotifications({
           await subscription?.unsubscribe();
         } catch {}
       }
-      notify("SHUTTL alerts disabled for that device.");
+      notify(
+        "These SHUTTL alerts are disabled. You can enable them again from that device.",
+      );
     } catch (e) {
       setError(errorMessage(e));
     } finally {
@@ -133,8 +143,21 @@ export function DeviceNotifications({
         alerts.
       </p>
       <InlineError message={error} />
+      {error && !loading && (
+        <button
+          className="button secondary"
+          disabled={busy}
+          onClick={() => setAttempt((v) => v + 1)}
+        >
+          Retry device alerts
+        </button>
+      )}
       {!config ? (
-        <p className="form-help">Checking notification availability…</p>
+        <p className="form-help" role="status">
+          {loading
+            ? "Checking notification availability…"
+            : "Device alert availability could not be checked. Your SHUTTL inbox still works."}
+        </p>
       ) : (
         <>
           {!supported || !config.configured ? (
@@ -152,6 +175,7 @@ export function DeviceNotifications({
                 <label className="check-line" key={key}>
                   <input
                     type="checkbox"
+                    disabled={busy || loading}
                     checked={preferences[key as keyof typeof preferences]}
                     onChange={(e) =>
                       setPreferences({
@@ -165,13 +189,23 @@ export function DeviceNotifications({
               ))}
               {deviceId ? (
                 <>
+                  <p className="form-help">
+                    These choices apply to alerts enabled in this browser.
+                  </p>
                   <button
                     className="button secondary block"
-                    disabled={busy}
+                    disabled={busy || loading}
                     onClick={async () => {
                       setBusy(true);
+                      setError("");
                       try {
                         await api("/push/" + deviceId, preferences, "PATCH");
+                        setConfig({
+                          ...config,
+                          devices: config.devices.map((d: any) =>
+                            d.id === deviceId ? { ...d, preferences } : d,
+                          ),
+                        });
                         notify("Your device alert choices are saved.");
                       } catch (e) {
                         setError(errorMessage(e));
@@ -184,7 +218,7 @@ export function DeviceNotifications({
                   </button>
                   <button
                     className="text-button"
-                    disabled={busy}
+                    disabled={busy || loading}
                     onClick={() => disable(deviceId)}
                   >
                     <BellOff size={16} /> Disable this device’s alerts
@@ -193,7 +227,7 @@ export function DeviceNotifications({
               ) : (
                 <button
                   className="button secondary block"
-                  disabled={busy}
+                  disabled={busy || loading}
                   onClick={enable}
                 >
                   <Bell size={17} />
@@ -209,19 +243,34 @@ export function DeviceNotifications({
               </p>
             </>
           )}
+          {config.devices.some((d: any) => d.id !== deviceId) && (
+            <p className="form-help">
+              Other saved alerts show when they were enabled; SHUTTL cannot
+              identify which phone or browser each belongs to. If you are unsure
+              which one to disable, open SHUTTL on that device to manage its
+              alerts. You can enable alerts again from that device later.
+            </p>
+          )}
           {config.devices
             .filter((d: any) => d.id !== deviceId)
             .map((d: any, i: number) => (
               <div className="field-row" key={d.id}>
                 <span>
-                  Notification device {i + 1}
+                  Saved alerts {i + 1}
                   <small style={{ display: "block" }}>
-                    Added {dateLabel(d.createdAt)}
+                    Added {dateTimeLabel(d.createdAt)}
                   </small>
                 </span>
                 <button
                   className="text-button"
-                  disabled={busy}
+                  disabled={busy || loading}
+                  aria-label={
+                    "Disable alerts added " +
+                    dateTimeLabel(d.createdAt) +
+                    " (saved alerts " +
+                    (i + 1) +
+                    ")"
+                  }
                   onClick={() => disable(d.id)}
                 >
                   Disable

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   Plus,
@@ -44,6 +44,8 @@ export function Auth({
     ),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [uncertainAccount, setUncertainAccount] = useState(false);
+  const [usingPasskey, setUsingPasskey] = useState(false);
   const [credentials, setCredentials] = useState({
     username: "",
     name: "",
@@ -55,6 +57,7 @@ export function Auth({
     if (busy || mode === next) return;
     setMode(next);
     setError("");
+    setUncertainAccount(false);
     setCredentials((previous) => ({
       ...previous,
       password: "",
@@ -65,6 +68,13 @@ export function Auth({
     e.preventDefault();
     if (busy) return;
     setError("");
+    setUncertainAccount(false);
+    if (!navigator.onLine) {
+      setError(
+        "You are offline. This attempt was not sent. Reconnect, then try again.",
+      );
+      return;
+    }
     setBusy(true);
     try {
       const payload =
@@ -99,7 +109,16 @@ export function Auth({
         ),
       );
     } catch (error) {
-      setError(errorMessage(error));
+      const uncertain =
+        error instanceof ApiError && error.status === 0 && mode !== "login";
+      setUncertainAccount(uncertain);
+      setError(
+        uncertain
+          ? mode === "recover"
+            ? "The recovery response was interrupted. Your new password may already be active, and the previous recovery code may have been used. Sign in with the new password you just chose, then generate and save a fresh recovery code in your account settings."
+            : "The registration response was interrupted. Your account may already exist. Sign in with the username and password you just chose before creating another identity. Once signed in, generate and save a recovery code in your account settings."
+          : errorMessage(error),
+      );
     } finally {
       setBusy(false);
     }
@@ -263,9 +282,24 @@ export function Auth({
                 </label>
               )}
               <InlineError message={error} />
+              {uncertainAccount && (
+                <button
+                  type="button"
+                  className="button secondary block"
+                  onClick={() => changeMode("login")}
+                >
+                  Sign in to check this account
+                </button>
+              )}
               <button className="button block" disabled={busy}>
                 {busy
-                  ? "Getting your court ready…"
+                  ? usingPasskey
+                    ? "Checking your passkey…"
+                    : mode === "login"
+                      ? "Signing you in…"
+                      : mode === "recover"
+                        ? "Recovering your account…"
+                        : "Creating your player identity…"
                   : mode === "login"
                     ? "Sign in"
                     : mode === "recover"
@@ -281,7 +315,9 @@ export function Auth({
               disabled={busy}
               onClick={async () => {
                 setBusy(true);
+                setUsingPasskey(true);
                 setError("");
+                setUncertainAccount(false);
                 try {
                   const options = await api("/auth/passkey/options", {});
                   const response = await startAuthentication({
@@ -292,10 +328,13 @@ export function Auth({
                   setError(errorMessage(e));
                 } finally {
                   setBusy(false);
+                  setUsingPasskey(false);
                 }
               }}
             >
-              Sign in with a passkey
+              {usingPasskey
+                ? "Checking your passkey…"
+                : "Sign in with a passkey"}
             </button>
           )}
           {mode !== "register" && (
@@ -402,13 +441,36 @@ export function PlayerLookup({
   invite = true,
   suggestions,
   excludeIds = [],
+  ownerId,
+  title = "Find a player",
+  intro,
 }: {
   close: () => void;
   choose: (player: Player) => void | Promise<void>;
   invite?: boolean;
   suggestions?: Player[];
   excludeIds?: string[];
+  ownerId?: string;
+  title?: string;
+  intro?: string;
 }) {
+  type GuestAttempt = {
+    owner: string;
+    name: string;
+    key: string;
+    received?: { player: Player; invitePath: string };
+  };
+  const [guestAttempt, setGuestAttempt] = useState<GuestAttempt | null>(() => {
+    if (!invite || !ownerId) return null;
+    try {
+      const value = JSON.parse(
+        sessionStorage.getItem("shuttl:guest-attempt:" + ownerId) || "null",
+      );
+      return value?.owner === ownerId ? value : null;
+    } catch {
+      return null;
+    }
+  });
   const [query, setQuery] = useState(""),
     [searchResult, setSearchResult] = useState<{
       query: string;
@@ -418,13 +480,20 @@ export function PlayerLookup({
     [inviteBusy, setInviteBusy] = useState(false),
     [selectBusy, setSelectBusy] = useState(false),
     [error, setError] = useState(""),
-    [guest, setGuest] = useState(""),
-    [invitePath, setInvitePath] = useState(""),
-    [newPlayer, setNewPlayer] = useState<Player | null>(null),
+    [guest, setGuest] = useState(guestAttempt?.name || ""),
+    [invitePath, setInvitePath] = useState(
+      guestAttempt?.received
+        ? location.origin + guestAttempt.received.invitePath
+        : "",
+    ),
+    [newPlayer, setNewPlayer] = useState<Player | null>(
+      guestAttempt?.received?.player || null,
+    ),
     [copied, setCopied] = useState(false);
   const [friends, setFriends] = useState<Player[]>(suggestions || []);
   const currentQuery = useRef(query.trim());
   const selecting = useRef(false);
+  const guestCreating = useRef(false);
   const search = query.trim();
   const players = searchResult.query === search ? searchResult.players : [];
   const matchingFriends = friends.filter(
@@ -484,19 +553,97 @@ export function PlayerLookup({
   }, [search]);
   const createGuest = async (e: FormEvent) => {
     e.preventDefault();
-    if (inviteBusy || selecting.current) return;
+    if (guestCreating.current || inviteBusy || selecting.current) return;
+    if (!navigator.onLine) {
+      setError(
+        guestAttempt
+          ? "You are offline. The earlier invitation may already exist. Reconnect and retry this same invitation; its original nickname and identifier are kept."
+          : "You are offline. This invitation was not sent. Reconnect and try again.",
+      );
+      return;
+    }
+    guestCreating.current = true;
     setInviteBusy(true);
     setError("");
+    let exactAttempt = guestAttempt;
     try {
-      const response = await api("/guests", { name: guest });
+      const owner = ownerId || (await api("/me")).id;
+      const storageKey = "shuttl:guest-attempt:" + owner;
+      if (!exactAttempt && !ownerId) {
+        const existing = JSON.parse(
+          sessionStorage.getItem(storageKey) || "null",
+        );
+        if (existing?.owner === owner) {
+          setGuestAttempt(existing);
+          setGuest(existing.name);
+          if (existing.received) {
+            setNewPlayer(existing.received.player);
+            setInvitePath(location.origin + existing.received.invitePath);
+          }
+          return;
+        }
+      }
+      exactAttempt ||= { owner, name: guest.trim(), key: crypto.randomUUID() };
+      sessionStorage.setItem(storageKey, JSON.stringify(exactAttempt));
+      setGuestAttempt(exactAttempt);
+      setGuest(exactAttempt.name);
+      const response = await api(
+        "/guests",
+        { name: exactAttempt.name },
+        "POST",
+        exactAttempt.key,
+      );
       setNewPlayer(response.player);
       setInvitePath(location.origin + response.invitePath);
+      const receivedAttempt = { ...exactAttempt, received: response };
+      setGuestAttempt(receivedAttempt);
+      try {
+        sessionStorage.setItem(storageKey, JSON.stringify(receivedAttempt));
+      } catch {
+        setError(
+          "Your invitation was created, but this browser could not keep its link. Copy the selected link before closing this view.",
+        );
+      }
     } catch (e) {
-      setError(errorMessage(e));
+      if (
+        exactAttempt &&
+        e instanceof ApiError &&
+        [400, 403, 404, 422].includes(e.status)
+      ) {
+        try {
+          sessionStorage.removeItem(
+            "shuttl:guest-attempt:" + exactAttempt.owner,
+          );
+        } catch {}
+        setGuestAttempt(null);
+      }
+      setError(
+        e instanceof ApiError && e.status === 0
+          ? "This invitation response is unconfirmed. It may already exist. Keep the original nickname and retry this same invitation; reopening this lookup in the same tab keeps its identifier."
+          : errorMessage(e),
+      );
     } finally {
+      guestCreating.current = false;
       setInviteBusy(false);
     }
   };
+  function startAnotherGuest() {
+    if (inviteBusy || selectBusy || !guestAttempt?.received) return;
+    try {
+      sessionStorage.removeItem("shuttl:guest-attempt:" + guestAttempt.owner);
+    } catch {
+      setError(
+        "This browser could not clear the saved invitation view. Keep its link and try again when browser storage is available.",
+      );
+      return;
+    }
+    setGuestAttempt(null);
+    setGuest("");
+    setNewPlayer(null);
+    setInvitePath("");
+    setCopied(false);
+    setError("");
+  }
   async function selectPlayer(player: Player) {
     if (selecting.current || inviteBusy) return;
     selecting.current = true;
@@ -512,11 +659,8 @@ export function PlayerLookup({
     }
   }
   return (
-    <Modal
-      title="Find a player"
-      close={close}
-      dismissible={!inviteBusy && !selectBusy}
-    >
+    <Modal title={title} close={close} dismissible={!inviteBusy && !selectBusy}>
+      {intro && <p className="form-help">{intro}</p>}
       <div className="field">
         <label htmlFor="player-search">Username or public display name</label>
         <input
@@ -610,10 +754,13 @@ export function PlayerLookup({
                   className="button secondary"
                   disabled={selectBusy}
                   onClick={async () => {
+                    setError("");
+                    setCopied(false);
                     try {
                       await navigator.clipboard.writeText(invitePath);
                       setCopied(true);
                     } catch {
+                      setCopied(false);
                       setError("Copy the selected invitation link manually.");
                     }
                   }}
@@ -623,22 +770,52 @@ export function PlayerLookup({
                 </button>
                 <button
                   className="button"
-                  disabled={selectBusy}
+                  disabled={selectBusy || excludeIds.includes(newPlayer.id)}
                   onClick={() => selectPlayer(newPlayer)}
                 >
                   Use this player
                   <Check size={16} />
                 </button>
               </div>
+              {excludeIds.includes(newPlayer.id) && (
+                <p className="form-help">
+                  This invited player is already selected in this lineup.
+                </p>
+              )}
+              <p className="form-help">
+                This link stays available when this lookup is reopened in the
+                same tab. Creating another invitation keeps the earlier link
+                valid.
+              </p>
+              <button
+                className="text-button"
+                disabled={selectBusy || inviteBusy}
+                onClick={startAnotherGuest}
+              >
+                Create another invitation
+              </button>
             </>
           ) : (
             <form onSubmit={createGuest}>
+              {guestAttempt && (
+                <div className="notice neutral" role="status">
+                  <strong>
+                    Keep this exact invitation while its response is
+                    unconfirmed.
+                  </strong>
+                  <p>
+                    Retry uses the original nickname and identifier. Reopening
+                    this lookup in the same tab keeps it. Closing the browser
+                    tab may clear it.
+                  </p>
+                </div>
+              )}
               <div className="field">
                 <label htmlFor="guest-name">Invited player’s nickname</label>
                 <input
                   id="guest-name"
                   value={guest}
-                  disabled={inviteBusy || selectBusy}
+                  disabled={inviteBusy || selectBusy || !!guestAttempt}
                   onChange={(e) => setGuest(e.target.value)}
                   maxLength={60}
                   required
@@ -651,7 +828,9 @@ export function PlayerLookup({
                 <UserPlus size={16} />
                 {inviteBusy
                   ? "Creating your invitation…"
-                  : "Create a private invitation"}
+                  : guestAttempt
+                    ? "Retry this same invitation"
+                    : "Create a private invitation"}
               </button>
             </form>
           )}
@@ -671,6 +850,7 @@ function RosterEditor({
   setRoster: (players: (Player | null)[]) => void;
   pick: (index: number) => void;
 }) {
+  const rosterLabelId = useId();
   const labels =
     category === "Singles"
       ? ["Your player", "Opponent"]
@@ -678,8 +858,17 @@ function RosterEditor({
   return (
     <div className="player-picker">
       {roster.map((p, i) => (
-        <div key={i}>
-          {<label>{labels[i]}</label>}
+        <div
+          key={i}
+          className={i === 0 ? "roster-slot roster-self" : "roster-slot"}
+        >
+          {i === 0 ? (
+            <span className="roster-self-label" id={rosterLabelId + "-" + i}>
+              You · Side A
+            </span>
+          ) : (
+            <label id={rosterLabelId + "-" + i}>{labels[i]}</label>
+          )}
           {p ? (
             <div className="picked-player">
               <Avatar player={p} small />
@@ -710,6 +899,7 @@ function RosterEditor({
           ) : (
             <button
               className="picker-empty"
+              aria-describedby={rosterLabelId + "-" + i}
               onClick={() => pick(i)}
               type="button"
             >
@@ -726,6 +916,16 @@ const localDate = (date: Date) =>
   new Date(date.getTime() - date.getTimezoneOffset() * 60000)
     .toISOString()
     .slice(0, 19);
+const fullLocalDateTime = (date: string) =>
+  new Intl.DateTimeFormat("en-SG", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short",
+  }).format(new Date(date));
 export function RecordResult({
   me,
   category: initialCategory,
@@ -748,17 +948,31 @@ export function RecordResult({
   friends?: Player[];
 }) {
   const storageKey = "shuttl:draft:" + me.id;
-  const [saved, setSaved] = useState(() => {
-    if (correction) return null;
+  const [initialStorage] = useState(() => {
+    if (correction) return { raw: null, value: null };
     try {
-      const value = JSON.parse(localStorage.getItem(storageKey) || "null");
-      return value?.owner === me.id && Date.now() - value.savedAt < 7 * 86400000
-        ? value
-        : null;
+      const raw = localStorage.getItem(storageKey);
+      const value = JSON.parse(raw || "null");
+      return {
+        raw,
+        value:
+          value?.owner === me.id &&
+          (value.submissionUncertain ||
+            Date.now() - value.savedAt < 7 * 86400000)
+            ? value
+            : null,
+      };
     } catch {
-      return null;
+      return { raw: null, value: null };
     }
   });
+  const [saved, setSaved] = useState(initialStorage.value);
+  const draftVersion = useRef<string | null>(initialStorage.raw);
+  const writeSequence = useRef(0);
+  const conflictVersion = useRef<{ raw: string | null } | null>(null);
+  const [draftConflict, setDraftConflict] = useState<{
+    raw: string | null;
+  } | null>(null);
   const [category, setCategory] = useState<Category>(
       correction?.category || saved?.category || initialCategory,
     ),
@@ -792,6 +1006,7 @@ export function RecordResult({
   const [pick, setPick] = useState<number | null>(null),
     [acknowledged, setAcknowledged] = useState(""),
     [busy, setBusy] = useState(false),
+    [closingDraft, setClosingDraft] = useState(false),
     [error, setError] = useState(""),
     [submissionUncertain, setSubmissionUncertain] = useState(
       !!saved?.submissionUncertain,
@@ -808,37 +1023,122 @@ export function RecordResult({
     scopeId,
   ]);
   const agree = acknowledged === exactDraft;
-  useEffect(() => {
-    if (!correction)
-      try {
-        if (
-          !roster.some((player, index) => index > 0 && player) &&
-          !scores.some((game) => game.some((score) => score !== ""))
-        ) {
-          localStorage.removeItem(storageKey);
+  function draftValue(uncertain = submissionUncertain) {
+    return {
+      owner: me.id,
+      category,
+      format,
+      roster,
+      scores,
+      played,
+      scopeId,
+      requestKey,
+      unitId,
+      submissionUncertain: uncertain,
+      savedAt: Date.now(),
+    };
+  }
+  function noteConflict(raw: string | null) {
+    conflictVersion.current = { raw };
+    setDraftConflict({ raw });
+    setPick(null);
+    setConfirmDiscard(false);
+    setConfirmReceivedRemoval(false);
+  }
+  async function withDraftLock<T>(operation: () => T): Promise<T> {
+    if (navigator.locks) return navigator.locks.request(storageKey, operation);
+    // A read/write transaction serializes fallback browsers across tabs.
+    // The lock store keeps no player data; the draft stays in localStorage.
+    return new Promise<T>((resolve, reject) => {
+      const request = indexedDB.open("shuttl:draft-coordination", 1);
+      let abandoned = false;
+      request.onupgradeneeded = () => {
+        if (!request.result.objectStoreNames.contains("locks"))
+          request.result.createObjectStore("locks");
+      };
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => {
+        abandoned = true;
+        reject(new Error("Draft storage is blocked."));
+      };
+      request.onsuccess = () => {
+        const database = request.result;
+        if (abandoned) {
+          database.close();
           return;
         }
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify({
-            owner: me.id,
-            category,
-            format,
-            roster,
-            scores,
-            played,
-            scopeId,
-            requestKey,
-            unitId,
-            submissionUncertain,
-            savedAt: Date.now(),
-          }),
-        );
-      } catch {
-        setError(
-          "This browser cannot save a draft. Keep this tab open until the result is sent.",
-        );
-      }
+        const transaction = database.transaction("locks", "readwrite");
+        const store = transaction.objectStore("locks");
+        let value: T;
+        const read = store.get(storageKey);
+        read.onsuccess = () => {
+          try {
+            value = operation();
+            store.delete(storageKey);
+          } catch (error) {
+            transaction.abort();
+            reject(error);
+          }
+        };
+        transaction.oncomplete = () => {
+          database.close();
+          resolve(value!);
+        };
+        transaction.onabort = transaction.onerror = () => {
+          database.close();
+          reject(
+            transaction.error || new Error("Draft storage is unavailable."),
+          );
+        };
+      };
+    });
+  }
+  function saveDraft(value: ReturnType<typeof draftValue> | null) {
+    const current = localStorage.getItem(storageKey);
+    if (conflictVersion.current || current !== draftVersion.current) {
+      noteConflict(current);
+      return false;
+    }
+    if (value && current) {
+      const previous = JSON.parse(current);
+      const { savedAt: _previousTime, ...previousValues } = previous;
+      const { savedAt: _nextTime, ...nextValues } = value;
+      if (JSON.stringify(previousValues) === JSON.stringify(nextValues))
+        return true;
+    }
+    const next = value ? JSON.stringify(value) : null;
+    if (next === null) localStorage.removeItem(storageKey);
+    else localStorage.setItem(storageKey, next);
+    draftVersion.current = next;
+    return true;
+  }
+  useEffect(() => {
+    if (correction) return;
+    const changed = (event: StorageEvent) => {
+      if (
+        (event.key === storageKey || event.key === null) &&
+        event.newValue !== draftVersion.current
+      )
+        noteConflict(localStorage.getItem(storageKey));
+    };
+    window.addEventListener("storage", changed);
+    return () => window.removeEventListener("storage", changed);
+  }, [storageKey, correction]);
+  useEffect(() => {
+    if (correction) return;
+    const sequence = ++writeSequence.current;
+    const empty =
+      !roster.some((player, index) => index > 0 && player) &&
+      !scores.some((game) => game.some((score) => score !== ""));
+    const value = draftValue();
+    void withDraftLock(() => {
+      if (sequence !== writeSequence.current) return;
+      saveDraft(empty ? null : value);
+    }).catch(() => {
+      setError(
+        "This browser cannot save a draft. Keep this tab open until the result is sent.",
+      );
+    });
   }, [
     category,
     format,
@@ -850,10 +1150,13 @@ export function RecordResult({
     unitId,
     submissionUncertain,
   ]);
-  function removeMatchingDraft() {
-    try {
+  async function removeMatchingDraft() {
+    ++writeSequence.current;
+    await withDraftLock(() => {
       const stored = JSON.parse(localStorage.getItem(storageKey) || "null");
       if (
+        !conflictVersion.current &&
+        localStorage.getItem(storageKey) === draftVersion.current &&
         stored?.unitId === unitId &&
         JSON.stringify([
           stored.category,
@@ -863,21 +1166,51 @@ export function RecordResult({
           stored.played,
           stored.scopeId,
         ]) === exactDraft
-      )
+      ) {
         localStorage.removeItem(storageKey);
+        draftVersion.current = null;
+      }
+    });
+  }
+  async function closeWithDraft() {
+    if (busy) return;
+    if (correction || conflictVersion.current) {
+      close();
+      return;
+    }
+    setBusy(true);
+    setClosingDraft(true);
+    setError("");
+    try {
+      ++writeSequence.current;
+      const empty =
+        !roster.some((player, index) => index > 0 && player) &&
+        !scores.some((game) => game.some((score) => score !== ""));
+      if (await withDraftLock(() => saveDraft(empty ? null : draftValue())))
+        close();
     } catch {
-      /* A draft changed in another tab is kept. */
+      setError(
+        "This browser could not save your latest edits. Keep this view open and try again when browser storage is available.",
+      );
+    } finally {
+      setBusy(false);
+      setClosingDraft(false);
     }
   }
-  function discardDraft() {
-    if (busy || submissionUncertain || received) return;
+  async function discardDraft() {
+    if (busy || submissionUncertain || received || conflictVersion.current)
+      return;
+    setBusy(true);
     try {
-      localStorage.removeItem(storageKey);
+      ++writeSequence.current;
+      if (!(await withDraftLock(() => saveDraft(null)))) return;
     } catch {
       setError(
         "This browser could not remove the saved draft. Keep it until browser storage is available again.",
       );
       return;
+    } finally {
+      setBusy(false);
     }
     setSaved(null);
     setCategory(initialCategory);
@@ -910,21 +1243,66 @@ export function RecordResult({
       setBusy(false);
     }
   }
-  function removeReceivedDraft() {
+  async function useOtherDraft() {
+    if (busy || !conflictVersion.current) return;
+    setBusy(true);
+    setError("");
     try {
-      const stored = JSON.parse(localStorage.getItem(storageKey) || "null");
-      if (stored && stored.unitId !== unitId) {
-        setError(
-          "Another saved draft is now on this device. It has been kept; close this view without removing it.",
-        );
-        return;
-      }
-      localStorage.removeItem(storageKey);
-      close();
+      await withDraftLock(() => {
+        const raw = localStorage.getItem(storageKey);
+        if (raw !== conflictVersion.current?.raw) {
+          noteConflict(raw);
+          setError(
+            "The other tab changed again. Review its latest saved values before continuing.",
+          );
+          return;
+        }
+        const value = JSON.parse(raw || "null");
+        if (!value || value.owner !== me.id) return;
+        if (submissionUncertain && !received && value.unitId !== unitId) {
+          setError(
+            "Check this tab’s original submission before replacing it with another draft.",
+          );
+          return;
+        }
+        ++writeSequence.current;
+        draftVersion.current = raw;
+        conflictVersion.current = null;
+        setDraftConflict(null);
+        setSaved(value);
+        setCategory(value.category);
+        setFormat(value.format);
+        setRoster(value.roster);
+        setScores(value.scores);
+        setPlayed(value.played);
+        setScopeId(value.scopeId);
+        setRequestKey(value.requestKey);
+        setUnitId(value.unitId);
+        setSubmissionUncertain(!!value.submissionUncertain);
+        setReceived(null);
+        setAcknowledged("");
+      });
+    } catch {
+      setError(
+        "This browser cannot load the saved draft. Keep both tabs open and retry when storage is available.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function removeReceivedDraft() {
+    if (busy || conflictVersion.current) return;
+    setBusy(true);
+    try {
+      ++writeSequence.current;
+      const removed = await withDraftLock(() => saveDraft(null));
+      if (removed) close();
     } catch {
       setError(
         "This browser could not remove the local draft. The recorded match remains safe in SHUTTL.",
       );
+    } finally {
+      setBusy(false);
     }
   }
   function changeFormat(value: Format) {
@@ -940,7 +1318,7 @@ export function RecordResult({
   }
   async function submit(e: FormEvent) {
     e.preventDefault();
-    if (busy || received) return;
+    if (busy || received || conflictVersion.current) return;
     setError("");
     try {
       if (scores.some((g) => g.some((v) => !/^\d{1,2}$/.test(v))))
@@ -964,7 +1342,13 @@ export function RecordResult({
         return;
       }
       setBusy(true);
-      if (!correction) setSubmissionUncertain(true);
+      if (!correction) {
+        ++writeSequence.current;
+        // Persist the immutable retry payload before the request can reach SHUTTL.
+        // A second tab must review this exact version before it can send anything.
+        if (!(await withDraftLock(() => saveDraft(draftValue(true))))) return;
+        setSubmissionUncertain(true);
+      }
       if (correction)
         await api("/results/" + correction.id + "/correct", {
           revisionId: correction.revisionId,
@@ -988,7 +1372,7 @@ export function RecordResult({
           "POST",
           requestKey,
         );
-      if (!correction) removeMatchingDraft();
+      if (!correction) await removeMatchingDraft();
       done();
     } catch (e) {
       if (!correction && e instanceof ApiError && [0, 409].includes(e.status)) {
@@ -1016,6 +1400,13 @@ export function RecordResult({
     }
   }
   const recent = recentRosters(results, me, category);
+  const otherDraft = (() => {
+    try {
+      return JSON.parse(draftConflict?.raw || "null");
+    } catch {
+      return null;
+    }
+  })();
   const applicable = scopes.filter(
     (s) =>
       s.category === category &&
@@ -1028,19 +1419,125 @@ export function RecordResult({
             .sort(),
         ),
   );
+  const selectedScope = applicable.find((scope) => scope.id === scopeId);
+  const finalCheck = (() => {
+    if (
+      roster.some((player) => !player) ||
+      new Set(roster.map((player) => player!.id)).size !== roster.length ||
+      scores.some((game) => game.some((score) => !/^\d{1,2}$/.test(score))) ||
+      !Number.isFinite(new Date(played).getTime())
+    )
+      return null;
+    const games = scores.map((game) => game.map(Number)) as Game[];
+    try {
+      validateGames(format, games);
+      return {
+        games,
+        playedAt: new Date(played).toISOString(),
+      };
+    } catch {
+      return null;
+    }
+  })();
+  const countedResult = correction?.publishedRevisionId
+    ? correction.publishedResult || correction
+    : null;
   return (
     <>
       <Modal
         title={correction ? "Correct the exact score" : "Record a result"}
-        close={close}
+        close={closeWithDraft}
         dismissible={!busy}
         wide
       >
         <p className="form-help">
           {correction
-            ? "The previous rating stays visible until the correction has the required fresh approvals."
-            : "One completed match. All players choose rated play, then the exact score is approved."}
+            ? correction.publishedRevisionId
+              ? "Edit the final score. The earlier published result counts until an approved replacement is published."
+              : "Edit the final score. The changed result needs fresh approval."
+            : "Choose the players and enter the final score."}
         </p>
+        {!correction && draftConflict && (
+          <div className="notice neutral" role="status">
+            <strong>This draft changed in another tab.</strong>
+            <p>
+              This tab has paused. Its visible edits will not overwrite the
+              other tab’s saved draft or be sent as another match.
+            </p>
+            {otherDraft?.owner === me.id ? (
+              <>
+                <p>
+                  Latest saved draft: {otherDraft.category} ·{" "}
+                  {FORMATS[otherDraft.format as Format].label}
+                  {otherDraft.submissionUncertain
+                    ? " · submission status needs checking"
+                    : " · not submitted"}
+                  . Using it replaces the values below and keeps its original
+                  match identifier.
+                </p>
+                <p>
+                  {otherDraft.roster
+                    .slice(0, otherDraft.roster.length / 2)
+                    .map(
+                      (player: Player | null) =>
+                        player?.name || "Player not chosen",
+                    )
+                    .join(" + ")}
+                  {" vs "}
+                  {otherDraft.roster
+                    .slice(otherDraft.roster.length / 2)
+                    .map(
+                      (player: Player | null) =>
+                        player?.name || "Player not chosen",
+                    )
+                    .join(" + ")}
+                </p>
+                {otherDraft.scores.every((game: string[]) =>
+                  game.every((score) => /^\d{1,2}$/.test(score)),
+                ) ? (
+                  <ScoreGames
+                    games={otherDraft.scores.map((game: string[]) =>
+                      game.map(Number),
+                    )}
+                  />
+                ) : (
+                  <p>The saved score is still incomplete.</p>
+                )}
+                <button
+                  type="button"
+                  className="button secondary"
+                  disabled={busy}
+                  onClick={useOtherDraft}
+                >
+                  Use saved draft from other tab
+                </button>
+              </>
+            ) : (
+              <p>
+                The saved copy was removed in the other tab. Close this view and
+                review your court before starting another match.
+              </p>
+            )}
+            {(submissionUncertain || !otherDraft) && (
+              <button
+                type="button"
+                className="button secondary"
+                disabled={busy}
+                onClick={checkReceipt}
+              >
+                Check original submission
+              </button>
+            )}
+            <button
+              type="button"
+              className="text-button"
+              disabled={busy}
+              onClick={close}
+            >
+              Close this paused tab
+            </button>
+          </div>
+        )}
         {received && (
           <div className="notice neutral" role="status">
             <strong>This match already reached SHUTTL.</strong>
@@ -1079,6 +1576,7 @@ export function RecordResult({
               <button
                 type="button"
                 className="button secondary"
+                disabled={busy}
                 onClick={() => reviewReceived(received.id)}
               >
                 Review received result
@@ -1139,7 +1637,10 @@ export function RecordResult({
         )}
         <form onSubmit={submit}>
           <fieldset
-            disabled={busy || !!received}
+            className="result-entry-fields"
+            disabled={
+              busy || !!received || !!draftConflict || submissionUncertain
+            }
             style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
           >
             {!correction && !submissionUncertain && recent.length > 0 && (
@@ -1183,180 +1684,282 @@ export function RecordResult({
                 ))}
               </details>
             )}
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="result-category">Category</label>
-                <select
-                  id="result-category"
-                  disabled={!!correction}
-                  value={category}
-                  onChange={(e) => {
-                    const c = e.target.value as Category;
-                    setCategory(c);
-                    setRoster([
-                      me,
-                      null,
-                      ...(c === "Singles" ? [] : [null, null]),
-                    ]);
-                    setScopeId("");
-                  }}
+            <section className="result-entry-section">
+              <h3 className="form-section-heading">Match</h3>
+              <div className="form-grid">
+                <div className="field">
+                  <label htmlFor="result-category">Category</label>
+                  <select
+                    id="result-category"
+                    disabled={!!correction}
+                    value={category}
+                    onChange={(e) => {
+                      const c = e.target.value as Category;
+                      setCategory(c);
+                      setRoster([
+                        me,
+                        null,
+                        ...(c === "Singles" ? [] : [null, null]),
+                      ]);
+                      setScopeId("");
+                    }}
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="result-format">Played format</label>
+                  <select
+                    id="result-format"
+                    value={format}
+                    onChange={(e) => changeFormat(e.target.value as Format)}
+                  >
+                    {Object.entries(FORMATS).map(([key, f]) => (
+                      <option key={key} value={key}>
+                        {f.series ? "Best of 3" : "1 game"} · {f.target}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </section>
+            <section className="result-entry-section">
+              <h3 className="form-section-heading">Players</h3>
+              {correction ? (
+                <div className="team-row">
+                  <div>
+                    Side A<br />
+                    {roster
+                      .slice(0, roster.length / 2)
+                      .map((p) => p?.name)
+                      .join(" + ")}
+                  </div>
+                  <div>
+                    Side B<br />
+                    {roster
+                      .slice(roster.length / 2)
+                      .map((p) => p?.name)
+                      .join(" + ")}
+                  </div>
+                </div>
+              ) : (
+                <RosterEditor
+                  roster={roster}
+                  category={category}
+                  setRoster={setRoster}
+                  pick={setPick}
+                />
+              )}
+            </section>
+            <section className="result-entry-section">
+              <h3 className="form-section-heading">Final score</h3>
+              {scores.map((g, i) => (
+                <div className="score-inputs" key={i}>
+                  <div className="game-label">Completed game {i + 1}</div>
+                  <div>
+                    {g.map((v, side) => (
+                      <div key={side}>
+                        <label htmlFor={`score-${i}-${side}`}>
+                          {correction
+                            ? side === 0
+                              ? "Side A"
+                              : "Side B"
+                            : side === 0
+                              ? "Your side"
+                              : "Other side"}
+                        </label>
+                        <input
+                          id={`score-${i}-${side}`}
+                          inputMode="numeric"
+                          autoComplete="off"
+                          pattern="[0-9]*"
+                          maxLength={6}
+                          required
+                          value={v}
+                          onChange={(e) =>
+                            setScores(
+                              scores.map((game, j) =>
+                                j === i
+                                  ? game.map((x, k) =>
+                                      k === side ? e.target.value : x,
+                                    )
+                                  : game,
+                              ),
+                            )
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {FORMATS[format].series && (
+                <button
+                  type="button"
+                  className="text-button"
+                  onClick={() =>
+                    setScores(
+                      scores.length === 2
+                        ? [...scores, ["", ""]]
+                        : scores.slice(0, 2),
+                    )
+                  }
                 >
-                  {CATEGORIES.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="result-format">Played format</label>
-                <select
-                  id="result-format"
-                  value={format}
-                  onChange={(e) => changeFormat(e.target.value as Format)}
-                >
-                  {Object.entries(FORMATS).map(([key, f]) => (
-                    <option key={key} value={key}>
-                      {f.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            {correction ? (
-              <div className="team-row">
-                <div>
-                  Side A<br />
-                  {roster
-                    .slice(0, roster.length / 2)
-                    .map((p) => p?.name)
-                    .join(" + ")}
-                </div>
-                <div>
-                  Side B<br />
-                  {roster
-                    .slice(roster.length / 2)
-                    .map((p) => p?.name)
-                    .join(" + ")}
-                </div>
-              </div>
-            ) : (
-              <RosterEditor
-                roster={roster}
-                category={category}
-                setRoster={setRoster}
-                pick={setPick}
-              />
-            )}
-            {scores.map((g, i) => (
-              <div className="score-inputs" key={i}>
-                <div className="game-label">Completed game {i + 1}</div>
-                <div>
-                  {g.map((v, side) => (
-                    <div key={side}>
-                      <label htmlFor={`score-${i}-${side}`}>
-                        {correction
-                          ? side === 0
-                            ? "Side A"
-                            : "Side B"
-                          : side === 0
-                            ? "Your side"
-                            : "Other side"}
-                      </label>
-                      <input
-                        id={`score-${i}-${side}`}
-                        inputMode="numeric"
-                        autoComplete="off"
-                        pattern="[0-9]*"
-                        maxLength={6}
-                        required
-                        value={v}
-                        onChange={(e) =>
-                          setScores(
-                            scores.map((game, j) =>
-                              j === i
-                                ? game.map((x, k) =>
-                                    k === side ? e.target.value : x,
-                                  )
-                                : game,
-                            ),
-                          )
-                        }
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {FORMATS[format].series && (
-              <button
-                type="button"
-                className="text-button"
-                onClick={() =>
-                  setScores(
-                    scores.length === 2
-                      ? [...scores, ["", ""]]
-                      : scores.slice(0, 2),
-                  )
-                }
-              >
-                {scores.length === 2
-                  ? "Add the deciding third game"
-                  : "Remove the third game"}
-              </button>
-            )}
+                  {scores.length === 2
+                    ? "Add the deciding third game"
+                    : "Remove the third game"}
+                </button>
+              )}
+            </section>
             {!correction && (
               <>
-                <div className="field">
+                <div className="field result-time-field">
                   <label htmlFor="result-time">Started at</label>
                   <input
                     type="datetime-local"
                     step="1"
                     id="result-time"
                     value={played}
+                    aria-describedby="result-time-help"
                     onChange={(e) => setPlayed(e.target.value)}
                     required
                   />
-                  <p className="form-help">
-                    Time entered in your device’s timezone:{" "}
-                    {Intl.DateTimeFormat().resolvedOptions().timeZone}. Review
-                    shows your profile timezone.
+                  <p className="form-help" id="result-time-help">
+                    Local time ·{" "}
+                    {Intl.DateTimeFormat().resolvedOptions().timeZone}.
                   </p>
                 </div>
-                <div className="field">
-                  <label htmlFor="result-scope">Earlier rated agreement</label>
-                  <select
-                    id="result-scope"
-                    value={scopeId}
-                    onChange={(e) => setScopeId(e.target.value)}
-                  >
-                    <option value="">
-                      No earlier agreement · everyone approves
-                    </option>
-                    {applicable.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {dateLabel(s.starts)} · {s.accepted.length}/
-                        {s.players.length} agreed
+                <details
+                  className="result-agreement-details"
+                  open={!!scopeId || applicable.length > 0}
+                >
+                  <summary>
+                    Earlier rated agreement{scopeId ? " · selected" : " · none"}
+                  </summary>
+                  <div className="field">
+                    <label htmlFor="result-scope">
+                      Earlier rated agreement
+                    </label>
+                    <select
+                      id="result-scope"
+                      value={scopeId}
+                      onChange={(e) => setScopeId(e.target.value)}
+                    >
+                      <option value="">
+                        No earlier agreement · everyone approves
                       </option>
-                    ))}
-                  </select>
-                </div>
+                      {applicable.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {dateLabel(s.starts)} · {s.accepted.length}/
+                          {s.players.length} currently agreed
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {selectedScope && (
+                    <div className="agreement-window">
+                      <dl>
+                        <div>
+                          <dt>Starts</dt>
+                          <dd>
+                            <time dateTime={selectedScope.starts}>
+                              {fullLocalDateTime(selectedScope.starts)}
+                            </time>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Ends</dt>
+                          <dd>
+                            <time dateTime={selectedScope.ends}>
+                              {fullLocalDateTime(selectedScope.ends)}
+                            </time>
+                          </dd>
+                        </div>
+                      </dl>
+                      <p className="form-help">
+                        SHUTTL checks whether every player agreed before this
+                        match started and whether anyone had stopped future
+                        rated play. Today’s approval count does not establish
+                        earlier coverage.
+                      </p>
+                    </div>
+                  )}
+                </details>
               </>
             )}
-            <div className="notice neutral">
+            <div className="notice neutral result-consent-summary">
               <strong>
                 {correction
-                  ? "Corrections require fresh exact-score approval."
+                  ? "Fresh approval for this correction."
                   : scopeId
-                    ? "Prior consent and score approval stay separate."
-                    : "Every player approves this retrospective result."}
+                    ? "The exact score still needs approval."
+                    : "Every player approves this result."}
               </strong>
               <p>
                 {correction
-                  ? "The changed score or format needs fresh approval. An earlier agreement only applies if it still covers this match; otherwise every player must approve."
+                  ? correction.publishedRevisionId
+                    ? "The earlier published result keeps counting until an approved replacement is published."
+                    : "Required players approve the changed score and format before it counts."
                   : scopeId
                     ? "When the earlier agreement covers this match, one eligible opponent confirms the exact score. Otherwise every player must approve."
-                    : "Without an earlier all-player agreement, each player must approve the exact score and its rated status. Silence never changes a rating."}
+                    : "Each player chooses its rated status and approves the score. Silence never changes a rating."}
               </p>
             </div>
+          </fieldset>
+          <fieldset
+            disabled={busy || !!received || !!draftConflict}
+            style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+          >
+            {finalCheck && (
+              <section
+                className="result-check-summary"
+                aria-label="Final result check"
+              >
+                <strong>
+                  {correction ? "Proposed score" : "Check this result"}
+                </strong>
+                <p className="form-help">
+                  {category} · {FORMATS[format].label}
+                </p>
+                <div className="result-check-lineup">
+                  <span>
+                    <b>Side A</b>{" "}
+                    {roster
+                      .slice(0, roster.length / 2)
+                      .map((player) => player!.name)
+                      .join(" + ")}
+                  </span>
+                  <span>
+                    <b>Side B</b>{" "}
+                    {roster
+                      .slice(roster.length / 2)
+                      .map((player) => player!.name)
+                      .join(" + ")}
+                  </span>
+                </div>
+                <p className="result-check-games">
+                  {finalCheck.games.map((game) => game.join("–")).join(" / ")}
+                </p>
+                <p className="form-help">
+                  Started{" "}
+                  <time dateTime={finalCheck.playedAt}>
+                    {fullLocalDateTime(finalCheck.playedAt)}
+                  </time>
+                </p>
+                {countedResult && (
+                  <p className="form-help currently-counted-score">
+                    <b>Currently counted score:</b>{" "}
+                    {countedResult.games
+                      .map((game: number[]) => game.join("–"))
+                      .join(" / ")}{" "}
+                    · {FORMATS[countedResult.format as Format].label}. It keeps
+                    counting until an approved replacement is published.
+                  </p>
+                )}
+              </section>
+            )}
             <label className="check-line">
               <input
                 type="checkbox"
@@ -1374,7 +1977,9 @@ export function RecordResult({
             <InlineError message={error} />
             <button className="button block" disabled={busy}>
               {busy
-                ? "Saving your result…"
+                ? closingDraft
+                  ? "Saving your draft…"
+                  : "Saving your result…"
                 : correction
                   ? "Propose correction"
                   : "Send for exact-score approval"}
@@ -1384,7 +1989,7 @@ export function RecordResult({
               {correction
                 ? "Changed values require fresh approvals."
                 : submissionUncertain
-                  ? "This local copy stays on this device for seven days. Its presence does not tell you whether SHUTTL already received the match."
+                  ? "This original retry stays on this device until removed or browser storage is cleared. Its presence does not tell you whether SHUTTL already received the match."
                   : "An unsent draft stays on this device for seven days. It never changes a rating."}
             </p>
             {!correction &&
@@ -1431,6 +2036,7 @@ export function RecordResult({
       </Modal>
       {pick !== null && (
         <PlayerLookup
+          ownerId={me.id}
           suggestions={friends}
           excludeIds={roster.filter(Boolean).map((p) => p!.id)}
           close={() => setPick(null)}
@@ -1452,19 +2058,43 @@ export function AgreementForm({
   close: () => void;
   done: () => void;
 }) {
-  const [category, setCategory] = useState<Category>("Doubles"),
-    [format, setFormat] = useState<Format>("ONE_21"),
-    [roster, setRoster] = useState<(Player | null)[]>([me, null, null, null]),
+  const attemptStorageKey = "shuttl:agreement-attempt:" + me.id;
+  const [attempt, setAttempt] = useState<any>(() => {
+    try {
+      const value = JSON.parse(
+        sessionStorage.getItem(attemptStorageKey) || "null",
+      );
+      return value?.owner === me.id ? value : null;
+    } catch {
+      return null;
+    }
+  });
+  const [category, setCategory] = useState<Category>(
+      attempt?.payload.category || "Doubles",
+    ),
+    [format, setFormat] = useState<Format>(attempt?.payload.format || "ONE_21"),
+    [roster, setRoster] = useState<(Player | null)[]>(
+      attempt?.players || [me, null, null, null],
+    ),
     [pick, setPick] = useState<number | null>(null),
-    [recurring, setRecurring] = useState(false),
+    [recurring, setRecurring] = useState(!!attempt?.recurring),
     [acknowledgedAgreement, setAcknowledgedAgreement] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [windowStarts] = useState(() => new Date().toISOString());
+  const agreementStarts = attempt?.payload.starts || windowStarts;
+  const agreementEnds =
+    attempt?.payload.ends ||
+    new Date(
+      Date.parse(windowStarts) + (recurring ? 30 * 86400000 : 8 * 3600000),
+    ).toISOString();
   const agreementKey = JSON.stringify([
     category,
     format,
     roster.map((p) => p?.id),
     recurring,
+    agreementStarts,
+    agreementEnds,
   ]);
   const agree = acknowledgedAgreement === agreementKey;
   async function submit(e: FormEvent) {
@@ -1476,21 +2106,40 @@ export function AgreementForm({
       if (new Set(roster.map((player) => player!.id)).size !== roster.length)
         throw new Error("Each player can appear only once.");
       if (!agree) throw new Error("Choose whether you agree to rated play.");
-      setBusy(true);
-      const starts = new Date(),
-        ends = new Date(
-          starts.getTime() + (recurring ? 30 * 86400000 : 8 * 3600000),
+      if (!navigator.onLine) {
+        setError(
+          attempt
+            ? "You are offline. The earlier agreement may already exist. Reconnect and retry this same agreement; its original identifier is kept."
+            : "You are offline. This agreement was not sent. Reconnect and try again.",
         );
-      await api("/scopes", {
-        category,
-        format,
-        roster: roster.map((p) => p!.id),
-        starts: starts.toISOString(),
-        ends: ends.toISOString(),
-        agree: true,
-      });
+        return;
+      }
+      setBusy(true);
+      const exactAttempt = attempt || {
+        owner: me.id,
+        key: crypto.randomUUID(),
+        players: roster,
+        recurring,
+        payload: {
+          category,
+          format,
+          roster: roster.map((p) => p!.id),
+          starts: agreementStarts,
+          ends: agreementEnds,
+          agree: true,
+        },
+      };
+      // Same-tab reopening and retries keep the original time window and key.
+      sessionStorage.setItem(attemptStorageKey, JSON.stringify(exactAttempt));
+      setAttempt(exactAttempt);
+      await api("/scopes", exactAttempt.payload, "POST", exactAttempt.key);
+      sessionStorage.removeItem(attemptStorageKey);
       done();
     } catch (e) {
+      if (e instanceof ApiError && [400, 403, 404, 422].includes(e.status)) {
+        sessionStorage.removeItem(attemptStorageKey);
+        setAttempt(null);
+      }
       setError(errorMessage(e));
     } finally {
       setBusy(false);
@@ -1504,13 +2153,30 @@ export function AgreementForm({
         dismissible={!busy}
         wide
       >
-        <p className="form-help">
-          Every player chooses for themselves. The same four may rotate teams
-          within a covered doubles or mixed agreement.
-        </p>
+        <ol className="agreement-steps">
+          <li>Every player agrees to rated play before the match starts.</li>
+          <li>
+            After a covered match, the player who records it and one opponent
+            confirm the exact score.
+          </li>
+        </ol>
+        {attempt && (
+          <div className="notice neutral" role="status">
+            <strong>
+              Keep this exact agreement while its response is unconfirmed.
+            </strong>
+            <p>
+              It may already exist. Retry uses the same players, time window and
+              identifier, so it does not create another agreement. Closing and
+              reopening this form in this tab keeps that retry. Closing the
+              browser tab may clear it; check your agreements before starting
+              another.
+            </p>
+          </div>
+        )}
         <form onSubmit={submit}>
           <fieldset
-            disabled={busy}
+            disabled={busy || !!attempt}
             style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
           >
             <div className="form-grid">
@@ -1562,12 +2228,43 @@ export function AgreementForm({
                 value={recurring ? "recurring" : "session"}
                 onChange={(e) => setRecurring(e.target.value === "recurring")}
               >
-                <option value="session">This session · next 8 hours</option>
+                <option value="session">This session · 8 hours</option>
                 <option value="recurring">
                   Same players and format · 30 days
                 </option>
               </select>
             </div>
+            <section className="agreement-window" aria-label="Agreement window">
+              <strong>Agreement window</strong>
+              <dl>
+                <div>
+                  <dt>Starts</dt>
+                  <dd>
+                    <time dateTime={agreementStarts}>
+                      {fullLocalDateTime(agreementStarts)}
+                    </time>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Ends</dt>
+                  <dd>
+                    <time dateTime={agreementEnds}>
+                      {fullLocalDateTime(agreementEnds)}
+                    </time>
+                  </dd>
+                </div>
+              </dl>
+              <p className="form-help">
+                Only matches started in this window after every player agreed
+                can be covered. The same four may rotate sides in Doubles or
+                Mixed.
+              </p>
+            </section>
+          </fieldset>
+          <fieldset
+            disabled={busy}
+            style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+          >
             <label className="check-line">
               <input
                 type="checkbox"
@@ -1587,7 +2284,9 @@ export function AgreementForm({
             <button className="button block" disabled={busy}>
               {busy
                 ? "Creating your agreement…"
-                : "Create agreement and accept for myself"}
+                : attempt
+                  ? "Retry this same agreement"
+                  : "Create agreement and accept for myself"}
             </button>
             <p className="form-help">
               A different player, category or format needs a new agreement.
@@ -1599,6 +2298,7 @@ export function AgreementForm({
       </Modal>
       {pick !== null && (
         <PlayerLookup
+          ownerId={me.id}
           excludeIds={roster.filter(Boolean).map((player) => player!.id)}
           close={() => setPick(null)}
           choose={(p) => {
@@ -1628,7 +2328,12 @@ export function ResultReview({
     [reason, setReason] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [busyAction, setBusyAction] = useState<"approve" | "dispute" | null>(
+    null,
+  );
   const lastRevision = useRef(result.revisionId);
+  const actionInFlight = useRef(false);
+  const actionKeys = useRef(new Map<string, string>());
   const [revisionChanged, setRevisionChanged] = useState(false);
   const agree = acknowledgedRevision === result.revisionId;
   useEffect(() => {
@@ -1637,6 +2342,7 @@ export function ResultReview({
       setAcknowledgedRevision("");
       setRevisionChanged(true);
       setDisputing(false);
+      setError("");
     }
   }, [result.revisionId]);
   const approved = result.approvals.includes(result.ownParticipant),
@@ -1658,23 +2364,30 @@ export function ResultReview({
       (result.retrospective || i < size !== authorIndex < size),
   );
   async function action(type: "approve" | "dispute") {
+    if (actionInFlight.current) return;
     if (type === "approve" && acknowledgedRevision !== result.revisionId)
       return;
+    actionInFlight.current = true;
     setBusy(true);
+    setBusyAction(type);
     setError("");
     try {
-      await api(
-        "/results/" + result.id + "/" + type,
+      const payload =
         type === "approve"
           ? { revisionId: result.revisionId, agree: true }
-          : { revisionId: result.revisionId, reason },
-      );
+          : { revisionId: result.revisionId, reason };
+      const fingerprint = JSON.stringify([type, result.id, payload]);
+      const key = actionKeys.current.get(fingerprint) || crypto.randomUUID();
+      actionKeys.current.set(fingerprint, key);
+      await api("/results/" + result.id + "/" + type, payload, "POST", key);
       refresh();
       setDisputing(false);
     } catch (e) {
       setError(errorMessage(e));
     } finally {
+      actionInFlight.current = false;
       setBusy(false);
+      setBusyAction(null);
     }
   }
   return (
@@ -1685,172 +2398,241 @@ export function ResultReview({
           : "Review the exact result"
       }
       close={close}
+      dismissible={!busy}
       wide
     >
-      <div className="result-top">
-        <span>
-          {result.category} · {FORMATS[result.format as Format].label}
-        </span>
-        <span>{dateTimeLabel(result.playedAt)}</span>
-      </div>
-      <div className="team-row">
-        <div>
-          {result.players
-            .slice(0, size)
-            .map((p: Player) => p.name)
-            .join(" + ")}
+      <fieldset
+        className="result-review-fields"
+        aria-busy={busy}
+        disabled={busy}
+        style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+      >
+        <div className="result-review-scoreboard">
+          <div className="result-top">
+            <span>
+              {result.category} · {FORMATS[result.format as Format].label}
+            </span>
+            <span>{dateTimeLabel(result.playedAt)}</span>
+          </div>
+          <div className="team-row">
+            <div>
+              <span className="review-side-label">
+                Side A · {ownIndex < size ? "Your side" : "Other side"}
+              </span>
+              <strong>
+                {result.players
+                  .slice(0, size)
+                  .map((p: Player) => p.name)
+                  .join(" + ")}
+              </strong>
+            </div>
+            <div>
+              <span className="review-side-label">
+                Side B · {ownIndex >= size ? "Your side" : "Other side"}
+              </span>
+              <strong>
+                {result.players
+                  .slice(size)
+                  .map((p: Player) => p.name)
+                  .join(" + ")}
+              </strong>
+            </div>
+          </div>
+          {(result.publishedResult ||
+            result.status === "correction_pending") && (
+            <strong className="proposed-score-caption">Proposed score</strong>
+          )}
+          <ScoreGames games={result.games} />
         </div>
-        <div>
-          {result.players
-            .slice(size)
-            .map((p: Player) => p.name)
-            .join(" + ")}
-        </div>
-      </div>
-      <ScoreGames games={result.games} />
-      {revisionChanged && (
-        <div className="notice revision-notice" role="alert">
+        {revisionChanged && (
+          <div className="notice revision-notice" role="alert">
+            <strong>The score changed. Review it again.</strong>
+            <p>
+              Your earlier acknowledgement was cleared. Read these sides and
+              scores again before approving.
+            </p>
+          </div>
+        )}
+        {result.publishedResult && (
+          <div className="notice neutral">
+            <strong>Currently counted score</strong>
+            <p>
+              {result.publishedResult.games
+                .map((g: number[]) => g.join("–"))
+                .join(" / ")}{" "}
+              · {FORMATS[result.publishedResult.format as Format].label}. This
+              proposed correction needs fresh approval before ratings change.
+            </p>
+          </div>
+        )}
+        <div
+          className="notice result-review-status"
+          data-status={result.status}
+          role="status"
+        >
           <strong>
-            The score has changed to revision {result.revisionNumber}.
+            {result.status === "rated"
+              ? "Rating published"
+              : result.status === "confirmed"
+                ? "Score confirmed · rating processing"
+                : result.status === "disputed"
+                  ? "Under independent review"
+                  : result.status === "void"
+                    ? "Unrated result"
+                    : result.retrospective
+                      ? "Waiting for every player’s approval"
+                      : "Waiting for one opponent’s confirmation"}
           </strong>
           <p>
-            Your earlier acknowledgement was cleared. Read these sides and
-            scores again before approving.
+            {result.status === "rated"
+              ? `This ${result.category} result is in your confirmed history.`
+              : result.status === "confirmed"
+                ? "All required approvals are recorded. Your estimate updates after processing."
+                : result.status === "disputed"
+                  ? "An independent reviewer will decide. The decision appears here. Any earlier published result keeps counting until a decision."
+                  : result.status === "void"
+                    ? "This match is excluded from rated history."
+                    : result.retrospective
+                      ? `${result.approvals.length} of ${result.players.length} players approved. Every player must also agree to rated status.`
+                      : "The author’s approval is recorded. One eligible opponent confirms this exact score; rated play was agreed earlier."}
           </p>
         </div>
-      )}
-      <ResultReward result={result} share={share} />
-      <Encouragement result={result} />
-      {result.publishedResult && (
-        <div className="notice neutral">
-          <strong>The earlier approved score still counts</strong>
-          <p>
-            {result.publishedResult.games
-              .map((g: number[]) => g.join("–"))
-              .join(" / ")}{" "}
-            · {FORMATS[result.publishedResult.format as Format].label}. This
-            proposed correction needs fresh approval before ratings change.
-          </p>
-        </div>
-      )}
-      <div className="notice">
-        <strong>
-          {result.status === "rated"
-            ? "Rating published"
-            : result.status === "confirmed"
-              ? "Score confirmed · rating processing"
-              : result.status === "disputed"
-                ? "Under independent review"
-                : result.status === "void"
-                  ? "Unrated result"
-                  : result.retrospective
-                    ? "All-player exact approval required"
-                    : "One eligible opponent confirms this exact revision"}
-        </strong>
-        <p>
-          {result.status === "confirmed"
-            ? "Your score approval is recorded. Final ratings appear after processing."
-            : result.status === "disputed"
-              ? "A review does not automatically create a winner or erase a published loss."
-              : `${result.approvals.length} of ${result.players.length} players approved. ${result.retrospective ? "Every player must also agree to rated status." : "All players agreed to rated play before this covered match."}`}
-        </p>
-      </div>
-      <p className="form-help">
+        <ResultReward result={result} share={share} />
+        <Encouragement result={result} />
         {["pending", "correction_pending"].includes(result.status) &&
           awaiting.length > 0 && (
-            <>
+            <p className="form-help review-waiting">
               <strong>
                 {result.retrospective
                   ? "Waiting for "
                   : "An eligible opponent can confirm: "}
                 {awaiting.map((p: Player) => p.name).join(", ")}.
               </strong>
-              <br />
-            </>
+            </p>
           )}
-        Submitted by {result.author.name}. Revision {result.revisionNumber}.
-        Correcting or disputing an incorrect score does not hurt your response
-        record.
-      </p>
-      <InlineError message={error} />
-      {canApprove && (
-        <>
-          <label className="check-line">
-            <input
-              type="checkbox"
-              checked={agree}
-              onChange={(e) =>
-                setAcknowledgedRevision(
-                  e.target.checked ? result.revisionId : "",
-                )
-              }
-            />
-            <span>
-              These are the correct sides, scores and rated status. I approve
-              this exact revision.
-            </span>
-          </label>
-          <button
-            className="button block"
-            disabled={!agree || busy}
-            onClick={() => action("approve")}
-          >
-            Confirm this exact score
-            <Check size={16} />
-          </button>
-        </>
-      )}
-      {approved &&
-        ["pending", "correction_pending"].includes(result.status) && (
-          <p className="form-help">
-            Your approval is recorded. Other required players still need to
-            respond.
-          </p>
-        )}
-      {!["disputed", "confirmed"].includes(result.status) && (
-        <div className="modal-actions">
-          {result.status !== "void" && (
-            <button
-              className="button secondary"
-              onClick={() => correct(result)}
-            >
-              Correct the score
-            </button>
-          )}
+        <InlineError message={error} />
+        {error && (
           <button
             className="button secondary"
-            onClick={() => setDisputing(true)}
+            onClick={() => {
+              setError("");
+              refresh();
+            }}
           >
-            {result.status === "void"
-              ? "Appeal this decision"
-              : "Ask for review"}
+            Refresh this result
           </button>
-        </div>
-      )}
-      {disputing && (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            action("dispute");
-          }}
-        >
-          <div className="field" style={{ marginTop: 20 }}>
-            <label htmlFor="dispute-reason">What needs reviewing?</label>
-            <textarea
-              id="dispute-reason"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              minLength={8}
-              maxLength={1500}
-              required
-              placeholder="Explain the score, roster or consent issue. This stays private."
-            />
-          </div>
-          <button className="button secondary block" disabled={busy}>
-            Submit private review request
-          </button>
-        </form>
-      )}
+        )}
+        {canApprove && (
+          <>
+            <label className="check-line">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) =>
+                  setAcknowledgedRevision(
+                    e.target.checked ? result.revisionId : "",
+                  )
+                }
+              />
+              <span>
+                These are the correct sides and scores. I agree that this result
+                counts toward my rating.
+              </span>
+            </label>
+            <button
+              className="button block"
+              disabled={!agree || busy}
+              onClick={() => action("approve")}
+            >
+              {busyAction === "approve"
+                ? "Recording your approval…"
+                : "Confirm this exact score"}
+              <Check size={16} />
+            </button>
+          </>
+        )}
+        {approved &&
+          ["pending", "correction_pending"].includes(result.status) && (
+            <p className="form-help">
+              Your approval is recorded. Other required players still need to
+              respond.
+            </p>
+          )}
+        {!["disputed", "confirmed"].includes(result.status) && (
+          <>
+            <p className="form-help review-action-guide">
+              {result.status === "void"
+                ? "Disagree with the decision? Appeal it for independent review."
+                : "Score-entry mistake? Correct the score. Different players or disagreement about rated play? Ask for review."}
+            </p>
+            <div className="modal-actions">
+              {result.status !== "void" && (
+                <button
+                  className="button secondary"
+                  onClick={() => correct(result)}
+                >
+                  Correct the score
+                </button>
+              )}
+              <button
+                className="button secondary"
+                onClick={() => setDisputing(true)}
+              >
+                {result.status === "void"
+                  ? "Appeal this decision"
+                  : "Ask for review"}
+              </button>
+            </div>
+          </>
+        )}
+        {disputing && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              action("dispute");
+            }}
+          >
+            <div className="field" style={{ marginTop: 20 }}>
+              <label htmlFor="dispute-reason">What needs reviewing?</label>
+              <textarea
+                id="dispute-reason"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                minLength={8}
+                maxLength={1500}
+                required
+                placeholder="Explain the score, roster or consent issue. This stays private."
+              />
+            </div>
+            <button className="button secondary block" disabled={busy}>
+              {busyAction === "dispute"
+                ? "Sending your review request…"
+                : "Submit private review request"}
+            </button>
+          </form>
+        )}
+        <details className="review-record-details">
+          <summary>Result details</summary>
+          <p className="form-help">
+            Players who approved this revision:{" "}
+            {result.players
+              .filter((player: Player) => result.approvals.includes(player.id))
+              .map((player: Player) => player.name)
+              .join(", ") || "None yet"}
+            .
+          </p>
+          <p className="form-help">
+            Submitted by {result.author.name}. Revision {result.revisionNumber}.
+            Correcting or asking for review of an incorrect score does not hurt
+            your response record.
+          </p>
+          <p className="form-help">
+            {result.retrospective
+              ? "Every player chooses rated play and approves this exact revision. An identity invitation or a group invitation does not approve the score."
+              : "Every player agreed to covered rated play earlier. The author and an eligible opponent approve this exact score. A correction needs fresh approval."}
+          </p>
+        </details>
+      </fieldset>
     </Modal>
   );
 }
