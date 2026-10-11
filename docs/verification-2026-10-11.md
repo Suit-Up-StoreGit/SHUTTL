@@ -2,7 +2,21 @@
 
 These checks establish specific local behavior. They do not establish 9.5 product acceptance, real badminton calibration, physical-device delivery, retention, $20 monthly value or production capacity. All tests and visual review used fictional identities/results; no real players were contacted.
 
-## Latest persona and presentation refinement
+## Current routine recap and verification follow-up
+
+The current source is frozen at client `index-CfhXQuPg` and CSS `index-BGo4rtZj`. The build/type check, **54 server checks**, and a **single complete matching-Chromium run of 70/70 browser cases pass**, with zero failed, skipped or flaky cases in 219.4 seconds. The exact run starts at 18:35:56.970 UTC; its report and digest are retained in the matrix. This is local synthetic evidence, not a passing public CI or global product acceptance claim.
+
+The preceding complete run on `index-BxvnOY6z` passed 69/70 and found a genuine Arena contrast regression: the new routine Published rating label measured **1.85:1** against a **4.5:1** requirement. The specific color and replay wrapping were repaired without weakening the audit. Final accessibility checks detect zero violation nodes across 21 states; **222 indeterminate contrast-node instances remain**, so this is not WCAG certification. The failed run remains historical evidence, with its source fix and resolved run recorded.
+
+A separate matching-Chromium guest/account subset passed 6/6 in 21.6 seconds after the fixture acquired bounded steps and an authoritative sign-out wait. These six are included in the 70-case inventory and do not add unique coverage. Earlier full/affected runs, original 9.43 functional judgment, later scoped 9.5 judgment and all failures are preserved. The final current-source review retains **9.5 for each of the ten finite functional journeys**, separately from real unassisted player success.
+
+The latest five 430px fictional home captures were inspected independently after the final build. Both authored fonts loaded, no capture exceptions or horizontal overflow occurred, and routine recaps preserve the main rating hierarchy. Local presentation remains a provisional **9.0**, with premium perception, emotional reward, FOMO, retention and paid value unmeasured. At an actual **1280×720 desktop viewport**, routine recap height changed from 242.78125px to 142.875px, moving the following friend section 99.90625px earlier. This is desktop-only live DOM evidence; no quantitative phone improvement or score follows. See `outputs/functional-review-2026-10-11/routine-hierarchy-measurements.json`.
+
+Public CI has **not been verified successful for this source**. [Run38161912077](https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38161912077) failed; its specific cause is not established in this review. [Run38162883257](https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38162883257) reported 69 browser passes and one guest-persona timeout; cleanup masked the original stuck-action stack. Fixture inspection found an unsafe sign-out/navigation order, which was hardened and passes subsequent local checks. That finding does not establish the exact original CI timeout cause. Commit `f6961471222f07b37ab6c4cb5046e79dbdefeb1a` exposes browser failures in GitHub annotations; adding a diagnostic reporter does not constitute passing CI. Remote verification after the next source push remains separate.
+
+The original 150 criteria and real-player outcomes are unchanged. Local structural correctness, subjective presentation and real behavior evidence remain distinct; no real players, payment integration or public HTTPS deployment were introduced.
+
+## Earlier local persona and presentation refinement
 
 This batch starts from `706ecb6f9b49bba9e4bbad0578b87d84769e073d`. It uses eight fictional persona categories and a documented control inventory. The [persona matrix](acceptance/persona-control-matrix.json) maps representative browser evidence to control families; it does not claim every alias, every state combination or every physical device was exercised. The [design opportunity audit](acceptance/design-opportunity-audit.json) keeps presentation judgments separate from measured player outcomes. The preceding functional assessment was **9.43**, with seven clarity dimensions below the target; that assessment is preserved rather than rounded up.
 

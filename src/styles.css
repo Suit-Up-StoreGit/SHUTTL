@@ -3325,6 +3325,45 @@ html:has(dialog[open]) {
 .reward-small .reward-score strong {
   font-size: 3.125rem;
 }
+.reward-small.reward-routine {
+  padding: 14px 16px;
+}
+.reward-small.reward-routine h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.reward-routine .reward-score {
+  align-items: flex-start;
+  gap: 12px;
+}
+.reward-routine .routine-rating-state {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.reward-routine .routine-rating-state > .reward-fact-label {
+  display: block;
+  font-size: 0.75rem;
+}
+.reward-routine .rating-motion {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 10px;
+}
+.reward-routine .rating-motion .replay-change {
+  flex-basis: auto;
+}
+.reward-small.reward-routine .reward-score strong {
+  font-size: 1.5rem;
+}
+.reward-routine .reward-score > span {
+  margin-left: auto;
+  font-size: 1.25rem;
+}
+.reward-small.reward-routine p {
+  margin-top: 4px;
+}
 .reward-loss {
   border-left: 3px solid #a36b5e;
   background: #f4eee8;
@@ -3697,6 +3736,7 @@ summary {
 }
 .concept-arena .chart-inspection span,
 .concept-arena .feed-changes,
+.concept-arena .reward-routine .reward-fact-label,
 .concept-arena .reward-context {
   color: #c0d2ad;
 }

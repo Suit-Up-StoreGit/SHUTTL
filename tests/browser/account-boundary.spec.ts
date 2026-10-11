@@ -180,7 +180,8 @@ test("a shared-context account change closes the previous identity’s modal and
       const date = new Date(Date.parse(playedAt) - 2000);
       return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
         .toISOString()
-        .slice(0, 19);
+        .slice(0, 19)
+        .replace(/:00$/, "");
     }, payloadA.playedAt);
     await bDialog.getByLabel("Started at", { exact: true }).fill(startedBLocal);
     await bDialog
@@ -436,22 +437,18 @@ test("replacing a login session for the same player refreshes CSRF and protects 
     });
     await expect(retryDialog).toBeVisible();
     await expect(
-      page
-        .getByRole("status")
-        .filter({
-          hasText:
-            "Exact result submitted. Your rating stays unchanged until valid approvals.",
-        }),
+      page.getByRole("status").filter({
+        hasText:
+          "Exact result submitted. Your rating stays unchanged until valid approvals.",
+      }),
     ).toHaveCount(0);
     releaseRetry();
     await expect(retryDialog).toHaveCount(0);
     await expect(
-      page
-        .getByRole("status")
-        .filter({
-          hasText:
-            "Exact result submitted. Your rating stays unchanged until valid approvals.",
-        }),
+      page.getByRole("status").filter({
+        hasText:
+          "Exact result submitted. Your rating stays unchanged until valid approvals.",
+      }),
     ).toBeVisible();
     expect(
       (await (await page.request.get("/api/results")).json()).results,

@@ -159,6 +159,8 @@ export function ResultReward({
   // Only a result after the reveal has a visible before-rating to compare.
   // This also applies when the first revealed result is under correction.
   const hasVisibleBaseline = change.count > 5 && Number.isFinite(change.before);
+  const routine =
+    small && hasVisibleBaseline && (kind === "win" || kind === "loss");
   const promotion = kind === "promotion" && hasVisibleBaseline;
   const bestWithHistory =
     kind === "best" &&
@@ -167,13 +169,25 @@ export function ResultReward({
     Number.isFinite(change.peakAfter) &&
     change.peakAfter === change.after &&
     change.peakAfter > change.peakBefore;
+  const ratingMotion = (
+    <RatingMotion
+      before={hasVisibleBaseline ? change.before : null}
+      after={change.after}
+    />
+  );
   const ratingScore = (
     <div className="reward-score">
-      <RatingMotion
-        before={hasVisibleBaseline ? change.before : null}
-        after={change.after}
-      />
-      {!promotion && <Gem league={leagueFor(change.after).name} size={44} />}
+      {routine ? (
+        <div className="routine-rating-state">
+          <span className="reward-fact-label">Published rating</span>
+          {ratingMotion}
+        </div>
+      ) : (
+        ratingMotion
+      )}
+      {!promotion && !routine && (
+        <Gem league={leagueFor(change.after).name} size={44} />
+      )}
       {hasVisibleBaseline && (
         <span className={change.delta < 0 ? "negative" : "positive"}>
           {change.delta >= 0 ? "+" : ""}
@@ -184,23 +198,25 @@ export function ResultReward({
   );
   return (
     <section
-      className={`result-reward reward-${kind} ${small ? "reward-small" : ""} ${celebrationKey && firstViewedMoment === celebrationKey ? "reward-first-view" : ""}`}
+      className={`result-reward reward-${kind} ${small ? "reward-small" : ""} ${routine ? "reward-routine" : ""} ${celebrationKey && firstViewedMoment === celebrationKey ? "reward-first-view" : ""}`}
       aria-label="Your rating recap"
     >
-      <div className="reward-heading">
-        <span className="eyebrow">
-          {kind === "reveal"
-            ? "FIVE RESULTS / YOUR FIRST RATING"
-            : kind === "promotion"
-              ? "NEW LEAGUE / " + leagueFor(change.after).name.toUpperCase()
-              : kind === "best"
-                ? "YOUR HIGHEST VISIBLE RATING"
-                : kind === "previous"
-                  ? "PUBLISHED HISTORY"
-                  : "PLAYER-CONFIRMED PROGRESS"}
-        </span>
-        {special && !promotion && <Trophy size={20} />}
-      </div>
+      {!routine && (
+        <div className="reward-heading">
+          <span className="eyebrow">
+            {kind === "reveal"
+              ? "FIVE RESULTS / YOUR FIRST RATING"
+              : kind === "promotion"
+                ? "NEW LEAGUE / " + leagueFor(change.after).name.toUpperCase()
+                : kind === "best"
+                  ? "YOUR HIGHEST VISIBLE RATING"
+                  : kind === "previous"
+                    ? "PUBLISHED HISTORY"
+                    : "PLAYER-CONFIRMED PROGRESS"}
+          </span>
+          {special && !promotion && <Trophy size={20} />}
+        </div>
+      )}
       <h3>{title}</h3>
       {kind === "reveal" ? (
         <div className="reward-reveal-lead">

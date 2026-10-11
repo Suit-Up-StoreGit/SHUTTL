@@ -1,8 +1,59 @@
-import { test, expect, type Page } from "@playwright/test";
+import {
+  test,
+  expect,
+  type BrowserContext,
+  type Page,
+  type TestInfo,
+} from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 const origin = "http://localhost:4174";
 const password = "Guest-persona-fixture-2026!";
+
+test.beforeEach(async ({ page }) => {
+  page.setDefaultTimeout(20000);
+  page.setDefaultNavigationTimeout(20000);
+});
+
+async function closeRecipientContext(
+  context: BrowserContext,
+  testInfo: TestInfo,
+  primaryError: unknown,
+) {
+  try {
+    await context.close();
+  } catch (cleanupError) {
+    const detail = String(cleanupError);
+    const disposedByTimeout =
+      testInfo.status === "timedOut" &&
+      context.pages().every((page) => page.isClosed()) &&
+      /Target closed|Target page, context or browser has been closed|Browser has been closed/i.test(
+        detail,
+      );
+    if (disposedByTimeout) {
+      testInfo.annotations.push({
+        type: "cleanup",
+        description:
+          "Playwright already disposed the recipient context after the test timeout.",
+      });
+    } else if (primaryError instanceof Error) {
+      // Keep the original action's stack; record a genuine second failure too.
+      primaryError.message +=
+        "\nRecipient-context cleanup also failed: " + detail;
+      testInfo.annotations.push({
+        type: "cleanup-failure",
+        description: detail,
+      });
+    } else if (primaryError) {
+      throw new AggregateError(
+        [primaryError, cleanupError],
+        "The guest journey and recipient-context cleanup both failed.",
+      );
+    } else {
+      throw cleanupError;
+    }
+  }
+}
 
 async function registerCurrentPage(page: Page, name: string) {
   const username = "gp_" + randomUUID().slice(0, 8);
@@ -110,11 +161,14 @@ async function recordInvitedOpponent(page: Page, nickname: string) {
 test("an invited player registers through the retained private link, is verified separately, and approves the exact result into history", async ({
   page,
   browser,
-}) => {
+}, testInfo) => {
   test.setTimeout(120000);
   await signup(page, "Guest Invitation Author Fixture");
   const { link, id } = await recordInvitedOpponent(page, "Guest Rally Fixture");
   const recipientContext = await browser.newContext({ baseURL: origin });
+  recipientContext.setDefaultTimeout(20000);
+  recipientContext.setDefaultNavigationTimeout(20000);
+  let primaryError: unknown;
   try {
     const recipient = await recipientContext.newPage();
     let readFailed = false,
@@ -263,8 +317,11 @@ test("an invited player registers through the retained private link, is verified
     expect(
       (await (await recipient.request.get("/api/results")).json()).results,
     ).toHaveLength(1);
+  } catch (error) {
+    primaryError = error;
+    throw error;
   } finally {
-    await recipientContext.close();
+    await closeRecipientContext(recipientContext, testInfo, primaryError);
   }
 });
 
@@ -403,112 +460,238 @@ test("a guest invitation with a lost committed response retains its nickname, or
 test("an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating", async ({
   page,
   browser,
-}) => {
+}, testInfo) => {
   test.setTimeout(120000);
-  await signup(page, "Wrong Guest Author Fixture");
-  const { link, id } = await recordInvitedOpponent(
-    page,
-    "Different Guest Fixture",
+  await test.step(
+    "Register the inviter",
+    () => signup(page, "Wrong Guest Author Fixture"),
+    { timeout: 30000 },
+  );
+  const { link, id } = await test.step(
+    "Create a private guest identity and submit its exact result",
+    () => recordInvitedOpponent(page, "Different Guest Fixture"),
+    { timeout: 30000 },
   );
   const recipientContext = await browser.newContext({ baseURL: origin });
+  recipientContext.setDefaultTimeout(20000);
+  recipientContext.setDefaultNavigationTimeout(20000);
+  let primaryError: unknown;
   try {
     const recipient = await recipientContext.newPage();
-    const username = await signup(recipient, "Wrong Guest Claimant Fixture");
-    await recipient
-      .getByRole("button", { name: "Profile", exact: true })
-      .last()
-      .click();
-    await recipient
-      .getByRole("button", { name: "Settings", exact: true })
-      .click();
-    await recipient
-      .getByRole("button", { name: "Sign out", exact: true })
-      .last()
-      .click();
-    await recipient.goto(link);
-    await recipient
-      .getByRole("link", { name: "This invitation is not for me", exact: true })
-      .click();
-    expect(new URL(recipient.url()).pathname).toBe("/home");
-    const token = new URL(link).pathname.split("/").pop();
-    expect(
-      (await (await recipient.request.get("/api/claims/" + token)).json())
-        .state,
-    ).toBe("invited");
-    await recipient.goto(link);
-    await recipient
-      .getByRole("button", {
-        name: "Sign in and keep this exact invitation",
-        exact: true,
-      })
-      .click();
-    await recipient
-      .getByRole("button", { name: "Sign in", exact: true })
-      .first()
-      .click();
-    await recipient.getByLabel("Username", { exact: true }).fill(username);
-    await recipient.getByLabel("Password", { exact: true }).fill(password);
-    await recipient
-      .getByRole("button", { name: "Sign in", exact: true })
-      .last()
-      .click();
-    await recipient
-      .getByRole("button", { name: "This invitation is for me", exact: true })
-      .click();
-    expect(new URL(recipient.url()).pathname).toBe(new URL(link).pathname);
-    await expect(
-      recipient.getByText("Waiting for the inviter’s identity check", {
-        exact: true,
-      }),
-    ).toBeVisible();
-    await page.goto("/inbox");
-    const claim = page.locator(".notice").filter({
-      has: page.getByRole("button", { name: "Wrong person", exact: true }),
-    });
-    await expect(claim).toContainText("wants to claim Different Guest Fixture");
-    await claim
-      .getByRole("button", { name: "Wrong person", exact: true })
-      .click();
-    await expect(
-      page
-        .getByRole("status")
-        .filter({ hasText: "The identity claim was rejected." }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Wrong person", exact: true }),
-    ).toHaveCount(0);
-    await recipient
-      .getByRole("link", { name: "Go to my inbox", exact: true })
-      .click();
-    await expect(
-      recipient.getByText("No result needs chasing", { exact: true }),
-    ).toBeVisible();
-    await expect(
-      recipient.getByText("Your identity could not be verified", {
-        exact: true,
-      }),
-    ).toBeVisible();
-    expect(
-      (await (await recipient.request.get("/api/results")).json()).results,
-    ).toHaveLength(0);
-    expect((await recipient.request.get("/api/results/" + id)).status()).toBe(
-      403,
+    const username = await test.step(
+      "Register the existing recipient identity",
+      () => signup(recipient, "Wrong Guest Claimant Fixture"),
+      { timeout: 30000 },
     );
-    expect(
-      (await (await recipient.request.get("/api/claims/" + token)).json())
-        .state,
-    ).toBe("invited");
-    expect(
-      (
-        await (await recipient.request.get("/api/dashboard")).json()
-      ).me.ratings.find((rating: any) => rating.category === "Singles").count,
-    ).toBe(0);
-    const untouched = await (
-      await page.request.get("/api/results/" + id)
-    ).json();
-    expect(untouched.status).toBe("pending");
-    expect(untouched.approvals).toHaveLength(1);
+    await test.step(
+      "Finish signing out before opening the private invitation",
+      async () => {
+        await recipient
+          .getByRole("button", { name: "Profile", exact: true })
+          .last()
+          .click();
+        await recipient
+          .getByRole("button", { name: "Settings", exact: true })
+          .click();
+        const [signedOut] = await Promise.all([
+          recipient.waitForResponse(
+            (response) =>
+              response.url().endsWith("/api/logout") &&
+              response.request().method() === "POST",
+            { timeout: 20000 },
+          ),
+          recipient
+            .getByRole("button", { name: "Sign out", exact: true })
+            .last()
+            .click(),
+        ]);
+        expect(signedOut.status()).toBe(200);
+        await expect(recipient.locator(".auth-shell")).toBeVisible();
+        await expect(
+          recipient.getByRole("button", {
+            name: "Create my player identity",
+            exact: true,
+          }),
+        ).toBeVisible();
+      },
+      { timeout: 30000 },
+    );
+    const token = new URL(link).pathname.split("/").pop();
+    await test.step(
+      "Declining the invitation leaves its identity unclaimed",
+      async () => {
+        await recipient.goto(link);
+        await recipient
+          .getByRole("link", {
+            name: "This invitation is not for me",
+            exact: true,
+          })
+          .click();
+        expect(new URL(recipient.url()).pathname).toBe("/home");
+        expect(
+          (
+            await (
+              await recipient.request.get("/api/claims/" + token, {
+                timeout: 20000,
+              })
+            ).json()
+          ).state,
+        ).toBe("invited");
+      },
+      { timeout: 30000 },
+    );
+    await test.step(
+      "Sign in to the existing identity while retaining the private link",
+      async () => {
+        await recipient.goto(link);
+        await recipient
+          .getByRole("button", {
+            name: "Sign in and keep this exact invitation",
+            exact: true,
+          })
+          .click();
+        await recipient
+          .getByRole("button", { name: "Sign in", exact: true })
+          .first()
+          .click();
+        await recipient.getByLabel("Username", { exact: true }).fill(username);
+        await recipient.getByLabel("Password", { exact: true }).fill(password);
+        await recipient
+          .getByRole("button", { name: "Sign in", exact: true })
+          .last()
+          .click();
+        await expect(
+          recipient.getByRole("button", {
+            name: "This invitation is for me",
+            exact: true,
+          }),
+        ).toBeVisible();
+      },
+      { timeout: 30000 },
+    );
+    await test.step(
+      "Request the inviter’s separate identity verification",
+      async () => {
+        const [requested] = await Promise.all([
+          recipient.waitForResponse(
+            (response) =>
+              response.url().endsWith("/api/claims/" + token + "/request") &&
+              response.request().method() === "POST",
+            { timeout: 20000 },
+          ),
+          recipient
+            .getByRole("button", {
+              name: "This invitation is for me",
+              exact: true,
+            })
+            .click(),
+        ]);
+        expect(requested.status()).toBe(200);
+        expect(new URL(recipient.url()).pathname).toBe(new URL(link).pathname);
+        await expect(
+          recipient.getByText("Waiting for the inviter’s identity check", {
+            exact: true,
+          }),
+        ).toBeVisible();
+      },
+      { timeout: 30000 },
+    );
+    await test.step(
+      "The inviter rejects the wrong person without approving the score",
+      async () => {
+        await page.goto("/inbox");
+        const claim = page
+          .locator(".notice")
+          .filter({
+            has: page.getByRole("button", {
+              name: "Wrong person",
+              exact: true,
+            }),
+          });
+        await expect(claim).toContainText(
+          "wants to claim Different Guest Fixture",
+        );
+        const [rejected] = await Promise.all([
+          page.waitForResponse(
+            (response) =>
+              response.url().includes("/api/guest-claims/") &&
+              response.url().endsWith("/verify") &&
+              response.request().method() === "POST",
+            { timeout: 20000 },
+          ),
+          claim
+            .getByRole("button", { name: "Wrong person", exact: true })
+            .click(),
+        ]);
+        expect(rejected.status()).toBe(200);
+        await expect(
+          page
+            .getByRole("status")
+            .filter({ hasText: "The identity claim was rejected." }),
+        ).toBeVisible();
+        await expect(
+          page.getByRole("button", { name: "Wrong person", exact: true }),
+        ).toHaveCount(0);
+      },
+      { timeout: 30000 },
+    );
+    await test.step(
+      "The rejected recipient receives the decision and has no score or rating access",
+      async () => {
+        await recipient
+          .getByRole("link", { name: "Go to my inbox", exact: true })
+          .click();
+        await expect(
+          recipient.getByText("No result needs chasing", { exact: true }),
+        ).toBeVisible();
+        await expect(
+          recipient.getByText("Your identity could not be verified", {
+            exact: true,
+          }),
+        ).toBeVisible();
+        expect(
+          (
+            await (
+              await recipient.request.get("/api/results", { timeout: 20000 })
+            ).json()
+          ).results,
+        ).toHaveLength(0);
+        expect(
+          (
+            await recipient.request.get("/api/results/" + id, {
+              timeout: 20000,
+            })
+          ).status(),
+        ).toBe(403);
+        expect(
+          (
+            await (
+              await recipient.request.get("/api/claims/" + token, {
+                timeout: 20000,
+              })
+            ).json()
+          ).state,
+        ).toBe("invited");
+        expect(
+          (
+            await (
+              await recipient.request.get("/api/dashboard", { timeout: 20000 })
+            ).json()
+          ).me.ratings.find((rating: any) => rating.category === "Singles")
+            .count,
+        ).toBe(0);
+        const untouched = await (
+          await page.request.get("/api/results/" + id, { timeout: 20000 })
+        ).json();
+        expect(untouched.status).toBe("pending");
+        expect(untouched.approvals).toHaveLength(1);
+      },
+      { timeout: 30000 },
+    );
+  } catch (error) {
+    primaryError = error;
+    throw error;
   } finally {
-    await recipientContext.close();
+    await closeRecipientContext(recipientContext, testInfo, primaryError);
   }
 });

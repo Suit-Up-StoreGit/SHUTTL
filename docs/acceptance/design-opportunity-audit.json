@@ -41,7 +41,14 @@
     "outputs/functional-review-2026-10-11/mobile-promotion-share-final.png",
     "outputs/functional-review-2026-10-11/mobile-final-check-dark-large.png",
     "outputs/functional-review-2026-10-11/mobile-home-compact-final.png",
-    "outputs/functional-review-2026-10-11/mobile-best-compact-final.png"
+    "outputs/functional-review-2026-10-11/mobile-best-compact-final.png",
+    "docs/mockups/home-court.jpg",
+    "docs/mockups/home-circle.jpg",
+    "docs/mockups/home-arena.jpg",
+    "docs/mockups/home-editorial.jpg",
+    "outputs/functional-review-2026-10-11/routine-hierarchy-measurements.json",
+    "outputs/functional-review-2026-10-11/desktop-routine-before.png",
+    "outputs/functional-review-2026-10-11/desktop-routine-after-final.png"
   ],
   "method": "Presentation bands are provisional local expert prioritization using inspected current source and saved390px and320px dark/enlarged views. They are neither actual acceptance scores nor player perception, retention or value measurements. Functional passes alone do not establish premium quality, emotional reward or9.5 global acceptance.",
   "currentSourceImprovements": [
@@ -60,7 +67,8 @@
     "Recent earned result now follows the rating guide before comparable-friend context in the inspected default Home. Genuine best, reveal and promotion use different factual before/after evidence rather than invented milestone progress.",
     "A chosen accepted friend stays visible even when direct comparison is unsupported; automatic choice is labelled Closest comparable friend, with concrete placement/pending/partner-linked next actions. Weekly recap failed versus empty states have explicit Retry.",
     "A new server-authoritative published promotion snapshot is implemented end-to-end and its historical public/PNG export passed representative reward-context checks in full69. Promotion export was absent before this work, rather than a reachable generic-label fallback.",
-    "Post-full70 compact Home recaps now state only the real won/lost outcome below their numeric/delta/peak block; full result reviews retain before/after and model context. Small best cards remove the redundant transition arrow and reduce spacing. These latest presentation edits passed the rebuilt affected11 checks; final compact Home/best captures have now been inspected with their bundle/hash provenance."
+    "Post-full70 compact Home recaps now state only the real won/lost outcome below their numeric/delta/peak block; full result reviews retain before/after and model context. Small best cards remove the redundant transition arrow and reduce spacing. These latest presentation edits passed the rebuilt affected11 checks; final compact Home/best captures have now been inspected with their bundle/hash provenance.",
+    "Routine Home result uses a compact published-rating line, actual delta and outcome; special reveal/best/promotion and full review remain distinct. A genuine Arena label contrast regression was detected and received a specific color fix; final frozen-source full70 passed, including its accessibility case."
   ],
   "groups": [
     {
@@ -2052,6 +2060,36 @@
       "state": "Final D2j9rU-l compact personal-best card: previous visible1849, new1876, +27, only won outcome below; redundant numeric transition sentence and standalone arrow removed. Dated Published fact and comparable-friend context remain visible below.",
       "sourceBundle": "index-D2j9rU-l",
       "sha256": "164fcfaad3cd70e0fdc8b2ef4106fe07e2b75d1ff0ec5520e0fbedbf4a10ceaa"
+    },
+    {
+      "file": "docs/mockups/home-passport.jpg",
+      "state": "Final frozen-source430px fictional passport direction, captured with settled UI; no independent player or physical-device evidence.",
+      "sourceBundle": "index-CfhXQuPg",
+      "sha256": "2528c5b699cb7d66ccea5cd95d297319e901c92a7905dd6d76a07ffd09ba38e8"
+    },
+    {
+      "file": "docs/mockups/home-court.jpg",
+      "state": "Final frozen-source430px fictional court direction, captured with settled UI; no independent player or physical-device evidence.",
+      "sourceBundle": "index-CfhXQuPg",
+      "sha256": "cb5880dd245f60513508f310fef1a87978e9f0acd4041b05b761176f1fee6876"
+    },
+    {
+      "file": "docs/mockups/home-circle.jpg",
+      "state": "Final frozen-source430px fictional circle direction, captured with settled UI; no independent player or physical-device evidence.",
+      "sourceBundle": "index-CfhXQuPg",
+      "sha256": "7f328fbf728d7ddcc9debf03260f1602202b94a407d296ea35d5028a5aefbf83"
+    },
+    {
+      "file": "docs/mockups/home-arena.jpg",
+      "state": "Final frozen-source430px fictional arena direction, captured with settled UI; no independent player or physical-device evidence.",
+      "sourceBundle": "index-CfhXQuPg",
+      "sha256": "f93440bf60fc31820055425eda86f8f1303f9dfe81802fd5f6ee3192edf6ac55"
+    },
+    {
+      "file": "docs/mockups/home-editorial.jpg",
+      "state": "Final frozen-source430px fictional editorial direction, captured with settled UI; no independent player or physical-device evidence.",
+      "sourceBundle": "index-CfhXQuPg",
+      "sha256": "77078138baa57edfed82216268ce849274d4b92a63e02dac32bd182925944ba4"
     }
   ],
   "independentPanelReview": {
@@ -2125,29 +2163,22 @@
   "completedLocalVerification": {
     "browserUniqueScenariosWithPassingEvidence": 70,
     "browserFullRun": {
-      "passed": 69,
-      "failed": 1,
-      "skipped": 0,
-      "flaky": 0,
-      "runId": "initial-full70-2026-10-11-1744"
-    },
-    "browserAffectedRerun": {
-      "passed": 11,
+      "passed": 70,
       "failed": 0,
       "skipped": 0,
       "flaky": 0,
-      "runId": "final-affected11-2026-10-11-1750"
+      "runId": "final-matching-full70-2026-10-11-1835",
+      "durationMs": 219436.00600000002
     },
     "serverPassed": 54,
     "serverFailed": 0,
-    "scope": "Finite synthetic local functional checks. The full70 and affected11 histories remain distinct; combined matching-case outcomes resolve70 unique scenarios. No single70/0 run or original150 outcome acceptance is claimed.",
+    "scope": "Single completed frozen-source local matching-Chromium full70, plus final54 server checks. Fictional fixtures and local emulation; no current remote CI or original150 outcome acceptance.",
     "localExpertFunctionalAverage": 9.5,
     "functionalExpertTargetMet": true,
     "priorLocalExpertFunctionalAverage": 9.43,
     "globalAcceptanceScoresUnchanged": true,
     "appliesToRunIds": [
-      "initial-full70-2026-10-11-1744",
-      "final-affected11-2026-10-11-1750"
+      "final-matching-full70-2026-10-11-1835"
     ],
     "currentSourceRerunPending": false,
     "serverSourceRerunPending": false
@@ -2163,17 +2194,134 @@
     }
   ],
   "currentReassessmentPending": {
-    "reason": "Finite functional reassessment is complete after source inspection and combined passing checks. Visual/premium/player outcomes remain separately unmeasured.",
+    "reason": "Finite local source and functional reassessment complete on frozen source. Original150/player/device/behavior outcomes remain separately unmeasured; remote CI after source push remains pending.",
     "globalAcceptanceScore": null,
     "allOriginalCriteriaAccepted": false
   },
   "presentationJudgment": {
     "localExpertScore": 9,
-    "scope": "Qualified source and saved-view judgment, now including final D2j9rU-l compact Home/best captures. Strong coherent sporting identity, clear main number/evidence and shorter factual reward hierarchy. This is not measured player premium perception or a claim that every visual state meets9.5.",
+    "scope": "Qualified source and saved-view judgment across all five final430px directions on index-CfhXQuPg. Compact routine hierarchy and current Arena label are improved; no real-player premium, emotional reward or retention score follows.",
     "globalPremiumPerceptionScore": null,
     "actualFomoScore": null,
     "actualRetentionScore": null,
     "actualPriceValueScore": null
   },
-  "evidenceDocumentsFrozen": true
+  "evidenceDocumentsFrozen": true,
+  "latestFiveDirectionsInspection": {
+    "capturedAt": "2026-10-11T18:35:58.597Z",
+    "sourceBundle": "index-CfhXQuPg",
+    "viewportWidth": 430,
+    "fictional": true,
+    "exceptions": [],
+    "overflow": false,
+    "fonts": [
+      {
+        "concept": "?concept=passport",
+        "fonts": [
+          "Manrope",
+          "Barlow"
+        ]
+      },
+      {
+        "concept": "?concept=court",
+        "fonts": [
+          "Manrope",
+          "Barlow"
+        ]
+      },
+      {
+        "concept": "?concept=circle",
+        "fonts": [
+          "Manrope",
+          "Barlow"
+        ]
+      },
+      {
+        "concept": "?concept=arena",
+        "fonts": [
+          "Manrope",
+          "Barlow"
+        ]
+      },
+      {
+        "concept": "?concept=editorial",
+        "fonts": [
+          "Manrope",
+          "Barlow"
+        ]
+      }
+    ],
+    "expertPresentationScore": 9,
+    "globalAcceptanceScore": null,
+    "findings": [
+      "Routine recap is compact published information, preserving the dominant rating and factual delta instead of duplicating the hero.",
+      "Arena routine Published rating is visibly light against the dark panel after the specific contrast fix; the completed frozen-source automated full70 and accessibility case pass.",
+      "Circle and Court intentionally prioritize friend/weekly context respectively; these are alternative directions rather than five independently accepted products.",
+      "Current typography, court geometry, original league marks and forest/ivory palette remain coherent. Recognition, physical-device legibility, motion appeal and reward desirability are unmeasured."
+    ]
+  },
+  "routineDensityEvidence": {
+    "method": "Read-only live DOM measurements using the in-app browser; same fictional passport preview at actual1280x720 viewport.",
+    "beforeBundle": "index-D2j9rU-l",
+    "afterBundle": "index-CfhXQuPg",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "before": {
+      "recapHeight": 242.78125,
+      "friendTop": 1151.953125
+    },
+    "after": {
+      "recapHeight": 142.875,
+      "friendTop": 1052.046875
+    },
+    "savedPixels": 99.90625,
+    "horizontalOverflow": false,
+    "limits": "Desktop measurements only. The browser viewport override did not produce the requested phone viewport; no mobile quantitative reduction or player-experience score is inferred. Separate automated430px phone captures and responsive browser checks are recorded independently.",
+    "reportPath": "outputs/functional-review-2026-10-11/routine-hierarchy-measurements.json",
+    "reportSha256": "69b81453a59e6fd401ae4f0b28eac47ac9e6b3165b906e666b32e46542b5d7fc",
+    "recapHeightReductionPercent": 41.15,
+    "expertScoreIncreaseInferred": false,
+    "note": "Before/after desktop screenshots are top-of-page captures; the below-fold card height comparison is supported by the recorded live DOM measurements, not a claim that both screenshots visibly show the recap."
+  },
+  "currentAccessibilityStatus": {
+    "states": 21,
+    "detectedViolationNodes": 0,
+    "indeterminateContrastNodeInstances": 222,
+    "provenance": "Completed final current-build accessibility case in the single clean full70;21 states, zero detected violation nodes,222 indeterminate contrast-node instances.",
+    "wcagCertificationClaimed": false
+  },
+  "localVerificationHistory": [
+    {
+      "browserUniqueScenariosWithPassingEvidence": 70,
+      "browserFullRun": {
+        "passed": 69,
+        "failed": 1,
+        "skipped": 0,
+        "flaky": 0,
+        "runId": "initial-full70-2026-10-11-1744"
+      },
+      "browserAffectedRerun": {
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "flaky": 0,
+        "runId": "final-affected11-2026-10-11-1750"
+      },
+      "serverPassed": 54,
+      "serverFailed": 0,
+      "scope": "Prior completed local combined70 evidence retained. New matching full70 had69passes and one genuine contrast regression; current final matching full70 remains pending. No remote CI success or global150 acceptance is inferred.",
+      "localExpertFunctionalAverage": 9.5,
+      "functionalExpertTargetMet": true,
+      "priorLocalExpertFunctionalAverage": 9.43,
+      "globalAcceptanceScoresUnchanged": true,
+      "appliesToRunIds": [
+        "initial-full70-2026-10-11-1744",
+        "final-affected11-2026-10-11-1750"
+      ],
+      "currentSourceRerunPending": true,
+      "serverSourceRerunPending": false
+    }
+  ]
 }

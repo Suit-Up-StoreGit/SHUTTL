@@ -178,7 +178,7 @@
     "individualJourneysAtTarget": 10,
     "global150AcceptanceUnchanged": true,
     "currentSourceAssessmentPending": false,
-    "assessmentAppliesToRunId": "final-affected11-2026-10-11-1750",
+    "assessmentAppliesToRunId": "final-matching-full70-2026-10-11-1835",
     "assessmentHistory": [
       {
         "id": "prior-qualified-functional-full65",
@@ -478,14 +478,163 @@
             "independentHumanDeviceOutcomeScore": null
           }
         ]
+      },
+      {
+        "id": "final-qualified-functional-current-chromium70",
+        "runIds": [
+          "final-matching-full70-2026-10-11-1835"
+        ],
+        "average": 9.5,
+        "targetMet": true,
+        "journeyAssessments": [
+          {
+            "id": "registration_recovery",
+            "name": "Registration and recovery",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Protected registration/recovery now shows operation-specific progress and a direct sign-in continuation for unknown committed outcomes. Actual lost registration/recovery cases preserve username/invitation context and clear secrets without a second identity or silent reset. Required code saving and same-account session renewal retain their tested boundaries.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "recording_drafts",
+            "name": "Recording results and drafts",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "The final read-only check directly beside acknowledgement contains the actual sides/names, all games and entered local start/timezone. Exact acknowledgement resets after relevant edits. Normal/invalid score, deciding game, cross-tab conflict, immediate-close/Back and lost committed-response cases preserve the frozen original payload and identity.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "exact_consent",
+            "name": "Rated consent and exact approval",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Actual agreement start/end windows and a two-stage explanation separate every-player before-play consent from author-plus-eligible-opponent exact-score approval. UI recurring/format/third-game/revocation cases and timestamp-bound coverage assertions pass without weakening prior-consent or retrospective rules.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "corrections_disputes",
+            "name": "Corrections and disputes",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Proposed replacement and currently counted score are visibly separate. Entry-error versus disagreement/appeal guidance identifies the appropriate action; pending review states where the decision appears. Actual fresh correction approval, private dispute, independent decisions and appeal cases retain published-history and reviewer permissions.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "friends_invitations",
+            "name": "Friends, QR and invitations",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Direct incoming/outgoing/accepted/self actions, invitation continuity through signup/sign-in, separate guest identity verification and exact-score approval, actual removal and visible retry are covered. Camera, OS clipboard and physical sharing remain explicit external evidence boundaries.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "groups_ownership",
+            "name": "Groups and ownership",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Friends and independently accepted group membership are explicit at the relevant surface, with actual member count and role. Empty-group invitation reaches the selected group. Owners with remaining members see transfer guidance before disabled Leave; explicit transfer confirmation and nonowner leave retain their verified permissions.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "comparison_history",
+            "name": "Comparison and history",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Each placement branch uses actual per-player reveal progress; partner-linked and disconnected histories have plain distinct reasons and valid next actions. Chosen versus automatic comparison is explicit. Search is labelled as loaded results beside its helper, while guarded older-history loading preserves filters and rejects stale-category responses.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "sharing_revocation",
+            "name": "Sharing and revocation",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Current and dated milestone snapshots are distinct; privacy/category/template/shape freeze around the original attempt. Lost-response recovery, unavailable-story Retry, pending attempts after current rating becomes unavailable, promotion/public/PNG export, exact revocation and arrival continuity are covered. Native OS share/download/provider behavior remains outside local claims.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "privacy_account",
+            "name": "Privacy, export and deletion",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Settings explain the real automatic all-link withdrawal on public name/area changes; actual template, captured name/area and timestamps identify each selective revocation target. UI privacy withdrawal revokes all owned old links while another owner stays accessible; fresh exact revocation preserves its sibling. Sticky Save, stale/retained account drafts, recovery/passkeys/research/portrait/block/export/deletion and repeated-read freezing are covered. Other alert-device identity limits are plainly disclosed.",
+            "independentHumanDeviceOutcomeScore": null
+          },
+          {
+            "id": "connection_recovery",
+            "name": "Interrupted-connection recovery",
+            "dimensions": {
+              "completion": 9.5,
+              "clarityAndFeedback": 9.5,
+              "failureRecovery": 9.5,
+              "continuityAndPendingStateSafety": 9.5,
+              "consentAndPermissionSafety": 9.5
+            },
+            "localExpertScore": 9.5,
+            "basis": "Loading, failed, empty and unknown outcomes are distinct with direct in-place retry. Held/failed reads and writes preserve relevant category/context, prevent conflicting edits and stale account restoration, and check authoritative state after ambiguous passkey/research outcomes. Real mobile networks and service uptime remain separate.",
+            "independentHumanDeviceOutcomeScore": null
+          }
+        ]
       }
     ],
     "assessmentBasisRunIds": [
-      "initial-full70-2026-10-11-1744",
-      "final-affected11-2026-10-11-1750"
+      "final-matching-full70-2026-10-11-1835"
     ],
     "scope": "Finite local expert judgment across the enumerated V1 functional tasks and five equally weighted dimensions. Each previously identified material local clarity issue has concrete source changes and representative passing checks; no9.5 user-outcome or whole-platform certification follows.",
-    "reassessmentReason": "Seven specifically identified clarity constraints were resolved and inspected in source, rather than raising scores merely because tests passed. The prior9.43 verdict and original failed-run histories are preserved.",
+    "reassessmentReason": "The seven original clarity constraints remain resolved. Routine-only compact presentation and the genuine Arena contrast regression were checked against source and final frozen-build evidence. No score is raised merely from pass counts; prior9.43 and prior9.5 scopes remain historical.",
     "notClaimed": [
       "Every listed label and possible state was clicked",
       "Actual unassisted player usability",
@@ -866,7 +1015,7 @@
       "file": "tests/browser/journeys.spec.ts",
       "description": "Existing signup/record/approval/profile/draft/reveal/revision cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "five distinct home concepts fit phone and desktop, with separate Mixed state",
         "a delayed private dashboard cannot restore an account after sign out",
@@ -876,42 +1025,42 @@
         "a five-result reveal has a robust compact share and exports a verified story image",
         "a live correction clears both exact-result and batch acknowledgements"
       ],
-      "completedRunId": "final-affected11-2026-10-11-1750",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "five distinct home concepts fit phone and desktop, with separate Mixed state",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a delayed private dashboard cannot restore an account after sign out",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "every league seal stays inside the passport on narrow phones",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "signup, local draft offline retry, cross-account Singles approval and category history",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "profile preferences survive refresh and a draft survives navigation",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a five-result reveal has a robust compact share and exports a verified story image",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a live correction clears both exact-result and batch acknowledgements",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -920,7 +1069,7 @@
       "file": "tests/browser/account-recovery.spec.ts",
       "description": "Existing recovery gating and frozen/ambiguous result cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
         "authentication mode changes retain username and clear stale errors and secret fields",
@@ -931,47 +1080,47 @@
         "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
         "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "authentication mode changes retain username and clear stale errors and secret fields",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an interrupted committed registration offers sign-in without losing the private invitation or chosen username",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a submitted result freezes its exact payload and clears only its matching local draft",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a lost response after commit shows the received result without duplicating it",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -980,28 +1129,28 @@
       "file": "tests/browser/community.spec.ts",
       "description": "Existing virtual passkey, group/QR, portrait/research cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a real virtual-authenticator passkey registers, signs in and remains optional",
         "group identity and recap load, QR generates, and an invitation survives recipient signup",
         "global location, optional portrait and research withdrawal work through visible settings"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a real virtual-authenticator passkey registers, signs in and remains optional",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "group identity and recap load, QR generates, and an invitation survives recipient signup",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "global location, optional portrait and research withdrawal work through visible settings",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1010,7 +1159,7 @@
       "file": "tests/browser/community-recovery.spec.ts",
       "description": "Existing invitation states, pending cancellation, creation/copy, inbox/group retry/ownership cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "private connection links show self, outgoing, incoming and accepted states accurately",
         "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
@@ -1019,37 +1168,37 @@
         "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
         "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "private connection links show self, outgoing, incoming and accepted states accurately",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "invitation creation locks repeated actions and QR/copy fallback track the current link",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "inbox fetch and declined invitations recover from failure without accepting or duplicating choices",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1058,7 +1207,7 @@
       "file": "tests/browser/network-recovery.spec.ts",
       "description": "Existing startup/request/history retry and stale category cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a me startup failure offers retry without presenting a new account",
         "a dashboard startup failure offers retry without presenting a new account",
@@ -1066,32 +1215,32 @@
         "a delayed older-history response cannot enter a newly selected category",
         "failed history loading offers a visible retry and retains the selected category"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a me startup failure offers retry without presenting a new account",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a dashboard startup failure offers retry without presenting a new account",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "request loading failures are recoverable and do not masquerade as an empty inbox or agreement list",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a delayed older-history response cannot enter a newly selected category",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "failed history loading offers a visible retry and retains the selected category",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1100,22 +1249,22 @@
       "file": "tests/browser/settings-recovery.spec.ts",
       "description": "Existing preference save and private-control/revocation cases",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "preferences show unsaved state, freeze the pending payload, and survive reload",
         "private control load failures and failed revocation remain visible and recoverable"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "preferences show unsaved state, freeze the pending payload, and survive reload",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "private control load failures and failed revocation remain visible and recoverable",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1124,16 +1273,16 @@
       "file": "tests/browser/accessibility.spec.ts",
       "description": "Existing emulated-width/accessibility checks, not every control action",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions"
       ],
-      "completedRunId": "final-affected11-2026-10-11-1750",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1142,7 +1291,7 @@
       "file": "tests/browser/settings-availability.spec.ts",
       "description": "New unknown/retry availability, committed research response loss, frozen passkey/alert saves, insight retry and portrait-removal recovery cases; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "failed passkey, research and device availability loads remain unknown and retry visibly",
         "a lost committed research response is checked before another consent choice",
@@ -1154,52 +1303,52 @@
         "appearance stays usable for this visit when the browser denies local storage",
         "notification enable and both disable buttons use harmless browser/provider stubs"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "failed passkey, research and device availability loads remain unknown and retry visibly",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a lost committed research response is checked before another consent choice",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "pending passkey creation freezes its label and password",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "lost committed passkey creation and removal require an authoritative read before more management",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "device alert choices freeze during saving and retry loads the confirmed preferences",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "playing insight retry preserves the selected category and period",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "portrait removal preserves a failed portrait and blocks upload while its retry is pending",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "appearance stays usable for this visit when the browser denies local storage",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "notification enable and both disable buttons use harmless browser/provider stubs",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1208,22 +1357,22 @@
       "file": "tests/browser/consent-persona.spec.ts",
       "description": "Visible doubles agreement, format, individual correction/dispute/appeal UI cases; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
         "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision"
       ],
-      "completedRunId": "final-affected11-2026-10-11-1750",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1419,16 +1568,16 @@
       "file": "tests/browser/privacy-persona.spec.ts",
       "description": "New synthetic privacy/account lifecycle browser persona cases; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "returning and privacy personas use password recovery, block controls, export and deletion through actual UI"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "returning and privacy personas use password recovery, block controls, export and deletion through actual UI",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1437,7 +1586,7 @@
       "file": "tests/browser/persona-review.spec.ts",
       "description": "New synthetic reviewer/comparison/history persona cases; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
         "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
@@ -1445,32 +1594,32 @@
         "independent reviewer persona resolves both decisions and retries processing through the visible desk",
         "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "competitive persona recovers the original share after a lost response and download does not create another link",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "independent reviewer persona resolves both decisions and retries processing through the visible desk",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1479,7 +1628,7 @@
       "file": "tests/browser/draft-concurrency.spec.ts",
       "description": "New cross-tab draft arbitration, lost-result payload retention, same-agreement retry and pending exact-score review cases; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
         "a lost result response freezes its payload across tabs and retries the original match only",
@@ -1488,37 +1637,37 @@
         "closing immediately after an edit waits for its guarded draft save",
         "browser Back keeps the latest queued draft write and its original identifiers"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a lost result response freezes its payload across tabs and retries the original match only",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an agreement with a lost response retains its exact window and retry identifier after reopening",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "exact-score approval keeps the review and all mutable actions frozen until its response returns",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "closing immediately after an edit waits for its guarded draft save",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "browser Back keeps the latest queued draft write and its original identifiers",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1527,28 +1676,28 @@
       "file": "tests/browser/link-retry.spec.ts",
       "description": "New invitation replay after reload, accepted-before-cancel state refresh and in-place read retry; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a committed invitation whose response is lost survives reload and replays the same private link",
         "cancelling a friendship accepted in another tab refreshes the open player-code state",
         "an interrupted invitation read can be retried in place without changing its token or signing up again"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a committed invitation whose response is lost survives reload and replays the same private link",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "cancelling a friendship accepted in another tab refreshes the open player-code state",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an interrupted invitation read can be retried in place without changing its token or signing up again",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1557,22 +1706,22 @@
       "file": "tests/browser/social-actions-persona.spec.ts",
       "description": "New real synthetic participant batch exact approval, mark unread updates read, private encouragement and503retry, named pool selection and safe owner/member leave; coordinated run outcomes are recorded separately",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
         "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1581,28 +1730,28 @@
       "file": "tests/browser/guest-persona.spec.ts",
       "description": "Visible guest creation, copy/use, ambiguous committed-response retry, signup/sign-in claim continuity, inviter verification and rejection",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
         "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
         "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1611,16 +1760,16 @@
       "file": "tests/browser/public-share-persona.spec.ts",
       "description": "Actual anonymous current/historical private snapshots, transient retry, existing/new player arrival, explicit start/dismiss and revoked-link boundaries",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1629,16 +1778,16 @@
       "file": "tests/browser/group-retry.spec.ts",
       "description": "Visible group creation recovers the same frozen identity after a lost committed response, navigation and reload",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1647,28 +1796,28 @@
       "file": "tests/browser/account-boundary.spec.ts",
       "description": "Real synthetic cross-account modal isolation, stale completion protection and identity-verification loading/retry.",
       "evidenceType": "browser_checks",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "literalCaseTitles": [
         "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
         "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
         "a dashboard identity that fails fresh identity verification is never activated and loading can be retried"
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
       "runtimeCases": [
         {
           "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
       "currentSourceRerunRequired": false
@@ -1684,11 +1833,11 @@
         {
           "title": "published milestone recaps and promotion exports preserve a pending first-reveal correction",
           "outcome": "passed",
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
-      "completedRunId": "final-affected11-2026-10-11-1750",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification",
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70",
       "currentSourceRerunRequired": false
     },
     "shareStoryRecovery": {
@@ -1703,11 +1852,11 @@
         {
           "title": "share story recovery retains selections, creates only on intent and recovers a committed snapshot after a real result is voided",
           "outcome": "passed",
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ],
-      "completedRunId": "initial-full70-2026-10-11-1744",
-      "currentBatchOutcome": "mapped_cases_passed_in_final_combined_verification"
+      "completedRunId": "final-matching-full70-2026-10-11-1835",
+      "currentBatchOutcome": "mapped_cases_passed_in_final_single_full70"
     }
   },
   "controls": [
@@ -4104,7 +4253,7 @@
   },
   "runtimeEvidence": {
     "scope": "Completed coordinated local Chromium browser cases against fictional fixtures. A case pass is a finite observed assertion, not every alias/state, real hardware delivery or user perception.",
-    "latestCompletedRunId": "final-affected11-2026-10-11-1750",
+    "latestCompletedRunId": "final-matching-full70-2026-10-11-1835",
     "currentSourceChangesRequireAffectedRerun": false,
     "runs": [
       {
@@ -6312,16 +6461,945 @@
             "errors": []
           }
         ]
+      },
+      {
+        "id": "matching-invitation6-2026-10-11-1829",
+        "reportPath": "outputs/functional-review-2026-10-11/persona-invitation-chromium-report.json",
+        "reportSha256": "613df91f310dbac6b1e6c971f23e54d0dd8a3d1606eb6f3d823138e0db764ec5",
+        "scope": "Matching Playwright Chromium guest/account checks after bounded fixture steps and authoritative sign-out settling. These6 are a subset of the full70, not6 additional scenarios.",
+        "startTime": "2026-10-11T18:29:28.930Z",
+        "durationMs": 21571.174,
+        "expected": 6,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0,
+        "cases": [
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
+            "outcome": "passed",
+            "errors": []
+          }
+        ]
+      },
+      {
+        "id": "matching-full70-contrast-2026-10-11-1831",
+        "reportPath": "outputs/functional-review-2026-10-11/persona-complete-chromium70-report.json",
+        "reportSha256": "4deb88f9599e29e9746b8ec62769e3324a567d27068bdb7203fbf933cdc405e5",
+        "scope": "Completed matching Chromium full70 on index-BxvnOY6z:69passed and one genuine routine-recap contrast regression in Arena. Root fixed targeted label color and replay wrapping; final index-CfhXQuPg full70 remains pending.",
+        "startTime": "2026-10-11T18:31:41.026Z",
+        "durationMs": 219760.674,
+        "expected": 69,
+        "unexpected": 1,
+        "skipped": 0,
+        "flaky": 0,
+        "cases": [
+          {
+            "file": "accessibility.spec.ts",
+            "title": "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions",
+            "outcome": "unexpected",
+            "errors": [
+              "Error: [ |   { |     \"state\": \"design arena\", |     \"violations\": [ |       { |         \"id\": \"color-contrast\", |         \"impact\": \"serious\","
+            ]
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "authentication mode changes retain username and clear stale errors and secret fields",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed registration offers sign-in without losing the private invitation or chosen username",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a submitted result freezes its exact payload and clears only its matching local draft",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a lost response after commit shows the received result without duplicating it",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "private connection links show self, outgoing, incoming and accepted states accurately",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "invitation creation locks repeated actions and QR/copy fallback track the current link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "inbox fetch and declined invitations recover from failure without accepting or duplicating choices",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "a real virtual-authenticator passkey registers, signs in and remains optional",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "group identity and recap load, QR generates, and an invitation survives recipient signup",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "global location, optional portrait and research withdrawal work through visible settings",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a lost result response freezes its payload across tabs and retries the original match only",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "an agreement with a lost response retains its exact window and retry identifier after reopening",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "exact-score approval keeps the review and all mutable actions frozen until its response returns",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "closing immediately after an edit waits for its guarded draft save",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "browser Back keeps the latest queued draft write and its original identifiers",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "group-retry.spec.ts",
+            "title": "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "five distinct home concepts fit phone and desktop, with separate Mixed state",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a delayed private dashboard cannot restore an account after sign out",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "every league seal stays inside the passport on narrow phones",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "signup, local draft offline retry, cross-account Singles approval and category history",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "profile preferences survive refresh and a draft survives navigation",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a five-result reveal has a robust compact share and exports a verified story image",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a live correction clears both exact-result and batch acknowledgements",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "a committed invitation whose response is lost survives reload and replays the same private link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "cancelling a friendship accepted in another tab refreshes the open player-code state",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "an interrupted invitation read can be retried in place without changing its token or signing up again",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a me startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a dashboard startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "request loading failures are recoverable and do not masquerade as an empty inbox or agreement list",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a delayed older-history response cannot enter a newly selected category",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "failed history loading offers a visible retry and retains the selected category",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "competitive persona recovers the original share after a lost response and download does not create another link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "independent reviewer persona resolves both decisions and retries processing through the visible desk",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "privacy-persona.spec.ts",
+            "title": "returning and privacy personas use password recovery, block controls, export and deletion through actual UI",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "public-share-persona.spec.ts",
+            "title": "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "reward-context.spec.ts",
+            "title": "published milestone recaps and promotion exports preserve a pending first-reveal correction",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "failed passkey, research and device availability loads remain unknown and retry visibly",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "a lost committed research response is checked before another consent choice",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "pending passkey creation freezes its label and password",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "lost committed passkey creation and removal require an authoritative read before more management",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "device alert choices freeze during saving and retry loads the confirmed preferences",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "playing insight retry preserves the selected category and period",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "portrait removal preserves a failed portrait and blocks upload while its retry is pending",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "appearance stays usable for this visit when the browser denies local storage",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "notification enable and both disable buttons use harmless browser/provider stubs",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "preferences show unsaved state, freeze the pending payload, and survive reload",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "private control load failures and failed revocation remain visible and recoverable",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "share-story-recovery.spec.ts",
+            "title": "share story recovery retains selections, creates only on intent and recovers a committed snapshot after a real result is voided",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible",
+            "outcome": "passed",
+            "errors": []
+          }
+        ],
+        "failureAnalysis": [
+          {
+            "file": "accessibility.spec.ts",
+            "cause": "Real color-contrast regression: Arena routine Published rating .reward-fact-label foreground#52635b/background#223d2d,12px normal,1.85:1 against required4.5:1.",
+            "sourceFix": "Specific routine label color for Arena and replay flex basis; no test expectation or contrast threshold weakened.",
+            "correctedRerunPending": false,
+            "resolvedByRunId": "final-matching-full70-2026-10-11-1835"
+          }
+        ]
+      },
+      {
+        "id": "final-matching-full70-2026-10-11-1835",
+        "reportPath": "outputs/functional-review-2026-10-11/persona-final-chromium70-report.json",
+        "reportSha256": "db291fd7ede7fbceb552a4449a17c47c079b090b796b85cd0b0423242d33b7b7",
+        "scope": "Single complete frozen-source full70 run using matching Playwright Chromium. Source bundle index-CfhXQuPg/CSS index-BGo4rtZj. No retries/flaky/skipped or failed cases; synthetic local evidence only.",
+        "startTime": "2026-10-11T18:35:56.970Z",
+        "durationMs": 219436.00600000002,
+        "expected": 70,
+        "unexpected": 0,
+        "skipped": 0,
+        "flaky": 0,
+        "cases": [
+          {
+            "file": "accessibility.spec.ts",
+            "title": "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "authentication mode changes retain username and clear stale errors and secret fields",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed registration offers sign-in without losing the private invitation or chosen username",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a submitted result freezes its exact payload and clears only its matching local draft",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a lost response after commit shows the received result without duplicating it",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "private connection links show self, outgoing, incoming and accepted states accurately",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "invitation creation locks repeated actions and QR/copy fallback track the current link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "inbox fetch and declined invitations recover from failure without accepting or duplicating choices",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "a real virtual-authenticator passkey registers, signs in and remains optional",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "group identity and recap load, QR generates, and an invitation survives recipient signup",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "global location, optional portrait and research withdrawal work through visible settings",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a lost result response freezes its payload across tabs and retries the original match only",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "an agreement with a lost response retains its exact window and retry identifier after reopening",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "exact-score approval keeps the review and all mutable actions frozen until its response returns",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "closing immediately after an edit waits for its guarded draft save",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "browser Back keeps the latest queued draft write and its original identifiers",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "group-retry.spec.ts",
+            "title": "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "five distinct home concepts fit phone and desktop, with separate Mixed state",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a delayed private dashboard cannot restore an account after sign out",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "every league seal stays inside the passport on narrow phones",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "signup, local draft offline retry, cross-account Singles approval and category history",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "profile preferences survive refresh and a draft survives navigation",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a five-result reveal has a robust compact share and exports a verified story image",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a live correction clears both exact-result and batch acknowledgements",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "a committed invitation whose response is lost survives reload and replays the same private link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "cancelling a friendship accepted in another tab refreshes the open player-code state",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "an interrupted invitation read can be retried in place without changing its token or signing up again",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a me startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a dashboard startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "request loading failures are recoverable and do not masquerade as an empty inbox or agreement list",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a delayed older-history response cannot enter a newly selected category",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "failed history loading offers a visible retry and retains the selected category",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "competitive persona recovers the original share after a lost response and download does not create another link",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "independent reviewer persona resolves both decisions and retries processing through the visible desk",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "privacy-persona.spec.ts",
+            "title": "returning and privacy personas use password recovery, block controls, export and deletion through actual UI",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "public-share-persona.spec.ts",
+            "title": "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "reward-context.spec.ts",
+            "title": "published milestone recaps and promotion exports preserve a pending first-reveal correction",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "failed passkey, research and device availability loads remain unknown and retry visibly",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "a lost committed research response is checked before another consent choice",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "pending passkey creation freezes its label and password",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "lost committed passkey creation and removal require an authoritative read before more management",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "device alert choices freeze during saving and retry loads the confirmed preferences",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "playing insight retry preserves the selected category and period",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "portrait removal preserves a failed portrait and blocks upload while its retry is pending",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "appearance stays usable for this visit when the browser denies local storage",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "notification enable and both disable buttons use harmless browser/provider stubs",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "preferences show unsaved state, freeze the pending payload, and survive reload",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "private control load failures and failed revocation remain visible and recoverable",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "share-story-recovery.spec.ts",
+            "title": "share story recovery retains selections, creates only on intent and recovers a committed snapshot after a real result is voided",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
+            "outcome": "passed",
+            "errors": []
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible",
+            "outcome": "passed",
+            "errors": []
+          }
+        ]
       }
     ],
     "currentSourcePendingCases": [],
     "uniqueFinalBrowserCases": 70,
-    "testedBundleIndex": "index-D2j9rU-l",
+    "testedBundleIndex": "index-CfhXQuPg",
     "serverVerification": {
       "passed": 54,
       "failed": 0,
       "command": "node --test tests/*.test.ts",
-      "provenance": "Coordinating root reported completed final54/0 server checks and no subsequent server-source changes.",
+      "provenance": "Root confirmed final npm test54/54 on frozen current source; no server changes after this run.",
       "currentSourceRerunRequired": false,
       "scope": "Synthetic server/API checks, not independent player or physical-device outcomes."
     },
@@ -6346,508 +7424,1064 @@
         "provenance": "Coordinating root final reported54/0; server unchanged during final affected browser verification."
       }
     ],
-    "testedCssIndex": "index-vECw0cvz",
+    "testedCssIndex": "index-BGo4rtZj",
     "finalVerification": {
       "basisRuns": [
-        "initial-full70-2026-10-11-1744",
-        "final-affected11-2026-10-11-1750"
+        "final-matching-full70-2026-10-11-1835"
       ],
       "uniqueScenarioCount": 70,
       "uniqueScenariosWithPassingFinalEvidence": 70,
-      "scope": "Full70 recorded69 passes and one fixture serialization failure; corrected/rebuilt affected11 rerun passed11. Combined latest matching-case outcomes give70 unique passing representative scenarios. No single70/0 run is claimed and duplicate subset cases are not added to total coverage.",
+      "singleCompleteRun": true,
+      "sourceBundle": "index-CfhXQuPg",
+      "sourceCss": "index-BGo4rtZj",
+      "isCurrentSourceVerification": true,
+      "scope": "A single complete local matching-Chromium run passed all70 synthetic scenarios on frozen source. Earlier partial/combined/failed runs remain historical evidence; no real-player/device/global acceptance follows.",
       "currentCases": [
         {
           "file": "accessibility.spec.ts",
           "title": "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-boundary.spec.ts",
           "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-boundary.spec.ts",
           "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-boundary.spec.ts",
           "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "authentication mode changes retain username and clear stale errors and secret fields",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "an interrupted committed registration offers sign-in without losing the private invitation or chosen username",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "a submitted result freezes its exact payload and clears only its matching local draft",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "a lost response after commit shows the received result without duplicating it",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "account-recovery.spec.ts",
           "title": "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "private connection links show self, outgoing, incoming and accepted states accurately",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "invitation creation locks repeated actions and QR/copy fallback track the current link",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "inbox fetch and declined invitations recover from failure without accepting or duplicating choices",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community-recovery.spec.ts",
           "title": "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community.spec.ts",
           "title": "a real virtual-authenticator passkey registers, signs in and remains optional",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community.spec.ts",
           "title": "group identity and recap load, QR generates, and an invitation survives recipient signup",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "community.spec.ts",
           "title": "global location, optional portrait and research withdrawal work through visible settings",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "consent-persona.spec.ts",
           "title": "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "consent-persona.spec.ts",
           "title": "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "a lost result response freezes its payload across tabs and retries the original match only",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "an agreement with a lost response retains its exact window and retry identifier after reopening",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "exact-score approval keeps the review and all mutable actions frozen until its response returns",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "closing immediately after an edit waits for its guarded draft save",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "draft-concurrency.spec.ts",
           "title": "browser Back keeps the latest queued draft write and its original identifiers",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "group-retry.spec.ts",
           "title": "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "guest-persona.spec.ts",
           "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "guest-persona.spec.ts",
           "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "guest-persona.spec.ts",
           "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "five distinct home concepts fit phone and desktop, with separate Mixed state",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "a delayed private dashboard cannot restore an account after sign out",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "every league seal stays inside the passport on narrow phones",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "signup, local draft offline retry, cross-account Singles approval and category history",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "profile preferences survive refresh and a draft survives navigation",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "a five-result reveal has a robust compact share and exports a verified story image",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "journeys.spec.ts",
           "title": "a live correction clears both exact-result and batch acknowledgements",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "link-retry.spec.ts",
           "title": "a committed invitation whose response is lost survives reload and replays the same private link",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "link-retry.spec.ts",
           "title": "cancelling a friendship accepted in another tab refreshes the open player-code state",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "link-retry.spec.ts",
           "title": "an interrupted invitation read can be retried in place without changing its token or signing up again",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "network-recovery.spec.ts",
           "title": "a me startup failure offers retry without presenting a new account",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "network-recovery.spec.ts",
           "title": "a dashboard startup failure offers retry without presenting a new account",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "network-recovery.spec.ts",
           "title": "request loading failures are recoverable and do not masquerade as an empty inbox or agreement list",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "network-recovery.spec.ts",
           "title": "a delayed older-history response cannot enter a newly selected category",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "network-recovery.spec.ts",
           "title": "failed history loading offers a visible retry and retains the selected category",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "persona-review.spec.ts",
           "title": "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "persona-review.spec.ts",
           "title": "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "persona-review.spec.ts",
           "title": "competitive persona recovers the original share after a lost response and download does not create another link",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "persona-review.spec.ts",
           "title": "independent reviewer persona resolves both decisions and retries processing through the visible desk",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "persona-review.spec.ts",
           "title": "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "privacy-persona.spec.ts",
           "title": "returning and privacy personas use password recovery, block controls, export and deletion through actual UI",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "public-share-persona.spec.ts",
           "title": "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "reward-context.spec.ts",
           "title": "published milestone recaps and promotion exports preserve a pending first-reveal correction",
           "outcome": "passed",
           "errors": [],
-          "runId": "final-affected11-2026-10-11-1750"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "failed passkey, research and device availability loads remain unknown and retry visibly",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "a lost committed research response is checked before another consent choice",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "pending passkey creation freezes its label and password",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "lost committed passkey creation and removal require an authoritative read before more management",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "device alert choices freeze during saving and retry loads the confirmed preferences",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "playing insight retry preserves the selected category and period",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "portrait removal preserves a failed portrait and blocks upload while its retry is pending",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "appearance stays usable for this visit when the browser denies local storage",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-availability.spec.ts",
           "title": "notification enable and both disable buttons use harmless browser/provider stubs",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-recovery.spec.ts",
           "title": "preferences show unsaved state, freeze the pending payload, and survive reload",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "settings-recovery.spec.ts",
           "title": "private control load failures and failed revocation remain visible and recoverable",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "share-story-recovery.spec.ts",
           "title": "share story recovery retains selections, creates only on intent and recovers a committed snapshot after a real result is voided",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "social-actions-persona.spec.ts",
           "title": "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         },
         {
           "file": "social-actions-persona.spec.ts",
           "title": "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible",
           "outcome": "passed",
           "errors": [],
-          "runId": "initial-full70-2026-10-11-1744"
+          "runId": "final-matching-full70-2026-10-11-1835"
         }
       ]
-    }
+    },
+    "currentSourceBundle": "index-CfhXQuPg",
+    "currentSourceCss": "index-BGo4rtZj",
+    "currentSourceBuildSizes": {
+      "javascriptKilobytes": 496.6,
+      "javascriptGzipKilobytes": 150.75,
+      "cssKilobytes": 70.43,
+      "cssGzipKilobytes": 14.52,
+      "provenance": "Coordinating root frozen production build output; not experience latency."
+    },
+    "pendingFullRun": {
+      "reportPath": "outputs/functional-review-2026-10-11/persona-final-chromium70-report.json",
+      "sourceBundle": "index-CfhXQuPg",
+      "completed": true,
+      "outcome": {
+        "passed": 70,
+        "failed": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "runId": "final-matching-full70-2026-10-11-1835"
+    },
+    "remoteCi": {
+      "status": "no_current_remote_success_verified",
+      "runs": [
+        {
+          "id": 38161912077,
+          "url": "https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38161912077",
+          "conclusion": "failure",
+          "failureCause": null,
+          "provenance": "Root-reported public failure; cause unspecified in this review."
+        },
+        {
+          "id": 38162883257,
+          "url": "https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38162883257",
+          "conclusion": "failure",
+          "browserPassed": 69,
+          "browserFailed": 1,
+          "failureCause": null,
+          "provenance": "Root-reported public annotations and source inspection. The unsafe fixture order is an identified defect; definitive causality for the original CI timeout is not claimed.",
+          "observedFailure": "69 browser cases passed and the third guest-persona case timed out; cleanup masked the original stuck-action stack.",
+          "sourceInspectionFinding": "Fixture navigated immediately without waiting for asynchronous sign-out to settle. Bounded action steps and an authoritative sign-out wait were added; six matching guest/account checks and the final local full70 pass.",
+          "originalStuckActionEstablished": false
+        }
+      ],
+      "diagnosticReporterCommit": "f6961471222f07b37ab6c4cb5046e79dbdefeb1a",
+      "diagnosticReporterPurpose": "Expose browser failures in GitHub annotations; this commit is not evidence that CI passed.",
+      "currentSourceCiOutcome": null
+    },
+    "verificationHistory": [
+      {
+        "basisRuns": [
+          "initial-full70-2026-10-11-1744",
+          "final-affected11-2026-10-11-1750"
+        ],
+        "uniqueScenarioCount": 70,
+        "uniqueScenariosWithPassingFinalEvidence": 70,
+        "scope": "Full70 recorded69 passes and one fixture serialization failure; corrected/rebuilt affected11 rerun passed11. Combined latest matching-case outcomes give70 unique passing representative scenarios. No single70/0 run is claimed and duplicate subset cases are not added to total coverage.",
+        "currentCases": [
+          {
+            "file": "accessibility.spec.ts",
+            "title": "core journeys have no detected WCAG AA violations in light and dark; large text preserves actions",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a shared-context account change closes the previous identity’s modal and an old completion cannot close the new user’s result",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "replacing a login session for the same player refreshes CSRF and protects a retry from the old completion",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-boundary.spec.ts",
+            "title": "a dashboard identity that fails fresh identity verification is never activated and loading can be retried",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "recovery acknowledgement cannot be bypassed and copy failure provides a selectable code",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "authentication mode changes retain username and clear stale errors and secret fields",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed registration offers sign-in without losing the private invitation or chosen username",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an interrupted committed recovery guides sign-in with the chosen new password and consumes the old code only once",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a submitted result freezes its exact payload and clears only its matching local draft",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "a lost response after commit shows the received result without duplicating it",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an uncertain draft freezes edits and a legacy edited retry reveals the original received score",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "account-recovery.spec.ts",
+            "title": "an unsubmitted draft can be discarded explicitly and a share creation freezes its selected privacy choices",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "private connection links show self, outgoing, incoming and accepted states accurately",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "rescanning a username code preserves pending requests and supports cancellation before explicit acceptance",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "invitation creation locks repeated actions and QR/copy fallback track the current link",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "inbox fetch and declined invitations recover from failure without accepting or duplicating choices",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group URLs survive reload and browser Back; choosing an owner requires separate confirmation",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community-recovery.spec.ts",
+            "title": "group recap retry clears old errors and cancelled identity drafts never overwrite saved identity",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "a real virtual-authenticator passkey registers, signs in and remains optional",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "group identity and recap load, QR generates, and an invitation survives recipient signup",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "community.spec.ts",
+            "title": "global location, optional portrait and research withdrawal work through visible settings",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a doubles regular creates an exact recurring agreement, records a covered series, revokes future consent and records Mixed separately",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "consent-persona.spec.ts",
+            "title": "a competitive persona checks all formats, fixes an invalid score, proposes a correction, disputes and appeals a genuine void decision",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a second tab pauses before it can overwrite or remove another tab’s draft without Web Locks",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "a lost result response freezes its payload across tabs and retries the original match only",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "an agreement with a lost response retains its exact window and retry identifier after reopening",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "exact-score approval keeps the review and all mutable actions frozen until its response returns",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "closing immediately after an edit waits for its guarded draft save",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "draft-concurrency.spec.ts",
+            "title": "browser Back keeps the latest queued draft write and its original identifiers",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "group-retry.spec.ts",
+            "title": "a lost committed circle creation keeps its frozen name and recovers the same group after navigation and reload",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an invited player registers through the retained private link, is verified separately, and approves the exact result into history",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "a guest invitation with a lost committed response retains its nickname, original player and claim link across lookup reopening",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "guest-persona.spec.ts",
+            "title": "an existing player keeps a guest invitation through sign-in and wrong-person rejection grants no result access or rating",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "five distinct home concepts fit phone and desktop, with separate Mixed state",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a delayed private dashboard cannot restore an account after sign out",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "every league seal stays inside the passport on narrow phones",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "signup, local draft offline retry, cross-account Singles approval and category history",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "profile preferences survive refresh and a draft survives navigation",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a five-result reveal has a robust compact share and exports a verified story image",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "journeys.spec.ts",
+            "title": "a live correction clears both exact-result and batch acknowledgements",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "a committed invitation whose response is lost survives reload and replays the same private link",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "cancelling a friendship accepted in another tab refreshes the open player-code state",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "link-retry.spec.ts",
+            "title": "an interrupted invitation read can be retried in place without changing its token or signing up again",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a me startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a dashboard startup failure offers retry without presenting a new account",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "request loading failures are recoverable and do not masquerade as an empty inbox or agreement list",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "a delayed older-history response cannot enter a newly selected category",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "network-recovery.spec.ts",
+            "title": "failed history loading offers a visible retry and retains the selected category",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "privacy persona keeps unsaved choices through navigation and refresh; stale choices cannot replace newer saved privacy",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "rookie and competitive personas use guides, categories, history chart, comparisons and retry without false rankings",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "competitive persona recovers the original share after a lost response and download does not create another link",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "independent reviewer persona resolves both decisions and retries processing through the visible desk",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "persona-review.spec.ts",
+            "title": "an expired session preserves pending share identity and preferences for sign-in recovery, then explicit sign-out clears them",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "privacy-persona.spec.ts",
+            "title": "returning and privacy personas use password recovery, block controls, export and deletion through actual UI",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "public-share-persona.spec.ts",
+            "title": "public share personas inspect captured private and named snapshots, change profile visibility, revoke an exact link and keep arrival continuity",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "reward-context.spec.ts",
+            "title": "published milestone recaps and promotion exports preserve a pending first-reveal correction",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "final-affected11-2026-10-11-1750"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "failed passkey, research and device availability loads remain unknown and retry visibly",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "a lost committed research response is checked before another consent choice",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "pending passkey creation freezes its label and password",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "lost committed passkey creation and removal require an authoritative read before more management",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "device alert choices freeze during saving and retry loads the confirmed preferences",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "playing insight retry preserves the selected category and period",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "portrait removal preserves a failed portrait and blocks upload while its retry is pending",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "appearance stays usable for this visit when the browser denies local storage",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-availability.spec.ts",
+            "title": "notification enable and both disable buttons use harmless browser/provider stubs",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "preferences show unsaved state, freeze the pending payload, and survive reload",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "settings-recovery.spec.ts",
+            "title": "private control load failures and failed revocation remain visible and recoverable",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "share-story-recovery.spec.ts",
+            "title": "share story recovery retains selections, creates only on intent and recovers a committed snapshot after a real result is voided",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "a recreational persona batch-approves two exact revisions, reads updates and gives private encouragement with retry",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          },
+          {
+            "file": "social-actions-persona.spec.ts",
+            "title": "an existing-group persona chooses its named ranking pool and leaves safely while the owner remains responsible",
+            "outcome": "passed",
+            "errors": [],
+            "runId": "initial-full70-2026-10-11-1744"
+          }
+        ],
+        "isCurrentSourceVerification": false,
+        "sourceScope": "Prior index-D2j9rU-l combined evidence retained; later routine presentation and matching-browser fixture changes require the final frozen-source full70."
+      }
+    ]
   },
   "evidenceDocumentsFrozen": true,
   "finalSourceFrozen": true
