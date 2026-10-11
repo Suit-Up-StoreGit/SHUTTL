@@ -15,10 +15,12 @@ export async function api<T = any>(
   method = body === undefined ? "GET" : "POST",
   requestId?: string,
 ): Promise<T> {
-  let response: Response;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30_000);
   try {
-    response = await fetch("/api" + path, {
+    const response = await fetch("/api" + path, {
       method,
+      signal: controller.signal,
       credentials: "same-origin",
       headers: {
         ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
@@ -31,16 +33,31 @@ export async function api<T = any>(
       },
       ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
     });
-  } catch {
+    let data: any;
+    try {
+      data = await response.json();
+    } catch {
+      if (controller.signal.aborted || response.ok)
+        throw new ApiError(
+          "The response could not be confirmed. Reconnect and check the action before retrying.",
+          0,
+        );
+      data = {};
+    }
+    if (!response.ok)
+      throw new ApiError(data.error || "Please try again.", response.status);
+    return data;
+  } catch (e) {
+    if (e instanceof ApiError) throw e;
     throw new ApiError(
-      "You are offline. Reconnect and try again. This action has not been confirmed by SHUTTL.",
+      controller.signal.aborted
+        ? "The connection took too long. This action has not been confirmed by SHUTTL. Reconnect and check before retrying."
+        : "The connection was interrupted. This action has not been confirmed by SHUTTL. Reconnect and check before retrying.",
       0,
     );
+  } finally {
+    clearTimeout(timeout);
   }
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok)
-    throw new ApiError(data.error || "Please try again.", response.status);
-  return data;
 }
 let displayTimezone = "Asia/Singapore";
 export const setDisplayTimezone = (timezone: string) => {

@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Copy, Heart, UsersRound } from "lucide-react";
 import { api, dateLabel, errorMessage } from "../api.ts";
 import type { Category, Player } from "../domain.ts";
@@ -54,15 +54,19 @@ export function PlayerCode({
   notify: (s: string) => void;
 }) {
   const [open, setOpen] = useState(false),
-    [qr, setQr] = useState(""),
+    [qr, setQr] = useState<{ link: string; image: string } | null>(null),
     [invitation, setInvitation] = useState<any>(null),
     [invitations, setInvitations] = useState<any[]>([]),
-    [error, setError] = useState("");
+    [invitationRevision, setInvitationRevision] = useState(0),
+    [error, setError] = useState(""),
+    [busy, setBusy] = useState(false);
+  const mutationInFlight = useRef(false);
   const link = invitation
     ? location.origin + invitation.path
     : location.origin + "/home?player=" + encodeURIComponent(me.username);
   useEffect(() => {
     let active = true;
+    setQr(null);
     if (open)
       import("qrcode")
         .then(({ default: QRCode }) =>
@@ -74,7 +78,7 @@ export function PlayerCode({
           }),
         )
         .then((value) => {
-          if (active) setQr(value);
+          if (active) setQr({ link, image: value });
         })
         .catch((e) => {
           if (active) setError(errorMessage(e));
@@ -96,10 +100,37 @@ export function PlayerCode({
     return () => {
       active = false;
     };
-  }, [open, invitation]);
+  }, [open, invitation, invitationRevision]);
+  async function changeInvitation(id?: string) {
+    if (mutationInFlight.current) return;
+    mutationInFlight.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      if (id) {
+        await api("/player-invites/" + id, {}, "DELETE");
+        setInvitations((old) => old.filter((p) => p.id !== id));
+        if (invitation?.id === id) setInvitation(null);
+        notify("Invitation revoked.");
+      } else setInvitation(await api("/player-invites", {}));
+      setInvitationRevision((old) => old + 1);
+      setError("");
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      mutationInFlight.current = false;
+      setBusy(false);
+    }
+  }
   return (
     <>
-      <button className="button secondary" onClick={() => setOpen(true)}>
+      <button
+        className="button secondary"
+        onClick={() => {
+          setError("");
+          setOpen(true);
+        }}
+      >
         Show my player code
       </button>
       {open && (
@@ -108,13 +139,15 @@ export function PlayerCode({
           close={() => setOpen(false)}
         >
           <div className="player-code">
-            {qr && (
+            {qr?.link === link ? (
               <img
-                src={qr}
+                src={qr.image}
                 width="260"
                 height="260"
                 alt="QR code for this player connection link"
               />
+            ) : (
+              <Spinner />
             )}
             <strong>@{me.username}</strong>
           </div>
@@ -140,12 +173,16 @@ export function PlayerCode({
           <div className="dialog-actions">
             <button
               className="button"
+              disabled={busy}
               onClick={async () => {
+                setError("");
                 try {
                   await navigator.clipboard.writeText(link);
                   notify("Connection link copied.");
                 } catch {
-                  setError("Copy this link manually: " + link);
+                  setError(
+                    "Copy was unavailable. Open Connection link and select the address below.",
+                  );
                 }
               }}
             >
@@ -153,17 +190,8 @@ export function PlayerCode({
             </button>
             <button
               className="button secondary"
-              onClick={async () => {
-                try {
-                  if (invitation) {
-                    await api("/player-invites/" + invitation.id, {}, "DELETE");
-                    setInvitation(null);
-                    notify("Invitation revoked.");
-                  } else setInvitation(await api("/player-invites", {}));
-                } catch (e) {
-                  setError(errorMessage(e));
-                }
-              }}
+              disabled={busy}
+              onClick={() => changeInvitation(invitation?.id)}
             >
               {invitation ? "Revoke invitation" : "Create private invitation"}
             </button>
@@ -171,6 +199,16 @@ export function PlayerCode({
           <details>
             <summary>Connection link</summary>
             <p className="wrap-anywhere">{link}</p>
+            <label htmlFor="player-connection-link">
+              Select connection link
+            </label>
+            <input
+              id="player-connection-link"
+              value={link}
+              readOnly
+              onFocus={(e) => e.currentTarget.select()}
+              onClick={(e) => e.currentTarget.select()}
+            />
           </details>
           {!!invitations.filter(
             (i) =>
@@ -198,17 +236,8 @@ export function PlayerCode({
                     </span>
                     <button
                       className="button secondary"
-                      onClick={async () => {
-                        try {
-                          await api("/player-invites/" + i.id, {}, "DELETE");
-                          setInvitations((old) =>
-                            old.filter((p) => p.id !== i.id),
-                          );
-                          notify("Invitation revoked.");
-                        } catch (e) {
-                          setError(errorMessage(e));
-                        }
-                      }}
+                      disabled={busy}
+                      onClick={() => changeInvitation(i.id)}
                     >
                       Revoke earlier invitation {index + 1}
                     </button>
@@ -235,8 +264,11 @@ export function PlayerArrival({
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const connectionMutation = useRef(false);
   useEffect(() => {
     let active = true;
+    setData(null);
+    setError("");
     api("/players/by-username/" + encodeURIComponent(username))
       .then((v) => {
         if (active) setData(v);
@@ -266,29 +298,82 @@ export function PlayerArrival({
               A friendship lets you follow shared progress. Each rated session
               and exact result still requires its own agreement.
             </p>
-            <button
-              className="button block"
-              disabled={busy || data.friend || data.self}
-              onClick={async () => {
-                setBusy(true);
-                try {
-                  await api("/friends", { playerId: data.player.id });
-                  notify("Friend request sent. They choose whether to accept.");
-                  refresh();
-                  close();
-                } catch (e) {
-                  setError(errorMessage(e));
-                } finally {
-                  setBusy(false);
+            {data.connection === "incoming" ? (
+              <a className="button block" href="/inbox">
+                Review friendship request
+              </a>
+            ) : (
+              <button
+                className="button block"
+                disabled={
+                  busy ||
+                  data.friend ||
+                  data.self ||
+                  data.connection === "outgoing"
                 }
-              }}
-            >
-              {data.self
-                ? "This is your player code"
-                : data.friend
-                  ? "Already connected"
-                  : "Ask to connect"}
-            </button>
+                onClick={async () => {
+                  if (connectionMutation.current) return;
+                  connectionMutation.current = true;
+                  setBusy(true);
+                  setError("");
+                  try {
+                    await api("/friends", { playerId: data.player.id });
+                    notify(
+                      "Friend request sent. They choose whether to accept.",
+                    );
+                    refresh();
+                    close();
+                  } catch (e) {
+                    setError(errorMessage(e));
+                  } finally {
+                    connectionMutation.current = false;
+                    setBusy(false);
+                  }
+                }}
+              >
+                {data.self
+                  ? "This is your player code"
+                  : data.friend
+                    ? "Already connected"
+                    : data.connection === "outgoing"
+                      ? "Request pending"
+                      : "Ask to connect"}
+              </button>
+            )}
+            {data.connection === "outgoing" && (
+              <>
+                <p className="form-help">
+                  This player has your request. They choose whether to accept.
+                </p>
+                <button
+                  className="text-button"
+                  disabled={busy}
+                  onClick={async () => {
+                    if (connectionMutation.current) return;
+                    connectionMutation.current = true;
+                    setBusy(true);
+                    setError("");
+                    try {
+                      await api(
+                        "/friends/" + data.player.id,
+                        { pendingOnly: true },
+                        "DELETE",
+                      );
+                      setData((old: any) => ({ ...old, connection: "none" }));
+                      refresh();
+                      notify("Friend request cancelled.");
+                    } catch (e) {
+                      setError(errorMessage(e));
+                    } finally {
+                      connectionMutation.current = false;
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  Cancel friend request
+                </button>
+              </>
+            )}
           </>
         )
       )}
@@ -308,11 +393,18 @@ export function InvitationLanding({
   const token = location.pathname.split("/")[2];
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
-    [done, setDone] = useState(false),
     [busy, setBusy] = useState(false);
+  const requestInFlight = useRef(false);
+  const currentInvitation = useRef({ token, loggedIn });
+  currentInvitation.current = { token, loggedIn };
   useEffect(() => {
     let active = true;
-    api("/auth/player-invite/" + encodeURIComponent(token))
+    setData(null);
+    setError("");
+    api(
+      (loggedIn ? "/player-invites/" : "/auth/player-invite/") +
+        encodeURIComponent(token),
+    )
       .then((v) => {
         if (active) setData(v);
       })
@@ -322,7 +414,8 @@ export function InvitationLanding({
     return () => {
       active = false;
     };
-  }, [token]);
+  }, [token, loggedIn]);
+  const status = data?.status || "available";
   return (
     <main className="claim-public">
       <Brand />
@@ -331,19 +424,43 @@ export function InvitationLanding({
       ) : data ? (
         <>
           <span className="eyebrow">YOUR PEOPLE. YOUR PROGRESS.</span>
-          <h1>{data.name} invited you.</h1>
+          <h1>
+            {status === "self"
+              ? "This is your invitation."
+              : `${data.name} invited you.`}
+          </h1>
           <p>
             Join their playing circle through a friendship request. The inviter
             reviews your identity. This invitation approves no scores and
             creates no rated-play agreement.
           </p>
           <p className="form-help">Expires {dateLabel(data.expires)}.</p>
-          {done ? (
+          {status !== "available" ? (
             <div className="notice">
-              <strong>Your request is with the inviter.</strong>
-              <p>Start your own player passport while they review it.</p>
-              <a className="button" href="/home">
-                Go to my court <ArrowRight size={16} />
+              <strong>
+                {status === "self"
+                  ? "Share this invitation with another player."
+                  : status === "accepted"
+                    ? "You are already connected."
+                    : status === "incoming"
+                      ? "This player already requested your friendship."
+                      : "Your request is with the inviter."}
+              </strong>
+              <p>
+                {status === "pending"
+                  ? "Start your own player passport while they review it."
+                  : status === "incoming"
+                    ? "Review their existing request in your inbox."
+                    : "Your connection choices and score consent stay separate."}
+              </p>
+              <a
+                className="button"
+                href={status === "incoming" ? "/inbox" : "/home"}
+              >
+                {status === "incoming"
+                  ? "Review friendship request"
+                  : "Go to my court"}{" "}
+                <ArrowRight size={16} />
               </a>
             </div>
           ) : (
@@ -355,14 +472,34 @@ export function InvitationLanding({
                   signIn();
                   return;
                 }
+                if (requestInFlight.current) return;
+                requestInFlight.current = true;
                 setBusy(true);
+                setError("");
                 try {
-                  await api("/player-invites/" + token + "/accept", {});
-                  setDone(true);
-                  notify("Friendship request sent.");
+                  const response = await api(
+                    "/player-invites/" + token + "/accept",
+                    {},
+                  );
+                  if (
+                    currentInvitation.current.token === token &&
+                    currentInvitation.current.loggedIn === loggedIn
+                  ) {
+                    setData(
+                      (old: any) => old && { ...old, status: response.status },
+                    );
+                    if (response.status === "pending")
+                      notify("Friendship request sent.");
+                    setError("");
+                  }
                 } catch (e) {
-                  setError(errorMessage(e));
+                  if (
+                    currentInvitation.current.token === token &&
+                    currentInvitation.current.loggedIn === loggedIn
+                  )
+                    setError(errorMessage(e));
                 } finally {
+                  requestInFlight.current = false;
                   setBusy(false);
                 }
               }}
@@ -399,20 +536,31 @@ export function GroupRecap({
   const [data, setData] = useState<any>(null),
     [period, setPeriod] = useState("week"),
     [error, setError] = useState(""),
+    [editError, setEditError] = useState(""),
+    [busy, setBusy] = useState(false),
+    [retry, setRetry] = useState(0),
     [editing, setEditing] = useState(false),
     [identity, setIdentity] = useState({
       crest: "shuttle",
       tagline: "",
       recapDay: 0,
     });
+  const saving = useRef(false);
+  const currentCircle = useRef(circle.id);
+  currentCircle.current = circle.id;
+  useEffect(() => {
+    setEditing(false);
+    setEditError("");
+  }, [circle.id]);
   useEffect(() => {
     let active = true;
     setData(null);
+    setError("");
     api(`/circles/${circle.id}/recap?category=${category}&period=${period}`)
       .then((v) => {
         if (active) {
           setData(v);
-          setIdentity(v.identity);
+          setError("");
         }
       })
       .catch((e) => {
@@ -421,19 +569,31 @@ export function GroupRecap({
     return () => {
       active = false;
     };
-  }, [circle.id, category, period]);
+  }, [circle.id, category, period, retry]);
   useEffect(() => {
     recordResearch("group-recap-view", me.id);
   }, [circle.id, me.id]);
   async function save(e: FormEvent) {
     e.preventDefault();
+    if (saving.current) return;
+    saving.current = true;
+    setBusy(true);
+    setEditError("");
+    const targetCircle = circle.id;
+    const savedIdentity = { ...identity, tagline: identity.tagline.trim() };
     try {
-      await api(`/circles/${circle.id}/identity`, identity, "PATCH");
-      setEditing(false);
-      setData({ ...data, identity });
-      refresh();
+      await api(`/circles/${targetCircle}/identity`, savedIdentity, "PATCH");
+      if (currentCircle.current === targetCircle) {
+        setEditing(false);
+        setData((old: any) => old && { ...old, identity: savedIdentity });
+        setEditError("");
+        refresh();
+      }
     } catch (e) {
-      setError(errorMessage(e));
+      if (currentCircle.current === targetCircle) setEditError(errorMessage(e));
+    } finally {
+      saving.current = false;
+      setBusy(false);
     }
   }
   return (
@@ -469,6 +629,14 @@ export function GroupRecap({
         ))}
       </div>
       <InlineError message={error} />
+      {error && (
+        <button
+          className="text-button"
+          onClick={() => setRetry((old) => old + 1)}
+        >
+          Retry group recap
+        </button>
+      )}
       {!data && !error ? (
         <Spinner />
       ) : (
@@ -559,17 +727,31 @@ export function GroupRecap({
           </>
         )
       )}
-      {me.id === circle.owner && (
-        <button className="text-button" onClick={() => setEditing(true)}>
+      {me.id === circle.owner && data && (
+        <button
+          className="text-button"
+          disabled={busy}
+          onClick={() => {
+            setIdentity({ ...data.identity });
+            setEditError("");
+            setEditing(true);
+          }}
+        >
           Edit group identity
         </button>
       )}
       {editing && (
-        <Modal title="Make this circle yours" close={() => setEditing(false)}>
+        <Modal
+          title="Make this circle yours"
+          close={() => {
+            if (!saving.current) setEditing(false);
+          }}
+        >
           <form onSubmit={save}>
             <label htmlFor="group-tagline">Group motto · optional</label>
             <input
               id="group-tagline"
+              disabled={busy}
               value={identity.tagline}
               maxLength={100}
               onChange={(e) =>
@@ -579,6 +761,7 @@ export function GroupRecap({
             <label htmlFor="group-crest">Group crest</label>
             <select
               id="group-crest"
+              disabled={busy}
               value={identity.crest}
               onChange={(e) =>
                 setIdentity({ ...identity, crest: e.target.value })
@@ -591,6 +774,7 @@ export function GroupRecap({
             <label htmlFor="recap-day">Your normal recap day</label>
             <select
               id="recap-day"
+              disabled={busy}
               value={identity.recapDay}
               onChange={(e) =>
                 setIdentity({ ...identity, recapDay: Number(e.target.value) })
@@ -610,8 +794,10 @@ export function GroupRecap({
                 </option>
               ))}
             </select>
-            <InlineError message={error} />
-            <button className="button block">Save group identity</button>
+            <InlineError message={editError} />
+            <button className="button block" disabled={busy}>
+              Save group identity
+            </button>
           </form>
         </Modal>
       )}
@@ -620,13 +806,32 @@ export function GroupRecap({
 }
 export function Encouragement({ result }: { result: any }) {
   const [data, setData] = useState<any>(null),
-    [error, setError] = useState("");
-  const load = () =>
-    api(`/results/${result.id}/encouragement`)
-      .then(setData)
-      .catch((e) => setError(errorMessage(e)));
+    [error, setError] = useState(""),
+    [busy, setBusy] = useState(false);
+  const sending = useRef(false);
+  const currentResult = useRef(result.id);
+  const loadSequence = useRef(0);
+  currentResult.current = result.id;
+  async function load() {
+    const target = result.id;
+    const sequence = ++loadSequence.current;
+    setError("");
+    try {
+      const response = await api(`/results/${target}/encouragement`);
+      if (currentResult.current === target && loadSequence.current === sequence)
+        setData(response);
+    } catch (e) {
+      if (currentResult.current === target && loadSequence.current === sequence)
+        setError(errorMessage(e));
+    }
+  }
   useEffect(() => {
+    setData(null);
+    setError("");
     load();
+    return () => {
+      loadSequence.current++;
+    };
   }, [result.id]);
   if (!result.publishedRevisionId) return null;
   const sent = new Set(data?.sent.map((p: any) => p.recipient) || []);
@@ -653,16 +858,34 @@ export function Encouragement({ result }: { result: any }) {
           <button
             className="button secondary"
             key={p.id}
-            disabled={sent.has(p.canonicalId || p.id)}
+            disabled={busy || sent.has(p.canonicalId || p.id)}
             onClick={async () => {
+              if (sending.current) return;
+              sending.current = true;
+              setBusy(true);
+              setError("");
+              const target = result.id;
+              const recipient = p.canonicalId || p.id;
               try {
-                await api(`/results/${result.id}/encouragement`, {
-                  recipient: p.canonicalId || p.id,
+                await api(`/results/${target}/encouragement`, {
+                  recipient,
                   kind: "well-played",
                 });
-                await load();
+                if (currentResult.current === target) {
+                  setData((old: any) => ({
+                    ...(old || { received: [], sent: [] }),
+                    sent: [
+                      ...(old?.sent || []),
+                      { recipient, kind: "well-played" },
+                    ],
+                  }));
+                  await load();
+                }
               } catch (e) {
-                setError(errorMessage(e));
+                if (currentResult.current === target) setError(errorMessage(e));
+              } finally {
+                sending.current = false;
+                setBusy(false);
               }
             }}
           >
@@ -682,6 +905,11 @@ export function Encouragement({ result }: { result: any }) {
         </p>
       ))}
       <InlineError message={error} />
+      {error && (
+        <button className="text-button" disabled={busy} onClick={load}>
+          Retry encouragement
+        </button>
+      )}
     </section>
   );
 }

@@ -836,13 +836,27 @@ export async function buildApp(
       return { ok: true };
     }),
   );
-  app.delete("/api/friends/:id", async (req) =>
-    mutate(req, "friend.remove", { id: id(req) }, () => {
+  app.delete("/api/friends/:id", async (req) => {
+    const input = body(
+      req,
+      z.object({ pendingOnly: z.boolean().optional() }).strict(),
+    );
+    return mutate(req, "friend.remove", { id: id(req), ...input }, () => {
       const [a, b] = pair(req.actor.id, id(req));
+      if (input.pendingOnly)
+        requireThat(
+          !db.get(
+            "SELECT 1 FROM connections WHERE a=? AND b=? AND status='accepted'",
+            a,
+            b,
+          ),
+          "This request has already been accepted. Open your circle to manage the connection.",
+          409,
+        );
       db.run("DELETE FROM connections WHERE a=? AND b=?", a, b);
       return { ok: true };
-    }),
-  );
+    });
+  });
   app.post("/api/blocks", async (req) => {
     const input = body(req, z.object({ playerId: uuid }).strict());
     return mutate(req, "block", input, () => {
@@ -978,8 +992,22 @@ export async function buildApp(
     return { ok: true };
   });
   app.delete("/api/circles/:id/membership", async (req) => {
+    const input = body(
+      req,
+      z.object({ pendingOnly: z.boolean().optional() }).strict(),
+    );
     const circle = db.get("SELECT * FROM circles WHERE id=?", id(req));
     requireThat(circle, "Circle not found.", 404);
+    if (input.pendingOnly)
+      requireThat(
+        !db.get(
+          "SELECT 1 FROM circle_members WHERE circle_id=? AND user_id=? AND status='accepted'",
+          circle.id,
+          req.actor.id,
+        ),
+        "You already joined this group. Open the group to manage your membership.",
+        409,
+      );
     requireThat(
       circle.owner !== req.actor.id ||
         db.get(

@@ -344,6 +344,7 @@ function DesignReview() {
 }
 export function App() {
   const accountEpoch = useRef(0);
+  const inboxGeneration = useRef(0);
   const design = location.pathname === "/design";
   const publicClaim = location.pathname.startsWith("/claim/"),
     publicShare = location.pathname.startsWith("/share/"),
@@ -355,6 +356,9 @@ export function App() {
   const [data, setData] = useState<any>(null),
     [inbox, setInbox] = useState<any>(null),
     [loading, setLoading] = useState(!design),
+    [initialError, setInitialError] = useState(""),
+    [initialAttempt, setInitialAttempt] = useState(0),
+    [inboxError, setInboxError] = useState(""),
     [page, setCurrentPage] = useState<Page>(pageFromPath),
     [category, setCategoryState] = useState<Category>("Doubles");
   const [comparisonId, setComparisonId] = useState<string | null>(null);
@@ -412,6 +416,7 @@ export function App() {
   }
   function forgetSession() {
     accountEpoch.current += 1;
+    inboxGeneration.current += 1;
     setData(null);
     setInbox(null);
     setScopes([]);
@@ -422,8 +427,31 @@ export function App() {
     setComparisonId(null);
     setRecovery("");
     setToast("");
+    setInitialError("");
+    setInboxError("");
   }
-  async function refresh() {
+  async function loadInbox() {
+    const epoch = accountEpoch.current;
+    const generation = ++inboxGeneration.current;
+    setInboxError("");
+    try {
+      const value = await api("/inbox");
+      if (
+        epoch === accountEpoch.current &&
+        generation === inboxGeneration.current
+      )
+        setInbox(value);
+    } catch (e) {
+      if (
+        epoch !== accountEpoch.current ||
+        generation !== inboxGeneration.current
+      )
+        return;
+      if (e instanceof ApiError && e.status === 401) forgetSession();
+      else setInboxError(errorMessage(e));
+    }
+  }
+  async function refresh(reportFailure = false) {
     const epoch = accountEpoch.current;
     try {
       const dashboard = await api("/dashboard");
@@ -438,18 +466,22 @@ export function App() {
       setDisplayTimezone(dashboard.me.timezone);
       setData(dashboard);
       if (["inbox", "agreements"].includes(page)) {
-        const value = await api("/inbox");
-        if (epoch === accountEpoch.current) setInbox(value);
+        await loadInbox();
       }
     } catch (e) {
       if (epoch !== accountEpoch.current) return;
       if (e instanceof ApiError && e.status === 401) {
         forgetSession();
-      } else notify(errorMessage(e));
+      } else {
+        if (reportFailure) throw e;
+        notify(errorMessage(e));
+      }
     }
   }
   useEffect(() => {
     if (design) return;
+    setLoading(true);
+    setInitialError("");
     let active = true;
     const epoch = accountEpoch.current;
     (async () => {
@@ -457,11 +489,11 @@ export function App() {
         const me = await api("/me");
         if (!active || epoch !== accountEpoch.current) return;
         setCsrf(me.csrf);
-        await refresh();
+        await refresh(true);
       } catch (e) {
         if (epoch !== accountEpoch.current) return;
-        if (!(e instanceof ApiError && e.status === 401) && !publicShare)
-          notify(errorMessage(e));
+        if (active && !(e instanceof ApiError && e.status === 401))
+          setInitialError(errorMessage(e));
       } finally {
         if (active) setLoading(false);
       }
@@ -469,7 +501,7 @@ export function App() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialAttempt]);
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 5500);
@@ -490,16 +522,7 @@ export function App() {
   }, [data?.me.id]);
   useEffect(() => {
     if (!data || design) return;
-    let active = true;
-    const epoch = accountEpoch.current;
-    if (["inbox", "agreements"].includes(page))
-      api("/inbox")
-        .then((value) => {
-          if (active && epoch === accountEpoch.current) setInbox(value);
-        })
-        .catch((e) => {
-          if (active && epoch === accountEpoch.current) notify(errorMessage(e));
-        });
+    if (["inbox", "agreements"].includes(page)) void loadInbox();
     const timer = setInterval(
       () => {
         if (document.visibilityState === "visible") refresh();
@@ -516,7 +539,6 @@ export function App() {
     window.addEventListener("focus", returned);
     document.addEventListener("visibilitychange", returned);
     return () => {
-      active = false;
       clearInterval(timer);
       window.removeEventListener("focus", returned);
       document.removeEventListener("visibilitychange", returned);
@@ -575,7 +597,11 @@ export function App() {
     setCsrf(response.csrf);
     setForceAuth(false);
     if (response.recoveryCode) setRecovery(response.recoveryCode);
-    await refresh();
+    try {
+      await refresh(true);
+    } catch (e) {
+      setInitialError(errorMessage(e));
+    }
   }
   function completed(message: string) {
     setModal(null);
@@ -631,7 +657,28 @@ export function App() {
     );
   else if (forceAuth)
     content = (
-      <Auth done={authenticated} invited={publicClaim || publicConnect} />
+      <Auth
+        done={authenticated}
+        invited={publicClaim || publicConnect}
+        invitationKind={
+          publicConnect ? "friendship" : publicClaim ? "player" : undefined
+        }
+      />
+    );
+  else if (initialError && !data)
+    content = (
+      <main className="claim-public">
+        <Brand />
+        <h1>We couldn’t load your court.</h1>
+        <p>Your account has not been reset. Reconnect and try again.</p>
+        <InlineError message={initialError} />
+        <button
+          className="button"
+          onClick={() => setInitialAttempt((v) => v + 1)}
+        >
+          Retry loading my court
+        </button>
+      </main>
     );
   else if (publicConnect)
     content = (
@@ -783,7 +830,19 @@ export function App() {
                 }}
               />
             )}
-            {page === "inbox" && (
+            {["inbox", "agreements"].includes(page) && inboxError && (
+              <section className="notice" role="alert">
+                <strong>We couldn’t refresh your requests.</strong>
+                <p>{inboxError}</p>
+                <button
+                  className="button secondary"
+                  onClick={() => loadInbox()}
+                >
+                  Retry loading requests
+                </button>
+              </section>
+            )}
+            {page === "inbox" && (inbox || !inboxError) && (
               <InboxPage
                 inbox={inbox}
                 refresh={refresh}
@@ -791,7 +850,7 @@ export function App() {
                 notify={notify}
               />
             )}
-            {page === "agreements" && (
+            {page === "agreements" && (inbox || !inboxError) && (
               <AgreementsPage
                 inbox={inbox}
                 create={() => setModal("scope")}
@@ -834,14 +893,11 @@ export function App() {
       {data && modal === "friend" && (
         <PlayerLookup
           invite={false}
+          excludeIds={[data.me.id, ...data.friends.map((p: Player) => p.id)]}
           close={() => setModal(null)}
           choose={async (p: Player) => {
-            try {
-              await api("/friends", { playerId: p.id });
-              completed("Friend invitation sent to their SHUTTL inbox.");
-            } catch (e) {
-              notify(errorMessage(e));
-            }
+            await api("/friends", { playerId: p.id });
+            completed("Friend invitation sent to their SHUTTL inbox.");
           }}
         />
       )}
@@ -853,6 +909,11 @@ export function App() {
           correction={correction}
           results={data.results}
           friends={data.friends}
+          reviewReceived={(id) => {
+            setModal(null);
+            setCorrection(null);
+            void open(id);
+          }}
           close={() => {
             setModal(null);
             setCorrection(null);

@@ -212,6 +212,263 @@ test("private invitations retain explicit friendship review and can be revoked w
     await f.app.close();
   }
 });
+test("invitation state distinguishes self, pending directions and accepted connections without duplicate notifications", async () => {
+  const f = await fixture();
+  try {
+    const [owner, recipient, incoming] = f.players;
+    const created = await f.request(owner, "POST", "/api/player-invites", {});
+    const token = created.data.path.split("/")[2];
+    const path = "/api/player-invites/" + token;
+    const countNotifications = () =>
+      f.db.get("SELECT count(*) AS n FROM notifications")!.n;
+    assert.equal((await f.request(null, "GET", path)).status, 401);
+    const publicView = await f.request(
+      null,
+      "GET",
+      "/api/auth/player-invite/" + token,
+    );
+    assert.equal(publicView.status, 200);
+    assert.ok(!("status" in publicView.data));
+    assert.ok(!("owner" in publicView.data));
+    assert.equal((await f.request(owner, "GET", path)).data.status, "self");
+    const baseline = countNotifications();
+    assert.equal(
+      (await f.request(owner, "POST", path + "/accept", {})).status,
+      404,
+    );
+    assert.equal(countNotifications(), baseline);
+    assert.equal(
+      (await f.request(recipient, "GET", path)).data.status,
+      "available",
+    );
+    assert.equal(
+      (await f.request(recipient, "POST", path + "/accept", {})).data.status,
+      "pending",
+    );
+    assert.equal(
+      (await f.request(recipient, "GET", path)).data.status,
+      "pending",
+    );
+    const afterRequest = countNotifications();
+    assert.equal(afterRequest, baseline + 1);
+    assert.equal(
+      (await f.request(recipient, "POST", path + "/accept", {})).data.status,
+      "pending",
+    );
+    assert.equal(countNotifications(), afterRequest);
+    assert.equal(
+      (
+        await f.request(
+          owner,
+          "POST",
+          "/api/friends/" + recipient.id + "/accept",
+          {},
+        )
+      ).status,
+      200,
+    );
+    assert.equal(
+      (await f.request(recipient, "GET", path)).data.status,
+      "accepted",
+    );
+    assert.equal(
+      (await f.request(recipient, "POST", path + "/accept", {})).data.status,
+      "accepted",
+    );
+    assert.equal(countNotifications(), afterRequest);
+    assert.equal(
+      (
+        await f.request(owner, "POST", "/api/friends", {
+          playerId: incoming.id,
+        })
+      ).status,
+      200,
+    );
+    const afterIncoming = countNotifications();
+    assert.equal(
+      (await f.request(incoming, "GET", path)).data.status,
+      "incoming",
+    );
+    assert.equal(
+      (await f.request(incoming, "POST", path + "/accept", {})).data.status,
+      "incoming",
+    );
+    assert.equal(countNotifications(), afterIncoming);
+    assert.equal(
+      f.db.get(
+        "SELECT status FROM connections WHERE requested_by=? AND (a=? OR b=?)",
+        owner.id,
+        incoming.id,
+        incoming.id,
+      )!.status,
+      "pending",
+    );
+    assert.equal(f.db.get("SELECT count(*) AS n FROM consent")!.n, 0);
+    assert.equal(
+      (
+        await f.request(recipient, "POST", "/api/blocks", {
+          playerId: owner.id,
+        })
+      ).status,
+      200,
+    );
+    assert.equal((await f.request(recipient, "GET", path)).status, 404);
+    assert.equal(
+      (
+        await f.request(
+          owner,
+          "DELETE",
+          "/api/player-invites/" + created.data.id,
+          {},
+        )
+      ).status,
+      200,
+    );
+    assert.equal((await f.request(incoming, "GET", path)).status, 404);
+  } finally {
+    await f.app.close();
+  }
+});
+
+test("username code lookups retain outgoing and incoming review state through cancellation and acceptance", async () => {
+  const f = await fixture();
+  try {
+    const [a, b] = f.players;
+    const fromA = () =>
+      f.request(a, "GET", "/api/players/by-username/community_b");
+    const fromB = () =>
+      f.request(b, "GET", "/api/players/by-username/community_a");
+    assert.equal((await fromA()).data.connection, "none");
+    assert.equal(
+      (await f.request(a, "POST", "/api/friends", { playerId: b.id })).status,
+      200,
+    );
+    assert.equal((await fromA()).data.connection, "outgoing");
+    assert.equal((await fromB()).data.connection, "incoming");
+    assert.equal((await fromA()).data.friend, false);
+    assert.equal(
+      (
+        await f.request(a, "DELETE", "/api/friends/" + b.id, {
+          pendingOnly: true,
+        })
+      ).status,
+      200,
+    );
+    assert.equal((await fromA()).data.connection, "none");
+    assert.equal((await fromB()).data.connection, "none");
+    assert.equal(
+      (await f.request(a, "POST", "/api/friends", { playerId: b.id })).status,
+      200,
+    );
+    assert.equal(
+      (await f.request(b, "POST", "/api/friends/" + a.id + "/accept", {}))
+        .status,
+      200,
+    );
+    assert.equal((await fromA()).data.connection, "accepted");
+    assert.equal((await fromB()).data.connection, "accepted");
+    assert.equal((await fromA()).data.friend, true);
+    const racedCancellation = await f.request(
+      a,
+      "DELETE",
+      "/api/friends/" + b.id,
+      { pendingOnly: true },
+    );
+    assert.equal(racedCancellation.status, 409);
+    assert.match(racedCancellation.data.error, /already been accepted/);
+    assert.equal((await fromA()).data.connection, "accepted");
+    assert.equal((await fromB()).data.friend, true);
+    assert.equal(
+      (await f.request(a, "GET", "/api/players/by-username/community_a")).data
+        .connection,
+      "self",
+    );
+    assert.equal(f.db.get("SELECT count(*) AS n FROM consent")!.n, 0);
+    assert.equal(
+      (await f.request(b, "POST", "/api/blocks", { playerId: a.id })).status,
+      200,
+    );
+    assert.equal((await fromA()).status, 404);
+    assert.equal((await fromB()).status, 404);
+  } finally {
+    await f.app.close();
+  }
+});
+
+test("declining a group invitation cannot remove membership accepted before the decline arrives", async () => {
+  const f = await fixture();
+  try {
+    const [owner, member] = f.players;
+    const created = await f.request(owner, "POST", "/api/circles", {
+      name: "Membership Race Fixture",
+    });
+    assert.equal(created.status, 200);
+    const path = "/api/circles/" + created.data.id;
+    const membership = () =>
+      f.db.get(
+        "SELECT status FROM circle_members WHERE circle_id=? AND user_id=?",
+        created.data.id,
+        member.id,
+      );
+    assert.equal(
+      (
+        await f.request(owner, "POST", path + "/invite", {
+          playerId: member.id,
+        })
+      ).status,
+      200,
+    );
+    assert.equal(membership()!.status, "invited");
+    assert.equal(
+      (
+        await f.request(member, "DELETE", path + "/membership", {
+          pendingOnly: true,
+        })
+      ).status,
+      200,
+    );
+    assert.equal(membership(), undefined);
+    assert.equal((await f.request(member, "GET", path)).status, 403);
+
+    assert.equal(
+      (
+        await f.request(owner, "POST", path + "/invite", {
+          playerId: member.id,
+        })
+      ).status,
+      200,
+    );
+    assert.equal(
+      (await f.request(member, "POST", path + "/accept", {})).status,
+      200,
+    );
+    assert.equal(membership()!.status, "accepted");
+    const lateDecline = await f.request(
+      member,
+      "DELETE",
+      path + "/membership",
+      { pendingOnly: true },
+    );
+    assert.equal(lateDecline.status, 409);
+    assert.match(lateDecline.data.error, /already joined/);
+    assert.equal(membership()!.status, "accepted");
+    assert.equal((await f.request(member, "GET", path)).status, 200);
+    assert.equal(
+      (await f.request(member, "DELETE", path + "/membership", {})).status,
+      200,
+    );
+    assert.equal(membership(), undefined);
+    assert.equal((await f.request(member, "GET", path)).status, 403);
+    assert.equal(
+      f.db.get("SELECT owner FROM circles WHERE id=?", created.data.id)!.owner,
+      owner.id,
+    );
+    assert.equal(f.db.get("SELECT count(*) AS n FROM consent")!.n, 0);
+  } finally {
+    await f.app.close();
+  }
+});
+
 test("circle identity is owner-only and recap contains whole-group evidence without foreign result-detail access", async () => {
   const f = await fixture();
   try {

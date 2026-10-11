@@ -1290,6 +1290,15 @@ svg {
   color: var(--muted);
   margin-top: 4px;
 }
+@media (max-width: 480px) {
+  .player-picker {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .picked-player > span:not(.avatar) {
+    flex: 1;
+    min-width: 0;
+  }
+}
 .picker-empty {
   background: none;
   border: 1px dashed #aebfa3;
@@ -1377,6 +1386,22 @@ svg {
   gap: 14px;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
+}
+.invitation-row {
+  flex-wrap: wrap;
+}
+.invitation-row .ranking-person {
+  min-width: 120px;
+}
+.invitation-row > .text-button {
+  flex-basis: 100%;
+  justify-content: flex-start;
+}
+.form-lock {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
 }
 .ranking-row > strong:first-child {
   width: 23px;

@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, useRef, type FormEvent } from "react";
 import {
   Plus,
   ArrowUpRight,
@@ -303,10 +303,14 @@ function CareerHistory({
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [query, setQuery] = useState(""),
-    [filter, setFilter] = useState("all");
+    [filter, setFilter] = useState("all"),
+    [historyAttempt, setHistoryAttempt] = useState(0);
+  const historyGeneration = useRef(0);
   useEffect(() => {
     let active = true;
+    const generation = ++historyGeneration.current;
     setBusy(true);
+    setError("");
     setRows([]);
     setNext(null);
     api("/history?category=" + category)
@@ -325,8 +329,9 @@ function CareerHistory({
       });
     return () => {
       active = false;
+      if (historyGeneration.current === generation) historyGeneration.current++;
     };
-  }, [category]);
+  }, [category, historyAttempt]);
   const shown = rows.filter(
     (r) =>
       (filter === "all" || r.status === filter) &&
@@ -364,9 +369,18 @@ function CareerHistory({
         </div>
       </div>
       <InlineError message={error} />
+      {error && !rows.length && (
+        <button
+          className="button secondary"
+          disabled={busy}
+          onClick={() => setHistoryAttempt((v) => v + 1)}
+        >
+          Retry match history
+        </button>
+      )}
       <ResultList results={shown} open={open} />
       {busy && <Spinner />}
-      {!busy && !shown.length && (
+      {!busy && !error && !shown.length && (
         <Empty title="No matching results">
           Try another player or category.
         </Empty>
@@ -381,11 +395,14 @@ function CareerHistory({
             className="button secondary block"
             disabled={busy}
             onClick={async () => {
+              const generation = historyGeneration.current;
               setBusy(true);
+              setError("");
               try {
                 const v = await api(
                   "/history?category=" + category + "&before=" + next,
                 );
+                if (generation !== historyGeneration.current) return;
                 setRows((previous) => [
                   ...previous,
                   ...v.results.filter(
@@ -394,9 +411,10 @@ function CareerHistory({
                 ]);
                 setNext(v.next);
               } catch (e) {
-                setError(errorMessage(e));
+                if (generation === historyGeneration.current)
+                  setError(errorMessage(e));
               } finally {
-                setBusy(false);
+                if (generation === historyGeneration.current) setBusy(false);
               }
             }}
           >
@@ -427,31 +445,99 @@ export function FriendsPage({
   open: (id: string) => void;
 }) {
   const [circle, setCircle] = useState<any>(null),
+    [circleId, setCircleId] = useState(
+      () => new URLSearchParams(location.search).get("circle") || "",
+    ),
+    [circleLoading, setCircleLoading] = useState(false),
+    [createBusy, setCreateBusy] = useState(false),
+    [nextOwner, setNextOwner] = useState(""),
+    [confirmOwner, setConfirmOwner] = useState(false),
+    [ownerBusy, setOwnerBusy] = useState(false),
     [creating, setCreating] = useState(false),
     [name, setName] = useState(""),
     [lookup, setLookup] = useState(false),
     [error, setError] = useState("");
+  const circleGeneration = useRef(0);
+  function selectCircle(id: string) {
+    const url = new URL(location.href);
+    if (id) url.searchParams.set("circle", id);
+    else url.searchParams.delete("circle");
+    history.pushState({}, "", url.pathname + url.search);
+    setCircleId(id);
+    setNextOwner("");
+    setConfirmOwner(false);
+    window.scrollTo({ top: 0 });
+  }
   const loadCircle = async (id: string) => {
+    const generation = ++circleGeneration.current;
+    setCircle(null);
+    setCircleLoading(true);
+    setError("");
     try {
-      setCircle(await api("/circles/" + id));
-      setError("");
+      const value = await api("/circles/" + id);
+      if (generation === circleGeneration.current) setCircle(value);
     } catch (e) {
-      setError(errorMessage(e));
+      if (generation === circleGeneration.current) setError(errorMessage(e));
+    } finally {
+      if (generation === circleGeneration.current) setCircleLoading(false);
     }
   };
+  useEffect(() => {
+    if (circleId) void loadCircle(circleId);
+    else {
+      circleGeneration.current++;
+      setCircle(null);
+      setCircleLoading(false);
+      setError("");
+    }
+    return () => {
+      circleGeneration.current++;
+    };
+  }, [circleId, data.me.id]);
+  useEffect(() => {
+    const back = () =>
+      setCircleId(new URLSearchParams(location.search).get("circle") || "");
+    window.addEventListener("popstate", back);
+    return () => window.removeEventListener("popstate", back);
+  }, []);
   async function create(e: FormEvent) {
     e.preventDefault();
+    if (createBusy) return;
+    setCreateBusy(true);
+    setError("");
     try {
       const response = await api("/circles", { name });
       setCreating(false);
       setName("");
       refresh();
-      loadCircle(response.id);
+      selectCircle(response.id);
       notify("Your comparison circle is ready.");
     } catch (e) {
       setError(errorMessage(e));
+    } finally {
+      setCreateBusy(false);
     }
   }
+  if (circleId && !circle)
+    return (
+      <>
+        <PageHeading eyebrow="YOUR EXISTING GROUP" title="Your group" />
+        <button className="text-button" onClick={() => selectCircle("")}>
+          ← Back to your friends
+        </button>
+        <InlineError message={error} />
+        {circleLoading || !error ? (
+          <Spinner />
+        ) : (
+          <button
+            className="button secondary"
+            onClick={() => loadCircle(circleId)}
+          >
+            Retry loading this group
+          </button>
+        )}
+      </>
+    );
   const players = circle
     ? circle.members.filter((p: Player) => p.id !== data.me.id)
     : data.friends;
@@ -477,7 +563,7 @@ export function FriendsPage({
         levels.
       </p>
       {circle && (
-        <button className="text-button" onClick={() => setCircle(null)}>
+        <button className="text-button" onClick={() => selectCircle("")}>
           ← Back to your friends
         </button>
       )}
@@ -546,7 +632,9 @@ export function FriendsPage({
                 <button
                   key={c.id}
                   className="circle-tile"
-                  onClick={() => loadCircle(c.id)}
+                  onClick={() =>
+                    circleId === c.id ? loadCircle(c.id) : selectCircle(c.id)
+                  }
                 >
                   <span className="circle-icon">
                     <UsersRound size={22} />
@@ -578,19 +666,8 @@ export function FriendsPage({
                     <label htmlFor="next-owner">Transfer ownership</label>
                     <select
                       id="next-owner"
-                      defaultValue=""
-                      onChange={async (e) => {
-                        if (!e.target.value) return;
-                        try {
-                          await api("/circles/" + circle.id + "/owner", {
-                            playerId: e.target.value,
-                          });
-                          await loadCircle(circle.id);
-                          notify("Circle ownership transferred.");
-                        } catch (error) {
-                          setError(errorMessage(error));
-                        }
-                      }}
+                      value={nextOwner}
+                      onChange={(e) => setNextOwner(e.target.value)}
                     >
                       <option value="">Choose an accepted member</option>
                       {circle.members
@@ -601,6 +678,13 @@ export function FriendsPage({
                           </option>
                         ))}
                     </select>
+                    <button
+                      className="button secondary"
+                      disabled={!nextOwner}
+                      onClick={() => setConfirmOwner(true)}
+                    >
+                      Review ownership transfer
+                    </button>
                   </div>
                 </>
               )}
@@ -613,7 +697,7 @@ export function FriendsPage({
                       {},
                       "DELETE",
                     );
-                    setCircle(null);
+                    selectCircle("");
                     refresh();
                     notify("You left this circle.");
                   } catch (e) {
@@ -628,7 +712,11 @@ export function FriendsPage({
         </div>
       </div>
       {creating && (
-        <Modal title="A circle for your group" close={() => setCreating(false)}>
+        <Modal
+          title="A circle for your group"
+          close={() => setCreating(false)}
+          dismissible={!createBusy}
+        >
           <p className="form-help">
             Compare the players in an existing badminton group. This creates no
             games, bookings or tournaments.
@@ -643,32 +731,70 @@ export function FriendsPage({
                 minLength={3}
                 maxLength={60}
                 required
+                disabled={createBusy}
                 placeholder="Tampines Tuesday crew"
               />
             </div>
             <InlineError message={error} />
-            <button className="button block">
+            <button className="button block" disabled={createBusy}>
               Create comparison circle
               <Plus size={16} />
             </button>
           </form>
         </Modal>
       )}
+      {confirmOwner && circle && (
+        <Modal
+          title="Transfer circle ownership"
+          close={() => setConfirmOwner(false)}
+          dismissible={!ownerBusy}
+        >
+          <p>
+            <strong>
+              {circle.members.find((p: Player) => p.id === nextOwner)?.name}
+            </strong>{" "}
+            will manage this group. You will remain a member and give up
+            ownership controls.
+          </p>
+          <InlineError message={error} />
+          <button
+            className="button"
+            disabled={ownerBusy}
+            onClick={async () => {
+              setOwnerBusy(true);
+              setError("");
+              try {
+                await api("/circles/" + circle.id + "/owner", {
+                  playerId: nextOwner,
+                });
+                setConfirmOwner(false);
+                setNextOwner("");
+                void loadCircle(circle.id);
+                refresh();
+                notify("Circle ownership transferred.");
+              } catch (e) {
+                setError(errorMessage(e));
+              } finally {
+                setOwnerBusy(false);
+              }
+            }}
+          >
+            Confirm ownership transfer
+          </button>
+        </Modal>
+      )}
       {lookup && circle && (
         <PlayerLookup
           invite={false}
+          excludeIds={[data.me.id, ...circle.members.map((p: Player) => p.id)]}
           close={() => setLookup(false)}
           choose={async (p) => {
-            try {
-              await api("/circles/" + circle.id + "/invite", {
-                playerId: p.id,
-              });
-              setLookup(false);
-              notify("Invitation sent to their SHUTTL inbox.");
-              refresh();
-            } catch (e) {
-              setError(errorMessage(e));
-            }
+            await api("/circles/" + circle.id + "/invite", {
+              playerId: p.id,
+            });
+            setLookup(false);
+            notify("Invitation sent to their SHUTTL inbox.");
+            refresh();
           }}
         />
       )}
@@ -826,7 +952,12 @@ export function AgreementsPage({
   notify: (message: string) => void;
 }) {
   const [error, setError] = useState("");
+  const [acting, setActing] = useState("");
+  if (!inbox) return <Spinner />;
   async function act(scope: any, action: "accept" | "revoke") {
+    if (acting) return;
+    setActing(scope.id);
+    setError("");
     try {
       await api("/scopes/" + scope.id + "/" + action, { agree: true });
       refresh();
@@ -837,6 +968,9 @@ export function AgreementsPage({
       );
     } catch (e) {
       setError(errorMessage(e));
+      notify(errorMessage(e));
+    } finally {
+      setActing("");
     }
   }
   return (
@@ -901,12 +1035,17 @@ export function AgreementsPage({
                 (accepted ? (
                   <button
                     className="button secondary"
+                    disabled={!!acting}
                     onClick={() => act(s, "revoke")}
                   >
                     Stop future rated play
                   </button>
                 ) : (
-                  <button className="button" onClick={() => act(s, "accept")}>
+                  <button
+                    className="button"
+                    disabled={!!acting}
+                    onClick={() => act(s, "accept")}
+                  >
                     I agree to this exact scope
                     <Check size={15} />
                   </button>
@@ -946,7 +1085,32 @@ export function InboxPage({
   const [selected, setSelected] = useState<string[]>([]),
     [error, setError] = useState(""),
     [acknowledgedBatch, setAcknowledgedBatch] = useState(""),
-    [batchBusy, setBatchBusy] = useState(false);
+    [batchBusy, setBatchBusy] = useState(false),
+    [actionBusy, setActionBusy] = useState("");
+  const actionLock = useRef(false);
+  async function action(
+    key: string,
+    path: string,
+    payload: any = {},
+    method = "POST",
+    message = "Your choice is recorded.",
+  ) {
+    if (actionLock.current || batchBusy) return;
+    actionLock.current = true;
+    setActionBusy(key);
+    setError("");
+    try {
+      await api(path, payload, method);
+      refresh();
+      notify(message);
+    } catch (e) {
+      setError(errorMessage(e));
+      notify(errorMessage(e));
+    } finally {
+      actionLock.current = false;
+      setActionBusy("");
+    }
+  }
   if (!inbox) return <Spinner />;
   const eligible = inbox.pending
     .filter((r: any) => {
@@ -967,8 +1131,9 @@ export function InboxPage({
   const batchKey = chosen.map(revisionKey).sort().join("|");
   const agree = !!batchKey && acknowledgedBatch === batchKey;
   async function batch() {
-    if (!agree || batchBusy) return;
+    if (!agree || batchBusy || actionBusy) return;
     setBatchBusy(true);
+    setError("");
     try {
       await api("/results/batch-approve", {
         agree: true,
@@ -992,10 +1157,16 @@ export function InboxPage({
       <PageHeading eyebrow="REAL UPDATES. NOTHING INVENTED." title="Your inbox">
         <button
           className="text-button"
-          onClick={async () => {
-            await api("/notifications/read", {});
-            refresh();
-          }}
+          disabled={!!actionBusy || batchBusy}
+          onClick={() =>
+            action(
+              "read",
+              "/notifications/read",
+              {},
+              "POST",
+              "Updates marked read.",
+            )
+          }
         >
           Mark updates read
           <Check size={15} />
@@ -1016,6 +1187,7 @@ export function InboxPage({
               <label className="check-line">
                 <input
                   type="checkbox"
+                  disabled={batchBusy}
                   checked={selected.includes(revisionKey(r))}
                   onChange={(e) =>
                     setSelected(
@@ -1057,6 +1229,7 @@ export function InboxPage({
               <label className="check-line">
                 <input
                   type="checkbox"
+                  disabled={batchBusy}
                   checked={agree}
                   onChange={(e) =>
                     setAcknowledgedBatch(e.target.checked ? batchKey : "")
@@ -1069,7 +1242,7 @@ export function InboxPage({
               </label>
               <button
                 className="button block"
-                disabled={!agree || batchBusy}
+                disabled={!agree || batchBusy || !!actionBusy}
                 onClick={batch}
               >
                 Approve {chosen.length} exact{" "}
@@ -1098,30 +1271,31 @@ export function InboxPage({
                   <div className="modal-actions">
                     <button
                       className="button secondary"
-                      onClick={async () => {
-                        await api("/guest-claims/" + c.token + "/verify", {
-                          accept: false,
-                        });
-                        refresh();
-                      }}
+                      disabled={!!actionBusy || batchBusy}
+                      onClick={() =>
+                        action(
+                          c.token,
+                          "/guest-claims/" + c.token + "/verify",
+                          { accept: false },
+                          "POST",
+                          "The identity claim was rejected.",
+                        )
+                      }
                     >
                       Wrong person
                     </button>
                     <button
                       className="button"
-                      onClick={async () => {
-                        try {
-                          await api("/guest-claims/" + c.token + "/verify", {
-                            accept: true,
-                          });
-                          refresh();
-                          notify(
-                            "Identity verified. The player still approves each exact result.",
-                          );
-                        } catch (e) {
-                          setError(errorMessage(e));
-                        }
-                      }}
+                      disabled={!!actionBusy || batchBusy}
+                      onClick={() =>
+                        action(
+                          c.token,
+                          "/guest-claims/" + c.token + "/verify",
+                          { accept: true },
+                          "POST",
+                          "Identity verified. The player still approves each exact result.",
+                        )
+                      }
                     >
                       I know this player
                     </button>
@@ -1133,9 +1307,9 @@ export function InboxPage({
         </div>
         <div>
           <section className="panel">
-            <SectionHeading title="Circle invitations" />
+            <SectionHeading title="Player and group invitations" />
             {inbox.friendRequests.map((p: Player) => (
-              <div className="ranking-row" key={p.id}>
+              <div className="ranking-row invitation-row" key={p.id}>
                 <Avatar player={p} />
                 <div className="ranking-person">
                   <strong>{p.name}</strong>
@@ -1143,29 +1317,71 @@ export function InboxPage({
                 </div>
                 <button
                   className="button secondary"
-                  onClick={async () => {
-                    await api("/friends/" + p.id + "/accept", {});
-                    refresh();
-                  }}
+                  disabled={!!actionBusy || batchBusy}
+                  onClick={() =>
+                    action(
+                      p.id,
+                      "/friends/" + p.id + "/accept",
+                      {},
+                      "POST",
+                      "Friend request accepted.",
+                    )
+                  }
                 >
                   Accept
+                </button>
+                <button
+                  className="text-button"
+                  disabled={!!actionBusy || batchBusy}
+                  onClick={() =>
+                    action(
+                      p.id,
+                      "/friends/" + p.id,
+                      { pendingOnly: true },
+                      "DELETE",
+                      "Friend request declined.",
+                    )
+                  }
+                >
+                  Decline friend request
                 </button>
               </div>
             ))}
             {inbox.circleInvites.map((c: any) => (
-              <div className="ranking-row" key={c.id}>
+              <div className="ranking-row invitation-row" key={c.id}>
                 <div className="ranking-person">
                   <strong>{c.name}</strong>
                   <small>Existing-group comparison</small>
                 </div>
                 <button
                   className="button secondary"
-                  onClick={async () => {
-                    await api("/circles/" + c.id + "/accept", {});
-                    refresh();
-                  }}
+                  disabled={!!actionBusy || batchBusy}
+                  onClick={() =>
+                    action(
+                      c.id,
+                      "/circles/" + c.id + "/accept",
+                      {},
+                      "POST",
+                      "Group invitation accepted.",
+                    )
+                  }
                 >
                   Join
+                </button>
+                <button
+                  className="text-button"
+                  disabled={!!actionBusy || batchBusy}
+                  onClick={() =>
+                    action(
+                      c.id,
+                      "/circles/" + c.id + "/membership",
+                      { pendingOnly: true },
+                      "DELETE",
+                      "Group invitation declined.",
+                    )
+                  }
+                >
+                  Decline group invitation
                 </button>
               </div>
             ))}
@@ -1277,7 +1493,34 @@ export function ProfilePage({
     [reliability, setReliability] = useState<any>(null),
     [recoveryModal, setRecoveryModal] = useState(false),
     [recoveryPassword, setRecoveryPassword] = useState(""),
-    [newRecovery, setNewRecovery] = useState("");
+    [newRecovery, setNewRecovery] = useState(""),
+    [saving, setSaving] = useState(false),
+    [privateError, setPrivateError] = useState(""),
+    [privateLoading, setPrivateLoading] = useState(false),
+    [privateAttempt, setPrivateAttempt] = useState(0),
+    [privateAction, setPrivateAction] = useState(""),
+    [accountBusy, setAccountBusy] = useState(false);
+  const preferenceKeys = [
+    "name",
+    "district",
+    "publicName",
+    "publicDistrict",
+    "publicHistory",
+    "discoverable",
+    "localOptIn",
+    "breakMode",
+    "timezone",
+    "goals",
+    "country",
+    "city",
+    "publicPortrait",
+  ];
+  const preferenceSnapshot = (value: any) =>
+    JSON.stringify(preferenceKeys.map((key) => value[key]));
+  const [savedPreferences, setSavedPreferences] = useState(() =>
+    preferenceSnapshot(data.me),
+  );
+  const preferencesDirty = preferenceSnapshot(form) !== savedPreferences;
   useEffect(() => {
     if (tab === "history" || tab === "insights")
       recordResearch(
@@ -1286,23 +1529,60 @@ export function ProfilePage({
       );
   }, [tab, data.me.id]);
   useEffect(() => {
-    api("/account/reliability")
-      .then(setReliability)
-      .catch(() => {});
-  }, [data.me.id]);
-  useEffect(() => {
     setForm({ ...data.me });
+    setSavedPreferences(preferenceSnapshot(data.me));
   }, [data.me.id]);
   useEffect(() => {
-    api("/blocks")
-      .then((d) => setBlocks(d.players))
-      .catch(() => {});
-    api("/my-shares")
-      .then((d) => setShares(d.shares))
-      .catch(() => {});
-  }, [data.me]);
+    let active = true;
+    setPrivateLoading(true);
+    setPrivateError("");
+    Promise.allSettled([
+      api("/blocks"),
+      api("/my-shares"),
+      api("/account/reliability"),
+    ]).then((results) => {
+      if (!active) return;
+      if (results[0].status === "fulfilled")
+        setBlocks(results[0].value.players);
+      if (results[1].status === "fulfilled") setShares(results[1].value.shares);
+      if (results[2].status === "fulfilled") setReliability(results[2].value);
+      const failed = results.find((r) => r.status === "rejected");
+      if (failed?.status === "rejected")
+        setPrivateError(
+          "Some account controls couldn’t be loaded. " +
+            errorMessage(failed.reason),
+        );
+      setPrivateLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, [data.me.id, privateAttempt]);
+  async function privateMutation(
+    key: string,
+    path: string,
+    method: "POST" | "DELETE",
+    payload: any,
+    success: () => void,
+  ) {
+    if (privateAction) return;
+    setPrivateAction(key);
+    setPrivateError("");
+    try {
+      await api(path, payload, method);
+      success();
+    } catch (e) {
+      setPrivateError(errorMessage(e));
+      throw e;
+    } finally {
+      setPrivateAction("");
+    }
+  }
   async function save(e: FormEvent) {
     e.preventDefault();
+    if (saving) return;
+    setSaving(true);
+    setError("");
     try {
       const {
         name,
@@ -1338,10 +1618,13 @@ export function ProfilePage({
         },
         "PATCH",
       );
+      setSavedPreferences(preferenceSnapshot(form));
       refresh();
       notify("Your player preferences are saved.");
     } catch (e) {
       setError(errorMessage(e));
+    } finally {
+      setSaving(false);
     }
   }
   const toggles: [string, string, string][] = [
@@ -1490,178 +1773,194 @@ export function ProfilePage({
           <section className="panel">
             <SectionHeading title="Your choices" />
             <form onSubmit={save}>
-              <div className="field">
-                <label htmlFor="preferred-category">
-                  Preferred category on this device
-                </label>
-                <select
-                  id="preferred-category"
-                  value={preferredCategory}
-                  onChange={(e) =>
-                    setPreferredCategory(e.target.value as Category)
-                  }
-                >
-                  {CATEGORIES.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="profile-name">Display name</label>
-                <input
-                  id="profile-name"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  required
-                  maxLength={60}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="profile-country">
-                  Country or territory · optional
-                </label>
-                <select
-                  id="profile-country"
-                  value={form.country || ""}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      country: e.target.value,
-                      city: e.target.value === "SG" ? "Singapore" : "",
-                      district: "",
-                      localOptIn: false,
-                    })
-                  }
-                >
-                  <option value="">Keep my local context private</option>
-                  {countryOptions.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {form.country && (
+              <fieldset disabled={saving} className="form-lock">
                 <div className="field">
-                  <label htmlFor="profile-city">City or town · declared</label>
+                  <label htmlFor="preferred-category">
+                    Preferred category on this device
+                  </label>
+                  <select
+                    id="preferred-category"
+                    value={preferredCategory}
+                    onChange={(e) =>
+                      setPreferredCategory(e.target.value as Category)
+                    }
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="profile-name">Display name</label>
                   <input
-                    id="profile-city"
-                    maxLength={80}
-                    value={form.city || ""}
-                    onChange={(e) => setForm({ ...form, city: e.target.value })}
+                    id="profile-name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    required
+                    maxLength={60}
                   />
                 </div>
-              )}
-              <div className="field">
-                <label htmlFor="profile-district">Declared district</label>
-                {!form.country || form.country === "SG" ? (
+                <div className="field">
+                  <label htmlFor="profile-country">
+                    Country or territory · optional
+                  </label>
                   <select
-                    id="profile-district"
-                    value={form.district}
+                    id="profile-country"
+                    value={form.country || ""}
                     onChange={(e) =>
                       setForm({
                         ...form,
-                        district: e.target.value,
-                        country: e.target.value
-                          ? form.country || "SG"
-                          : form.country,
-                        city: e.target.value
-                          ? form.city || "Singapore"
-                          : form.city,
+                        country: e.target.value,
+                        city: e.target.value === "SG" ? "Singapore" : "",
+                        district: "",
+                        localOptIn: false,
                       })
                     }
                   >
-                    {DISTRICTS.map((d) => (
-                      <option key={d} value={d}>
-                        {d || "Keep my district private"}
+                    <option value="">Keep my local context private</option>
+                    {countryOptions.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.name}
                       </option>
                     ))}
                   </select>
-                ) : (
-                  <input
-                    id="profile-district"
-                    maxLength={60}
-                    value={form.district}
-                    onChange={(e) =>
-                      setForm({ ...form, district: e.target.value })
-                    }
-                    placeholder="Your usual playing area"
-                  />
+                </div>
+                {form.country && (
+                  <div className="field">
+                    <label htmlFor="profile-city">
+                      City or town · declared
+                    </label>
+                    <input
+                      id="profile-city"
+                      maxLength={80}
+                      value={form.city || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, city: e.target.value })
+                      }
+                    />
+                  </div>
                 )}
-                <p className="form-help">
-                  Country, city and area identify a declared SHUTTL pool. No GPS
-                  is collected. Matching text does not verify residence;
-                  spelling variants can split a pool.
-                </p>
-              </div>
-              <div className="field">
-                <label htmlFor="profile-timezone">Timezone</label>
-                <select
-                  id="profile-timezone"
-                  value={form.timezone}
-                  onChange={(e) =>
-                    setForm({ ...form, timezone: e.target.value })
-                  }
-                >
-                  {[
-                    ...new Set([
-                      form.timezone,
-                      "Asia/Singapore",
-                      "Europe/Berlin",
-                      "Europe/London",
-                      "America/New_York",
-                      "Australia/Sydney",
-                      ...(typeof Intl.supportedValuesOf === "function"
-                        ? Intl.supportedValuesOf("timeZone")
-                        : []),
-                    ]),
-                  ].map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-              {toggles.map(([key, label, help]) => (
-                <div className="field-row" key={key}>
-                  <label htmlFor={"profile-" + key}>
-                    {label}
-                    <small>{help}</small>
-                  </label>
-                  <input
-                    id={"profile-" + key}
-                    type="checkbox"
-                    checked={form[key]}
+                <div className="field">
+                  <label htmlFor="profile-district">Declared district</label>
+                  {!form.country || form.country === "SG" ? (
+                    <select
+                      id="profile-district"
+                      value={form.district}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          district: e.target.value,
+                          country: e.target.value
+                            ? form.country || "SG"
+                            : form.country,
+                          city: e.target.value
+                            ? form.city || "Singapore"
+                            : form.city,
+                        })
+                      }
+                    >
+                      {DISTRICTS.map((d) => (
+                        <option key={d} value={d}>
+                          {d || "Keep my district private"}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      id="profile-district"
+                      maxLength={60}
+                      value={form.district}
+                      onChange={(e) =>
+                        setForm({ ...form, district: e.target.value })
+                      }
+                      placeholder="Your usual playing area"
+                    />
+                  )}
+                  <p className="form-help">
+                    Country, city and area identify a declared SHUTTL pool. No
+                    GPS is collected. Matching text does not verify residence;
+                    spelling variants can split a pool.
+                  </p>
+                </div>
+                <div className="field">
+                  <label htmlFor="profile-timezone">Timezone</label>
+                  <select
+                    id="profile-timezone"
+                    value={form.timezone}
                     onChange={(e) =>
-                      setForm({ ...form, [key]: e.target.checked })
+                      setForm({ ...form, timezone: e.target.value })
                     }
-                  />
+                  >
+                    {[
+                      ...new Set([
+                        form.timezone,
+                        "Asia/Singapore",
+                        "Europe/Berlin",
+                        "Europe/London",
+                        "America/New_York",
+                        "Australia/Sydney",
+                        ...(typeof Intl.supportedValuesOf === "function"
+                          ? Intl.supportedValuesOf("timeZone")
+                          : []),
+                      ]),
+                    ].map((t) => (
+                      <option key={t}>{t}</option>
+                    ))}
+                  </select>
                 </div>
-              ))}
-              <SectionHeading title="Your own rating goals" />
-              {CATEGORIES.map((c) => (
-                <div className="field" key={c}>
-                  <label htmlFor={"goal-" + c}>{c} · optional</label>
-                  <input
-                    id={"goal-" + c}
-                    type="number"
-                    min="0"
-                    max="5000"
-                    step="1"
-                    value={form.goals[c] ?? ""}
-                    onChange={(e) => {
-                      const goals = { ...form.goals };
-                      if (e.target.value === "") delete goals[c];
-                      else goals[c] = Number(e.target.value);
-                      setForm({ ...form, goals });
-                    }}
-                    placeholder="No required target"
-                  />
-                </div>
-              ))}
-              <InlineError message={error} />
-              <button className="button block">
-                Save my preferences
-                <Check size={16} />
-              </button>
+                {toggles.map(([key, label, help]) => (
+                  <div className="field-row" key={key}>
+                    <label htmlFor={"profile-" + key}>
+                      {label}
+                      <small>{help}</small>
+                    </label>
+                    <input
+                      id={"profile-" + key}
+                      type="checkbox"
+                      checked={form[key]}
+                      onChange={(e) =>
+                        setForm({ ...form, [key]: e.target.checked })
+                      }
+                    />
+                  </div>
+                ))}
+                <SectionHeading title="Your own rating goals" />
+                {CATEGORIES.map((c) => (
+                  <div className="field" key={c}>
+                    <label htmlFor={"goal-" + c}>{c} · optional</label>
+                    <input
+                      id={"goal-" + c}
+                      type="number"
+                      min="0"
+                      max="5000"
+                      step="1"
+                      value={form.goals[c] ?? ""}
+                      onChange={(e) => {
+                        const goals = { ...form.goals };
+                        if (e.target.value === "") delete goals[c];
+                        else goals[c] = Number(e.target.value);
+                        setForm({ ...form, goals });
+                      }}
+                      placeholder="No required target"
+                    />
+                  </div>
+                ))}
+                <InlineError message={error} />
+                <p className="form-help" role="status">
+                  {saving
+                    ? "Saving your preferences…"
+                    : preferencesDirty
+                      ? "You have unsaved preferences."
+                      : "Your preferences are saved."}
+                </p>
+                <button
+                  className="button block"
+                  disabled={saving || !preferencesDirty}
+                >
+                  {saving ? "Saving preferences…" : "Save my preferences"}
+                  <Check size={16} />
+                </button>
+              </fieldset>
             </form>
           </section>
           <DeviceNotifications
@@ -1677,6 +1976,21 @@ export function ProfilePage({
           </section>
           <section className="panel settings-panel">
             <SectionHeading title="Your public links" />
+            {privateLoading && (
+              <p className="form-help" role="status">
+                Loading private account controls…
+              </p>
+            )}
+            <InlineError message={privateError} />
+            {privateError && (
+              <button
+                className="button secondary"
+                disabled={privateLoading || !!privateAction}
+                onClick={() => setPrivateAttempt((v) => v + 1)}
+              >
+                Retry account controls
+              </button>
+            )}
             {shares
               .filter((s) => !s.revoked)
               .map((s) => (
@@ -1697,14 +2011,26 @@ export function ProfilePage({
                   </span>
                   <button
                     className="text-button danger"
+                    disabled={!!privateAction}
                     onClick={async () => {
-                      await api("/shares/" + s.id, {}, "DELETE");
-                      setShares(
-                        shares.map((v) =>
-                          v.id === s.id ? { ...v, revoked: true } : v,
-                        ),
-                      );
-                      notify("The public link is revoked.");
+                      try {
+                        await privateMutation(
+                          "share:" + s.id,
+                          "/shares/" + s.id,
+                          "DELETE",
+                          {},
+                          () => {
+                            setShares((previous) =>
+                              previous.map((v) =>
+                                v.id === s.id ? { ...v, revoked: true } : v,
+                              ),
+                            );
+                            notify("The public link is revoked.");
+                          },
+                        );
+                      } catch (e) {
+                        notify(errorMessage(e));
+                      }
                     }}
                   >
                     Revoke
@@ -1740,9 +2066,24 @@ export function ProfilePage({
                 <span style={{ fontSize: 12 }}>{p.name}</span>
                 <button
                   className="text-button"
+                  disabled={!!privateAction}
                   onClick={async () => {
-                    await api("/blocks/" + p.id, {}, "DELETE");
-                    setBlocks(blocks.filter((b) => b.id !== p.id));
+                    try {
+                      await privateMutation(
+                        "block:" + p.id,
+                        "/blocks/" + p.id,
+                        "DELETE",
+                        {},
+                        () => {
+                          setBlocks((previous) =>
+                            previous.filter((b) => b.id !== p.id),
+                          );
+                          notify("Player unblocked.");
+                        },
+                      );
+                    } catch (e) {
+                      notify(errorMessage(e));
+                    }
                   }}
                 >
                   Unblock
@@ -1782,6 +2123,7 @@ export function ProfilePage({
       {recoveryModal && (
         <Modal
           title="Create a fresh recovery code"
+          dismissible={!accountBusy}
           close={() => setRecoveryModal(false)}
         >
           <p className="form-help">
@@ -1791,6 +2133,9 @@ export function ProfilePage({
           <form
             onSubmit={async (e) => {
               e.preventDefault();
+              if (accountBusy) return;
+              setAccountBusy(true);
+              setError("");
               try {
                 const result = await api("/account/recovery-code", {
                   password: recoveryPassword,
@@ -1800,6 +2145,8 @@ export function ProfilePage({
                 setRecoveryPassword("");
               } catch (error) {
                 setError(errorMessage(error));
+              } finally {
+                setAccountBusy(false);
               }
             }}
           >
@@ -1809,13 +2156,16 @@ export function ProfilePage({
                 id="rotate-password"
                 type="password"
                 required
+                disabled={accountBusy}
                 value={recoveryPassword}
                 onChange={(e) => setRecoveryPassword(e.target.value)}
               />
             </div>
             <InlineError message={error} />
-            <button className="button block">
-              Generate my new recovery code
+            <button className="button block" disabled={accountBusy}>
+              {accountBusy
+                ? "Generating recovery code…"
+                : "Generate my new recovery code"}
             </button>
           </form>
         </Modal>
@@ -1826,19 +2176,28 @@ export function ProfilePage({
       {blocking && (
         <PlayerLookup
           invite={false}
+          excludeIds={[data.me.id, ...blocks.map((p) => p.id)]}
           close={() => setBlocking(false)}
           choose={async (p) => {
-            await api("/blocks", { playerId: p.id });
-            setBlocks([...blocks, p]);
-            setBlocking(false);
-            refresh();
-            notify("Player blocked. Valid historical results remain.");
+            await privateMutation(
+              "block:" + p.id,
+              "/blocks",
+              "POST",
+              { playerId: p.id },
+              () => {
+                setBlocks((previous) => [...previous, p]);
+                setBlocking(false);
+                refresh();
+                notify("Player blocked. Valid historical results remain.");
+              },
+            );
           }}
         />
       )}
       {deleting && (
         <Modal
           title="Delete your player account"
+          dismissible={!accountBusy}
           close={() => setDeleting(false)}
         >
           <p className="form-help">
@@ -1849,12 +2208,17 @@ export function ProfilePage({
           <form
             onSubmit={async (e) => {
               e.preventDefault();
+              if (accountBusy) return;
+              setAccountBusy(true);
+              setError("");
               try {
                 await api("/account", { password, confirmation }, "DELETE");
                 localStorage.removeItem("shuttl:draft:" + data.me.id);
                 deleted();
               } catch (e) {
                 setError(errorMessage(e));
+              } finally {
+                setAccountBusy(false);
               }
             }}
           >
@@ -1863,6 +2227,7 @@ export function ProfilePage({
               <input
                 type="password"
                 id="delete-password"
+                disabled={accountBusy}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -1872,6 +2237,7 @@ export function ProfilePage({
               <label htmlFor="delete-confirm">Type DELETE</label>
               <input
                 id="delete-confirm"
+                disabled={accountBusy}
                 value={confirmation}
                 onChange={(e) => setConfirmation(e.target.value)}
                 required
@@ -1879,8 +2245,10 @@ export function ProfilePage({
               />
             </div>
             <InlineError message={error} />
-            <button className="button danger block">
-              Delete my account permanently
+            <button className="button danger block" disabled={accountBusy}>
+              {accountBusy
+                ? "Deleting account…"
+                : "Delete my account permanently"}
             </button>
           </form>
         </Modal>
@@ -1904,6 +2272,7 @@ export function SharePassport({
     [includeDistrict, setIncludeDistrict] = useState(false),
     [shape, setShape] = useState<"feed" | "story">("story"),
     [error, setError] = useState(""),
+    [milestoneError, setMilestoneError] = useState(""),
     [busy, setBusy] = useState(false),
     [link, setLink] = useState("");
   const [template, setTemplate] = useState<"passport" | "reveal" | "best">(
@@ -1913,12 +2282,16 @@ export function SharePassport({
   useEffect(() => {
     let active = true;
     setMilestones(null);
+    setMilestoneError("");
     api("/milestones?category=" + category)
       .then((v) => {
-        if (active) setMilestones(v);
+        if (active) {
+          setMilestones(v);
+          setMilestoneError("");
+        }
       })
       .catch((e) => {
-        if (active) setError(errorMessage(e));
+        if (active) setMilestoneError(errorMessage(e));
       });
     return () => {
       active = false;
@@ -1926,32 +2299,47 @@ export function SharePassport({
   }, [category]);
   useEffect(() => {
     setLink("");
+    setError("");
   }, [category, template, includeName, includeDistrict]);
   const rating = me.ratings.find((r: PublicRating) => r.category === category);
   const milestone = template === "passport" ? null : milestones?.[template];
   const preview = milestone ? { ...rating, ...milestone } : rating;
   async function create(download: boolean) {
+    if (busy || rating.score === null) return;
     setError("");
     setBusy(true);
+    const selection = {
+      category,
+      includeName,
+      includeDistrict,
+      template,
+      shape,
+    };
     try {
       const response = await api("/shares", {
-        category,
-        includeName,
-        includeDistrict,
-        template,
+        category: selection.category,
+        includeName: selection.includeName,
+        includeDistrict: selection.includeDistrict,
+        template: selection.template,
       });
       setLink(location.origin + response.path);
       if (download) {
-        const blob = await ratingImage(response.payload, shape);
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `shuttl-${category.toLowerCase()}-${shape}.png`;
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        notify(
-          "Your rating snapshot is downloaded. Sharing never earns rating points.",
-        );
+        try {
+          const blob = await ratingImage(response.payload, selection.shape);
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `shuttl-${selection.category.toLowerCase()}-${selection.shape}.png`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          notify(
+            "Image download requested. Check your Downloads, or use the snapshot link below. Sharing never earns rating points.",
+          );
+        } catch {
+          setError(
+            "Your public snapshot link was created, but the image could not be prepared. Use the link below or try downloading again.",
+          );
+        }
       }
     } catch (e) {
       setError(errorMessage(e));
@@ -1960,133 +2348,140 @@ export function SharePassport({
     }
   }
   return (
-    <Modal title="A number worth earning" close={close}>
-      <CategoryTabs
-        value={category}
-        onChange={(c) => {
-          if (!busy) {
-            setCategory(c);
-            setTemplate("passport");
-          }
-        }}
-      />
-      <div className="field">
-        <label htmlFor="share-template">Your story</label>
-        <select
-          id="share-template"
-          value={template}
-          disabled={busy}
-          onChange={(e) => setTemplate(e.target.value as typeof template)}
-        >
-          <option value="passport">My current rating</option>
-          <option value="reveal" disabled={!milestones?.reveal}>
-            My first rating reveal
-          </option>
-          <option value="best" disabled={!milestones?.best}>
-            My personal best
-          </option>
-        </select>
-      </div>
-      <RatingCard rating={preview} category={category} compact />
-      {milestone && (
-        <p className="form-help">
-          {template === "best" ? "Personal best" : "Starting point"} · match
-          played {dateLabel(milestone.asOf)} · a dated milestone; your current
-          rating may differ.
-        </p>
-      )}
-      <div className="field-row">
-        <label htmlFor="share-name">
-          Include my public name
-          <small>
-            {me.publicName
-              ? "Your public name can appear."
-              : "Enable public name in profile first."}
-          </small>
-        </label>
-        <input
-          id="share-name"
-          type="checkbox"
-          disabled={!me.publicName}
-          checked={includeName}
-          onChange={(e) => setIncludeName(e.target.checked)}
-        />
-      </div>
-      <div className="field-row">
-        <label htmlFor="share-district">
-          Include my declared district
-          <small>
-            {me.publicDistrict
-              ? "Only your selected district appears."
-              : "Enable district sharing in profile first."}
-          </small>
-        </label>
-        <input
-          id="share-district"
-          type="checkbox"
-          disabled={!me.publicDistrict}
-          checked={includeDistrict}
-          onChange={(e) => setIncludeDistrict(e.target.checked)}
-        />
-      </div>
-      <div className="field" style={{ marginTop: 17 }}>
-        <label htmlFor="share-shape">Image shape</label>
-        <select
-          id="share-shape"
-          value={shape}
-          onChange={(e) => setShape(e.target.value as "story" | "feed")}
-        >
-          <option value="story">Story · 1080 × 1920</option>
-          <option value="feed">Feed · 1080 × 1080</option>
-        </select>
-      </div>
-      <InlineError message={error} />
-      <button
-        className="button block"
-        disabled={rating.score === null || busy}
-        onClick={() => create(true)}
+    <Modal title="A number worth earning" close={close} dismissible={!busy}>
+      <fieldset
+        disabled={busy}
+        style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
       >
-        <Download size={17} />
-        {busy ? "Creating your snapshot…" : "Download my rating snapshot"}
-      </button>
-      <button
-        className="button secondary block"
-        style={{ marginTop: 10 }}
-        disabled={rating.score === null || busy}
-        onClick={() => create(false)}
-      >
-        <Share2 size={16} />
-        Create a shareable link
-      </button>
-      {link && (
-        <div className="field" style={{ marginTop: 15 }}>
-          <label htmlFor="share-link">Your public snapshot link</label>
-          <input
-            id="share-link"
-            readOnly
-            value={link}
-            onFocus={(e) => e.target.select()}
-          />
-          <button
-            className="text-button"
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(link);
-                notify("Snapshot link copied.");
-              } catch {
-                setError("Select the link and copy it manually.");
-              }
-            }}
+        <CategoryTabs
+          value={category}
+          onChange={(c) => {
+            if (!busy) {
+              setCategory(c);
+              setTemplate("passport");
+            }
+          }}
+        />
+        <div className="field">
+          <label htmlFor="share-template">Your story</label>
+          <select
+            id="share-template"
+            value={template}
+            disabled={busy}
+            onChange={(e) => setTemplate(e.target.value as typeof template)}
           >
-            <Copy size={15} />
-            Copy link
-          </button>
+            <option value="passport">My current rating</option>
+            <option value="reveal" disabled={!milestones?.reveal}>
+              My first rating reveal
+            </option>
+            <option value="best" disabled={!milestones?.best}>
+              My personal best
+            </option>
+          </select>
         </div>
-      )}
-      <p className="form-help">
-        This is a dated snapshot, not a promise of a current local lead. Other
-        players’ names, contact details and private disputes never appear.
-      </p>
+        <RatingCard rating={preview} category={category} compact />
+        {milestone && (
+          <p className="form-help">
+            {template === "best" ? "Personal best" : "Starting point"} · match
+            played {dateLabel(milestone.asOf)} · a dated milestone; your current
+            rating may differ.
+          </p>
+        )}
+        <div className="field-row">
+          <label htmlFor="share-name">
+            Include my public name
+            <small>
+              {me.publicName
+                ? "Your public name can appear."
+                : "Enable public name in profile first."}
+            </small>
+          </label>
+          <input
+            id="share-name"
+            type="checkbox"
+            disabled={busy || !me.publicName}
+            checked={includeName}
+            onChange={(e) => setIncludeName(e.target.checked)}
+          />
+        </div>
+        <div className="field-row">
+          <label htmlFor="share-district">
+            Include my declared district
+            <small>
+              {me.publicDistrict
+                ? "Only your selected district appears."
+                : "Enable district sharing in profile first."}
+            </small>
+          </label>
+          <input
+            id="share-district"
+            type="checkbox"
+            disabled={busy || !me.publicDistrict}
+            checked={includeDistrict}
+            onChange={(e) => setIncludeDistrict(e.target.checked)}
+          />
+        </div>
+        <div className="field" style={{ marginTop: 17 }}>
+          <label htmlFor="share-shape">Image shape</label>
+          <select
+            id="share-shape"
+            value={shape}
+            disabled={busy}
+            onChange={(e) => setShape(e.target.value as "story" | "feed")}
+          >
+            <option value="story">Story · 1080 × 1920</option>
+            <option value="feed">Feed · 1080 × 1080</option>
+          </select>
+        </div>
+        <InlineError message={error || milestoneError} />
+        <button
+          className="button block"
+          disabled={rating.score === null || busy}
+          onClick={() => create(true)}
+        >
+          <Download size={17} />
+          {busy ? "Creating your snapshot…" : "Download my rating snapshot"}
+        </button>
+        <button
+          className="button secondary block"
+          style={{ marginTop: 10 }}
+          disabled={rating.score === null || busy}
+          onClick={() => create(false)}
+        >
+          <Share2 size={16} />
+          Create a shareable link
+        </button>
+        {link && (
+          <div className="field" style={{ marginTop: 15 }}>
+            <label htmlFor="share-link">Your public snapshot link</label>
+            <input
+              id="share-link"
+              readOnly
+              value={link}
+              onFocus={(e) => e.target.select()}
+            />
+            <button
+              className="text-button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(link);
+                  setError("");
+                  notify("Snapshot link copied.");
+                } catch {
+                  setError("Select the link and copy it manually.");
+                }
+              }}
+            >
+              <Copy size={15} />
+              Copy link
+            </button>
+          </div>
+        )}
+        <p className="form-help">
+          This is a dated snapshot, not a promise of a current local lead. Other
+          players’ names, contact details and private disputes never appear.
+        </p>
+      </fieldset>
     </Modal>
   );
 }
@@ -2099,11 +2494,16 @@ export function ReviewerPage({
 }) {
   const [data, setData] = useState<any>(null),
     [error, setError] = useState(""),
+    [acting, setActing] = useState(false),
     [reason, setReason] = useState<Record<string, string>>({});
-  const load = () =>
-    api("/reviewer")
-      .then(setData)
-      .catch((e) => setError(errorMessage(e)));
+  const load = async () => {
+    setError("");
+    try {
+      setData(await api("/reviewer"));
+    } catch (e) {
+      setError(errorMessage(e));
+    }
+  };
   useEffect(() => {
     load();
   }, []);
@@ -2114,6 +2514,11 @@ export function ReviewerPage({
         title="Review desk"
       />
       <InlineError message={error} />
+      {error && (
+        <button className="button secondary" disabled={acting} onClick={load}>
+          Retry review desk
+        </button>
+      )}
       {data ? (
         <>
           <div className="list-stack">
@@ -2153,6 +2558,7 @@ export function ReviewerPage({
                     id={"review-" + r.id}
                     minLength={10}
                     maxLength={1500}
+                    disabled={acting}
                     value={reason[r.id] || ""}
                     onChange={(e) =>
                       setReason({ ...reason, [r.id]: e.target.value })
@@ -2166,20 +2572,27 @@ export function ReviewerPage({
                         "button " + (decision === "void" ? "secondary" : "")
                       }
                       key={decision}
-                      disabled={(reason[r.id] || "").trim().length < 10}
+                      disabled={
+                        acting || (reason[r.id] || "").trim().length < 10
+                      }
                       onClick={async () => {
+                        if (acting) return;
+                        setActing(true);
+                        setError("");
                         try {
                           await api("/reviewer/" + r.id, {
                             decision,
                             reason: reason[r.id],
                           });
-                          load();
+                          await load();
                           refresh();
                           notify(
                             "Review decision recorded with an audit entry.",
                           );
                         } catch (e) {
                           setError(errorMessage(e));
+                        } finally {
+                          setActing(false);
                         }
                       }}
                     >
@@ -2208,9 +2621,19 @@ export function ReviewerPage({
             {data.jobs.length > 0 && (
               <button
                 className="button secondary"
+                disabled={acting}
                 onClick={async () => {
-                  await api("/reviewer/retry-jobs", {});
-                  load();
+                  if (acting) return;
+                  setActing(true);
+                  setError("");
+                  try {
+                    await api("/reviewer/retry-jobs", {});
+                    await load();
+                  } catch (e) {
+                    setError(errorMessage(e));
+                  } finally {
+                    setActing(false);
+                  }
                 }}
               >
                 Retry delayed jobs
@@ -2218,9 +2641,9 @@ export function ReviewerPage({
             )}
           </section>
         </>
-      ) : (
+      ) : !error ? (
         <Spinner />
-      )}
+      ) : null}
     </>
   );
 }

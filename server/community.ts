@@ -184,10 +184,26 @@ export function registerCommunity(
       "This player is unavailable.",
       404,
     );
+    const [a, b] = [req.actor.id, user.id].sort();
+    const connection = db.get(
+      "SELECT status,requested_by FROM connections WHERE a=? AND b=?",
+      a,
+      b,
+    );
     return {
       player: service.player(user.id, req.actor.id),
       friend: service.friends(req.actor.id, user.id),
       self: user.id === req.actor.id,
+      connection:
+        user.id === req.actor.id
+          ? "self"
+          : connection?.status === "accepted"
+            ? "accepted"
+            : connection
+              ? connection.requested_by === req.actor.id
+                ? "outgoing"
+                : "incoming"
+              : "none",
     };
   });
   app.post("/api/player-invites", async (req) => {
@@ -227,6 +243,23 @@ export function registerCommunity(
     requireThat(row, "This invitation is unavailable.", 404);
     return row;
   };
+  const invitationState = (row: any, actor: string) => {
+    if (row.owner === actor) return "self";
+    requireThat(
+      !service.blocked(row.owner, actor),
+      "This invitation is unavailable.",
+      404,
+    );
+    const [a, b] = [row.owner, actor].sort();
+    const connection = db.get(
+      "SELECT status,requested_by FROM connections WHERE a=? AND b=?",
+      a,
+      b,
+    );
+    if (!connection) return "available";
+    if (connection.status === "accepted") return "accepted";
+    return connection.requested_by === actor ? "pending" : "incoming";
+  };
   app.get("/api/auth/player-invite/:token", async (req) => {
     const row = invitation((req.params as any).token);
     return {
@@ -235,14 +268,21 @@ export function registerCommunity(
       expires: row.expires,
     };
   });
+  app.get("/api/player-invites/:token", async (req) => {
+    const row = invitation((req.params as any).token);
+    return {
+      username: row.username,
+      name: row.public_name ? row.name : row.username,
+      expires: row.expires,
+      status: invitationState(row, req.actor.id),
+    };
+  });
   app.post("/api/player-invites/:token/accept", async (req) => {
     z.object({}).strict().parse(req.body);
     const row = invitation((req.params as any).token);
-    requireThat(
-      row.owner !== req.actor.id && !service.blocked(row.owner, req.actor.id),
-      "This invitation is unavailable.",
-      404,
-    );
+    const state = invitationState(row, req.actor.id);
+    requireThat(state !== "self", "This invitation is unavailable.", 404);
+    if (state !== "available") return { ok: true, status: state };
     const [a, b] = [row.owner, req.actor.id].sort();
     db.run(
       "INSERT OR IGNORE INTO connections VALUES(?,?,?,'pending')",

@@ -186,21 +186,24 @@ export function Modal({
   children,
   close,
   wide = false,
+  dismissible = true,
 }: {
   title: string;
   children: ReactNode;
   close: () => void;
   wide?: boolean;
+  dismissible?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const headingId = useId();
   useEffect(() => {
-    const dialog = ref.current!;
+    const dialog = ref.current;
+    if (!dialog) return;
     const before = document.activeElement as HTMLElement | null;
-    dialog.showModal();
+    if (!dialog.open) dialog.showModal();
     return () => {
-      dialog.close();
-      before?.focus();
+      if (dialog.open) dialog.close();
+      if (before?.isConnected) before.focus();
     };
   }, []);
   return (
@@ -210,10 +213,10 @@ export function Modal({
       className={"modal " + (wide ? "wide" : "")}
       onCancel={(event) => {
         event.preventDefault();
-        close();
+        if (dismissible) close();
       }}
       onClick={(e) => {
-        if (e.target === e.currentTarget) {
+        if (dismissible && e.target === e.currentTarget) {
           const rect = e.currentTarget.getBoundingClientRect();
           if (
             e.clientX < rect.left ||
@@ -227,13 +230,15 @@ export function Modal({
     >
       <div className="modal-heading">
         <h2 id={headingId}>{title}</h2>
-        <button
-          className="icon-button"
-          aria-label="Close dialog"
-          onClick={close}
-        >
-          <X size={20} />
-        </button>
+        {dismissible && (
+          <button
+            className="icon-button"
+            aria-label="Close dialog"
+            onClick={close}
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
       {children}
     </dialog>

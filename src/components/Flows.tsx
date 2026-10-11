@@ -33,9 +33,11 @@ import { Avatar, Brand, Modal, InlineError, ScoreGames } from "./UI.tsx";
 export function Auth({
   done,
   invited = false,
+  invitationKind = "result",
 }: {
   done: (result: any) => void;
   invited?: boolean;
+  invitationKind?: "result" | "friendship" | "player";
 }) {
   const [mode, setMode] = useState<"register" | "login" | "recover">(
       "register",
@@ -49,8 +51,19 @@ export function Auth({
     adult: false,
     recoveryCode: "",
   });
+  function changeMode(next: "register" | "login" | "recover") {
+    if (busy || mode === next) return;
+    setMode(next);
+    setError("");
+    setCredentials((previous) => ({
+      ...previous,
+      password: "",
+      recoveryCode: "",
+    }));
+  }
   async function submit(e: FormEvent) {
     e.preventDefault();
+    if (busy) return;
     setError("");
     setBusy(true);
     try {
@@ -126,7 +139,11 @@ export function Auth({
           </h2>
           <p className="auth-intro">
             {invited
-              ? "Keep your invitation. After signing in, review the exact score before agreeing."
+              ? invitationKind === "friendship"
+                ? "Your invitation stays with you. After signing in, review who invited you and choose whether to request a connection. This does not approve any match."
+                : invitationKind === "player"
+                  ? "Your private player invitation stays with you. After signing in, review the invited identity before claiming it. Claiming an identity does not approve a match."
+                  : "Keep your invitation. After signing in, review the exact score before agreeing."
               : mode === "recover"
                 ? "Use the private recovery code you saved when you joined."
                 : "Turn confirmed matches into a playing estimate. Compare progress with the people you already play with."}
@@ -134,123 +151,129 @@ export function Auth({
           <div className="auth-tabs">
             <button
               className={mode === "register" ? "active" : ""}
-              onClick={() => {
-                setMode("register");
-                setError("");
-              }}
+              disabled={busy}
+              onClick={() => changeMode("register")}
             >
               Join SHUTTL
             </button>
             <button
               className={mode === "login" ? "active" : ""}
-              onClick={() => {
-                setMode("login");
-                setError("");
-              }}
+              disabled={busy}
+              onClick={() => changeMode("login")}
             >
               Sign in
             </button>
           </div>
           <form onSubmit={submit}>
-            {mode === "register" && (
+            <fieldset
+              disabled={busy}
+              style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+            >
+              {mode === "register" && (
+                <div className="field">
+                  <label htmlFor="signup-name">Your display name</label>
+                  <input
+                    id="signup-name"
+                    autoComplete="nickname"
+                    value={credentials.name}
+                    onChange={(e) =>
+                      setCredentials({ ...credentials, name: e.target.value })
+                    }
+                    maxLength={60}
+                    required
+                    placeholder="What your circle calls you"
+                  />
+                </div>
+              )}
               <div className="field">
-                <label htmlFor="signup-name">Your display name</label>
+                <label htmlFor="signup-username">Username</label>
                 <input
-                  id="signup-name"
-                  autoComplete="nickname"
-                  value={credentials.name}
+                  id="signup-username"
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  value={credentials.username}
                   onChange={(e) =>
-                    setCredentials({ ...credentials, name: e.target.value })
+                    setCredentials({ ...credentials, username: e.target.value })
                   }
-                  maxLength={60}
+                  minLength={3}
+                  maxLength={24}
                   required
-                  placeholder="What your circle calls you"
+                  placeholder="Choose your court identity"
                 />
               </div>
-            )}
-            <div className="field">
-              <label htmlFor="signup-username">Username</label>
-              <input
-                id="signup-username"
-                autoComplete="username"
-                autoCapitalize="none"
-                spellCheck={false}
-                value={credentials.username}
-                onChange={(e) =>
-                  setCredentials({ ...credentials, username: e.target.value })
-                }
-                minLength={3}
-                maxLength={24}
-                required
-                placeholder="Choose your court identity"
-              />
-            </div>
-            {mode === "recover" && (
+              {mode === "recover" && (
+                <div className="field">
+                  <label htmlFor="recovery-code">Private recovery code</label>
+                  <input
+                    id="recovery-code"
+                    autoComplete="off"
+                    value={credentials.recoveryCode}
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        recoveryCode: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+              )}
               <div className="field">
-                <label htmlFor="recovery-code">Private recovery code</label>
+                <label htmlFor="signup-password">
+                  {mode === "recover" ? "New password" : "Password"}
+                </label>
                 <input
-                  id="recovery-code"
-                  autoComplete="off"
-                  value={credentials.recoveryCode}
-                  onChange={(e) =>
-                    setCredentials({
-                      ...credentials,
-                      recoveryCode: e.target.value,
-                    })
+                  id="signup-password"
+                  type="password"
+                  autoComplete={
+                    mode === "login" ? "current-password" : "new-password"
                   }
+                  value={credentials.password}
+                  onChange={(e) =>
+                    setCredentials({ ...credentials, password: e.target.value })
+                  }
+                  minLength={mode === "login" ? 1 : 12}
+                  maxLength={128}
                   required
+                  placeholder={
+                    mode === "login"
+                      ? "Your password"
+                      : "At least 12 characters"
+                  }
                 />
               </div>
-            )}
-            <div className="field">
-              <label htmlFor="signup-password">
-                {mode === "recover" ? "New password" : "Password"}
-              </label>
-              <input
-                id="signup-password"
-                type="password"
-                autoComplete={
-                  mode === "login" ? "current-password" : "new-password"
-                }
-                value={credentials.password}
-                onChange={(e) =>
-                  setCredentials({ ...credentials, password: e.target.value })
-                }
-                minLength={mode === "login" ? 1 : 12}
-                maxLength={128}
-                required
-                placeholder={
-                  mode === "login" ? "Your password" : "At least 12 characters"
-                }
-              />
-            </div>
-            {mode === "register" && (
-              <label className="check-line">
-                <input
-                  type="checkbox"
-                  checked={credentials.adult}
-                  onChange={(e) =>
-                    setCredentials({ ...credentials, adult: e.target.checked })
-                  }
-                  required
-                />
-                <span>
-                  I am 18 or older. I understand that rated play is optional and
-                  each player decides whether a result counts.
-                </span>
-              </label>
-            )}
-            <InlineError message={error} />
-            <button className="button block" disabled={busy}>
-              {busy
-                ? "Getting your court ready…"
-                : mode === "login"
-                  ? "Sign in"
-                  : mode === "recover"
-                    ? "Recover my account"
-                    : "Create my player identity"}
-              <ArrowRight size={17} />
-            </button>
+              {mode === "register" && (
+                <label className="check-line">
+                  <input
+                    type="checkbox"
+                    checked={credentials.adult}
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        adult: e.target.checked,
+                      })
+                    }
+                    required
+                  />
+                  <span>
+                    I am 18 or older. I understand that rated play is optional
+                    and each player decides whether a result counts.
+                  </span>
+                </label>
+              )}
+              <InlineError message={error} />
+              <button className="button block" disabled={busy}>
+                {busy
+                  ? "Getting your court ready…"
+                  : mode === "login"
+                    ? "Sign in"
+                    : mode === "recover"
+                      ? "Recover my account"
+                      : "Create my player identity"}
+                <ArrowRight size={17} />
+              </button>
+            </fieldset>
           </form>
           {passkeysSupported() && (
             <button
@@ -278,10 +301,10 @@ export function Auth({
           {mode !== "register" && (
             <button
               className="text-button"
-              onClick={() => {
-                setMode(mode === "recover" ? "login" : "recover");
-                setError("");
-              }}
+              disabled={busy}
+              onClick={() =>
+                changeMode(mode === "recover" ? "login" : "recover")
+              }
             >
               {mode === "recover"
                 ? "Return to sign in"
@@ -311,27 +334,53 @@ export function RecoveryCode({
   close: () => void;
 }) {
   const [saved, setSaved] = useState(false),
-    [copied, setCopied] = useState(false);
+    [copied, setCopied] = useState(false),
+    [copyFailed, setCopyFailed] = useState(false);
+  useEffect(() => {
+    setSaved(false);
+    setCopied(false);
+    setCopyFailed(false);
+  }, [code]);
   return (
-    <Modal title="Keep a way back to your court" close={close}>
+    <Modal
+      title="Keep a way back to your court"
+      close={close}
+      dismissible={saved}
+    >
       <p className="form-help">
         Save this private code somewhere safe. It can recover your account if
         you forget your password. This is the only time the full code is shown.
       </p>
-      <div className="recovery-code">{code}</div>
+      <textarea
+        className="recovery-code"
+        aria-label="Private recovery code"
+        readOnly
+        rows={2}
+        value={code}
+        onFocus={(event) => event.currentTarget.select()}
+        style={{ width: "100%", resize: "none" }}
+      />
       <button
         className="button secondary block"
         onClick={async () => {
           try {
             await navigator.clipboard.writeText(code);
             setCopied(true);
+            setCopyFailed(false);
           } catch {
             setCopied(false);
+            setCopyFailed(true);
           }
         }}
       >
         {copied ? <Check size={17} /> : <Copy size={17} />}Copy recovery code
       </button>
+      {copyFailed && (
+        <p className="form-help" role="status">
+          Automatic copying is unavailable. Tap or focus the code above to
+          select it, then use your device’s Copy command and save it privately.
+        </p>
+      )}
       <label className="check-line">
         <input
           type="checkbox"
@@ -355,20 +404,41 @@ export function PlayerLookup({
   excludeIds = [],
 }: {
   close: () => void;
-  choose: (player: Player) => void;
+  choose: (player: Player) => void | Promise<void>;
   invite?: boolean;
   suggestions?: Player[];
   excludeIds?: string[];
 }) {
   const [query, setQuery] = useState(""),
-    [players, setPlayers] = useState<Player[]>([]),
-    [busy, setBusy] = useState(false),
+    [searchResult, setSearchResult] = useState<{
+      query: string;
+      players: Player[];
+    }>({ query: "", players: [] }),
+    [searchBusy, setSearchBusy] = useState(false),
+    [inviteBusy, setInviteBusy] = useState(false),
+    [selectBusy, setSelectBusy] = useState(false),
     [error, setError] = useState(""),
     [guest, setGuest] = useState(""),
     [invitePath, setInvitePath] = useState(""),
     [newPlayer, setNewPlayer] = useState<Player | null>(null),
     [copied, setCopied] = useState(false);
   const [friends, setFriends] = useState<Player[]>(suggestions || []);
+  const currentQuery = useRef(query.trim());
+  const selecting = useRef(false);
+  const search = query.trim();
+  const players = searchResult.query === search ? searchResult.players : [];
+  const matchingFriends = friends.filter(
+    (player) =>
+      !search ||
+      (player.name + " " + player.username)
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+  );
+  const availablePlayers = [...matchingFriends, ...players].filter(
+    (player, index, all) =>
+      !excludeIds.includes(player.id) &&
+      all.findIndex((other) => other.id === player.id) === index,
+  );
   useEffect(() => {
     if (suggestions) {
       setFriends(suggestions);
@@ -387,34 +457,35 @@ export function PlayerLookup({
   useEffect(() => {
     let active = true;
     const timer = setTimeout(() => {
-      if (query.trim().length < 2) {
-        setPlayers([]);
-        setBusy(false);
+      if (search.length < 2) {
+        setSearchResult({ query: search, players: [] });
+        setSearchBusy(false);
         return;
       }
-      setBusy(true);
-      api("/players?q=" + encodeURIComponent(query.trim()))
+      setSearchBusy(true);
+      api("/players?q=" + encodeURIComponent(search))
         .then((data) => {
-          if (active) {
-            setPlayers(data.players);
-            setError("");
+          if (active && currentQuery.current === search) {
+            setSearchResult({ query: search, players: data.players });
           }
         })
         .catch((e) => {
-          if (active) setError(errorMessage(e));
+          if (active && currentQuery.current === search && !selecting.current)
+            setError(errorMessage(e));
         })
         .finally(() => {
-          if (active) setBusy(false);
+          if (active && currentQuery.current === search) setSearchBusy(false);
         });
     }, 250);
     return () => {
       active = false;
       clearTimeout(timer);
     };
-  }, [query]);
+  }, [search]);
   const createGuest = async (e: FormEvent) => {
     e.preventDefault();
-    setBusy(true);
+    if (inviteBusy || selecting.current) return;
+    setInviteBusy(true);
     setError("");
     try {
       const response = await api("/guests", { name: guest });
@@ -423,11 +494,29 @@ export function PlayerLookup({
     } catch (e) {
       setError(errorMessage(e));
     } finally {
-      setBusy(false);
+      setInviteBusy(false);
     }
   };
+  async function selectPlayer(player: Player) {
+    if (selecting.current || inviteBusy) return;
+    selecting.current = true;
+    setSelectBusy(true);
+    setError("");
+    try {
+      await choose(player);
+    } catch (error) {
+      setError(errorMessage(error));
+    } finally {
+      selecting.current = false;
+      setSelectBusy(false);
+    }
+  }
   return (
-    <Modal title="Find a player" close={close}>
+    <Modal
+      title="Find a player"
+      close={close}
+      dismissible={!inviteBusy && !selectBusy}
+    >
       <div className="field">
         <label htmlFor="player-search">Username or public display name</label>
         <input
@@ -437,9 +526,16 @@ export function PlayerLookup({
           autoCapitalize="none"
           placeholder="Try their username"
           value={query}
+          disabled={inviteBusy || selectBusy}
           onChange={(e) => {
+            const nextSearch = e.target.value.trim();
             setQuery(e.target.value);
-            setBusy(e.target.value.trim().length >= 2);
+            if (currentQuery.current !== nextSearch) {
+              currentQuery.current = nextSearch;
+              setSearchResult({ query: nextSearch, players: [] });
+              setError("");
+              setSearchBusy(nextSearch.length >= 2);
+            }
           }}
         />
       </div>
@@ -448,47 +544,41 @@ export function PlayerLookup({
         friends.filter((p) => !excludeIds.includes(p.id)).length > 0 && (
           <p className="eyebrow">YOUR ACCEPTED FRIENDS</p>
         )}
-      <div className="lookup-results">
-        {(query.trim().length >= 2
-          ? [
-              ...friends.filter((p) =>
-                (p.name + " " + p.username)
-                  .toLowerCase()
-                  .includes(query.trim().toLowerCase()),
-              ),
-              ...players,
-            ]
-          : friends
-        )
-          .filter(
-            (p, i, all) =>
-              !excludeIds.includes(p.id) &&
-              all.findIndex((v) => v.id === p.id) === i,
-          )
-          .map((p) => (
-            <button key={p.id} onClick={() => choose(p)}>
-              <Avatar player={p} />
-              <span>
-                <strong>{p.name}</strong>
-                <small>@{p.username}</small>
-              </span>
-              <Plus size={17} className="result-action" />
-            </button>
-          ))}
+      <div
+        className="lookup-results"
+        role="group"
+        aria-label="Available players"
+        aria-busy={searchBusy || selectBusy}
+      >
+        {availablePlayers.map((p) => (
+          <button
+            key={p.id}
+            disabled={inviteBusy || selectBusy}
+            onClick={() => selectPlayer(p)}
+          >
+            <Avatar player={p} />
+            <span>
+              <strong>{p.name}</strong>
+              <small>@{p.username}</small>
+            </span>
+            <Plus size={17} className="result-action" />
+          </button>
+        ))}
       </div>
-      {busy && (
+      {searchBusy && (
         <p className="form-help" role="status">
           Looking for players…
         </p>
       )}
-      {query.length >= 2 &&
-        !players.length &&
-        !friends.some((p) =>
-          (p.name + " " + p.username)
-            .toLowerCase()
-            .includes(query.trim().toLowerCase()),
-        ) &&
-        !busy && (
+      {selectBusy && (
+        <p className="form-help" role="status">
+          Updating this player choice…
+        </p>
+      )}
+      {search.length >= 2 &&
+        !availablePlayers.length &&
+        !searchBusy &&
+        !error && (
           <p className="form-help">
             No available profiles match that search. Try their exact username.
           </p>
@@ -513,10 +603,12 @@ export function PlayerLookup({
                 aria-label="Private invitation link"
                 readOnly
                 value={invitePath}
+                onFocus={(event) => event.currentTarget.select()}
               />
               <div className="modal-actions">
                 <button
                   className="button secondary"
+                  disabled={selectBusy}
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(invitePath);
@@ -529,7 +621,11 @@ export function PlayerLookup({
                   {copied ? "Copied" : "Copy link"}
                   <Copy size={15} />
                 </button>
-                <button className="button" onClick={() => choose(newPlayer)}>
+                <button
+                  className="button"
+                  disabled={selectBusy}
+                  onClick={() => selectPlayer(newPlayer)}
+                >
                   Use this player
                   <Check size={16} />
                 </button>
@@ -542,14 +638,20 @@ export function PlayerLookup({
                 <input
                   id="guest-name"
                   value={guest}
+                  disabled={inviteBusy || selectBusy}
                   onChange={(e) => setGuest(e.target.value)}
                   maxLength={60}
                   required
                 />
               </div>
-              <button className="button secondary block" disabled={busy}>
+              <button
+                className="button secondary block"
+                disabled={inviteBusy || selectBusy}
+              >
                 <UserPlus size={16} />
-                Create a private invitation
+                {inviteBusy
+                  ? "Creating your invitation…"
+                  : "Create a private invitation"}
               </button>
             </form>
           )}
@@ -631,6 +733,7 @@ export function RecordResult({
   close,
   done,
   correction,
+  reviewReceived,
   results = [],
   friends = [],
 }: {
@@ -640,11 +743,13 @@ export function RecordResult({
   close: () => void;
   done: () => void;
   correction?: any;
+  reviewReceived?: (id: string) => void;
   results?: any[];
   friends?: Player[];
 }) {
   const storageKey = "shuttl:draft:" + me.id;
-  const saved = (() => {
+  const [saved, setSaved] = useState(() => {
+    if (correction) return null;
     try {
       const value = JSON.parse(localStorage.getItem(storageKey) || "null");
       return value?.owner === me.id && Date.now() - value.savedAt < 7 * 86400000
@@ -653,7 +758,7 @@ export function RecordResult({
     } catch {
       return null;
     }
-  })();
+  });
   const [category, setCategory] = useState<Category>(
       correction?.category || saved?.category || initialCategory,
     ),
@@ -677,13 +782,23 @@ export function RecordResult({
         ? localDate(new Date(correction.playedAt))
         : saved?.played || localDate(new Date()),
     ),
-    [scopeId, setScopeId] = useState<string>(saved?.scopeId || ""),
-    [requestKey] = useState(saved?.requestKey || crypto.randomUUID()),
-    [unitId] = useState(saved?.unitId || crypto.randomUUID());
+    [scopeId, setScopeId] = useState<string>(
+      correction?.scopeId || saved?.scopeId || "",
+    ),
+    [requestKey, setRequestKey] = useState(
+      saved?.requestKey || crypto.randomUUID(),
+    ),
+    [unitId, setUnitId] = useState(saved?.unitId || crypto.randomUUID());
   const [pick, setPick] = useState<number | null>(null),
     [acknowledged, setAcknowledged] = useState(""),
     [busy, setBusy] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [submissionUncertain, setSubmissionUncertain] = useState(
+      !!saved?.submissionUncertain,
+    ),
+    [received, setReceived] = useState<any>(null),
+    [confirmDiscard, setConfirmDiscard] = useState(false),
+    [confirmReceivedRemoval, setConfirmReceivedRemoval] = useState(false);
   const exactDraft = JSON.stringify([
     category,
     format,
@@ -715,6 +830,7 @@ export function RecordResult({
             scopeId,
             requestKey,
             unitId,
+            submissionUncertain,
             savedAt: Date.now(),
           }),
         );
@@ -723,7 +839,94 @@ export function RecordResult({
           "This browser cannot save a draft. Keep this tab open until the result is sent.",
         );
       }
-  }, [category, format, roster, scores, played, scopeId, requestKey, unitId]);
+  }, [
+    category,
+    format,
+    roster,
+    scores,
+    played,
+    scopeId,
+    requestKey,
+    unitId,
+    submissionUncertain,
+  ]);
+  function removeMatchingDraft() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (
+        stored?.unitId === unitId &&
+        JSON.stringify([
+          stored.category,
+          stored.format,
+          stored.roster.map((player: Player | null) => player?.id),
+          stored.scores,
+          stored.played,
+          stored.scopeId,
+        ]) === exactDraft
+      )
+        localStorage.removeItem(storageKey);
+    } catch {
+      /* A draft changed in another tab is kept. */
+    }
+  }
+  function discardDraft() {
+    if (busy || submissionUncertain || received) return;
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      setError(
+        "This browser could not remove the saved draft. Keep it until browser storage is available again.",
+      );
+      return;
+    }
+    setSaved(null);
+    setCategory(initialCategory);
+    setFormat("ONE_21");
+    setRoster([
+      me,
+      null,
+      ...(initialCategory === "Singles" ? [] : [null, null]),
+    ]);
+    setScores([["", ""]]);
+    setPlayed(localDate(new Date()));
+    setScopeId("");
+    setAcknowledged("");
+    setRequestKey(crypto.randomUUID());
+    setUnitId(crypto.randomUUID());
+    setError("");
+    setConfirmDiscard(false);
+  }
+  async function checkReceipt() {
+    if (busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      setReceived(await api("/results/" + unitId));
+    } catch {
+      setError(
+        "The submission status is still unconfirmed. Keep this draft and its original identifier; reconnect and check again or resend it safely.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+  function removeReceivedDraft() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (stored && stored.unitId !== unitId) {
+        setError(
+          "Another saved draft is now on this device. It has been kept; close this view without removing it.",
+        );
+        return;
+      }
+      localStorage.removeItem(storageKey);
+      close();
+    } catch {
+      setError(
+        "This browser could not remove the local draft. The recorded match remains safe in SHUTTL.",
+      );
+    }
+  }
   function changeFormat(value: Format) {
     setFormat(value);
     setScores((previous) =>
@@ -737,6 +940,7 @@ export function RecordResult({
   }
   async function submit(e: FormEvent) {
     e.preventDefault();
+    if (busy || received) return;
     setError("");
     try {
       if (scores.some((g) => g.some((v) => !/^\d{1,2}$/.test(v))))
@@ -751,7 +955,16 @@ export function RecordResult({
         throw new Error(
           "Choose whether this exact result should count toward your rating.",
         );
+      if (!navigator.onLine) {
+        setError(
+          submissionUncertain
+            ? "You are offline. This retry was not sent; the earlier submission may already have reached SHUTTL. Keep this draft and reconnect to check it."
+            : "You are offline. This attempt was not sent. Your local draft stays on this device; reconnect and send it when ready.",
+        );
+        return;
+      }
       setBusy(true);
+      if (!correction) setSubmissionUncertain(true);
       if (correction)
         await api("/results/" + correction.id + "/correct", {
           revisionId: correction.revisionId,
@@ -775,14 +988,29 @@ export function RecordResult({
           "POST",
           requestKey,
         );
-      if (!correction) localStorage.removeItem(storageKey);
+      if (!correction) removeMatchingDraft();
       done();
     } catch (e) {
-      setError(
-        e instanceof ApiError && e.status === 0
-          ? "You are offline. Your unsent result stays a local draft on this device. Reconnect and send it again."
-          : errorMessage(e),
-      );
+      if (!correction && e instanceof ApiError && [0, 409].includes(e.status)) {
+        try {
+          setReceived(await api("/results/" + unitId));
+          setError("");
+        } catch {
+          setError(
+            "This submission has not been confirmed. It may already have reached SHUTTL. Keep this draft and its original identifier; reconnect to check or resend safely.",
+          );
+        }
+      } else {
+        if (
+          !correction &&
+          !submissionUncertain &&
+          e instanceof ApiError &&
+          e.status >= 400 &&
+          e.status < 500
+        )
+          setSubmissionUncertain(false);
+        setError(errorMessage(e));
+      }
     } finally {
       setBusy(false);
     }
@@ -805,6 +1033,7 @@ export function RecordResult({
       <Modal
         title={correction ? "Correct the exact score" : "Record a result"}
         close={close}
+        dismissible={!busy}
         wide
       >
         <p className="form-help">
@@ -812,245 +1041,392 @@ export function RecordResult({
             ? "The previous rating stays visible until the correction has the required fresh approvals."
             : "One completed match. All players choose rated play, then the exact score is approved."}
         </p>
-        <form onSubmit={submit}>
-          {!correction && !saved && recent.length > 0 && (
-            <details className="recent-rosters">
-              <summary>Use a recent lineup</summary>
-              <p className="form-help">
-                Same players and sides. Enter a fresh score and start time;
-                every match still needs approval.
-              </p>
-              {recent.map((r, i) => (
-                <button
-                  type="button"
-                  className="roster-shortcut"
-                  key={i}
-                  onClick={() => {
-                    setRoster(r.roster);
-                    changeFormat(r.format);
-                    setScores(
-                      FORMATS[r.format as Format].series
-                        ? [
-                            ["", ""],
-                            ["", ""],
-                          ]
-                        : [["", ""]],
-                    );
-                    setPlayed(localDate(new Date()));
-                    setAcknowledged("");
-                  }}
-                >
-                  {r.roster
-                    .slice(0, r.roster.length / 2)
-                    .map((p: Player) => (p.id === me.id ? "You" : p.name))
-                    .join(" + ")}{" "}
-                  <span>vs</span>{" "}
-                  {r.roster
-                    .slice(r.roster.length / 2)
-                    .map((p: Player) => p.name)
-                    .join(" + ")}
-                </button>
-              ))}
-            </details>
-          )}
-          <div className="form-grid">
-            <div className="field">
-              <label htmlFor="result-category">Category</label>
-              <select
-                id="result-category"
-                disabled={!!correction}
-                value={category}
-                onChange={(e) => {
-                  const c = e.target.value as Category;
-                  setCategory(c);
-                  setRoster([
-                    me,
-                    null,
-                    ...(c === "Singles" ? [] : [null, null]),
-                  ]);
-                  setScopeId("");
-                }}
+        {received && (
+          <div className="notice neutral" role="status">
+            <strong>This match already reached SHUTTL.</strong>
+            <p>
+              {received.players
+                .slice(0, received.players.length / 2)
+                .map((player: Player) => player.name)
+                .join(" + ")}
+              {" vs "}
+              {received.players
+                .slice(received.players.length / 2)
+                .map((player: Player) => player.name)
+                .join(" + ")}
+              {" · "}
+              {received.category}
+              {" · "}
+              {FORMATS[received.format as Format].label}
+            </p>
+            <ScoreGames games={received.games} />
+            <p>
+              {received.status === "rated"
+                ? "Rating published."
+                : received.status === "confirmed"
+                  ? "Score confirmed; rating processing."
+                  : received.status === "disputed"
+                    ? "Under independent review."
+                    : received.status === "void"
+                      ? "This result is unrated."
+                      : received.status === "correction_pending"
+                        ? "A correction is waiting for fresh approval."
+                        : "Waiting for exact-score approval."}{" "}
+              These are the current recorded values. Your local draft is kept;
+              review this result rather than sending another copy.
+            </p>
+            {reviewReceived && (
+              <button
+                type="button"
+                className="button secondary"
+                onClick={() => reviewReceived(received.id)}
               >
-                {CATEGORIES.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            <div className="field">
-              <label htmlFor="result-format">Played format</label>
-              <select
-                id="result-format"
-                value={format}
-                onChange={(e) => changeFormat(e.target.value as Format)}
+                Review received result
+                <ArrowRight size={16} />
+              </button>
+            )}
+            {confirmReceivedRemoval ? (
+              <>
+                <p>
+                  Remove this local copy? The recorded match stays in SHUTTL.
+                  Any changes in this local draft will be lost; they will not be
+                  sent as another match.
+                </p>
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="button secondary"
+                    onClick={() => setConfirmReceivedRemoval(false)}
+                  >
+                    Keep local draft
+                  </button>
+                  <button
+                    type="button"
+                    className="button secondary"
+                    onClick={removeReceivedDraft}
+                  >
+                    Remove local draft and close
+                  </button>
+                </div>
+              </>
+            ) : (
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => setConfirmReceivedRemoval(true)}
               >
-                {Object.entries(FORMATS).map(([key, f]) => (
-                  <option key={key} value={key}>
-                    {f.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                Remove local draft only
+              </button>
+            )}
           </div>
-          {correction ? (
-            <div className="team-row">
-              <div>
-                Side A<br />
-                {roster
-                  .slice(0, roster.length / 2)
-                  .map((p) => p?.name)
-                  .join(" + ")}
-              </div>
-              <div>
-                Side B<br />
-                {roster
-                  .slice(roster.length / 2)
-                  .map((p) => p?.name)
-                  .join(" + ")}
-              </div>
-            </div>
-          ) : (
-            <RosterEditor
-              roster={roster}
-              category={category}
-              setRoster={setRoster}
-              pick={setPick}
-            />
-          )}
-          {scores.map((g, i) => (
-            <div className="score-inputs" key={i}>
-              <div className="game-label">Completed game {i + 1}</div>
-              <div>
-                {g.map((v, side) => (
-                  <div key={side}>
-                    <label htmlFor={`score-${i}-${side}`}>
-                      {correction
-                        ? side === 0
-                          ? "Side A"
-                          : "Side B"
-                        : side === 0
-                          ? "Your side"
-                          : "Other side"}
-                    </label>
-                    <input
-                      id={`score-${i}-${side}`}
-                      inputMode="numeric"
-                      autoComplete="off"
-                      pattern="[0-9]*"
-                      maxLength={6}
-                      required
-                      value={v}
-                      onChange={(e) =>
-                        setScores(
-                          scores.map((game, j) =>
-                            j === i
-                              ? game.map((x, k) =>
-                                  k === side ? e.target.value : x,
-                                )
-                              : game,
-                          ),
-                        )
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-          {FORMATS[format].series && (
+        )}
+        {!correction && submissionUncertain && !received && (
+          <div className="notice neutral">
+            <strong>Check this submission before starting another.</strong>
+            <p>
+              This draft may already have reached SHUTTL. Its original
+              identifier is retained to prevent a duplicate when you retry.
+            </p>
             <button
               type="button"
-              className="text-button"
-              onClick={() =>
-                setScores(
-                  scores.length === 2
-                    ? [...scores, ["", ""]]
-                    : scores.slice(0, 2),
-                )
-              }
+              className="button secondary"
+              disabled={busy}
+              onClick={checkReceipt}
             >
-              {scores.length === 2
-                ? "Add the deciding third game"
-                : "Remove the third game"}
+              Check submission status
             </button>
-          )}
-          {!correction && (
-            <>
-              <div className="field">
-                <label htmlFor="result-time">Started at</label>
-                <input
-                  type="datetime-local"
-                  step="1"
-                  id="result-time"
-                  value={played}
-                  onChange={(e) => setPlayed(e.target.value)}
-                  required
-                />
+          </div>
+        )}
+        <form onSubmit={submit}>
+          <fieldset
+            disabled={busy || !!received}
+            style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+          >
+            {!correction && !submissionUncertain && recent.length > 0 && (
+              <details className="recent-rosters">
+                <summary>Use a recent lineup</summary>
                 <p className="form-help">
-                  Time entered in your device’s timezone:{" "}
-                  {Intl.DateTimeFormat().resolvedOptions().timeZone}. Review
-                  shows your profile timezone.
+                  Use the same players and sides. This replaces the unsent
+                  lineup and clears its scores. Enter a fresh score and start
+                  time; every match still needs approval.
                 </p>
+                {recent.map((r, i) => (
+                  <button
+                    type="button"
+                    className="roster-shortcut"
+                    key={i}
+                    onClick={() => {
+                      setRoster(r.roster);
+                      changeFormat(r.format);
+                      setScores(
+                        FORMATS[r.format as Format].series
+                          ? [
+                              ["", ""],
+                              ["", ""],
+                            ]
+                          : [["", ""]],
+                      );
+                      setPlayed(localDate(new Date()));
+                      setAcknowledged("");
+                    }}
+                  >
+                    {r.roster
+                      .slice(0, r.roster.length / 2)
+                      .map((p: Player) => (p.id === me.id ? "You" : p.name))
+                      .join(" + ")}{" "}
+                    <span>vs</span>{" "}
+                    {r.roster
+                      .slice(r.roster.length / 2)
+                      .map((p: Player) => p.name)
+                      .join(" + ")}
+                  </button>
+                ))}
+              </details>
+            )}
+            <div className="form-grid">
+              <div className="field">
+                <label htmlFor="result-category">Category</label>
+                <select
+                  id="result-category"
+                  disabled={!!correction}
+                  value={category}
+                  onChange={(e) => {
+                    const c = e.target.value as Category;
+                    setCategory(c);
+                    setRoster([
+                      me,
+                      null,
+                      ...(c === "Singles" ? [] : [null, null]),
+                    ]);
+                    setScopeId("");
+                  }}
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
               </div>
               <div className="field">
-                <label htmlFor="result-scope">Earlier rated agreement</label>
+                <label htmlFor="result-format">Played format</label>
                 <select
-                  id="result-scope"
-                  value={scopeId}
-                  onChange={(e) => setScopeId(e.target.value)}
+                  id="result-format"
+                  value={format}
+                  onChange={(e) => changeFormat(e.target.value as Format)}
                 >
-                  <option value="">
-                    No earlier agreement · everyone approves
-                  </option>
-                  {applicable.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {dateLabel(s.starts)} · {s.accepted.length}/
-                      {s.players.length} agreed
+                  {Object.entries(FORMATS).map(([key, f]) => (
+                    <option key={key} value={key}>
+                      {f.label}
                     </option>
                   ))}
                 </select>
               </div>
-            </>
-          )}
-          <div className="notice neutral">
-            <strong>
-              {scopeId
-                ? "Prior consent and score approval stay separate."
-                : "Every player approves this retrospective result."}
-            </strong>
-            <p>
-              {scopeId
-                ? "When the earlier agreement covers this match, one eligible opponent confirms the exact score. Otherwise every player must approve."
-                : "Without an earlier all-player agreement, each player must approve the exact score and its rated status. Silence never changes a rating."}
+            </div>
+            {correction ? (
+              <div className="team-row">
+                <div>
+                  Side A<br />
+                  {roster
+                    .slice(0, roster.length / 2)
+                    .map((p) => p?.name)
+                    .join(" + ")}
+                </div>
+                <div>
+                  Side B<br />
+                  {roster
+                    .slice(roster.length / 2)
+                    .map((p) => p?.name)
+                    .join(" + ")}
+                </div>
+              </div>
+            ) : (
+              <RosterEditor
+                roster={roster}
+                category={category}
+                setRoster={setRoster}
+                pick={setPick}
+              />
+            )}
+            {scores.map((g, i) => (
+              <div className="score-inputs" key={i}>
+                <div className="game-label">Completed game {i + 1}</div>
+                <div>
+                  {g.map((v, side) => (
+                    <div key={side}>
+                      <label htmlFor={`score-${i}-${side}`}>
+                        {correction
+                          ? side === 0
+                            ? "Side A"
+                            : "Side B"
+                          : side === 0
+                            ? "Your side"
+                            : "Other side"}
+                      </label>
+                      <input
+                        id={`score-${i}-${side}`}
+                        inputMode="numeric"
+                        autoComplete="off"
+                        pattern="[0-9]*"
+                        maxLength={6}
+                        required
+                        value={v}
+                        onChange={(e) =>
+                          setScores(
+                            scores.map((game, j) =>
+                              j === i
+                                ? game.map((x, k) =>
+                                    k === side ? e.target.value : x,
+                                  )
+                                : game,
+                            ),
+                          )
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            {FORMATS[format].series && (
+              <button
+                type="button"
+                className="text-button"
+                onClick={() =>
+                  setScores(
+                    scores.length === 2
+                      ? [...scores, ["", ""]]
+                      : scores.slice(0, 2),
+                  )
+                }
+              >
+                {scores.length === 2
+                  ? "Add the deciding third game"
+                  : "Remove the third game"}
+              </button>
+            )}
+            {!correction && (
+              <>
+                <div className="field">
+                  <label htmlFor="result-time">Started at</label>
+                  <input
+                    type="datetime-local"
+                    step="1"
+                    id="result-time"
+                    value={played}
+                    onChange={(e) => setPlayed(e.target.value)}
+                    required
+                  />
+                  <p className="form-help">
+                    Time entered in your device’s timezone:{" "}
+                    {Intl.DateTimeFormat().resolvedOptions().timeZone}. Review
+                    shows your profile timezone.
+                  </p>
+                </div>
+                <div className="field">
+                  <label htmlFor="result-scope">Earlier rated agreement</label>
+                  <select
+                    id="result-scope"
+                    value={scopeId}
+                    onChange={(e) => setScopeId(e.target.value)}
+                  >
+                    <option value="">
+                      No earlier agreement · everyone approves
+                    </option>
+                    {applicable.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {dateLabel(s.starts)} · {s.accepted.length}/
+                        {s.players.length} agreed
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
+            <div className="notice neutral">
+              <strong>
+                {correction
+                  ? "Corrections require fresh exact-score approval."
+                  : scopeId
+                    ? "Prior consent and score approval stay separate."
+                    : "Every player approves this retrospective result."}
+              </strong>
+              <p>
+                {correction
+                  ? "The changed score or format needs fresh approval. An earlier agreement only applies if it still covers this match; otherwise every player must approve."
+                  : scopeId
+                    ? "When the earlier agreement covers this match, one eligible opponent confirms the exact score. Otherwise every player must approve."
+                    : "Without an earlier all-player agreement, each player must approve the exact score and its rated status. Silence never changes a rating."}
+              </p>
+            </div>
+            <label className="check-line">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) =>
+                  setAcknowledged(e.target.checked ? exactDraft : "")
+                }
+                required
+              />
+              <span>
+                I confirm these sides and scores, and agree that this exact
+                completed result counts toward my rating.
+              </span>
+            </label>
+            <InlineError message={error} />
+            <button className="button block" disabled={busy}>
+              {busy
+                ? "Saving your result…"
+                : correction
+                  ? "Propose correction"
+                  : "Send for exact-score approval"}
+              <ArrowRight size={16} />
+            </button>
+            <p className="form-help">
+              {correction
+                ? "Changed values require fresh approvals."
+                : submissionUncertain
+                  ? "This local copy stays on this device for seven days. Its presence does not tell you whether SHUTTL already received the match."
+                  : "An unsent draft stays on this device for seven days. It never changes a rating."}
             </p>
-          </div>
-          <label className="check-line">
-            <input
-              type="checkbox"
-              checked={agree}
-              onChange={(e) =>
-                setAcknowledged(e.target.checked ? exactDraft : "")
-              }
-              required
-            />
-            <span>
-              I confirm these sides and scores, and agree that this exact
-              completed result counts toward my rating.
-            </span>
-          </label>
-          <InlineError message={error} />
-          <button className="button block" disabled={busy}>
-            {busy
-              ? "Saving your result…"
-              : correction
-                ? "Propose correction"
-                : "Send for exact-score approval"}
-            <ArrowRight size={16} />
-          </button>
-          <p className="form-help">
-            {correction
-              ? "Changed values require fresh approvals."
-              : "An unsent draft stays on this device for seven days. It never changes a rating."}
-          </p>
+            {!correction &&
+              !submissionUncertain &&
+              !received &&
+              (saved ||
+                roster.some((player, index) => index > 0 && player) ||
+                scores.some((game) => game.some(Boolean))) &&
+              (confirmDiscard ? (
+                <div className="notice neutral">
+                  <strong>Discard this local draft?</strong>
+                  <p>
+                    It has not been submitted. No rating or recorded result will
+                    change.
+                  </p>
+                  <div className="modal-actions">
+                    <button
+                      type="button"
+                      className="button secondary"
+                      onClick={() => setConfirmDiscard(false)}
+                    >
+                      Keep draft
+                    </button>
+                    <button
+                      type="button"
+                      className="button secondary"
+                      onClick={discardDraft}
+                    >
+                      Discard draft and start fresh
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="text-button"
+                  onClick={() => setConfirmDiscard(true)}
+                >
+                  Discard local draft
+                </button>
+              ))}
+          </fieldset>
         </form>
       </Modal>
       {pick !== null && (
@@ -1093,9 +1469,12 @@ export function AgreementForm({
   const agree = acknowledgedAgreement === agreementKey;
   async function submit(e: FormEvent) {
     e.preventDefault();
+    if (busy) return;
     setError("");
     try {
       if (roster.some((p) => !p)) throw new Error("Choose every player.");
+      if (new Set(roster.map((player) => player!.id)).size !== roster.length)
+        throw new Error("Each player can appear only once.");
       if (!agree) throw new Error("Choose whether you agree to rated play.");
       setBusy(true);
       const starts = new Date(),
@@ -1119,97 +1498,108 @@ export function AgreementForm({
   }
   return (
     <>
-      <Modal title="Agree before you play" close={close} wide>
+      <Modal
+        title="Agree before you play"
+        close={close}
+        dismissible={!busy}
+        wide
+      >
         <p className="form-help">
           Every player chooses for themselves. The same four may rotate teams
           within a covered doubles or mixed agreement.
         </p>
         <form onSubmit={submit}>
-          <div className="form-grid">
-            <div className="field">
-              <label htmlFor="agreement-category">Category</label>
-              <select
-                id="agreement-category"
-                value={category}
-                onChange={(e) => {
-                  const c = e.target.value as Category;
-                  setCategory(c);
-                  setRoster([
-                    me,
-                    null,
-                    ...(c === "Singles" ? [] : [null, null]),
-                  ]);
-                }}
-              >
-                {CATEGORIES.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
+          <fieldset
+            disabled={busy}
+            style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
+          >
+            <div className="form-grid">
+              <div className="field">
+                <label htmlFor="agreement-category">Category</label>
+                <select
+                  id="agreement-category"
+                  value={category}
+                  onChange={(e) => {
+                    const c = e.target.value as Category;
+                    setCategory(c);
+                    setRoster([
+                      me,
+                      null,
+                      ...(c === "Singles" ? [] : [null, null]),
+                    ]);
+                  }}
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label htmlFor="agreement-format">Format</label>
+                <select
+                  id="agreement-format"
+                  value={format}
+                  onChange={(e) => setFormat(e.target.value as Format)}
+                >
+                  {Object.entries(FORMATS).map(([key, f]) => (
+                    <option value={key} key={key}>
+                      {f.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="field">
-              <label htmlFor="agreement-format">Format</label>
-              <select
-                id="agreement-format"
-                value={format}
-                onChange={(e) => setFormat(e.target.value as Format)}
-              >
-                {Object.entries(FORMATS).map(([key, f]) => (
-                  <option value={key} key={key}>
-                    {f.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <RosterEditor
-            roster={roster}
-            category={category}
-            setRoster={setRoster}
-            pick={setPick}
-          />
-          <div className="field">
-            <label htmlFor="agreement-length">Agreement length</label>
-            <select
-              id="agreement-length"
-              value={recurring ? "recurring" : "session"}
-              onChange={(e) => setRecurring(e.target.value === "recurring")}
-            >
-              <option value="session">This session · next 8 hours</option>
-              <option value="recurring">
-                Same players and format · 30 days
-              </option>
-            </select>
-          </div>
-          <label className="check-line">
-            <input
-              type="checkbox"
-              checked={agree}
-              onChange={(e) =>
-                setAcknowledgedAgreement(e.target.checked ? agreementKey : "")
-              }
-              required
+            <RosterEditor
+              roster={roster}
+              category={category}
+              setRoster={setRoster}
+              pick={setPick}
             />
-            <span>
-              I agree that covered completed matches count toward my rating.
-              Each other player must choose separately. I can stop future rated
-              play.
-            </span>
-          </label>
-          <InlineError message={error} />
-          <button className="button block" disabled={busy}>
-            {busy
-              ? "Creating your agreement…"
-              : "Create agreement and accept for myself"}
-          </button>
-          <p className="form-help">
-            A different player, category or format needs a new agreement.
-            Revocation does not erase matches already started under a valid
-            agreement.
-          </p>
+            <div className="field">
+              <label htmlFor="agreement-length">Agreement length</label>
+              <select
+                id="agreement-length"
+                value={recurring ? "recurring" : "session"}
+                onChange={(e) => setRecurring(e.target.value === "recurring")}
+              >
+                <option value="session">This session · next 8 hours</option>
+                <option value="recurring">
+                  Same players and format · 30 days
+                </option>
+              </select>
+            </div>
+            <label className="check-line">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) =>
+                  setAcknowledgedAgreement(e.target.checked ? agreementKey : "")
+                }
+                required
+              />
+              <span>
+                I agree that covered completed matches count toward my rating.
+                Each other player must choose separately. I can stop future
+                rated play.
+              </span>
+            </label>
+            <InlineError message={error} />
+            <button className="button block" disabled={busy}>
+              {busy
+                ? "Creating your agreement…"
+                : "Create agreement and accept for myself"}
+            </button>
+            <p className="form-help">
+              A different player, category or format needs a new agreement.
+              Revocation does not erase matches already started under a valid
+              agreement.
+            </p>
+          </fieldset>
         </form>
       </Modal>
       {pick !== null && (
         <PlayerLookup
+          excludeIds={roster.filter(Boolean).map((player) => player!.id)}
           close={() => setPick(null)}
           choose={(p) => {
             setRoster(roster.map((v, i) => (i === pick ? p : v)));
