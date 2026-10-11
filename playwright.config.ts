@@ -4,6 +4,13 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   timeout: 45000,
+  reporter: process.env.CI
+    ? [
+        ["line"],
+        ["github"],
+        ["json", { outputFile: "outputs/validation-2026-10-11/browser.json" }],
+      ]
+    : "list",
   use: {
     baseURL: "http://localhost:4174",
     viewport: { width: 390, height: 844 },
