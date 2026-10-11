@@ -1,0 +1,3992 @@
+{
+  "date": "2026-10-11",
+  "review": "post-improvement evidence register",
+  "minimumScore": 9.5,
+  "method": "Historical scores are preserved solely as the original expert baseline. No new scores are assigned without independent review and player evidence. Passing code checks does not prove perception, retention, price acceptance or badminton calibration.",
+  "paymentIntegration": "excluded by user instruction",
+  "acceptedCriteria": 0,
+  "metrics": [
+    {
+      "id": 1,
+      "group": "Visual identity",
+      "metric": "Brand cohesion",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Forest, ivory, lime, Manrope and condensed rating numerals form a coherent foundation."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Forest, ivory, restrained lime, local fonts and original league assets continue across core surfaces.",
+      "requiredEvidenceOrWork": "Independent full-journey brand review.",
+      "acceptanceCriterion": "Independent review sees a recognizable SHUTTL identity on every core surface.",
+      "originalImprovement": "Keep one authored brand system across onboarding, results, profile and sharing.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 2,
+      "group": "Visual identity",
+      "metric": "Distinctiveness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "The restrained dashboard could also belong to a finance or wellness product."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Court geometry now appears in the passport and actual exported stories; generic dashboard conventions remain.",
+      "requiredEvidenceOrWork": "Blind recognition study; refine signature compositions if identification is weak.",
+      "acceptanceCriterion": "Unbranded screen recognition separates SHUTTL from unrelated dashboards.",
+      "originalImprovement": "Build a signature badminton composition, court geometry and achievement language rather than generic cards.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 3,
+      "group": "Visual identity",
+      "metric": "Badminton identity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The shuttle mark signals the sport; the main experience has little actual badminton culture."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Badminton category, court geometry and player-confirmed match language are explicit.",
+      "requiredEvidenceOrWork": "Real player review and licensed Featherballer editorial material; no supplied photography has been invented.",
+      "acceptanceCriterion": "Players recognize their sport immediately without reading the app description.",
+      "originalImprovement": "Use original Featherballer photography or short editorial imagery in onboarding and milestones, with restrained court graphics in everyday UI.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 4,
+      "group": "Visual identity",
+      "metric": "Premium first impression",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Large numerals and restrained colors look considered, but small secondary text weakens the effect."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Functional text is larger; mobile number and seal overflow is repaired.",
+      "requiredEvidenceOrWork": "Independent ordinary-phone premium-perception review.",
+      "acceptanceCriterion": "Premium perception remains high on ordinary phones, not just curated captures.",
+      "originalImprovement": "Retain restraint while improving legibility, content relevance and rendering under real data.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 5,
+      "group": "Visual identity",
+      "metric": "Sporting energy",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The default tone is calm; it rarely feels like a competitive moment."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Earned milestone recaps and sporting color treatment add energy without decorative points.",
+      "requiredEvidenceOrWork": "Perceived energy and motion quality on actual devices.",
+      "acceptanceCriterion": "Competitive players distinguish routine browsing from an earned achievement.",
+      "originalImprovement": "Give genuine wins, rival changes and new bests a sharper composition and stronger verbs.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 6,
+      "group": "Visual identity",
+      "metric": "Athlete aspiration",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "League names imply progression but do not connect clearly to badminton accomplishment."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "A player passport, real peak and earned league milestones support athlete identity.",
+      "requiredEvidenceOrWork": "Research whether recreational and competitive players aspire to this identity.",
+      "acceptanceCriterion": "Players can explain why the next milestone matters to them.",
+      "originalImprovement": "Explain each earned milestone through evidence and a personal story, without claiming a certified skill level.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 7,
+      "group": "Visual identity",
+      "metric": "Color discipline",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "The green family is consistent and avoids unnecessary visual noise."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "One default forest system remains; alternate concepts use explicit palettes.",
+      "requiredEvidenceOrWork": "Contrast review across every state and independent palette appraisal.",
+      "acceptanceCriterion": "The same state always carries the same visual meaning.",
+      "originalImprovement": "Define semantic color rules for wins, losses, pending work, milestones and selection.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 8,
+      "group": "Visual identity",
+      "metric": "Typography character",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Manrope with Barlow gives the rating card a distinctive numerical voice."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Manrope and Barlow remain local, with larger functional labels and condensed rating numerals.",
+      "requiredEvidenceOrWork": "Typography review at system text enlargement and on low-end phones.",
+      "acceptanceCriterion": "Hierarchy remains recognizable at small and enlarged text sizes.",
+      "originalImprovement": "Preserve the pair and replace scattered tiny sizes with a deliberate type scale.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 9,
+      "group": "Visual identity",
+      "metric": "Numerical authority",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "The number is dominant but its precision can imply more certainty than the model supports."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "One integer display rule and responsive number sizing are retained.",
+      "requiredEvidenceOrWork": "Perceived authority without misunderstanding estimates as certified skill.",
+      "acceptanceCriterion": "Users distinguish a developing estimate from an official skill credential.",
+      "originalImprovement": "Place a concise evidence label next to it and expose a plain-language explanation on demand.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 10,
+      "group": "Visual identity",
+      "metric": "Logo quality",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "The original shuttle mark is clean; brand-system breadth is limited."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Original shuttle monogram is retained.",
+      "requiredEvidenceOrWork": "Independent identity craft, small-size recognition and app-icon review.",
+      "acceptanceCriterion": "The icon remains recognizable at notification and app-icon sizes.",
+      "originalImprovement": "Refine optical balance, small-size variants and consistent spacing rules.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 11,
+      "group": "Visual identity",
+      "metric": "League asset craft",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The faceted gems are consistent but basic and resemble generic game assets."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "All eight original seals fit phone passports in browser checks.",
+      "requiredEvidenceOrWork": "Independent craft/desirability assessment; recognition in exported cards.",
+      "acceptanceCriterion": "Players can recognize tiers at small sizes without relying on color.",
+      "originalImprovement": "Create a more authored badge family with clear silhouettes and attractive earned states.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 12,
+      "group": "Visual identity",
+      "metric": "League narrative",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Crystal through Grandmaster conveys hierarchy, but thresholds are pilot candidates."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "The rating guide includes the league collection and honestly labels candidate boundaries.",
+      "requiredEvidenceOrWork": "Validate badge progression and boundaries with badminton data.",
+      "acceptanceCriterion": "Users understand the ladder without confusing a badge with verified badminton ability.",
+      "originalImprovement": "Publish a concise league guide and validate boundaries before suggesting population status.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 13,
+      "group": "Visual identity",
+      "metric": "Surface restraint",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Most surfaces are quiet and consistent; the repeated panel treatment becomes monotonous."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Compact home and separate profile sections reduce accumulated information; no paid upsell.",
+      "requiredEvidenceOrWork": "Task-based density and restraint review under realistic history.",
+      "acceptanceCriterion": "The main task stays obvious without making every section another card.",
+      "originalImprovement": "Use fewer panels and distinguish passport, result, rivalry and settings through composition.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 14,
+      "group": "Visual identity",
+      "metric": "Icon consistency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Lucide provides a consistent supporting system."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "One Lucide icon system remains, with restrained pressed states.",
+      "requiredEvidenceOrWork": "Audit all icon meanings and assistive labels.",
+      "acceptanceCriterion": "Icons retain clear meaning in keyboard, touch and screen-reader use.",
+      "originalImprovement": "Audit size, optical alignment and labels across navigation, form actions and sharing.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 15,
+      "group": "Visual identity",
+      "metric": "Avatar personality",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Initial circles identify people but provide little social identity."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Initial avatars use a refined bordered treatment; photos are not implemented.",
+      "requiredEvidenceOrWork": "Friend recognition testing; implement optional private-controlled portraits only if justified.",
+      "acceptanceCriterion": "Players recognize friends quickly without exposing unwanted identity.",
+      "originalImprovement": "Offer optional player photos or a refined initials treatment, with privacy controls.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 16,
+      "group": "Visual identity",
+      "metric": "Copy voice",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The repeated game, court and story slogans sound pleasant but generic."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Reveal, loss, break and uncertainty copy are more concrete and respectful.",
+      "requiredEvidenceOrWork": "Non-leading comprehension review across complete flows.",
+      "acceptanceCriterion": "Players understand the screen before reading secondary explanations.",
+      "originalImprovement": "Use fewer slogans and more specific statements about the player's actual progress.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 17,
+      "group": "Visual identity",
+      "metric": "Creator-brand integration",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Featherballer's reach and badminton expertise are not meaningfully represented in the app."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "A restrained Featherballer founding attribution is included on home.",
+      "requiredEvidenceOrWork": "Creator-approved story and useful guidance content remain needed.",
+      "acceptanceCriterion": "New arrivals understand why Featherballer endorses this product and what value that brings.",
+      "originalImprovement": "Introduce a restrained founding story and relevant creator-led guidance, without turning home into an advertisement.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 18,
+      "group": "Visual identity",
+      "metric": "Share identity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "The actual exported card carries a logo and number but lacks a memorable achievement composition."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Current, first-reveal and personal-best stories use one authored export system.",
+      "requiredEvidenceOrWork": "Voluntary sharing and blind visual review of actual exports.",
+      "acceptanceCriterion": "A shared card is both recognizable and meaningful to another badminton player.",
+      "originalImprovement": "Build distinct rating, personal-best, reveal and eligible-title share templates.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 19,
+      "group": "Visual identity",
+      "metric": "Visual consistency beyond home",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "Supporting screens use the palette but resemble administrative forms."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Result recaps, dialogs, profile tabs and insights use the shared system.",
+      "requiredEvidenceOrWork": "Independent review of every error, empty, correction and account state.",
+      "acceptanceCriterion": "Premium quality remains consistent throughout a complete session.",
+      "originalImprovement": "Extend the passport design language to result recaps, invitations and comparison detail.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 20,
+      "group": "Visual identity",
+      "metric": "Five-direction maturity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "There are meaningful layout alternatives, but they share most of the same content and components."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Five executable directions remain; Court and Circle layouts were repaired after visual inspection.",
+      "requiredEvidenceOrWork": "Five directions are alternatives, not five independently accepted products; choose and validate one.",
+      "acceptanceCriterion": "The chosen direction handles empty, active, winning, losing and long-content states equally well.",
+      "originalImprovement": "Select one main direction, then develop every state rather than maintaining five partially refined skins.",
+      "implementationReferences": [
+        "src/styles.css",
+        "src/pages/Home.tsx",
+        "src/share-image.ts",
+        "docs/mockups",
+        "public/leagues"
+      ]
+    },
+    {
+      "id": 21,
+      "group": "Layout and accessibility",
+      "metric": "Mobile first-screen efficiency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "On the audited 390 × 844 viewport, the rating starts around 436 pixels down."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Heading and action share a compact row; number and rival have priority on phones.",
+      "requiredEvidenceOrWork": "Measure real-device viewport coverage and text enlargement; no universal fold guarantee.",
+      "acceptanceCriterion": "The first screen answers my rating, what changed and what I can do next.",
+      "originalImprovement": "Compress the greeting and put useful status information before decorative copy.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 22,
+      "group": "Layout and accessibility",
+      "metric": "Rivalry visibility",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Friends begin around 1,192 pixels down on the default phone home."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Closest supported rival, or an honest no-comparison state, appears directly near the rating.",
+      "requiredEvidenceOrWork": "Discoverability study under no-friend, long-name, break and lead-change states.",
+      "acceptanceCriterion": "A returning player finds their relevant rival without a long scroll.",
+      "originalImprovement": "Place the closest supported rival or a real lead-change strip directly below the passport.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 23,
+      "group": "Layout and accessibility",
+      "metric": "Activity visibility",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "Friend activity begins around 1,595 pixels down on the same home."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "A real dated activity preview appears near rivalry; full grouped feed remains available below.",
+      "requiredEvidenceOrWork": "Verify voluntary activity discovery rather than assuming a preview guarantees return.",
+      "acceptanceCriterion": "Fresh relevant activity is discoverable within the first two screens.",
+      "originalImprovement": "Promote meaningful changes and make the broader feed secondary.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 24,
+      "group": "Layout and accessibility",
+      "metric": "Primary action clarity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Record a result is prominent and consistently labeled."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Record result / continue draft has a stable accessible name and explicit intent.",
+      "requiredEvidenceOrWork": "Unassisted action discovery and recording task success.",
+      "acceptanceCriterion": "Players identify the main action quickly in every home state.",
+      "originalImprovement": "Keep it as the single main action and adapt secondary actions to placement or approval state.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 25,
+      "group": "Layout and accessibility",
+      "metric": "Supporting-text legibility",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "Many functional labels are 9–11 pixels, including navigation and evidence."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Functional controls and supporting text were enlarged; annotations remain distinct.",
+      "requiredEvidenceOrWork": "Real-device legibility and enlarged-text review.",
+      "acceptanceCriterion": "Players of varied ages read the interface comfortably on actual devices.",
+      "originalImprovement": "Use a readable mobile scale, typically 14–16 pixels for functional content, with carefully limited small annotations.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 26,
+      "group": "Layout and accessibility",
+      "metric": "Heading proportions",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "Large greetings consume space; action buttons force some supporting-page titles into awkward wraps."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Phone headings are smaller and yield space to rating and action.",
+      "requiredEvidenceOrWork": "Independent hierarchy assessment across widths and large text.",
+      "acceptanceCriterion": "Player passport and Rated agreements headings remain balanced at 320–430 pixels.",
+      "originalImprovement": "Use compact screen titles and separate or simplify header actions on narrow screens.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 27,
+      "group": "Layout and accessibility",
+      "metric": "Number and badge robustness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "The Diamond seal exceeds the rating-card space at the audited phone width."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Responsive grid isolates seal and rating; all eight league names fit tested widths, with digits checked to stay on a single line.",
+      "requiredEvidenceOrWork": "Real-device, zoom and translated-label stress review.",
+      "acceptanceCriterion": "Every league name and realistic rating value fits with intact padding.",
+      "originalImprovement": "Give the number and seal explicit responsive layouts; stack or scale through a tested rule.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 28,
+      "group": "Layout and accessibility",
+      "metric": "Share-dialog robustness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "The compact rating preview clips most of the league seal."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Compact passport has single-line number checks at 320px; a verified first-reveal PNG with an unusually long name was inspected.",
+      "requiredEvidenceOrWork": "Review all templates, long names and both export shapes on target devices.",
+      "acceptanceCriterion": "The complete rating and badge fit in the sharing sheet at common phone widths.",
+      "originalImprovement": "Use a genuine compact preview rather than the large home-card layout inside a narrow dialog.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 29,
+      "group": "Layout and accessibility",
+      "metric": "Chart interpretability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The home trend has no visible rating-axis values, dates or point inspection."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Actual published points can be inspected by date, value and change using buttons.",
+      "requiredEvidenceOrWork": "Players must correctly interpret the line, sample coverage and placement baseline.",
+      "acceptanceCriterion": "Users can tell the amount and timing of progress rather than only the line's direction.",
+      "originalImprovement": "Add minimal context, a time range and accessible value inspection.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 30,
+      "group": "Layout and accessibility",
+      "metric": "Small-sample visual honesty",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Unrated Mixed shows a dash and no invented chart."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "One-point and no-history states explain the evidence instead of drawing invented lines.",
+      "requiredEvidenceOrWork": "Comprehension with developing and sparse accounts.",
+      "acceptanceCriterion": "New players never mistake illustrative content for their own evidence.",
+      "originalImprovement": "Retain honest empty states but make the next useful action more specific.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 31,
+      "group": "Layout and accessibility",
+      "metric": "Color contrast consistency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "Core text is reasonably contrasted, but some pale annotations and placement pips need a complete audit."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Muted colors were strengthened and arena recap contrast repaired.",
+      "requiredEvidenceOrWork": "Complete contrast audit, including focus, disabled and error states; not WCAG-certified.",
+      "acceptanceCriterion": "Relevant WCAG contrast checks pass; tiny text is reviewed separately for usability.",
+      "originalImprovement": "Check rendered foreground/background combinations and all selected, disabled and empty states.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 32,
+      "group": "Layout and accessibility",
+      "metric": "Touch ergonomics",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "Many main actions are at least 44 pixels high; some secondary actions are smaller."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Core touch controls target 44px and score formats expand across narrow screens.",
+      "requiredEvidenceOrWork": "Touch task study on real small phones and with motor-access needs.",
+      "acceptanceCriterion": "Users reliably tap intended controls after a match without accidental adjacent actions.",
+      "originalImprovement": "Audit real target areas, spacing and one-handed access across dialogs and settings.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 33,
+      "group": "Layout and accessibility",
+      "metric": "Keyboard and focus behavior",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Native dialogs restore focus and controls have focus styling; full keyboard coverage is unverified."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Native modal focus handling, Escape and keyboard chart controls remain.",
+      "requiredEvidenceOrWork": "Complete keyboard journeys including nested pickers, correction and settings.",
+      "acceptanceCriterion": "Signup, scoring, approval, sharing and account controls work without a pointer.",
+      "originalImprovement": "Walk each complete task with a keyboard and repair focus order or hidden traps.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 34,
+      "group": "Layout and accessibility",
+      "metric": "Screen-reader comprehension",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "There are labels and chart descriptions, but a complete spoken experience was not tested."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Semantic controls, labels and accessible chart descriptions are implemented.",
+      "requiredEvidenceOrWork": "Actual VoiceOver/TalkBack/NVDA task testing remains required.",
+      "acceptanceCriterion": "A screen-reader user completes the same core tasks without extra help.",
+      "originalImprovement": "Test actual assistive technologies, status announcements and category controls.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 35,
+      "group": "Layout and accessibility",
+      "metric": "Text enlargement",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The design relies heavily on fixed pixel sizes and tightly packed card content."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Responsive layouts use flexible wrapping; no complete enlarged-text acceptance proof.",
+      "requiredEvidenceOrWork": "200% text and device font-size journeys; repair any newly discovered obstruction.",
+      "acceptanceCriterion": "At enlarged text, controls and rating labels remain readable without loss of information.",
+      "originalImprovement": "Test browser text scaling and device accessibility sizes, with true reflow rules.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 36,
+      "group": "Layout and accessibility",
+      "metric": "Long-name handling",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Score rows, paired-player names and share-card text need broader realistic-data testing."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Names wrap in friend/result contexts and canvas exports wrap Unicode safely.",
+      "requiredEvidenceOrWork": "Stress actual exports, scripts and long names on real devices.",
+      "acceptanceCriterion": "Important identity and result information remains accessible rather than silently clipped.",
+      "originalImprovement": "Test long names, compound names, long circle titles and every league label.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 37,
+      "group": "Layout and accessibility",
+      "metric": "Dark appearance completeness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "After hours is a home concept; there is no coherent app-wide dark preference."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "The consumer default is a single coherent light shell with a dark passport.",
+      "requiredEvidenceOrWork": "Arena is an alternate home concept, not a complete selectable dark theme.",
+      "acceptanceCriterion": "Theme changes do not leave bright dialogs, low contrast or mismatched assets.",
+      "originalImprovement": "Either keep a polished single theme or build a complete optional dark system across all screens.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 38,
+      "group": "Layout and accessibility",
+      "metric": "Settings discoverability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "With only 19 results, preferences begin around 4,902 pixels down the profile."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Settings has a top-level profile tab and goals link routes there directly.",
+      "requiredEvidenceOrWork": "Unassisted settings discovery with realistic history.",
+      "acceptanceCriterion": "Users find privacy, goals and account controls without scrolling through their match archive.",
+      "originalImprovement": "Separate passport and history from settings, or use a readily visible settings entry.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 39,
+      "group": "Layout and accessibility",
+      "metric": "Navigation consistency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "Home, Circle, Rankings and Profile are simple, but agreement and reviewer access are less clear on phones."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Category preference persists per account; comparison and share use the chosen category.",
+      "requiredEvidenceOrWork": "Verify navigation/back/forward and category continuity in real sessions.",
+      "acceptanceCriterion": "Users can locate every relevant destination on mobile and desktop.",
+      "originalImprovement": "Make secondary destinations available through a compact account or inbox menu.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 40,
+      "group": "Layout and accessibility",
+      "metric": "Date and timezone consistency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Home activity can use the selected timezone, while result and agreement labels default to Singapore."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Displayed dates use the profile timezone; device timezone is captured at signup and Settings offers browser-supported zones. Result review includes exact time and zone.",
+      "requiredEvidenceOrWork": "DST, international timezones and entered-device-time comprehension.",
+      "acceptanceCriterion": "The same match displays the same date across home, history, review and export.",
+      "originalImprovement": "Apply one explicit timezone policy and show time context on exact-result review.",
+      "implementationReferences": [
+        "src/components/UI.tsx",
+        "src/components/Progress.tsx",
+        "src/styles.css",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 41,
+      "group": "Motion and rewards",
+      "metric": "Navigation transitions",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Most screen changes are immediate replacements with little continuity."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Short entry and pressed states are authored.",
+      "requiredEvidenceOrWork": "Device motion appraisal and performance measurement.",
+      "acceptanceCriterion": "Transitions clarify where the player went and remain responsive on ordinary phones.",
+      "originalImprovement": "Use restrained transitions that connect origin and destination.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 42,
+      "group": "Motion and rewards",
+      "metric": "Rating-update motion",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "New numbers update without a designed before-to-after event."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Published score and earned recap respond to actual ledger changes.",
+      "requiredEvidenceOrWork": "No cinematic numeric roll is implemented; judge whether motion is satisfying and clear.",
+      "acceptanceCriterion": "Users understand the change and can replay or inspect it without waiting through decoration.",
+      "originalImprovement": "Create a short, interruptible rating-change sequence tied to an actually published result.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 43,
+      "group": "Motion and rewards",
+      "metric": "Fifth-result reveal",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "The fifth result generates a notification but no authored reveal experience."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "The fifth result gets an explicit starting-point reveal with no hidden-prior delta.",
+      "requiredEvidenceOrWork": "Observed emotional response and fifth-result comprehension.",
+      "acceptanceCriterion": "The reveal feels earned and is understood as a starting estimate, not a final certification.",
+      "originalImprovement": "Design a one-time starting-rating reveal with evidence, next milestone and optional share.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 44,
+      "group": "Motion and rewards",
+      "metric": "League-promotion moment",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "There is no dedicated promotion event or reward sequence."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "A genuine upward league boundary produces a promotion recap.",
+      "requiredEvidenceOrWork": "Validate league boundaries and player response; corrections may undo milestones.",
+      "acceptanceCriterion": "A real crossing is celebrated exactly once; corrections do not manufacture promotional hype.",
+      "originalImprovement": "Create a rare, meaningful promotion card and optional motion.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 45,
+      "group": "Motion and rewards",
+      "metric": "Personal-best recognition",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Personal best appears as a static statistic."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "A new visible peak is recognized; sharing uses a server-derived historical peak.",
+      "requiredEvidenceOrWork": "Real-player reward desirability and repeated-use fatigue.",
+      "acceptanceCriterion": "Players notice genuine new bests without searching the profile.",
+      "originalImprovement": "Make a new visible best a specific recap event with date and share option.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 46,
+      "group": "Motion and rewards",
+      "metric": "Rival lead-change feedback",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Supported lead-change notifications exist, but the home presentation lacks an event moment."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Real lead-change inbox updates can surface on home, with optional device alerts.",
+      "requiredEvidenceOrWork": "Configured-device delivery and meaningful return behavior.",
+      "acceptanceCriterion": "The reason to return is clear and reflects a real published result.",
+      "originalImprovement": "Show a concise evidence-backed lead change with the named rival and category.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 47,
+      "group": "Motion and rewards",
+      "metric": "Loss experience",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Losses update the number, with little context or recognition of other progress."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Loss recap explains evidence, preserves the peak and avoids punitive streak language.",
+      "requiredEvidenceOrWork": "Observe frustrated and losing-player journeys over time.",
+      "acceptanceCriterion": "Players feel informed and willing to return after a loss.",
+      "originalImprovement": "Explain the change and surface supported learning or personal progress without awarding fake points.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 48,
+      "group": "Motion and rewards",
+      "metric": "Result recap",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "The confirmed-result dialog emphasizes approval counts, correction and review."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Result review and latest-home recap show the real score, outcome and visible before/after.",
+      "requiredEvidenceOrWork": "Verify players understand score approval versus rating publication.",
+      "acceptanceCriterion": "Players can answer what happened and why it mattered from the recap.",
+      "originalImprovement": "Lead with the result, my rating change, record context and next useful action.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 49,
+      "group": "Motion and rewards",
+      "metric": "Microinteraction craft",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Basic hover and button transitions exist; tactile feedback is limited."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Consistent press, focus and brief earned states exist.",
+      "requiredEvidenceOrWork": "Independent interaction polish on ordinary devices.",
+      "acceptanceCriterion": "Every interaction acknowledges input clearly without visual noise.",
+      "originalImprovement": "Refine press, selection, validation, success and disabled feedback consistently.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 50,
+      "group": "Motion and rewards",
+      "metric": "Celebration frequency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "There is little differentiated celebration or a hierarchy of achievements."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Special celebration is tied to reveal, promotion or new best; no daily gifts.",
+      "requiredEvidenceOrWork": "Assess repetition/fatigue and correct stale/corrected recognition.",
+      "acceptanceCriterion": "Rare achievements remain special while routine updates stay quick.",
+      "originalImprovement": "Reserve larger moments for reveal, genuine bests, promotion and supported leads.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 51,
+      "group": "Motion and rewards",
+      "metric": "Reward legitimacy",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Ratings are tied to confirmed outcomes, and sharing grants no points."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Rewards derive from approved ledger events; historical shares exclude today’s local title.",
+      "requiredEvidenceOrWork": "Adversarial and independent review; attested play is not proof of physical play.",
+      "acceptanceCriterion": "Players understand that paid access, volume and posting cannot buy a higher skill rating.",
+      "originalImprovement": "Keep cosmetic recognition separate from skill; prevent farms from producing misleading status.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 52,
+      "group": "Motion and rewards",
+      "metric": "Badge desirability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "League gems are visible but have little personal narrative or social provenance."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Eight earned seals and milestone stories exist.",
+      "requiredEvidenceOrWork": "Badge desirability and voluntary display require player evidence.",
+      "acceptanceCriterion": "Players voluntarily show meaningful badges to peers.",
+      "originalImprovement": "Connect badges to earned moments, dates and evidence context.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 53,
+      "group": "Motion and rewards",
+      "metric": "Reduced-motion support",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "A reduced-motion rule disables animation and transitions."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Reduced-motion CSS suppresses transitions, animation and smooth scroll.",
+      "requiredEvidenceOrWork": "Complete reduced-motion task review on actual devices.",
+      "acceptanceCriterion": "All reward information remains available with motion disabled.",
+      "originalImprovement": "Preserve an equally understandable static experience when adding richer motion.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 54,
+      "group": "Motion and rewards",
+      "metric": "Consent after a live revision change",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1.5,
+        "finding": "Reproduced: consent checked for 21–15 remains checked and confirmation enabled after the open dialog refreshes to revision 2 showing 15–21."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Individual and batch acknowledgement is bound to the exact current revision and clears on live corrections.",
+      "requiredEvidenceOrWork": "Regression check passes; independent consent comprehension and race review remain.",
+      "acceptanceCriterion": "A second-player correction while the dialog is open invalidates prior acknowledgement and requires an explicit fresh check before the new score can be approved.",
+      "originalImprovement": "Bind acknowledgement to the displayed revision, reset it on changes and clearly announce the correction.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 55,
+      "group": "Motion and rewards",
+      "metric": "Loading and error feedback",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Spinners and processing labels exist; the shared network-error message refers to a local result draft even for unrelated account actions."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Connection errors distinguish result drafts from unsaved settings; asynchronous controls expose busy/errors.",
+      "requiredEvidenceOrWork": "Audit every server failure and recovery path; broad crash-free proof remains open.",
+      "acceptanceCriterion": "Users understand success, waiting and failure for the actual task, without false promises that unrelated settings were saved as a draft.",
+      "originalImprovement": "Explain what is saved, what is awaiting approval and what is being published.",
+      "implementationReferences": [
+        "src/components/Progress.tsx",
+        "src/experience.ts",
+        "server/service.ts",
+        "tests/experience.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 56,
+      "group": "Onboarding and simplicity",
+      "metric": "Immediate promise clarity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "The app communicates identity, progress and friends; the practical payoff remains broad."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Rating-first promise and three independent categories remain explicit.",
+      "requiredEvidenceOrWork": "Five-second proposition comprehension without leading prompts.",
+      "acceptanceCriterion": "A new badminton player accurately describes the benefit in their own words.",
+      "originalImprovement": "Lead with a concrete benefit such as comparable player evidence for your existing group.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 57,
+      "group": "Onboarding and simplicity",
+      "metric": "Account-entry friction",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Username and a 12-character password are required before the first real result."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Local signup requires no provider; no social login is added.",
+      "requiredEvidenceOrWork": "Measure account effort; provider integration cannot be claimed complete.",
+      "acceptanceCriterion": "Interested players can establish an identity quickly on court.",
+      "originalImprovement": "Consider secure platform sign-in or a similarly low-friction identity path, without weakening recovery.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 58,
+      "group": "Onboarding and simplicity",
+      "metric": "Recovery burden",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "A private recovery code must be saved, with no verified email recovery option."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Single-use recovery codes and rotation remain; recovery invalidates sessions/devices.",
+      "requiredEvidenceOrWork": "Real phone-loss study; verified email recovery is not implemented.",
+      "acceptanceCriterion": "Typical players can regain access after changing phones or forgetting a password.",
+      "originalImprovement": "Offer a reliable consumer-friendly recovery choice and clear backup guidance.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 59,
+      "group": "Onboarding and simplicity",
+      "metric": "Age-scope clarity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "The adult-only checkbox is clear, but the broader badminton audience may include excluded players."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Adult-only scope is explicit at signup.",
+      "requiredEvidenceOrWork": "Validate intended audience; a youth release needs a separate operational design.",
+      "acceptanceCriterion": "Onboarding promises match the actual audience and safeguards.",
+      "originalImprovement": "State the V1 audience explicitly and plan any younger-player offering as a separate supported policy.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 60,
+      "group": "Onboarding and simplicity",
+      "metric": "Preferred-category setup",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "The main app starts in Doubles rather than asking what the player actually plays."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Preferred category is account-scoped per device and configurable in accessible Settings.",
+      "requiredEvidenceOrWork": "Verify players discover and use their actual preferred category.",
+      "acceptanceCriterion": "Singles-focused users land in the relevant category across sessions.",
+      "originalImprovement": "Let players choose a preferred category and retain that choice.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 61,
+      "group": "Onboarding and simplicity",
+      "metric": "First-session guidance",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The empty home explains five results but lacks a concise end-to-end activation path."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Empty home presents three practical steps and a rated-session action.",
+      "requiredEvidenceOrWork": "First-session unassisted comprehension and completion.",
+      "acceptanceCriterion": "A first-time group completes a result without founder assistance.",
+      "originalImprovement": "Guide users through finding existing players, choosing rated play and recording their first result.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 62,
+      "group": "Onboarding and simplicity",
+      "metric": "Time to first value",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "The main numerical payoff requires five published results and cooperation from others."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Placement and friends offer earlier context; aggregate first-publication timing tool added.",
+      "requiredEvidenceOrWork": "Publication time is not recognized user value; measure actual first benefit.",
+      "acceptanceCriterion": "Players identify a useful benefit during their first session rather than waiting weeks.",
+      "originalImprovement": "Deliver useful real value before reveal: progress, a completed result, an invited circle and clear next steps.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 63,
+      "group": "Onboarding and simplicity",
+      "metric": "Placement progress",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "Five pips clearly describe the result count."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Private first-four count and five-result progress remain per category.",
+      "requiredEvidenceOrWork": "Measure abandonment and misunderstanding; five is not a proven optimum.",
+      "acceptanceCriterion": "Players understand exactly what remains before their category estimate appears.",
+      "originalImprovement": "Add meaningful milestones and show approvals still needed without implying certainty.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 64,
+      "group": "Onboarding and simplicity",
+      "metric": "Consent explanation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "The rules protect choice, but terms such as retrospective result and exact revision create reading burden."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Exact roster/score consent, revision-change alert and awaiting-person guidance are explicit.",
+      "requiredEvidenceOrWork": "Test teach-back for prior consent, retrospective approval and silence.",
+      "acceptanceCriterion": "Players correctly predict who must approve a result in ordinary and retrospective cases.",
+      "originalImprovement": "Use simple primary copy with detailed rules available on demand.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 65,
+      "group": "Onboarding and simplicity",
+      "metric": "Rating explanation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The number and Developing label appear without an easy explanation of the model."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Rating help explains category independence, uncertainty, team effects and disconnected estimates.",
+      "requiredEvidenceOrWork": "Scenario-based understanding with real recreational and competitive players.",
+      "acceptanceCriterion": "Players explain why equally rated partners may move different amounts.",
+      "originalImprovement": "Add a short What this rating means view, including partner effects and uncertainty.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 66,
+      "group": "Onboarding and simplicity",
+      "metric": "Fifth-result delta clarity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "The first visible starting rating can be shown with a large negative delta against an unseen placement number."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "First reveal hides change from the invisible prior; subsequent deltas use a visible estimate.",
+      "requiredEvidenceOrWork": "Functional check passes; verify players can explain the first visible number.",
+      "acceptanceCriterion": "Players do not ask what their first visible rating supposedly fell from.",
+      "originalImprovement": "Treat reveal as a starting point; begin visible change comparisons from a clearly visible baseline.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 67,
+      "group": "Onboarding and simplicity",
+      "metric": "Feature terminology",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Court, circle, passport, agreement, pool and revision introduce multiple abstractions."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "User copy explains categories, evidence and agreements in context.",
+      "requiredEvidenceOrWork": "Glossary/terminology comprehension; technical evidence labels may still need refinement.",
+      "acceptanceCriterion": "New users locate friends, history and score approval without learning a glossary.",
+      "originalImprovement": "Use a small vocabulary and introduce only terms needed for the current task.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 68,
+      "group": "Onboarding and simplicity",
+      "metric": "Progressive disclosure",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Administrative and integrity detail frequently occupies primary screen space."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Profile tabs, optional recent lineups and expandable league guide reduce first-view detail.",
+      "requiredEvidenceOrWork": "Evaluate information finding and accidental omission in real tasks.",
+      "acceptanceCriterion": "Users can act confidently while still accessing complete explanations.",
+      "originalImprovement": "Keep a concise truthful summary in the main flow and move detailed rules into expandable help.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 69,
+      "group": "Onboarding and simplicity",
+      "metric": "International onboarding",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "District choices are Singapore-specific and timezone choices are limited."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Timezone includes device, saved profile and all browser-supported choices; district pools remain Singapore-specific.",
+      "requiredEvidenceOrWork": "Choose launch geography or build a verified global location taxonomy; translations are not implemented.",
+      "acceptanceCriterion": "Players in intended launch markets can select a meaningful local context.",
+      "originalImprovement": "Make launch geography explicit or support structured country, city and district choices.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 70,
+      "group": "Onboarding and simplicity",
+      "metric": "Invitation comprehension",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The guest identity check and score consent are correctly separate but multi-step."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Guest claim and independent friend request paths remain private and explicit.",
+      "requiredEvidenceOrWork": "Unassisted inviter/recipient comprehension across devices.",
+      "acceptanceCriterion": "Guest and inviter both understand that identity verification does not approve the score.",
+      "originalImprovement": "Show a clear invitation timeline and the next responsible person.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/App.tsx",
+        "src/pages/Pages.tsx",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 71,
+      "group": "Match workflows",
+      "metric": "Score-format validation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "The build validates complete games, caps and completed best-of-three series."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Supported scoring formats and terminal series are validated centrally.",
+      "requiredEvidenceOrWork": "Existing numerical/API tests pass; inspect score errors with players.",
+      "acceptanceCriterion": "Players can recover from an invalid score without abandoning the result.",
+      "originalImprovement": "Keep the strict rules while providing concise corrective messages in the form.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 72,
+      "group": "Match workflows",
+      "metric": "Singles recording effort",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "A simple result is supported, but the form carries substantial agreement and timestamp detail."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Singles has recent/friend suggestions, a saved draft and fresh acknowledgement.",
+      "requiredEvidenceOrWork": "Measure correct task completion, errors and elapsed time.",
+      "acceptanceCriterion": "Returning players submit an accurate Singles result with minimal effort.",
+      "originalImprovement": "Default the obvious context and hide advanced choices until needed.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 73,
+      "group": "Match workflows",
+      "metric": "Doubles recording effort",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Three player searches, scores, time, agreement choice and consent form a long flow."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Doubles preserves actual teammates/opponents and can reuse a recent lineup.",
+      "requiredEvidenceOrWork": "Four-player task study, side-switching and guest ambiguity.",
+      "acceptanceCriterion": "A returning group can record a complete Doubles result quickly and accurately.",
+      "originalImprovement": "Offer recent rosters, accepted friends and repeat-session shortcuts, while preserving exact sides.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 74,
+      "group": "Match workflows",
+      "metric": "Player-picker usefulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Even accepted friends require a fresh search; the blank picker emphasizes inviting absent players."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Known friends/recent players appear before search; selected roster IDs are excluded.",
+      "requiredEvidenceOrWork": "Measure finding known players without address-book upload.",
+      "acceptanceCriterion": "Players select familiar partners without remembering usernames.",
+      "originalImprovement": "Show recent players and accepted friends before search, and preserve privacy boundaries.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 75,
+      "group": "Match workflows",
+      "metric": "Format-selector readability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "One game to 21 truncates in the narrow two-column form."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Score-format options are readable full-width on narrow screens.",
+      "requiredEvidenceOrWork": "Real touch and enlarged-text selection study.",
+      "acceptanceCriterion": "Users can identify the current scoring format without opening the selector.",
+      "originalImprovement": "Use a full-width or concise format control that keeps the target visible.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 76,
+      "group": "Match workflows",
+      "metric": "Repeated-match efficiency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "There is no prominent repeat-last-roster or session log flow."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Up to three genuine recent lineups restore people and format; scores/time stay fresh.",
+      "requiredEvidenceOrWork": "Measure repeated-session time savings and wrong-roster error rate.",
+      "acceptanceCriterion": "Several matches in one session remain distinct with few repeated inputs.",
+      "originalImprovement": "Reuse consenting session context and roster, requiring a fresh score and approval for every physical result.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 77,
+      "group": "Match workflows",
+      "metric": "Prior-agreement efficiency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "All-player consent can cover the same players and format for eight hours or 30 days."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Prior rated scopes are exact and revocable; creation acknowledgement binds current details.",
+      "requiredEvidenceOrWork": "Observe pre-session agreement completion; do not assume confirmations are unnecessary.",
+      "acceptanceCriterion": "The group can tell whether one opponent or all players are required without guessing.",
+      "originalImprovement": "Make coverage status and reuse discoverable directly in recording.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 78,
+      "group": "Match workflows",
+      "metric": "Opposite-side approval integrity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "A teammate cannot replace the eligible opponent; retrospective matches require everyone."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Teammates cannot replace opposite-side confirmation; retrospective results require all players.",
+      "requiredEvidenceOrWork": "API regression passes; coordinated-account attacks and real confusion need review.",
+      "acceptanceCriterion": "Authorization tests and real-user comprehension both pass.",
+      "originalImprovement": "Preserve these rules and make the exact approving role visible in simple language.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 79,
+      "group": "Match workflows",
+      "metric": "Pending-result visibility",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "The home banner and inbox exist, but recipients need to open the app to discover work."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Home review banner, inbox and exact-result awaiting names surface required actions.",
+      "requiredEvidenceOrWork": "Real delivery, latency and completion study.",
+      "acceptanceCriterion": "A requested player knows what needs review and reaches it directly.",
+      "originalImprovement": "Provide optional, verified notification delivery and actionable deep links.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 80,
+      "group": "Match workflows",
+      "metric": "Correction usability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "Fresh revisions and approvals protect history; the interface lacks a clear old-versus-new comparison."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Correction clears individual/batch acknowledgement; earlier published score is separately shown.",
+      "requiredEvidenceOrWork": "Live browser regression passes; user correction task study.",
+      "acceptanceCriterion": "Players can inspect a correction without confusing proposed and published evidence.",
+      "originalImprovement": "Show changed scores, the current published state and the next required approval.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 81,
+      "group": "Match workflows",
+      "metric": "Dispute experience",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "Private reasons and independent decisions exist, but consumer guidance and service expectations are sparse."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Independent-review state preserves earlier publication and appeal/correction controls.",
+      "requiredEvidenceOrWork": "Staff a review service with measured response targets; no invented service deadline.",
+      "acceptanceCriterion": "Players know what a dispute does and how they will learn the outcome.",
+      "originalImprovement": "Show status, expected handling process and the current published effect.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 82,
+      "group": "Match workflows",
+      "metric": "Retry and duplicate protection",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Idempotent retries and an exact roster/time identity prevent some duplicate submissions."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Stable account-scoped draft and idempotency key preserve retries without duplicate units.",
+      "requiredEvidenceOrWork": "Offline/retry browser check passes; real network interruption tests.",
+      "acceptanceCriterion": "Connection retries do not duplicate results; suspicious near-duplicates are handled transparently.",
+      "originalImprovement": "Keep retry guarantees and add review for plausible repeated entries at slightly different timestamps.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 83,
+      "group": "Match workflows",
+      "metric": "Offline resilience",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Unsent local drafts survive interruption; there is no automatic durable offline sync."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Draft is local for seven days; APIs and approvals are never cached as offline writes.",
+      "requiredEvidenceOrWork": "Storage-disabled, device-change and offline recovery comprehension.",
+      "acceptanceCriterion": "Users recover a failed submission without lost input or false rating changes.",
+      "originalImprovement": "Make draft status and explicit retry clear; only add queued sync with proven idempotency.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 84,
+      "group": "Match workflows",
+      "metric": "History usefulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "Category history exists, but no date search, opponent filtering or paging beyond the default recent result limit."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "History has category/status/player filters and owner-authorized cursor pagination.",
+      "requiredEvidenceOrWork": "Verify archive finding with long histories and alias claims.",
+      "acceptanceCriterion": "Long-term users can retrieve an old match and understand its effect.",
+      "originalImprovement": "Add durable browsing and relevant filters, then display personal rating changes.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 85,
+      "group": "Match workflows",
+      "metric": "Result deep links",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Public claim and rating links exist; ordinary result review is modal state without an actionable player result route."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Authenticated exact-result URL opens the authorized result after login/reload.",
+      "requiredEvidenceOrWork": "Browser regression passes; real device-notification continuation still unverified.",
+      "acceptanceCriterion": "A legitimate approval notification opens the correct current revision after sign-in.",
+      "originalImprovement": "Create authenticated exact-result links with role checks and safe fallback.",
+      "implementationReferences": [
+        "src/components/Flows.tsx",
+        "src/pages/Pages.tsx",
+        "server/app.ts",
+        "tests/api.test.ts",
+        "tests/browser/journeys.spec.ts"
+      ]
+    },
+    {
+      "id": 86,
+      "group": "Rating credibility",
+      "metric": "Singles model suitability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "The uncertainty-aware participant model is methodologically reasonable, but badminton performance is unvalidated."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Gaussian uncertainty-aware singles model is retained and arithmetic checked.",
+      "requiredEvidenceOrWork": "Held-out badminton probability and ranking evaluation; no best-possible model claim.",
+      "acceptanceCriterion": "The selected model meets predeclared predictive and calibration criteria.",
+      "originalImprovement": "Compare candidate models using consented, held-out badminton results.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 87,
+      "group": "Rating credibility",
+      "metric": "Team-strength treatment",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Both teammates and opponents enter the Gaussian update with their own uncertainty."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Both teammates and opponents contribute to expected outcome and posterior uncertainty.",
+      "requiredEvidenceOrWork": "Evaluate doubles/mixed predictive calibration and partner-rotation contexts.",
+      "acceptanceCriterion": "Arithmetic checks and player-facing examples agree on partner effects.",
+      "originalImprovement": "Explain this clearly and test it with realistic partnership patterns.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 88,
+      "group": "Rating credibility",
+      "metric": "Category independence",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "Singles, Doubles and Mixed have independent ledgers and placement."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Singles, Doubles and Mixed remain independent ledgers.",
+      "requiredEvidenceOrWork": "Regression checks pass; evaluate category-specific data without cross-category leakage.",
+      "acceptanceCriterion": "A result in one category never secretly awards points in another.",
+      "originalImprovement": "Keep all three identities separate throughout presentation, exports and corrections.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 89,
+      "group": "Rating credibility",
+      "metric": "Arithmetic verification",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "The shipped update agrees with 400 independent numerical reference fixtures."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "400 independent numerical reference cases agree with the engine.",
+      "requiredEvidenceOrWork": "Independent method review and exceptional numerical/adversarial ranges.",
+      "acceptanceCriterion": "Published calculations reproduce independently at stated tolerances.",
+      "originalImprovement": "Maintain versioned fixtures and expand meaningful boundaries when the model changes.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 90,
+      "group": "Rating credibility",
+      "metric": "Badminton calibration",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Beta values, drift and league thresholds are pilot candidates."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Parameters and league thresholds are unchanged candidates.",
+      "requiredEvidenceOrWork": "Consented badminton dataset, held-out testing and uncertainty analysis are outstanding.",
+      "acceptanceCriterion": "A documented holdout study supports the published model parameters.",
+      "originalImprovement": "Gather representative evidence and evaluate calibration by category, scoring format and play context.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 91,
+      "group": "Rating credibility",
+      "metric": "New-player uncertainty",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7,
+        "finding": "Numbers are hidden for four results and the first estimate is labeled developing."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "First four estimates remain private; fifth is explicitly developing.",
+      "requiredEvidenceOrWork": "Cold-start calibration, convergence and optimum reveal rule require real data.",
+      "acceptanceCriterion": "Players correctly interpret a fresh rating's limits.",
+      "originalImprovement": "Explain uncertainty beyond a counter and avoid treating five results as certified ability.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 92,
+      "group": "Rating credibility",
+      "metric": "Doubles identifiability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Exact comparison classes and Pair-linked status recognize fixed-partner ambiguity."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Exact evidence classes distinguish identifiable contrasts from fixed-pair ambiguity.",
+      "requiredEvidenceOrWork": "Review matrix/evidence policy and fairness using real partner networks.",
+      "acceptanceCriterion": "No unsupported individual rank is implied by an ambiguous partnership.",
+      "originalImprovement": "Make this limitation visible wherever a direct friend comparison is presented.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 93,
+      "group": "Rating credibility",
+      "metric": "Cross-network comparability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "Formal titles are guarded, but home still presents point gaps between arbitrary friends."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Home/comparison gaps require same category and same non-null comparison class.",
+      "requiredEvidenceOrWork": "Real fragmented networks and cross-network uncertainty study.",
+      "acceptanceCriterion": "Disconnected players are not led to believe a small raw point difference proves relative ability.",
+      "originalImprovement": "Gate or qualify gap language when the evidence does not support comparison.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 94,
+      "group": "Rating credibility",
+      "metric": "Rating-change explanations",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "The app rarely tells the player why a particular result changed their estimate by that amount."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Recaps explain both sides and uncertainty; full rating guide supplies context.",
+      "requiredEvidenceOrWork": "Teach-back of surprises, losses and correction-induced history change.",
+      "acceptanceCriterion": "Users understand surprising large or small moves without interpreting them as bugs.",
+      "originalImprovement": "Add a plain-language explanation of modeled difficulty and uncertainty, with detailed evidence on demand.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 95,
+      "group": "Rating credibility",
+      "metric": "Manipulation resistance",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Player confirmation does not prove physical play; no mature collusion or near-duplicate system is demonstrated."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Consent, authorization, immutable revisions and disputes remain; no mature collusion classifier.",
+      "requiredEvidenceOrWork": "Red-team simulations plus independently labeled anomaly/appeal process.",
+      "acceptanceCriterion": "Attack simulations cannot cheaply create prestigious status without detectable review evidence.",
+      "originalImprovement": "Build an evidence-based abuse review process with appeals and calibrated anomaly signals.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 96,
+      "group": "Rating credibility",
+      "metric": "Local-rank honesty",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "Local titles fail closed, require a supported named pool and share integer ties."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Named supported pools, ties and candidate eligibility remain; global neighbourhood claims are avoided.",
+      "requiredEvidenceOrWork": "Calibrate evidence policy before awarding any local title.",
+      "acceptanceCriterion": "A badge never claims to rank every neighborhood resident.",
+      "originalImprovement": "Preserve precise scope and validation while developing a useful non-title path for early pools.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 97,
+      "group": "Rating credibility",
+      "metric": "Local-title availability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1,
+        "finding": "The actual title policy is disabled by default, so the proposed crown competition is unavailable."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Local titles remain disabled by default while policy is unvalidated.",
+      "requiredEvidenceOrWork": "Do not flip the flag to manufacture FOMO; validate cohort size, evidence and eligibility.",
+      "acceptanceCriterion": "Eligible real pools can genuinely earn, share and lose a named title.",
+      "originalImprovement": "Validate the policy and scale its implementation before offering supported titles.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 98,
+      "group": "Rating credibility",
+      "metric": "Season and lifetime separation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "There is no designed fresh seasonal rivalry view distinct from lifetime skill."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Seven-day and selected-period records are distinct from lifetime skill; no seasonal skill reset.",
+      "requiredEvidenceOrWork": "A dedicated shared season view remains a product decision and research gap.",
+      "acceptanceCriterion": "Competition refreshes without giving misleading skill points for activity.",
+      "originalImprovement": "Consider optional season progress or current-period records without resetting the underlying skill ledger.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 99,
+      "group": "Rating credibility",
+      "metric": "Replay and correction consistency",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8.5,
+        "finding": "Approved revisions replay chronologically and publish atomically."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Atomic replay and fresh correction approvals are retained and tested.",
+      "requiredEvidenceOrWork": "Production crash/restore and historical correction trials remain required.",
+      "acceptanceCriterion": "The same ledger and model reproduce the same published ratings.",
+      "originalImprovement": "Expose understandable correction history and retain deterministic audit checks.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 100,
+      "group": "Rating credibility",
+      "metric": "Public-group level utility",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Existing circles offer category estimates, but qualification is hard to interpret and uncalibrated."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Existing circles can inspect evidence-qualified estimates for level conversations.",
+      "requiredEvidenceOrWork": "Organizer screening study; no calibrated mapping to universally certified levels.",
+      "acceptanceCriterion": "Organizers can use the estimate appropriately without treating it as a guaranteed standard.",
+      "originalImprovement": "Show evidence, recency, category and uncertainty, and validate level guidance with organizers.",
+      "implementationReferences": [
+        "src/domain.ts",
+        "server/evidence.ts",
+        "server/service.ts",
+        "tests/domain.test.ts",
+        "docs/rating-system.md"
+      ]
+    },
+    {
+      "id": 101,
+      "group": "Social competition and FOMO",
+      "metric": "Friend-comparison value",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6,
+        "finding": "Accepted friend numbers and gaps provide a useful starting point."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Friend rows open category-specific comparisons instead of leading with Remove.",
+      "requiredEvidenceOrWork": "Repeated value in real accepted playing groups.",
+      "acceptanceCriterion": "Players can identify their meaningful comparison without scanning an arbitrary list.",
+      "originalImprovement": "Put supported closest comparisons in the main experience and add relevant context.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 102,
+      "group": "Social competition and FOMO",
+      "metric": "Closest-rival selection",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "The home shows the first three friends rather than a chosen or closest supported rival."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Closest eligible friend is chosen; a privately pinned supported friend can replace it.",
+      "requiredEvidenceOrWork": "Measure relevance and preference stability across changing evidence.",
+      "acceptanceCriterion": "The highlighted rival is relevant and understandable.",
+      "originalImprovement": "Allow a private rival preference or transparently select a comparable nearby estimate.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 103,
+      "group": "Social competition and FOMO",
+      "metric": "Head-to-head depth",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "There is no dedicated record, progression or rivalry detail page."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Shared match outcomes distinguish teammates from opponents and expose sample coverage.",
+      "requiredEvidenceOrWork": "Test whether head-to-head views satisfy real group needs; 200-result bound is explicit.",
+      "acceptanceCriterion": "Friends can see their actual competitive story with sample counts.",
+      "originalImprovement": "Build a concise category-specific head-to-head view from real shared results.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 104,
+      "group": "Social competition and FOMO",
+      "metric": "Lead-change discoverability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Supported notifications exist, but no prominent mobile home story displays the change."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Recent real comparison updates can appear near home; optional alerts have category preferences.",
+      "requiredEvidenceOrWork": "Real delivery/discovery/return data; no fabricated urgency.",
+      "acceptanceCriterion": "A returning player notices a genuine change quickly.",
+      "originalImprovement": "Show real lead swaps, category and timestamp, with optional alert settings.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 105,
+      "group": "Social competition and FOMO",
+      "metric": "Friendly social interaction",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2.5,
+        "finding": "The social surfaces have no lightweight encouragement; many friend rows mainly offer Remove."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Positive comparison/history exploration is prominent; removal is in relationship management.",
+      "requiredEvidenceOrWork": "Kudos or encouragement is not implemented; decide using player research and abuse controls.",
+      "acceptanceCriterion": "Positive social actions are easier to discover than relationship removal.",
+      "originalImprovement": "Move destructive controls to management and consider optional restrained kudos or acknowledgement.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 106,
+      "group": "Social competition and FOMO",
+      "metric": "Group identity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "Circles have a name and members, with little shared identity or progression."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Accepted named circles remain; no custom crest or group passport is added.",
+      "requiredEvidenceOrWork": "Existing-group identity, collective evidence milestones and repeat-use study.",
+      "acceptanceCriterion": "Members recognize the group as their own existing badminton community.",
+      "originalImprovement": "Add a restrained group passport and actual collective evidence milestones.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 107,
+      "group": "Social competition and FOMO",
+      "metric": "Invitation conversion",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "Username search and multi-step guest claiming create friction."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Friend and guest invitations remain; no contact harvesting or automatic acceptance.",
+      "requiredEvidenceOrWork": "Measure invite-to-first-value conversion in genuine recipient cohorts.",
+      "acceptanceCriterion": "Invited players complete the intended flow without an organizer doing support work.",
+      "originalImprovement": "Create context-rich invitations that preserve intended identity and explain the first benefit.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 108,
+      "group": "Social competition and FOMO",
+      "metric": "Contact-free discovery",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 6.5,
+        "finding": "Username discovery avoids uploading address books, but it is less convenient for familiar players."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Recent/friend lookup improves contact-free discovery; usernames remain the public lookup key.",
+      "requiredEvidenceOrWork": "Identity QR/player-code discovery is still absent; test actual lookup time.",
+      "acceptanceCriterion": "Players find each other quickly while keeping private contacts private.",
+      "originalImprovement": "Offer player codes or QR identity links and recent-player selection without contact harvesting.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 109,
+      "group": "Social competition and FOMO",
+      "metric": "Activity richness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The feed contains basic won/recorded messages, deltas and dates."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Grouped activity shows real per-player visible change and reveal/best context.",
+      "requiredEvidenceOrWork": "Observe social relevance without leaking unrelated participants or inventing activity.",
+      "acceptanceCriterion": "The feed explains something worth knowing rather than repeating ledger entries.",
+      "originalImprovement": "Use meaningful verified event types such as first reveal, new best and a supported lead swap.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 110,
+      "group": "Social competition and FOMO",
+      "metric": "One-match feed deduplication",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "The home can display several participant updates from the same Doubles match as separate events."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Feed groups by physical unit ID; per-player deltas remain distinguishable.",
+      "requiredEvidenceOrWork": "Regression/projection review and real multi-friend match comprehension.",
+      "acceptanceCriterion": "A single match does not make the feed appear busier than it really was.",
+      "originalImprovement": "Group participant updates into one match or shared event with safe privacy projections.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 111,
+      "group": "Social competition and FOMO",
+      "metric": "Local-status FOMO",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "The main neighborhood title loop is currently unavailable and launch geography is narrow."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Neighbourhood title FOMO is deliberately unavailable until evidence policy is validated.",
+      "requiredEvidenceOrWork": "Validate real eligible local pools and desirability before enabling.",
+      "acceptanceCriterion": "Players compete for an available title with clearly understood eligibility and scope.",
+      "originalImprovement": "Build a genuine, qualified small-pool status loop after validation.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 112,
+      "group": "Social competition and FOMO",
+      "metric": "Share desirability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "A bare rating is shareable, but there is little event narrative or personal relevance for viewers."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Dated current/reveal/best cards and revocable hosted snapshots exist.",
+      "requiredEvidenceOrWork": "Voluntary share study with actual exports, privacy choices and downstream viewers.",
+      "acceptanceCriterion": "Players voluntarily share and peers understand the achievement.",
+      "originalImprovement": "Lead shares with a real milestone, distinctive badge and concise why-it-matters context.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 113,
+      "group": "Social competition and FOMO",
+      "metric": "Social-link continuation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "A public rating snapshot points to generic app entry rather than a carefully contextualized invite journey."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Hosted share context remains a public snapshot leading to app entry.",
+      "requiredEvidenceOrWork": "A richer contextual invitation continuation is not implemented; test existing path first.",
+      "acceptanceCriterion": "A viewer can reach their own first value from a shared milestone.",
+      "originalImprovement": "Carry relevant public context into onboarding without auto-linking people or leaking private data.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 114,
+      "group": "Social competition and FOMO",
+      "metric": "Competition without pressure",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Optional rated play, break mode and no inactivity mean loss protect choice."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Break mode, no inactivity mean penalty and discreet opt-in alerts protect player control.",
+      "requiredEvidenceOrWork": "Longitudinal pressure, fatigue and losing-player research.",
+      "acceptanceCriterion": "Players can opt out without fabricated urgency or playing-rating penalties.",
+      "originalImprovement": "Keep those protections while making real competition more visible.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 115,
+      "group": "Social competition and FOMO",
+      "metric": "Network-effect strength",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "The concept depends on existing groups adopting together; the app does little to form a useful local cluster."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Accepted playing relationships and honest shared evidence remain core.",
+      "requiredEvidenceOrWork": "Cohesive-group retention and active network density; creator views are not proof.",
+      "acceptanceCriterion": "A new cohort develops repeat interaction and useful evidence rather than isolated accounts.",
+      "originalImprovement": "Launch cohesive groups and give organizers a concise onboarding workflow, without adding game hosting.",
+      "implementationReferences": [
+        "src/pages/Home.tsx",
+        "src/pages/Pages.tsx",
+        "src/experience.ts",
+        "server/app.ts",
+        "server/service.ts"
+      ]
+    },
+    {
+      "id": 116,
+      "group": "Retention and progress",
+      "metric": "Reason to return after a session",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "An updated rating and activity provide a reason, but the recap does not deliver a strong payoff."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Published recap, visible change, real peak and new milestones reward a played session.",
+      "requiredEvidenceOrWork": "Observe voluntary return and value after real play.",
+      "acceptanceCriterion": "Players find value after each normal playing session.",
+      "originalImprovement": "Make the published result lead into useful progress and a supported next milestone.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 117,
+      "group": "Retention and progress",
+      "metric": "Reason to return between sessions",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "No substantial new value appears if friends have not played or approved anything."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Closest supported comparison and dated shared-activity preview give checking context.",
+      "requiredEvidenceOrWork": "Measure voluntary between-session returns; no manufactured daily points.",
+      "acceptanceCriterion": "Returns correspond to meaningful changes and retain value during quiet weeks.",
+      "originalImprovement": "Offer event-driven updates and a useful optional weekly recap rather than manufactured daily urgency.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 118,
+      "group": "Retention and progress",
+      "metric": "Weekly progress review",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "There is no authored weekly or monthly progress recap."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Actual seven-day count, wins and visible change appear on home; longer periods in Insights.",
+      "requiredEvidenceOrWork": "Verify cadence suitability and understanding of published-history coverage.",
+      "acceptanceCriterion": "Players understand the period's story in under a minute.",
+      "originalImprovement": "Summarize actual category progress, recorded activity and supported rival changes.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 119,
+      "group": "Retention and progress",
+      "metric": "Personal-goal usefulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5.5,
+        "finding": "Optional numeric goals exist but are buried deep in profile."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Manage goals routes directly to Settings; targets are aspirations without promised win counts.",
+      "requiredEvidenceOrWork": "Task success and repeat usefulness when a goal is reached or becomes inappropriate.",
+      "acceptanceCriterion": "Users can set, understand and review a relevant goal easily.",
+      "originalImprovement": "Make goal setting discoverable and distinguish an aspiration from a promised number of wins.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 120,
+      "group": "Retention and progress",
+      "metric": "Learning feedback",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "The platform records outcomes but offers little useful interpretation."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Outcome context, partner/opponent samples and format records support evidence-based interpretation.",
+      "requiredEvidenceOrWork": "Actionability review; win/loss records cannot diagnose stroke or fitness weaknesses.",
+      "acceptanceCriterion": "The player learns something actionable that the stored data can actually justify.",
+      "originalImprovement": "Provide evidence-supported context and explanations before adding broader coaching.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 121,
+      "group": "Retention and progress",
+      "metric": "Notification delivery",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "Updates remain in-app; email, SMS and device push are not configured."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Optional Web Push queue, VAPID sender, service-worker click and device controls are implemented.",
+      "requiredEvidenceOrWork": "Host credentials, actual iOS/Android/desktop delivery and lifecycle tests remain unconfigured.",
+      "acceptanceCriterion": "Players receive requested actionable updates reliably and can control them.",
+      "originalImprovement": "Add optional verified delivery, preferences and result-specific links.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 122,
+      "group": "Retention and progress",
+      "metric": "Notification prioritization",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "The inbox presents many repeated rating-update messages with a broad unread count."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Actions default on; progress/comparison alerts opt in; quiet hours and break checks apply.",
+      "requiredEvidenceOrWork": "Delivery frequency, preference comprehension and fatigue evidence.",
+      "acceptanceCriterion": "Players know what needs action without treating every unread update as urgent.",
+      "originalImprovement": "Separate action requests from information and batch low-importance updates.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 123,
+      "group": "Retention and progress",
+      "metric": "Approval completion support",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4,
+        "finding": "No delivery channel or clear session-level completion workflow helps get all required approvals."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Exact-result awaiting names and stale-action cancellation supplement inbox and optional alerts.",
+      "requiredEvidenceOrWork": "Measure approval completion/latency without converting silence into acceptance.",
+      "acceptanceCriterion": "Result completion improves without silence becoming consent.",
+      "originalImprovement": "Show the responsible people, offer respectful opt-in reminders and preserve dispute options.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 124,
+      "group": "Retention and progress",
+      "metric": "Returning-user continuity",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Selected category, recent roster and unfinished context are not consistently retained."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Preferred category, local draft, exact-result links and focus-return refresh preserve continuity.",
+      "requiredEvidenceOrWork": "Device-change and long-gap returning-player study.",
+      "acceptanceCriterion": "Players resume the correct category and task across sessions.",
+      "originalImprovement": "Persist useful local preferences and surface drafts deliberately.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 125,
+      "group": "Retention and progress",
+      "metric": "Comeback experience",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Break mode is considerate, but there is no compact what-changed-since-you-left view."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Quiet-week copy preserves the estimate; break mode can suspend comparison prompts.",
+      "requiredEvidenceOrWork": "Observe genuine returning users; uncertainty may widen despite stable mean.",
+      "acceptanceCriterion": "Returning after a gap feels informative rather than punitive.",
+      "originalImprovement": "Show relevant real changes, preserve skill mean and invite the next useful action.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 126,
+      "group": "Retention and progress",
+      "metric": "Losing-player retention support",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3.5,
+        "finding": "A falling rating is salient, while other legitimate forms of progress are weak."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Loss copy and lasting personal peak avoid framing a loss as personal failure.",
+      "requiredEvidenceOrWork": "Post-loss voluntary-return cohorts and qualitative reasons.",
+      "acceptanceCriterion": "Players continue valuing the app through normal losing periods.",
+      "originalImprovement": "Recognize actual participation, learning and meaningful performance context separately from skill.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 127,
+      "group": "Retention and progress",
+      "metric": "Plateau usefulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "A stable estimate leaves little fresh value beyond more of the same number."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Period insights, head-to-head context and records add value beyond a changing number.",
+      "requiredEvidenceOrWork": "Plateau players must demonstrate actual usefulness.",
+      "acceptanceCriterion": "Established users still gain useful insight when their rating barely changes.",
+      "originalImprovement": "Add period analysis, context and personal records that do not distort skill.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 128,
+      "group": "Retention and progress",
+      "metric": "Long-term archive value",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 4.5,
+        "finding": "Recent history exists, but paging and deep exploration are absent."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Private full cursor archive and period insights improve longitudinal access.",
+      "requiredEvidenceOrWork": "Long-history performance, retrieval and correction trials.",
+      "acceptanceCriterion": "The app becomes a useful record of a player's badminton life.",
+      "originalImprovement": "Create searchable career history and meaningful milestones with reliable dates.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 129,
+      "group": "Retention and progress",
+      "metric": "Community ritual",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2.5,
+        "finding": "There is no lightweight recurring comparison ritual for existing circles."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Individual weekly recap is implemented; no automatic circle digest or invented group event.",
+      "requiredEvidenceOrWork": "Design and test a voluntary real group recap ritual before claiming community habit.",
+      "acceptanceCriterion": "Groups return for a real shared update at a cadence suited to their play.",
+      "originalImprovement": "Offer an optional weekly circle recap or supported season snapshot, without creating hosted games.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 130,
+      "group": "Retention and progress",
+      "metric": "Retention experimentation readiness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "No product-event instrumentation or defined retention experiment system is implemented."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Aggregate, right-censored ledger report and a pre-registered pilot kit are supplied.",
+      "requiredEvidenceOrWork": "Meaningful check/view telemetry is not captured by this proxy; consented research logs required.",
+      "acceptanceCriterion": "Changes can be evaluated against real activation and retention outcomes.",
+      "originalImprovement": "Define meaningful retained activity, event collection and consent-aware cohort reporting.",
+      "implementationReferences": [
+        "src/components/Insights.tsx",
+        "src/components/Notifications.tsx",
+        "server/push.ts",
+        "server/pilot-report.ts",
+        "tests/pilot.test.ts",
+        "tests/push.test.ts"
+      ]
+    },
+    {
+      "id": 131,
+      "group": "Price and paid value",
+      "metric": "Broad $20 monthly value",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "Current value is mainly a developing rating, basic comparisons and sharing."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "No paywall or $20-value claim is introduced.",
+      "requiredEvidenceOrWork": "Actual recurring value and willingness-to-pay evidence; billing integration is excluded.",
+      "acceptanceCriterion": "Target players pay $20 and continue renewing after novelty fades.",
+      "originalImprovement": "Add validated recurring improvement or group-workflow value and test actual paid renewals.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 132,
+      "group": "Price and paid value",
+      "metric": "Clear paid benefit",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1,
+        "finding": "There is no implemented paid tier or clear premium entitlement."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "All current pilot functionality is available without an entitlement wall.",
+      "requiredEvidenceOrWork": "Define and test a paid promise later; no paid tier is falsely advertised.",
+      "acceptanceCriterion": "Users can explain what payment adds without reading a feature wall.",
+      "originalImprovement": "Define one concise paid promise and its concrete recurring outputs.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 133,
+      "group": "Price and paid value",
+      "metric": "Benefit before paywall",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "The price proposition is unspecified and first numerical value is delayed."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Players can experience the full current rating/social loop before payment.",
+      "requiredEvidenceOrWork": "Measure recognized value; having free access does not establish value.",
+      "acceptanceCriterion": "Players understand the benefit before they are asked to pay.",
+      "originalImprovement": "Let groups establish real value before an appropriately timed upgrade offer.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 134,
+      "group": "Price and paid value",
+      "metric": "Free social-network viability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "No pricing boundary protects opponents and friends from becoming paid dependencies."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Friends and core evidence remain available without payment.",
+      "requiredEvidenceOrWork": "Test organic group participation and economics; payment cannot compensate for thin networks.",
+      "acceptanceCriterion": "A subscriber's normal opponent can approve a match without buying a subscription.",
+      "originalImprovement": "Keep essential identity, consent and accurate score confirmation accessible.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 135,
+      "group": "Price and paid value",
+      "metric": "Recurring insight depth",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "The trend line and result list do not provide a substantial analytical product."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Recurring period, partner/opponent and format insights are implemented.",
+      "requiredEvidenceOrWork": "Observed repeated usefulness and paid differentiation remain unproven.",
+      "acceptanceCriterion": "The subscriber gets useful new interpretation as their evidence grows.",
+      "originalImprovement": "Offer careful category, opponent and partnership analysis with adequate sample context.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 136,
+      "group": "Price and paid value",
+      "metric": "Credible improvement guidance",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1.5,
+        "finding": "There is no recurring coaching or improvement service in the current app."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Guidance is limited to rating/evidence explanations, without fabricated technical coaching.",
+      "requiredEvidenceOrWork": "Creator-approved genuine guidance or direct observations would be needed for a coaching offer.",
+      "acceptanceCriterion": "Advice avoids pretending that win/loss records reveal a player's stroke weaknesses.",
+      "originalImprovement": "Only promise guidance supported by actual observations or credible creator expertise.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 137,
+      "group": "Price and paid value",
+      "metric": "Organizer willingness-to-pay case",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Circles may help level conversations, but organizer tools are basic."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Circle comparisons and shared history can support existing-group level discussions.",
+      "requiredEvidenceOrWork": "Organizer time savings and actual willingness to pay remain unmeasured.",
+      "acceptanceCriterion": "Organizers demonstrate repeated time savings and actual payment intent.",
+      "originalImprovement": "Validate and build efficient evidence-based screening and comparison for existing groups.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 138,
+      "group": "Price and paid value",
+      "metric": "Billing usability",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1,
+        "finding": "Checkout, subscription status and cancellation are not implemented."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "excluded",
+      "currentImplementation": "Payment integration, subscriptions and billing flows are excluded by current instruction.",
+      "requiredEvidenceOrWork": "Excluded from this acceptance pass; no payment code or paid conversion claim.",
+      "acceptanceCriterion": "Users can buy, understand, manage and cancel a paid plan correctly.",
+      "originalImprovement": "Provide clear price, renewal terms, management, receipts and reliable entitlements when monetization is added.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 139,
+      "group": "Price and paid value",
+      "metric": "Quiet-month value",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "A player who records no matches receives little new value for a recurring fee."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Archive and social context remain accessible in quiet months without a recurring charge.",
+      "requiredEvidenceOrWork": "A recurring paid quiet-month benefit is not defined or validated.",
+      "acceptanceCriterion": "Customers understand why they keep paying during ordinary periods of lower activity.",
+      "originalImprovement": "Define a useful continuing benefit or flexible pricing without holding ratings hostage.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 140,
+      "group": "Price and paid value",
+      "metric": "Price validation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1,
+        "finding": "There is no observed willingness-to-pay, trial conversion or renewal evidence."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "No price experiment or actual payment data exists.",
+      "requiredEvidenceOrWork": "Real pricing/renewal validation later; stated intent cannot establish a $20 offer.",
+      "acceptanceCriterion": "Pricing decisions follow actual paid behavior rather than survey enthusiasm or follower counts.",
+      "originalImprovement": "Test real offers with representative cohorts, including lower-priced and group options.",
+      "implementationReferences": [
+        "docs/pilot-protocol.md",
+        "docs/implementation.md",
+        "src/components/Insights.tsx"
+      ]
+    },
+    {
+      "id": 141,
+      "group": "Trust and release readiness",
+      "metric": "Privacy choice usefulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Names, district and sharing choices exist and are mostly conservative."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Privacy choices, blocking, deletion/export and explicit share disclosure remain.",
+      "requiredEvidenceOrWork": "Complete privacy task study and operational/legal review for actual launch markets.",
+      "acceptanceCriterion": "Users can predict and verify what becomes visible to whom.",
+      "originalImprovement": "Improve settings access and confirm that every visible setting has a real, understandable effect.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 142,
+      "group": "Trust and release readiness",
+      "metric": "Settings truthfulness",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "Public match summaries is stored but has no implemented public-summary behavior using that flag."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Inert public-history UI control was removed; implemented preferences retain actual behavior.",
+      "requiredEvidenceOrWork": "Audit every remaining setting and migration; legacy stored field is not advertised.",
+      "acceptanceCriterion": "Every control produces the result promised by its label.",
+      "originalImprovement": "Remove the inactive control or connect it to a precisely defined feature.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 143,
+      "group": "Trust and release readiness",
+      "metric": "Mobile sign-out access",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 1,
+        "finding": "No visible mobile sign-out control appears; it exists only in the hidden desktop sidebar."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Mobile Settings includes real sign out; logout revokes this device’s push registration. Account-epoch guards prevent delayed private responses restoring a signed-out session.",
+      "requiredEvidenceOrWork": "Held-response browser regression passes; device/shared-phone lifecycle review remains.",
+      "acceptanceCriterion": "A phone user can leave the account immediately and the session is actually invalidated.",
+      "originalImprovement": "Add an accessible account sign-out action to mobile settings.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 144,
+      "group": "Trust and release readiness",
+      "metric": "Account controls",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 7.5,
+        "finding": "Recovery rotation, export, blocking and deletion exist, with ownership conditions for deletion."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Recovery, export, deletion, break mode and private response records remain.",
+      "requiredEvidenceOrWork": "Real support/recovery usability and external operational/legal review.",
+      "acceptanceCriterion": "Users can access their data and leave without losing other players' valid history.",
+      "originalImprovement": "Make them discoverable and test complete normal-user journeys on target devices.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 145,
+      "group": "Trust and release readiness",
+      "metric": "Sharing revocation",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 8,
+        "finding": "Hosted snapshot links can be revoked; downloaded images are correctly described as irreversible."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "implemented-validation-pending",
+      "currentImplementation": "Hosted snapshots can be revoked; historical match dates and snapshot creation dates are distinct. Public links expose no newer rating number. Downloaded PNGs remain external copies.",
+      "requiredEvidenceOrWork": "Player teach-back of hosted versus copied sharing, and public-cache/device review.",
+      "acceptanceCriterion": "Revoked links stop exposing the snapshot and users understand downloaded copies remain.",
+      "originalImprovement": "Keep the distinction clear and improve link management visibility.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 146,
+      "group": "Trust and release readiness",
+      "metric": "Abuse and reviewer service",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "An independent review mechanism exists; staffing, response expectations and evidence handling are not an operational service yet."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Independent reviewer tools and audit records remain; no staffed live service is provisioned.",
+      "requiredEvidenceOrWork": "Named support owner, response target, escalation, appeal and staffing trial.",
+      "acceptanceCriterion": "Real disputes are resolved within a stated, measured service expectation.",
+      "originalImprovement": "Define a fair review workflow, escalation path and support ownership.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 147,
+      "group": "Trust and release readiness",
+      "metric": "Global community fit",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "Singapore districts, English copy and adult-only access limit a globally distributed audience."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "The English adult pilot is clear; Singapore district taxonomy remains.",
+      "requiredEvidenceOrWork": "Human launch-market decision, localization and verified global location support remain.",
+      "acceptanceCriterion": "The launch audience can use the core location, language and identity workflows naturally.",
+      "originalImprovement": "Choose a coherent initial market and communicate it, then localize using verified demand.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 148,
+      "group": "Trust and release readiness",
+      "metric": "Performance and scale proof",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 3,
+        "finding": "A single-instance pilot and bounded synchronous replay do not establish creator-launch capacity."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "History/queue indexes and bounded insights reduce some work; architecture remains single-instance.",
+      "requiredEvidenceOrWork": "Target-load proof, replay isolation and distributed limits before creator-scale rollout.",
+      "acceptanceCriterion": "Expected launch demand preserves responsive scoring, approval and browsing.",
+      "originalImprovement": "Load-test realistic cohorts, isolate replay work and remove inappropriate pool caps before scaling.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 149,
+      "group": "Trust and release readiness",
+      "metric": "Operational confidence",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 5,
+        "finding": "Backups, replay and job retry exist, but no public hosting, monitoring or incident service is demonstrated."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "Backup/replay tools and durable jobs remain; optional push adds bounded retries/expiry handling.",
+      "requiredEvidenceOrWork": "Actual hosted restore, monitoring, incident ownership and delivery drills.",
+      "acceptanceCriterion": "A failure is detected, communicated and recovered without silent rating corruption.",
+      "originalImprovement": "Verify deployment, restore drills, alerting and owner response before a broad release.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    },
+    {
+      "id": 150,
+      "group": "Trust and release readiness",
+      "metric": "Independent acceptance evidence",
+      "minimumScore": 9.5,
+      "baseline": {
+        "commit": "fae33ae",
+        "expertScore": 2,
+        "finding": "The existing 15 test groups and three browser journeys cover only a slice of the consumer experience."
+      },
+      "currentScore": null,
+      "accepted": false,
+      "status": "work-and-validation-required",
+      "currentImplementation": "All original criteria are retained with null new scores and explicit remaining proof.",
+      "requiredEvidenceOrWork": "Independent reviewers and real-player evidence must establish acceptance; no self-issued 9.5.",
+      "acceptanceCriterion": "Acceptance covers visible quality, full workflows and real behavior rather than passing a few happy paths.",
+      "originalImprovement": "Add realistic-data review, device testing, player studies and outcome measurement.",
+      "implementationReferences": [
+        "server/app.ts",
+        "server/service.ts",
+        "docs/operations.md",
+        "docs/pilot-protocol.md"
+      ]
+    }
+  ],
+  "outcomeMetrics": [
+    {
+      "metric": "First-result activation",
+      "definition": "Share of new players who get one correctly published result",
+      "method": "Track start, submission, approvals and publication; distinguish sessions from players.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Five-result activation",
+      "definition": "Share reaching reveal in their preferred category",
+      "method": "Measure elapsed days and abandonment stage, not just account creation.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "First-value time",
+      "definition": "Time from joining to the first benefit the player actually recognizes",
+      "method": "Combine task timing with user explanation of value.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Result-completion rate",
+      "definition": "Share of submitted valid results reaching required approval",
+      "method": "Separate ordinary, retrospective, guest and corrected results.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Approval latency",
+      "definition": "Time until each required player responds and the result publishes",
+      "method": "Report median and upper-tail delays; distinguish notification delivery.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Recording task success",
+      "definition": "Share recording correct sides and scores without help",
+      "method": "Measure errors, corrections and completion time on real phones.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Rating comprehension",
+      "definition": "Share correctly explaining category independence and partner effects",
+      "method": "Use concrete examples rather than agreement with a leading question.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Premium perception",
+      "definition": "Independent target-player perception of quality",
+      "method": "Blind comparative review of complete journeys, not one curated screenshot.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Voluntary return rate",
+      "definition": "Useful returns without an experimenter prompt",
+      "method": "Distinguish checking, approval, sharing and playing-associated returns.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Day-7 and day-30 retention",
+      "definition": "Return behavior in clearly defined player cohorts",
+      "method": "Publish the retained-activity definition and account for weekly playing cadence.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Eight-week meaningful retention",
+      "definition": "Continued evidence, useful checking or group activity over eight weeks",
+      "method": "Segment active-playing players, quiet weeks and category preference.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Post-loss retention",
+      "definition": "Subsequent useful activity after a published loss",
+      "method": "Compare like-for-like players and contexts; avoid assigning causation from raw cohorts.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Rivalry engagement",
+      "definition": "Voluntary use of supported comparisons and lead-change information",
+      "method": "Measure relevant rival views and returns without inventing activity.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Share propensity",
+      "definition": "Share of genuine earned moments voluntarily shared",
+      "method": "Separate download, copied link and confirmed downstream use.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Invitation activation",
+      "definition": "Invited players reaching their own first useful value",
+      "method": "Track the actual invitation chain and privacy-preserving referral context.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Cohort network density",
+      "definition": "Useful repeated playing links inside a launch group",
+      "method": "Measure active confirmed relationships, not friend counts alone.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Willingness to pay",
+      "definition": "Actual purchase at a clearly stated price",
+      "method": "Run real offers with representative players rather than interpreting likes as demand.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Paid renewal and cancellation",
+      "definition": "Retention of paying cohorts with recorded reasons",
+      "method": "Observe more than initial trial conversion or founder supporters.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Badminton predictive calibration",
+      "definition": "Agreement between modeled probabilities and held-out outcomes",
+      "method": "Evaluate Singles, Doubles and Mixed separately, including scoring formats, relevant subgroups and uncertainty.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Fraud and dispute burden",
+      "definition": "Near-duplicates, suspicious clusters, reports and review cost",
+      "method": "Measure actual incidence, false positives, decisions and time to resolution.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Customer satisfaction",
+      "definition": "Player satisfaction after a complete normal session",
+      "method": "Collect CSAT alongside the reason, outcome and device; avoid founder-led prompting.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Customer effort",
+      "definition": "Perceived effort of scoring, approving and finding useful information",
+      "method": "Use a short CES question after actual tasks and compare with measured errors and time.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Recommendation intent",
+      "definition": "Likelihood of recommending SHUTTL to another relevant player",
+      "method": "Collect NPS with reasons and invitation behavior; NPS alone does not establish growth.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Product-market-fit sentiment",
+      "definition": "Response to losing access among players who experienced core value",
+      "method": "Segment established active players and record what benefit would be missed.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "DAU, WAU and MAU",
+      "definition": "Unique meaningful active players within daily, weekly and monthly windows",
+      "method": "Define activity explicitly; compare ratios with the cohort's real playing cadence.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Paid churn",
+      "definition": "Share of paying members or revenue lost in a stated period",
+      "method": "Separate voluntary cancellation, failed payment, downgrade and ordinary non-playing weeks.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Trial conversion",
+      "definition": "Share of appropriately timed trials becoming genuinely paid subscriptions",
+      "method": "Observe actual charges, activation and later renewal; do not count card entry as conversion.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Refund and payment failure",
+      "definition": "Billing failures, refunds and recovery of legitimate subscription access",
+      "method": "Track cause, time to resolve, player communication and accidental access loss.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Revenue per user",
+      "definition": "Period revenue per active user and per paying user",
+      "method": "Use matching periods and denominators; distinguish gross billings, net revenue and refunds.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Customer acquisition cost",
+      "definition": "Attributable acquisition cost per newly activated or paying player",
+      "method": "Include creator campaign costs and distinguish channels; views are not new customers.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Cohort lifetime contribution",
+      "definition": "Observed or explicitly modeled net contribution from a player cohort",
+      "method": "Include retention uncertainty and support, review and service costs; avoid an unsupported lifetime forecast.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Contribution margin",
+      "definition": "Revenue remaining after relevant variable delivery and support costs",
+      "method": "Measure payment fees, hosting, review, support and any paid content or coaching delivery.",
+      "value": null,
+      "status": "commercial measurement deferred; billing excluded"
+    },
+    {
+      "metric": "Referral conversion",
+      "definition": "Invitations per activated player and activation of unique recipients",
+      "method": "Identify actual referral chains without double-counting an existing group's overlapping invitations.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Creator funnel conversion",
+      "definition": "View, click, visit, signup, first result, reveal, payment and renewal progression",
+      "method": "Use clear channel attribution and unique-player denominators; combined followers may overlap.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Experience latency",
+      "definition": "Loading, interaction, submission, approval and publication latency",
+      "method": "Measure median and high-percentile behavior on ordinary devices and real networks at launch load.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Crash-free journeys",
+      "definition": "Share of core sessions without an unrecovered application failure",
+      "method": "Track frontend failures and backend errors by device, action and release.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Accessibility task success",
+      "definition": "Unassisted task success with relevant assistive technology and enlarged text",
+      "method": "Run complete scoring, approval, sharing and account-control journeys on target devices.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Support resolution",
+      "definition": "Time and quality of account, scoring, consent and dispute support",
+      "method": "Track first response, resolution, reopening and satisfaction without assuming every report is dishonest.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Comparison fairness",
+      "definition": "Predictive and experience quality across play categories and relevant cohorts",
+      "method": "Test network density, uncertainty, partner patterns and skill ranges without unjustified claims of equivalence.",
+      "value": null,
+      "status": "unmeasured"
+    },
+    {
+      "metric": "Data recovery quality",
+      "definition": "Restore time, integrity and recoverable loss after a simulated failure",
+      "method": "Perform a separate restore drill and reconcile approved ledger, identities and published ratings.",
+      "value": null,
+      "status": "unmeasured"
+    }
+  ]
+}

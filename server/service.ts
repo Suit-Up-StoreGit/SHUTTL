@@ -22,6 +22,7 @@ import {
   type Rating,
 } from "../src/domain.ts";
 import { comparisonClasses } from "./evidence.ts";
+import { enqueuePush } from "./push.ts";
 const derive = promisify(scrypt);
 export const now = () => new Date().toISOString();
 export const hash = (value: string) =>
@@ -122,6 +123,7 @@ export class Service {
       u.public_name;
     return {
       id,
+      canonicalId: u.id,
       username: u.guest ? "" : u.username,
       name:
         allowed || (u.guest && u.invited_by === viewer) ? u.name : u.username,
@@ -144,9 +146,10 @@ export class Service {
     );
     if (!target || target.guest || target.deleted) return;
     if (kind === "comparison" && target.break_mode) return;
-    this.db.run(
+    const notificationId = randomUUID();
+    const inserted = this.db.run(
       "INSERT OR IGNORE INTO notifications(id,user_id,kind,title,detail,unit_id,event_key,created_at) VALUES(?,?,?,?,?,?,?,?)",
-      randomUUID(),
+      notificationId,
       user,
       kind,
       title,
@@ -155,6 +158,7 @@ export class Service {
       key,
       now(),
     );
+    if (inserted.changes) enqueuePush(this.db, notificationId, user, kind);
   }
   audit(actor: string | null, action: string, target: string, detail: unknown) {
     this.db.run(
@@ -310,6 +314,41 @@ export class Service {
       timezone: u.timezone,
       goals: JSON.parse(u.goal),
       ratings: CATEGORIES.map((c) => this.rating(actor, c)),
+    };
+  }
+  milestone(actor: string, category: Category, template: "reveal" | "best") {
+    const rating = this.rating(actor, category);
+    if (rating.score === null) return null;
+    const field = `$."${actor}"`;
+    const aliases = this.actorIds(actor),
+      pool = `unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")}))`;
+    const event =
+      template === "reveal"
+        ? this.db.get(
+            `SELECT * FROM rating_events WHERE category=? AND ${pool} AND json_extract(changes,?)=5 ORDER BY played_at,unit_id LIMIT 1`,
+            category,
+            ...aliases,
+            field + ".count",
+          )
+        : this.db.get(
+            `SELECT * FROM rating_events WHERE category=? AND ${pool} AND json_extract(changes,?)=? AND json_extract(changes,?)>=5 ORDER BY played_at DESC,unit_id DESC LIMIT 1`,
+            category,
+            ...aliases,
+            field + ".after",
+            rating.peak,
+            field + ".count",
+          );
+    if (!event) return null;
+    const change = JSON.parse(event.changes)[actor];
+    return {
+      score: change.after,
+      league: leagueFor(change.after).name,
+      asOf: event.played_at,
+      count: change.count,
+      status:
+        category !== "Singles" && (change.partnerCount ?? 0) < 2
+          ? ("Pair-linked" as const)
+          : ("Developing" as const),
     };
   }
   session(user: string) {
@@ -845,7 +884,24 @@ export class Service {
       approvals,
       ownParticipant: roster.find((p) => this.canonical(p) === actor),
       ratingChanges: ownChange?.count >= 5 ? { [actor]: ownChange } : null,
+      ownProgress: ownChange
+        ? { count: ownChange.count, won: ownChange.won }
+        : null,
       publishedRevisionId: unit.published_revision,
+      publishedResult:
+        unit.published_revision && unit.published_revision !== revision.id
+          ? (() => {
+              const published = this.db.get(
+                "SELECT games,format,played_at FROM revisions WHERE id=?",
+                unit.published_revision,
+              )!;
+              return {
+                games: JSON.parse(published.games),
+                format: published.format,
+                playedAt: published.played_at,
+              };
+            })()
+          : null,
       scopeId: unit.scope_id,
     };
   }
@@ -1037,6 +1093,9 @@ export class Service {
           after: publicRating(after[i].mu),
           delta: publicRating(after[i].mu) - publicRating(before[i].mu),
           count: after[i].count,
+          peakBefore:
+            before[i].count >= 5 ? publicRating(before[i].peak) : null,
+          peakAfter: after[i].count >= 5 ? publicRating(after[i].peak) : null,
           won: (i < roster.length / 2 ? 0 : 1) === winner,
         };
         if (roster.length === 4) {
@@ -1044,6 +1103,7 @@ export class Service {
           if (!partners.has(p)) partners.set(p, new Set());
           partners.get(p)!.add(partner);
         }
+        changes[p].partnerCount = partners.get(p)?.size || 0;
       });
       rosters.push(roster);
       events.push({ unit, changes });
@@ -1148,7 +1208,9 @@ export class Service {
                     : "Your rating has updated",
               change.count < 5
                 ? `${change.count} of 5 ${category.toLowerCase()} results confirmed`
-                : `${category} · ${change.after} · ${change.delta >= 0 ? "+" : ""}${change.delta}`,
+                : change.count === 5
+                  ? `${category} · starting estimate ${change.after}. Future changes compare with this visible starting point.`
+                  : `${category} · ${change.after} · ${change.delta >= 0 ? "+" : ""}${change.delta}`,
               `rated:${unit.id}:${unit.rid}:${id}`,
               unit.id,
             );

@@ -1,6 +1,13 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, useRef, type FormEvent } from "react";
 import { Bell, LogOut, ArrowRight } from "lucide-react";
-import { api, ApiError, errorMessage, setCsrf, type Page } from "./api.ts";
+import {
+  api,
+  ApiError,
+  errorMessage,
+  setCsrf,
+  setDisplayTimezone,
+  type Page,
+} from "./api.ts";
 import { type Category, type Player, FORMATS } from "./domain.ts";
 import {
   Brand,
@@ -32,6 +39,7 @@ import {
   InboxPage,
   SharePassport,
   ReviewerPage,
+  ComparisonDialog,
 } from "./pages/Pages.tsx";
 const pageFromPath = (): Page => {
   const page = location.pathname.slice(1);
@@ -174,9 +182,13 @@ function PublicView({
           />
           <div className="notice">
             <strong>
-              {data.isCurrent
-                ? "This number matches the current rating"
-                : "This is a historical snapshot"}
+              {data.template === "reveal"
+                ? "A historical starting point"
+                : data.template === "best"
+                  ? "A historical personal best"
+                  : data.isCurrent
+                    ? "This number matches the current rating"
+                    : "This is a historical snapshot"}
             </strong>
             {data.title && (
               <div className="notice">
@@ -191,15 +203,33 @@ function PublicView({
               </div>
             )}
             <p>
+              {data.template && data.template !== "passport"
+                ? "Match played "
+                : "Snapshot "}
               {new Date(data.asOf).toLocaleDateString("en-SG", {
+                timeZone: "UTC",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}{" "}
-              · {data.status} estimate.{" "}
+              UTC · {data.status} estimate.{" "}
               {data.district ? data.district + " · Declared district. " : ""}
               This is not a whole-neighborhood ranking or a live title.
             </p>
+            {data.template &&
+              data.template !== "passport" &&
+              data.createdAt && (
+                <p>
+                  Created from published history on{" "}
+                  {new Date(data.createdAt).toLocaleDateString("en-SG", {
+                    timeZone: "UTC",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  UTC. Later corrections may change the rating history.
+                </p>
+              )}
           </div>
           <a className="button block" href="/home">
             Start your own badminton story
@@ -218,7 +248,12 @@ function DesignReview() {
     ),
     [category, setCategory] = useState<Category>("Doubles"),
     [toast, setToast] = useState("");
-  const data = mockDashboard();
+  const score = Number(new URLSearchParams(location.search).get("score"));
+  const data = mockDashboard(
+    Number.isFinite(score) && score >= 600 && score <= 3000
+      ? Math.round(score)
+      : 1628,
+  );
   const sample = () => {
     setToast("Design sample only. No live account or match is changed.");
     setTimeout(() => setToast(""), 3000);
@@ -303,6 +338,7 @@ function DesignReview() {
   );
 }
 export function App() {
+  const accountEpoch = useRef(0);
   const design = location.pathname === "/design";
   const publicClaim = location.pathname.startsWith("/claim/"),
     publicShare = location.pathname.startsWith("/share/");
@@ -310,7 +346,31 @@ export function App() {
     [inbox, setInbox] = useState<any>(null),
     [loading, setLoading] = useState(!design),
     [page, setCurrentPage] = useState<Page>(pageFromPath),
-    [category, setCategory] = useState<Category>("Doubles");
+    [category, setCategoryState] = useState<Category>("Doubles");
+  const [comparisonId, setComparisonId] = useState<string | null>(null);
+  function setCategory(value: Category) {
+    setCategoryState(value);
+    if (data)
+      try {
+        localStorage.setItem("shuttl:category:" + data.me.id, value);
+      } catch {}
+  }
+  useEffect(() => {
+    if (!data) return;
+    setDisplayTimezone(data.me.timezone);
+    try {
+      const value = localStorage.getItem("shuttl:category:" + data.me.id);
+      setCategoryState(
+        ["Singles", "Doubles", "Mixed"].includes(value || "")
+          ? (value as Category)
+          : "Doubles",
+      );
+    } catch {
+      setCategoryState("Doubles");
+    }
+    const linked = new URLSearchParams(location.search).get("result");
+    if (linked) open(linked);
+  }, [data?.me.id]);
   const [scopes, setScopes] = useState<any[]>([]),
     [modal, setModal] = useState<
       "record" | "friend" | "scope" | "share" | null
@@ -324,28 +384,56 @@ export function App() {
   function notify(message: string) {
     setToast(message);
   }
+  function forgetSession() {
+    accountEpoch.current += 1;
+    setData(null);
+    setInbox(null);
+    setScopes([]);
+    setCsrf("");
+    setModal(null);
+    setCorrection(null);
+    setResultId(null);
+    setComparisonId(null);
+    setRecovery("");
+    setToast("");
+  }
   async function refresh() {
+    const epoch = accountEpoch.current;
     try {
       const dashboard = await api("/dashboard");
+      if (epoch !== accountEpoch.current) return;
+      if (
+        resultId &&
+        dashboard.me.id === data?.me.id &&
+        !dashboard.results.some((r: any) => r.id === resultId)
+      )
+        dashboard.results.unshift(await api("/results/" + resultId));
+      if (epoch !== accountEpoch.current) return;
+      setDisplayTimezone(dashboard.me.timezone);
       setData(dashboard);
-      if (["inbox", "agreements"].includes(page)) setInbox(await api("/inbox"));
+      if (["inbox", "agreements"].includes(page)) {
+        const value = await api("/inbox");
+        if (epoch === accountEpoch.current) setInbox(value);
+      }
     } catch (e) {
+      if (epoch !== accountEpoch.current) return;
       if (e instanceof ApiError && e.status === 401) {
-        setData(null);
-        setCsrf("");
+        forgetSession();
       } else notify(errorMessage(e));
     }
   }
   useEffect(() => {
     if (design) return;
     let active = true;
+    const epoch = accountEpoch.current;
     (async () => {
       try {
         const me = await api("/me");
-        if (!active) return;
+        if (!active || epoch !== accountEpoch.current) return;
         setCsrf(me.csrf);
         await refresh();
       } catch (e) {
+        if (epoch !== accountEpoch.current) return;
         if (!(e instanceof ApiError && e.status === 401) && !publicShare)
           notify(errorMessage(e));
       } finally {
@@ -377,48 +465,75 @@ export function App() {
   useEffect(() => {
     if (!data || design) return;
     let active = true;
+    const epoch = accountEpoch.current;
     if (["inbox", "agreements"].includes(page))
       api("/inbox")
         .then((value) => {
-          if (active) setInbox(value);
+          if (active && epoch === accountEpoch.current) setInbox(value);
         })
-        .catch((e) => notify(errorMessage(e)));
+        .catch((e) => {
+          if (active && epoch === accountEpoch.current) notify(errorMessage(e));
+        });
     const timer = setInterval(
       () => {
         if (document.visibilityState === "visible") refresh();
       },
       data.results.some((r: any) => r.status === "confirmed") ? 2000 : 20000,
     );
+    const returned = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    window.addEventListener("focus", returned);
+    document.addEventListener("visibilitychange", returned);
     return () => {
       active = false;
       clearInterval(timer);
+      window.removeEventListener("focus", returned);
+      document.removeEventListener("visibilitychange", returned);
     };
   }, [
     page,
     data?.me.id,
     data?.results.some((r: any) => r.status === "confirmed"),
+    resultId,
   ]);
   useEffect(() => {
-    const back = () => setCurrentPage(pageFromPath());
+    const back = () => {
+      setCurrentPage(pageFromPath());
+      setModal(null);
+      setComparisonId(null);
+      const linked = new URLSearchParams(location.search).get("result");
+      if (linked) open(linked);
+      else setResultId(null);
+    };
     window.addEventListener("popstate", back);
     return () => window.removeEventListener("popstate", back);
   }, []);
-  function setPage(next: Page) {
+  function setPage(next: Page, profileTab?: "history" | "settings") {
     setCurrentPage(next);
     setResultId(null);
     setModal(null);
-    history.pushState({}, "", "/" + next);
+    setComparisonId(null);
+    history.pushState(
+      {},
+      "",
+      "/" +
+        next +
+        (next === "profile" && profileTab ? "?tab=" + profileTab : ""),
+    );
     window.scrollTo({ top: 0 });
     if (data) refresh();
   }
   async function logout() {
     try {
-      await api("/logout", {});
-      setData(null);
-      setInbox(null);
-      setCsrf("");
-      setModal(null);
-      setResultId(null);
+      let endpoint: string | undefined;
+      try {
+        const registration = await navigator.serviceWorker?.getRegistration();
+        endpoint = (await registration?.pushManager.getSubscription())
+          ?.endpoint;
+      } catch {}
+      await api("/logout", endpoint ? { endpoint } : {});
+      forgetSession();
       setCurrentPage("home");
       history.replaceState({}, "", "/");
     } catch (e) {
@@ -426,6 +541,8 @@ export function App() {
     }
   }
   async function authenticated(response: any) {
+    forgetSession();
+    setCsrf(response.csrf);
     setForceAuth(false);
     if (response.recoveryCode) setRecovery(response.recoveryCode);
     await refresh();
@@ -438,24 +555,40 @@ export function App() {
     refresh();
   }
   useEffect(() => {
+    let active = true;
+    const epoch = accountEpoch.current;
     if (data && modal === "record")
       api("/scopes")
-        .then((value) => setScopes(value.scopes))
-        .catch((e) => notify(errorMessage(e)));
+        .then((value) => {
+          if (active && epoch === accountEpoch.current) setScopes(value.scopes);
+        })
+        .catch((e) => {
+          if (active && epoch === accountEpoch.current) notify(errorMessage(e));
+        });
+    return () => {
+      active = false;
+    };
   }, [modal, data?.me.id]);
   const result = resultId
     ? data?.results.find((r: any) => r.id === resultId)
     : null;
   const open = async (id: string) => {
+    const epoch = accountEpoch.current;
     try {
       const live = await api("/results/" + id);
+      if (epoch !== accountEpoch.current) return;
       setData((d: any) => ({
         ...d,
         results: [live, ...d.results.filter((r: any) => r.id !== id)],
       }));
       setResultId(id);
+      const url = new URL(location.href);
+      url.searchParams.set("result", id);
+      history.replaceState({}, "", url.pathname + url.search);
     } catch (e) {
-      notify(errorMessage(e));
+      if (epoch !== accountEpoch.current) return;
+      if (e instanceof ApiError && e.status === 401) forgetSession();
+      else notify(errorMessage(e));
     }
   };
   let content;
@@ -533,6 +666,8 @@ export function App() {
                 setPage={setPage}
                 record={() => setModal("record")}
                 addFriend={() => setModal("friend")}
+                open={open}
+                compare={setComparisonId}
               />
             )}
             {page === "friends" && (
@@ -541,6 +676,9 @@ export function App() {
                 refresh={refresh}
                 add={() => setModal("friend")}
                 notify={notify}
+                compare={setComparisonId}
+                category={category}
+                setCategory={setCategory}
               />
             )}
             {page === "rankings" && (
@@ -557,8 +695,11 @@ export function App() {
                 open={open}
                 share={() => setModal("share")}
                 notify={notify}
-                logout={() => {
-                  setData(null);
+                signOut={logout}
+                preferredCategory={category}
+                setPreferredCategory={setCategory}
+                deleted={() => {
+                  forgetSession();
                   history.replaceState({}, "", "/");
                 }}
               />
@@ -618,6 +759,8 @@ export function App() {
           category={category}
           scopes={scopes}
           correction={correction}
+          results={data.results}
+          friends={data.friends}
           close={() => {
             setModal(null);
             setCorrection(null);
@@ -645,19 +788,44 @@ export function App() {
       {result && !correction && (
         <ResultReview
           result={result}
-          close={() => setResultId(null)}
+          close={() => {
+            setResultId(null);
+            const url = new URL(location.href);
+            url.searchParams.delete("result");
+            history.replaceState({}, "", url.pathname + url.search);
+          }}
           refresh={refresh}
           correct={(r) => {
             setCorrection(r);
             setResultId(null);
+          }}
+          share={() => {
+            setResultId(null);
+            setCategory(result.category);
+            setModal("share");
           }}
         />
       )}
       {data && modal === "share" && (
         <SharePassport
           me={data.me}
+          initialCategory={category}
           close={() => setModal(null)}
           notify={notify}
+        />
+      )}
+      {data && comparisonId && (
+        <ComparisonDialog
+          data={data}
+          playerId={comparisonId}
+          category={category}
+          close={() => setComparisonId(null)}
+          open={(id) => {
+            setComparisonId(null);
+            open(id);
+          }}
+          notify={notify}
+          refresh={refresh}
         />
       )}
       {toast && (

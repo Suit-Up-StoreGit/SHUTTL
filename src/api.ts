@@ -33,21 +33,34 @@ export async function api<T = any>(
     });
   } catch {
     throw new ApiError(
-      "You are offline. Your result stays a local draft. Reconnect and try again.",
+      "You are offline. Reconnect and try again. This action has not been confirmed by SHUTTL.",
       0,
     );
   }
   const data = await response.json().catch(() => ({}));
   if (!response.ok)
     throw new ApiError(data.error || "Please try again.", response.status);
-  if (data.csrf) setCsrf(data.csrf);
   return data;
 }
-export const dateLabel = (date: string, timezone = "Asia/Singapore") =>
+let displayTimezone = "Asia/Singapore";
+export const setDisplayTimezone = (timezone: string) => {
+  displayTimezone = timezone;
+};
+export const dateLabel = (date: string, timezone = displayTimezone) =>
   new Intl.DateTimeFormat("en-SG", {
     timeZone: timezone,
     day: "numeric",
     month: "short",
+  }).format(new Date(date));
+export const dateTimeLabel = (date: string, timezone = displayTimezone) =>
+  new Intl.DateTimeFormat("en-SG", {
+    timeZone: timezone,
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
   }).format(new Date(date));
 export type Page =
   | "home"

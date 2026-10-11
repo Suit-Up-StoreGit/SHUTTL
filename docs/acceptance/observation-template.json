@@ -1,0 +1,19 @@
+{
+  "anonymousParticipantKey": null,
+  "researchConsentReference": null,
+  "testedCommit": null,
+  "taskId": null,
+  "taskWording": null,
+  "device": null,
+  "browser": null,
+  "textAndMotionSettings": null,
+  "startedAt": null,
+  "completedAt": null,
+  "correctUnassistedCompletion": null,
+  "helpRequested": null,
+  "errors": [],
+  "playerExplanation": null,
+  "independentResearcherNotes": null,
+  "criterionIdsAffected": [],
+  "dataPolicy": "Keep real observations and identity keys in restricted research storage, outside Git. This is an empty template, not a completed study."
+}

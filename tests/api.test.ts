@@ -94,6 +94,23 @@ test("accounts hide secrets, reject forged actor fields and require CSRF", async
     const me = await f.request(f.players[0], "GET", "/api/me");
     assert.ok(!("password" in me.data) && !("recovery" in me.data));
     assert.match(f.players[0].cookie, /shuttl_session=/);
+    const timezone = await f.request(null, "POST", "/api/auth/register", {
+      username: "timezone_player",
+      name: "Timezone fixture",
+      password: "Shuttl-test-2026!",
+      adult: true,
+      timezone: "Asia/Kolkata",
+    });
+    assert.equal(timezone.status, 200);
+    assert.equal(timezone.data.user.timezone, "Asia/Kolkata");
+    const invalidZone = await f.request(null, "POST", "/api/auth/register", {
+      username: "invalid_zone",
+      name: "Timezone fixture",
+      password: "Shuttl-test-2026!",
+      adult: true,
+      timezone: "not/a-zone",
+    });
+    assert.equal(invalidZone.status, 400);
     const bad = await f.app.inject({
       method: "POST",
       url: "/api/friends",
@@ -487,6 +504,35 @@ test("shares are explicit and revocable; fixed pairs cannot manufacture a local 
     const score = f.app.service.rating(f.players[0].id, "Doubles");
     assert.notEqual(score.score, null);
     assert.equal(score.status, "Pair-linked");
+    const moments = await f.request(
+      f.players[0],
+      "GET",
+      "/api/milestones?category=Doubles",
+    );
+    assert.equal(moments.status, 200);
+    assert.equal(moments.data.reveal.score, score.score);
+    assert.equal(moments.data.best.score, score.peak);
+    const insights = await f.request(
+      f.players[0],
+      "GET",
+      "/api/insights?category=Doubles&period=all",
+    );
+    assert.equal(insights.status, 200);
+    assert.equal(insights.data.count, 5);
+    assert.equal(insights.data.wins, 5);
+    assert.equal(insights.data.delta, 0); // There is no displayed rating before the fifth result.
+    assert.equal(insights.data.partners[0].count, 5);
+    const historical = await f.request(f.players[0], "POST", "/api/shares", {
+      category: "Doubles",
+      includeName: false,
+      includeDistrict: false,
+      template: "reveal",
+    });
+    assert.equal(historical.status, 200);
+    assert.equal(historical.data.payload.score, score.score);
+    assert.equal(historical.data.payload.template, "reveal");
+    assert.equal(historical.data.payload.asOf, moments.data.reveal.asOf);
+    assert.ok(!Number.isNaN(Date.parse(historical.data.payload.createdAt)));
     const share = await f.request(f.players[0], "POST", "/api/shares", {
       category: "Doubles",
       includeName: false,
@@ -500,6 +546,7 @@ test("shares are explicit and revocable; fixed pairs cannot manufacture a local 
     );
     assert.equal(publicView.status, 200);
     assert.ok(!("owner" in publicView.data) && !("name" in publicView.data));
+    assert.ok(!("currentScore" in publicView.data));
     assert.equal(
       (
         await f.request(f.players[0], "POST", "/api/shares", {
@@ -522,6 +569,97 @@ test("shares are explicit and revocable; fixed pairs cannot manufacture a local 
     );
     assert.equal(rank.data.crownAvailable, false);
     assert.equal(rank.data.players.length, 0);
+  } finally {
+    await f.app.close();
+  }
+});
+test("history cursors and comparison details preserve account and connection boundaries", async () => {
+  const f = await fixture();
+  try {
+    const outsider = await f.register("outsider");
+    for (let i = 0; i < 52; i++) {
+      const r = await f.submit(
+        new Date(Date.now() - 100000 + i * 1000).toISOString(),
+      );
+      assert.equal(r.status, 200);
+    }
+    const first = await f.request(
+      f.players[0],
+      "GET",
+      "/api/history?category=Doubles",
+    );
+    assert.equal(first.status, 200);
+    assert.equal(first.data.results.length, 50);
+    assert.ok(first.data.next);
+    const next = await f.request(
+      f.players[0],
+      "GET",
+      "/api/history?category=Doubles&before=" + first.data.next,
+    );
+    assert.equal(next.data.results.length, 2);
+    assert.equal(next.data.next, null);
+    assert.equal(
+      new Set(
+        [...first.data.results, ...next.data.results].map((r: any) => r.id),
+      ).size,
+      52,
+    );
+    assert.equal(
+      (
+        await f.request(
+          outsider,
+          "GET",
+          "/api/history?category=Doubles&before=" + first.data.next,
+        )
+      ).status,
+      403,
+    );
+    assert.equal(
+      (await f.request(null, "GET", "/api/history?category=Doubles")).status,
+      401,
+    );
+    assert.equal(
+      (
+        await f.request(
+          f.players[0],
+          "GET",
+          "/api/comparisons/" + f.players[1].id,
+        )
+      ).status,
+      403,
+    );
+    await f.request(f.players[0], "POST", "/api/friends", {
+      playerId: f.players[1].id,
+    });
+    await f.request(
+      f.players[1],
+      "POST",
+      "/api/friends/" + f.players[0].id + "/accept",
+      {},
+    );
+    assert.equal(
+      (
+        await f.request(
+          f.players[0],
+          "GET",
+          "/api/comparisons/" + f.players[1].id,
+        )
+      ).status,
+      200,
+    );
+    await f.request(f.players[0], "POST", "/api/blocks", {
+      playerId: f.players[1].id,
+    });
+    assert.equal(
+      (
+        await f.request(
+          f.players[0],
+          "GET",
+          "/api/comparisons/" + f.players[1].id,
+        )
+      ).status,
+      403,
+    );
   } finally {
     await f.app.close();
   }

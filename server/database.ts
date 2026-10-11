@@ -28,6 +28,9 @@ export class Database {
       CREATE TABLE IF NOT EXISTS snapshots(category TEXT PRIMARY KEY, version INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS disputes(id TEXT PRIMARY KEY, unit_id TEXT NOT NULL REFERENCES units(id), revision_id TEXT NOT NULL REFERENCES revisions(id), actor TEXT NOT NULL REFERENCES users(id), reason TEXT NOT NULL, state TEXT NOT NULL DEFAULT 'open', decision TEXT, reviewer TEXT, created_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS notifications(id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id), kind TEXT NOT NULL, title TEXT NOT NULL, detail TEXT NOT NULL, unit_id TEXT, event_key TEXT UNIQUE NOT NULL, read_at TEXT, created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS push_subscriptions(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),session_hash TEXT NOT NULL,endpoint TEXT UNIQUE NOT NULL,subscription TEXT NOT NULL,preferences TEXT NOT NULL,created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS push_deliveries(notification_id TEXT NOT NULL REFERENCES notifications(id) ON DELETE CASCADE,subscription_id TEXT NOT NULL REFERENCES push_subscriptions(id) ON DELETE CASCADE,status TEXT NOT NULL,attempts INTEGER NOT NULL,next_at TEXT NOT NULL,error_code TEXT,PRIMARY KEY(notification_id,subscription_id));
+      CREATE INDEX IF NOT EXISTS push_queue ON push_deliveries(status,next_at);
       CREATE TABLE IF NOT EXISTS idempotency(actor TEXT NOT NULL, key TEXT NOT NULL, hash TEXT NOT NULL, response TEXT NOT NULL, created_at TEXT NOT NULL, PRIMARY KEY(actor,key));
       CREATE TABLE IF NOT EXISTS guest_claims(token TEXT PRIMARY KEY, guest_id TEXT NOT NULL REFERENCES users(id), author TEXT NOT NULL REFERENCES users(id), claimant TEXT REFERENCES users(id), expires TEXT NOT NULL, state TEXT NOT NULL DEFAULT 'invited');
       CREATE TABLE IF NOT EXISTS shares(id TEXT PRIMARY KEY, owner TEXT NOT NULL REFERENCES users(id), payload TEXT NOT NULL, revoked INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL);
@@ -37,6 +40,9 @@ export class Database {
       CREATE INDEX IF NOT EXISTS ratings_category ON ratings(category);
       CREATE INDEX IF NOT EXISTS revision_played ON revisions(played_at);
       CREATE INDEX IF NOT EXISTS queued_jobs ON jobs(status,created_at);
+      CREATE INDEX IF NOT EXISTS units_history ON units(category,created_at,id);
+      CREATE INDEX IF NOT EXISTS unit_player_history ON unit_players(player_id,unit_id);
+      CREATE INDEX IF NOT EXISTS events_category_time ON rating_events(category,played_at,unit_id);
     `);
     if (
       !this.all("PRAGMA table_info(units)").some(

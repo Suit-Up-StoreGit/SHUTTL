@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   Plus,
@@ -8,7 +8,15 @@ import {
   Check,
   UserPlus,
 } from "lucide-react";
-import { api, errorMessage, dateLabel } from "../api.ts";
+import {
+  api,
+  ApiError,
+  errorMessage,
+  dateLabel,
+  dateTimeLabel,
+} from "../api.ts";
+import { recentRosters } from "../experience.ts";
+import { ResultReward } from "./Progress.tsx";
 import {
   CATEGORIES,
   FORMATS,
@@ -50,6 +58,8 @@ export function Auth({
               name: credentials.name,
               password: credentials.password,
               adult: credentials.adult,
+              timezone:
+                Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
             }
           : mode === "recover"
             ? {
@@ -109,14 +119,14 @@ export function Auth({
               ? "Welcome back."
               : mode === "recover"
                 ? "Back to your court."
-                : "Make it yours."}
+                : "Know your game."}
           </h2>
           <p className="auth-intro">
             {invited
               ? "Keep your invitation. After signing in, review the exact score before agreeing."
               : mode === "recover"
                 ? "Use the private recovery code you saved when you joined."
-                : "Your badminton story starts with a real result."}
+                : "Turn confirmed matches into a playing estimate. Compare progress with the people you already play with."}
           </p>
           <div className="auth-tabs">
             <button
@@ -253,9 +263,14 @@ export function Auth({
             </button>
           )}
           <p className="auth-footer">
-            Your display name is shared with accepted friends. Public name,
-            district and match details stay off until you choose to share them.
-            Singles, Doubles and Mixed have separate ratings.
+            For players aged 18 and over. Singles, Doubles and Mixed stay
+            separate. Accepted friends see your name and confirmed activity.
+            Public name and district sharing are optional. Local pools currently
+            cover Singapore districts.
+          </p>
+          <p className="auth-footer">
+            Founded by Featherballer. Built around the people already on your
+            court.
           </p>
         </div>
       </main>
@@ -310,10 +325,14 @@ export function PlayerLookup({
   close,
   choose,
   invite = true,
+  suggestions,
+  excludeIds = [],
 }: {
   close: () => void;
   choose: (player: Player) => void;
   invite?: boolean;
+  suggestions?: Player[];
+  excludeIds?: string[];
 }) {
   const [query, setQuery] = useState(""),
     [players, setPlayers] = useState<Player[]>([]),
@@ -323,11 +342,28 @@ export function PlayerLookup({
     [invitePath, setInvitePath] = useState(""),
     [newPlayer, setNewPlayer] = useState<Player | null>(null),
     [copied, setCopied] = useState(false);
+  const [friends, setFriends] = useState<Player[]>(suggestions || []);
+  useEffect(() => {
+    if (suggestions) {
+      setFriends(suggestions);
+      return;
+    }
+    let active = true;
+    api("/dashboard")
+      .then((d) => {
+        if (active) setFriends(d.friends);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [suggestions]);
   useEffect(() => {
     let active = true;
     const timer = setTimeout(() => {
       if (query.trim().length < 2) {
         setPlayers([]);
+        setBusy(false);
         return;
       }
       setBusy(true);
@@ -375,32 +411,62 @@ export function PlayerLookup({
           autoCapitalize="none"
           placeholder="Try their username"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setBusy(e.target.value.trim().length >= 2);
+          }}
         />
       </div>
       <InlineError message={error} />
+      {!query.trim() &&
+        friends.filter((p) => !excludeIds.includes(p.id)).length > 0 && (
+          <p className="eyebrow">YOUR ACCEPTED FRIENDS</p>
+        )}
       <div className="lookup-results">
-        {players.map((p) => (
-          <button key={p.id} onClick={() => choose(p)}>
-            <Avatar player={p} />
-            <span>
-              <strong>{p.name}</strong>
-              <small>@{p.username}</small>
-            </span>
-            <Plus size={17} className="result-action" />
-          </button>
-        ))}
+        {(query.trim().length >= 2
+          ? [
+              ...friends.filter((p) =>
+                (p.name + " " + p.username)
+                  .toLowerCase()
+                  .includes(query.trim().toLowerCase()),
+              ),
+              ...players,
+            ]
+          : friends
+        )
+          .filter(
+            (p, i, all) =>
+              !excludeIds.includes(p.id) &&
+              all.findIndex((v) => v.id === p.id) === i,
+          )
+          .map((p) => (
+            <button key={p.id} onClick={() => choose(p)}>
+              <Avatar player={p} />
+              <span>
+                <strong>{p.name}</strong>
+                <small>@{p.username}</small>
+              </span>
+              <Plus size={17} className="result-action" />
+            </button>
+          ))}
       </div>
       {busy && (
         <p className="form-help" role="status">
           Looking for players…
         </p>
       )}
-      {query.length >= 2 && !players.length && !busy && (
-        <p className="form-help">
-          No available profiles match that search. Try their exact username.
-        </p>
-      )}
+      {query.length >= 2 &&
+        !players.length &&
+        !friends.some((p) =>
+          (p.name + " " + p.username)
+            .toLowerCase()
+            .includes(query.trim().toLowerCase()),
+        ) &&
+        !busy && (
+          <p className="form-help">
+            No available profiles match that search. Try their exact username.
+          </p>
+        )}
       {invite && (
         <>
           <hr />
@@ -539,6 +605,8 @@ export function RecordResult({
   close,
   done,
   correction,
+  results = [],
+  friends = [],
 }: {
   me: any;
   category: Category;
@@ -546,6 +614,8 @@ export function RecordResult({
   close: () => void;
   done: () => void;
   correction?: any;
+  results?: any[];
+  friends?: Player[];
 }) {
   const storageKey = "shuttl:draft:" + me.id;
   const saved = (() => {
@@ -585,9 +655,18 @@ export function RecordResult({
     [requestKey] = useState(saved?.requestKey || crypto.randomUUID()),
     [unitId] = useState(saved?.unitId || crypto.randomUUID());
   const [pick, setPick] = useState<number | null>(null),
-    [agree, setAgree] = useState(false),
+    [acknowledged, setAcknowledged] = useState(""),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
+  const exactDraft = JSON.stringify([
+    category,
+    format,
+    roster.map((p) => p?.id),
+    scores,
+    played,
+    scopeId,
+  ]);
+  const agree = acknowledged === exactDraft;
   useEffect(() => {
     if (!correction)
       try {
@@ -673,11 +752,16 @@ export function RecordResult({
       if (!correction) localStorage.removeItem(storageKey);
       done();
     } catch (e) {
-      setError(errorMessage(e));
+      setError(
+        e instanceof ApiError && e.status === 0
+          ? "You are offline. Your unsent result stays a local draft on this device. Reconnect and send it again."
+          : errorMessage(e),
+      );
     } finally {
       setBusy(false);
     }
   }
+  const recent = recentRosters(results, me, category);
   const applicable = scopes.filter(
     (s) =>
       s.category === category &&
@@ -703,6 +787,46 @@ export function RecordResult({
             : "One completed match. All players choose rated play, then the exact score is approved."}
         </p>
         <form onSubmit={submit}>
+          {!correction && !saved && recent.length > 0 && (
+            <details className="recent-rosters">
+              <summary>Use a recent lineup</summary>
+              <p className="form-help">
+                Same players and sides. Enter a fresh score and start time;
+                every match still needs approval.
+              </p>
+              {recent.map((r, i) => (
+                <button
+                  type="button"
+                  className="roster-shortcut"
+                  key={i}
+                  onClick={() => {
+                    setRoster(r.roster);
+                    changeFormat(r.format);
+                    setScores(
+                      FORMATS[r.format as Format].series
+                        ? [
+                            ["", ""],
+                            ["", ""],
+                          ]
+                        : [["", ""]],
+                    );
+                    setPlayed(localDate(new Date()));
+                    setAcknowledged("");
+                  }}
+                >
+                  {r.roster
+                    .slice(0, r.roster.length / 2)
+                    .map((p: Player) => (p.id === me.id ? "You" : p.name))
+                    .join(" + ")}{" "}
+                  <span>vs</span>{" "}
+                  {r.roster
+                    .slice(r.roster.length / 2)
+                    .map((p: Player) => p.name)
+                    .join(" + ")}
+                </button>
+              ))}
+            </details>
+          )}
           <div className="form-grid">
             <div className="field">
               <label htmlFor="result-category">Category</label>
@@ -835,6 +959,11 @@ export function RecordResult({
                   onChange={(e) => setPlayed(e.target.value)}
                   required
                 />
+                <p className="form-help">
+                  Time entered in your device’s timezone:{" "}
+                  {Intl.DateTimeFormat().resolvedOptions().timeZone}. Review
+                  shows your profile timezone.
+                </p>
               </div>
               <div className="field">
                 <label htmlFor="result-scope">Earlier rated agreement</label>
@@ -872,7 +1001,9 @@ export function RecordResult({
             <input
               type="checkbox"
               checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
+              onChange={(e) =>
+                setAcknowledged(e.target.checked ? exactDraft : "")
+              }
               required
             />
             <span>
@@ -898,6 +1029,8 @@ export function RecordResult({
       </Modal>
       {pick !== null && (
         <PlayerLookup
+          suggestions={friends}
+          excludeIds={roster.filter(Boolean).map((p) => p!.id)}
           close={() => setPick(null)}
           choose={(p) => {
             setRoster(roster.map((current, i) => (i === pick ? p : current)));
@@ -922,9 +1055,16 @@ export function AgreementForm({
     [roster, setRoster] = useState<(Player | null)[]>([me, null, null, null]),
     [pick, setPick] = useState<number | null>(null),
     [recurring, setRecurring] = useState(false),
-    [agree, setAgree] = useState(false),
+    [acknowledgedAgreement, setAcknowledgedAgreement] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const agreementKey = JSON.stringify([
+    category,
+    format,
+    roster.map((p) => p?.id),
+    recurring,
+  ]);
+  const agree = acknowledgedAgreement === agreementKey;
   async function submit(e: FormEvent) {
     e.preventDefault();
     setError("");
@@ -1018,7 +1158,9 @@ export function AgreementForm({
             <input
               type="checkbox"
               checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
+              onChange={(e) =>
+                setAcknowledgedAgreement(e.target.checked ? agreementKey : "")
+              }
               required
             />
             <span>
@@ -1057,17 +1199,30 @@ export function ResultReview({
   close,
   refresh,
   correct,
+  share,
 }: {
   result: any;
   close: () => void;
   refresh: () => void;
   correct: (r: any) => void;
+  share?: () => void;
 }) {
-  const [agree, setAgree] = useState(false),
+  const [acknowledgedRevision, setAcknowledgedRevision] = useState(""),
     [disputing, setDisputing] = useState(false),
     [reason, setReason] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const lastRevision = useRef(result.revisionId);
+  const [revisionChanged, setRevisionChanged] = useState(false);
+  const agree = acknowledgedRevision === result.revisionId;
+  useEffect(() => {
+    if (lastRevision.current !== result.revisionId) {
+      lastRevision.current = result.revisionId;
+      setAcknowledgedRevision("");
+      setRevisionChanged(true);
+      setDisputing(false);
+    }
+  }, [result.revisionId]);
   const approved = result.approvals.includes(result.ownParticipant),
     size = result.players.length / 2;
   const ownIndex = result.players.findIndex(
@@ -1081,7 +1236,14 @@ export function ResultReview({
     ["pending", "correction_pending"].includes(result.status) &&
     !approved &&
     (result.retrospective || opposite);
+  const awaiting = result.players.filter(
+    (p: Player, i: number) =>
+      !result.approvals.includes(p.id) &&
+      (result.retrospective || i < size !== authorIndex < size),
+  );
   async function action(type: "approve" | "dispute") {
+    if (type === "approve" && acknowledgedRevision !== result.revisionId)
+      return;
     setBusy(true);
     setError("");
     try {
@@ -1113,7 +1275,7 @@ export function ResultReview({
         <span>
           {result.category} · {FORMATS[result.format as Format].label}
         </span>
-        <span>{dateLabel(result.playedAt)}</span>
+        <span>{dateTimeLabel(result.playedAt)}</span>
       </div>
       <div className="team-row">
         <div>
@@ -1130,6 +1292,30 @@ export function ResultReview({
         </div>
       </div>
       <ScoreGames games={result.games} />
+      {revisionChanged && (
+        <div className="notice revision-notice" role="alert">
+          <strong>
+            The score has changed to revision {result.revisionNumber}.
+          </strong>
+          <p>
+            Your earlier acknowledgement was cleared. Read these sides and
+            scores again before approving.
+          </p>
+        </div>
+      )}
+      <ResultReward result={result} share={share} />
+      {result.publishedResult && (
+        <div className="notice neutral">
+          <strong>The earlier approved score still counts</strong>
+          <p>
+            {result.publishedResult.games
+              .map((g: number[]) => g.join("–"))
+              .join(" / ")}{" "}
+            · {FORMATS[result.publishedResult.format as Format].label}. This
+            proposed correction needs fresh approval before ratings change.
+          </p>
+        </div>
+      )}
       <div className="notice">
         <strong>
           {result.status === "rated"
@@ -1153,6 +1339,18 @@ export function ResultReview({
         </p>
       </div>
       <p className="form-help">
+        {["pending", "correction_pending"].includes(result.status) &&
+          awaiting.length > 0 && (
+            <>
+              <strong>
+                {result.retrospective
+                  ? "Waiting for "
+                  : "An eligible opponent can confirm: "}
+                {awaiting.map((p: Player) => p.name).join(", ")}.
+              </strong>
+              <br />
+            </>
+          )}
         Submitted by {result.author.name}. Revision {result.revisionNumber}.
         Correcting or disputing an incorrect score does not hurt your response
         record.
@@ -1164,7 +1362,11 @@ export function ResultReview({
             <input
               type="checkbox"
               checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
+              onChange={(e) =>
+                setAcknowledgedRevision(
+                  e.target.checked ? result.revisionId : "",
+                )
+              }
             />
             <span>
               These are the correct sides, scores and rated status. I approve

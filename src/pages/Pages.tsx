@@ -10,6 +10,8 @@ import {
   ShieldCheck,
   ChevronRight,
   Check,
+  Settings,
+  LogOut,
 } from "lucide-react";
 import { api, dateLabel, errorMessage } from "../api.ts";
 import {
@@ -19,6 +21,8 @@ import {
   type Category,
   type Player,
   type PublicRating,
+  validateGames,
+  type Format,
 } from "../domain.ts";
 import {
   Avatar,
@@ -34,6 +38,16 @@ import {
 } from "../components/UI.tsx";
 import { PlayerLookup, RecoveryCode } from "../components/Flows.tsx";
 import { RatingCard } from "./Home.tsx";
+import { RatingGuide, ResultReward } from "../components/Progress.tsx";
+import {
+  comparable,
+  comparisonCopy,
+  ownChange,
+  sharedHistory,
+} from "../experience.ts";
+import { ratingImage } from "../share-image.ts";
+import { PlayingInsights } from "../components/Insights.tsx";
+import { DeviceNotifications } from "../components/Notifications.tsx";
 const statusLabels: Record<string, string> = {
   rated: "Rating published",
   pending: "Awaiting approval",
@@ -79,8 +93,11 @@ export function ResultList({
           </div>
           <div className="result-bottom">
             <span>
-              {FORMATS[r.format as keyof typeof FORMATS].label} · Revision{" "}
-              {r.revisionNumber}
+              {ownChange(r)?.count === 5
+                ? "Starting rating revealed"
+                : ownChange(r)
+                  ? `Your rating: ${ownChange(r).before} → ${ownChange(r).after}`
+                  : `${r.ownProgress?.count || 0} confirmed placement results`}
             </span>
             <ArrowUpRight size={15} />
           </div>
@@ -89,19 +106,316 @@ export function ResultList({
     </div>
   );
 }
+export function ComparisonDialog({
+  data,
+  playerId,
+  category: initialCategory,
+  close,
+  open,
+  notify,
+  refresh,
+}: {
+  data: any;
+  playerId: string;
+  category: Category;
+  close: () => void;
+  open: (id: string) => void;
+  notify: (message: string) => void;
+  refresh: () => void;
+}) {
+  const [loaded, setLoaded] = useState<any>(null),
+    [category, setCategory] = useState(initialCategory),
+    [error, setError] = useState("");
+  useEffect(() => {
+    let active = true;
+    api("/comparisons/" + playerId)
+      .then((v) => {
+        if (active) setLoaded(v);
+      })
+      .catch((e) => {
+        if (active) setError(errorMessage(e));
+      });
+    return () => {
+      active = false;
+    };
+  }, [playerId]);
+  const player = loaded?.player;
+  const own = data.me.ratings.find(
+      (r: PublicRating) => r.category === category,
+    ),
+    peer = player?.ratings.find((r: PublicRating) => r.category === category);
+  const rows = loaded ? sharedHistory(loaded.results, playerId, category) : [];
+  const against = rows.filter((r) => {
+    const size = r.players.length / 2,
+      self = r.players.findIndex((p: Player) => p.id === r.ownParticipant),
+      other = r.players.findIndex(
+        (p: Player) => (p.canonicalId || p.id) === playerId,
+      );
+    return self < size !== other < size;
+  });
+  const wins = against.filter(
+    (r) => (ownChange(r) || r.ownProgress)?.won,
+  ).length;
+  const together = rows.filter((r) => !against.includes(r));
+  const isFriend = data.friends.some((p: Player) => p.id === playerId);
+  return (
+    <Modal
+      title={
+        player
+          ? `${player.name} / your comparison`
+          : "Your shared playing picture"
+      }
+      close={close}
+      wide
+    >
+      <InlineError message={error} />
+      {!loaded && !error ? (
+        <Spinner />
+      ) : (
+        loaded && (
+          <>
+            <CategoryTabs value={category} onChange={setCategory} />
+            <div className="comparison-score">
+              <div>
+                <Avatar player={data.me} />
+                <strong>You</strong>
+                <b>{own.score ?? "—"}</b>
+                <span>{own.status}</span>
+              </div>
+              <span>vs</span>
+              <div>
+                <Avatar player={player} />
+                <strong>{player.name}</strong>
+                <b>{peer.score ?? "—"}</b>
+                <span>{peer.status}</span>
+              </div>
+            </div>
+            <div className="notice">
+              <strong>{comparisonCopy(own, peer)}</strong>
+              <p>
+                {comparable(own, peer)
+                  ? "A shared playing picture supports this comparison. It remains an estimate, not a certified level or a prediction of your next match."
+                  : "See each player’s progress independently. Fixed partnerships and disconnected playing groups can leave a direct comparison unclear."}
+              </p>
+            </div>
+            {isFriend && comparable(own, peer) && (
+              <button
+                className="button secondary block"
+                onClick={() => {
+                  try {
+                    localStorage.setItem(
+                      `shuttl:rival:${data.me.id}:${category}`,
+                      playerId,
+                    );
+                    notify("Your home comparison is pinned on this device.");
+                    close();
+                  } catch {
+                    setError(
+                      "This device cannot save your preferred comparison.",
+                    );
+                  }
+                }}
+              >
+                Keep this comparison on home
+              </button>
+            )}
+            <div className="weekly-facts">
+              <div>
+                <strong>
+                  {against.length ? wins + "–" + (against.length - wins) : "—"}
+                </strong>
+                <span>your wins / losses against them</span>
+              </div>
+              <div>
+                <strong>{together.length}</strong>
+                <span>matches on the same side</span>
+              </div>
+            </div>
+            <p className="form-help">
+              {category === "Singles"
+                ? "Your confirmed shared Singles results."
+                : "These are team outcomes with your recorded partners; they do not isolate either player’s ability."}
+              {loaded.limited
+                ? " Showing the latest 200 shared published results across categories."
+                : " Only published shared results are included."}
+            </p>
+            <SectionHeading title="Your shared history" />
+            <ResultList results={rows.slice(0, 10)} open={open} />
+            {rows.length > 10 && (
+              <p className="form-help">
+                Showing the latest ten. Your full history is in Profile.
+              </p>
+            )}
+            {!rows.length && (
+              <p className="form-help">
+                No published shared matches in this category yet.
+              </p>
+            )}
+            <RatingGuide category={category} />
+            {isFriend && (
+              <details className="guide-details">
+                <summary>Manage this connection</summary>
+                <p>Removing the connection keeps valid match history intact.</p>
+                <button
+                  className="text-button danger"
+                  onClick={async () => {
+                    try {
+                      await api("/friends/" + playerId, {}, "DELETE");
+                      refresh();
+                      close();
+                      notify("Connection removed. Valid match history stays.");
+                    } catch (e) {
+                      setError(errorMessage(e));
+                    }
+                  }}
+                >
+                  Remove connection
+                </button>
+              </details>
+            )}
+          </>
+        )
+      )}
+    </Modal>
+  );
+}
+
+function CareerHistory({
+  category,
+  setCategory,
+  open,
+}: {
+  category: Category;
+  setCategory: (c: Category) => void;
+  open: (id: string) => void;
+}) {
+  const [rows, setRows] = useState<any[]>([]),
+    [next, setNext] = useState<string | null>(null),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState(""),
+    [query, setQuery] = useState(""),
+    [filter, setFilter] = useState("all");
+  useEffect(() => {
+    let active = true;
+    setBusy(true);
+    setRows([]);
+    setNext(null);
+    api("/history?category=" + category)
+      .then((v) => {
+        if (active) {
+          setRows(v.results);
+          setNext(v.next);
+          setError("");
+        }
+      })
+      .catch((e) => {
+        if (active) setError(errorMessage(e));
+      })
+      .finally(() => {
+        if (active) setBusy(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [category]);
+  const shown = rows.filter(
+    (r) =>
+      (filter === "all" || r.status === filter) &&
+      r.players.some((p: Player) =>
+        (p.name + " " + p.username).toLowerCase().includes(query.toLowerCase()),
+      ),
+  );
+  return (
+    <>
+      <CategoryTabs value={category} onChange={setCategory} />
+      <div className="history-filters">
+        <div className="field">
+          <label htmlFor="history-search">Find a player in your history</label>
+          <input
+            id="history-search"
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Name or username"
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="history-state">Result status</label>
+          <select
+            id="history-state"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="all">All results</option>
+            <option value="rated">Published</option>
+            <option value="pending">Awaiting approval</option>
+            <option value="correction_pending">Correction pending</option>
+            <option value="disputed">Under review</option>
+          </select>
+        </div>
+      </div>
+      <InlineError message={error} />
+      <ResultList results={shown} open={open} />
+      {busy && <Spinner />}
+      {!busy && !shown.length && (
+        <Empty title="No matching results">
+          Try another player or category.
+        </Empty>
+      )}
+      {next && (
+        <>
+          <p className="form-help">
+            Filters apply to {rows.length} loaded results. Load older history to
+            keep searching.
+          </p>
+          <button
+            className="button secondary block"
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                const v = await api(
+                  "/history?category=" + category + "&before=" + next,
+                );
+                setRows((previous) => [
+                  ...previous,
+                  ...v.results.filter(
+                    (r: any) => !previous.some((p) => p.id === r.id),
+                  ),
+                ]);
+                setNext(v.next);
+              } catch (e) {
+                setError(errorMessage(e));
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            Load older results
+          </button>
+        </>
+      )}
+    </>
+  );
+}
 export function FriendsPage({
   data,
   refresh,
   add,
   notify,
+  compare,
+  category,
+  setCategory,
 }: {
   data: any;
   refresh: () => void;
   add: () => void;
   notify: (message: string) => void;
+  compare: (id: string) => void;
+  category: Category;
+  setCategory: (c: Category) => void;
 }) {
-  const [category, setCategory] = useState<Category>("Doubles"),
-    [circle, setCircle] = useState<any>(null),
+  const [circle, setCircle] = useState<any>(null),
     [creating, setCreating] = useState(false),
     [name, setName] = useState(""),
     [lookup, setLookup] = useState(false),
@@ -175,24 +489,9 @@ export function FriendsPage({
                   </div>
                   <Gem league={r.league} />
                   <strong className="ranking-number">{r.score ?? "—"}</strong>
-                  {!circle && (
-                    <button
-                      className="text-button danger"
-                      onClick={async () => {
-                        try {
-                          await api("/friends/" + p.id, {}, "DELETE");
-                          refresh();
-                          notify(
-                            "Connection removed. Your valid match history stays.",
-                          );
-                        } catch (e) {
-                          setError(errorMessage(e));
-                        }
-                      }}
-                    >
-                      Remove
-                    </button>
-                  )}
+                  <button className="text-button" onClick={() => compare(p.id)}>
+                    Compare <ChevronRight size={16} />
+                  </button>
                 </div>
               );
             })
@@ -624,7 +923,8 @@ export function InboxPage({
 }) {
   const [selected, setSelected] = useState<string[]>([]),
     [error, setError] = useState(""),
-    [agree, setAgree] = useState(false);
+    [acknowledgedBatch, setAcknowledgedBatch] = useState(""),
+    [batchBusy, setBatchBusy] = useState(false);
   if (!inbox) return <Spinner />;
   const eligible = inbox.pending
     .filter((r: any) => {
@@ -640,20 +940,29 @@ export function InboxPage({
       );
     })
     .slice(0, 20);
+  const revisionKey = (r: any) => r.id + ":" + r.revisionId;
+  const chosen = eligible.filter((r: any) => selected.includes(revisionKey(r)));
+  const batchKey = chosen.map(revisionKey).sort().join("|");
+  const agree = !!batchKey && acknowledgedBatch === batchKey;
   async function batch() {
+    if (!agree || batchBusy) return;
+    setBatchBusy(true);
     try {
       await api("/results/batch-approve", {
         agree: true,
-        results: eligible
-          .filter((r: any) => selected.includes(r.id))
-          .map((r: any) => ({ id: r.id, revisionId: r.revisionId })),
+        results: chosen.map((r: any) => ({
+          id: r.id,
+          revisionId: r.revisionId,
+        })),
       });
       setSelected([]);
-      setAgree(false);
+      setAcknowledgedBatch("");
       refresh();
       notify("The selected exact approvals are recorded.");
     } catch (e) {
       setError(errorMessage(e));
+    } finally {
+      setBatchBusy(false);
     }
   }
   return (
@@ -685,12 +994,12 @@ export function InboxPage({
               <label className="check-line">
                 <input
                   type="checkbox"
-                  checked={selected.includes(r.id)}
+                  checked={selected.includes(revisionKey(r))}
                   onChange={(e) =>
                     setSelected(
                       e.target.checked
-                        ? [...selected, r.id]
-                        : selected.filter((id) => id !== r.id),
+                        ? [...selected, revisionKey(r)]
+                        : selected.filter((id) => id !== revisionKey(r)),
                     )
                   }
                 />
@@ -721,13 +1030,15 @@ export function InboxPage({
               </button>
             </div>
           ))}
-          {selected.length > 0 && (
+          {chosen.length > 0 && (
             <div className="notice">
               <label className="check-line">
                 <input
                   type="checkbox"
                   checked={agree}
-                  onChange={(e) => setAgree(e.target.checked)}
+                  onChange={(e) =>
+                    setAcknowledgedBatch(e.target.checked ? batchKey : "")
+                  }
                 />
                 <span>
                   I read every selected score and agree to its exact revision
@@ -736,11 +1047,11 @@ export function InboxPage({
               </label>
               <button
                 className="button block"
-                disabled={!agree}
+                disabled={!agree || batchBusy}
                 onClick={batch}
               >
-                Approve {selected.length} exact{" "}
-                {selected.length === 1 ? "result" : "results"}
+                Approve {chosen.length} exact{" "}
+                {chosen.length === 1 ? "result" : "results"}
               </button>
             </div>
           )}
@@ -851,7 +1162,7 @@ export function InboxPage({
                   <strong>{n.title}</strong>
                   <p>{n.detail}</p>
                   <small>{dateLabel(n.createdAt)}</small>
-                  {n.unitId && (
+                  {n.unitId && n.kind !== "comparison" && (
                     <button
                       className="text-button"
                       onClick={() => open(n.unitId)}
@@ -905,15 +1216,33 @@ export function ProfilePage({
   open,
   share,
   notify,
-  logout,
+  deleted,
+  signOut,
+  preferredCategory,
+  setPreferredCategory,
 }: {
   data: any;
   refresh: () => void;
   open: (id: string) => void;
   share: () => void;
   notify: (message: string) => void;
-  logout: () => void;
+  deleted: () => void;
+  signOut: () => void;
+  preferredCategory: Category;
+  setPreferredCategory: (c: Category) => void;
 }) {
+  const [tab, setTabState] = useState(() => {
+    const value = new URLSearchParams(location.search).get("tab");
+    return ["overview", "history", "insights", "settings"].includes(value || "")
+      ? value!
+      : "overview";
+  });
+  function setTab(value: string) {
+    setTabState(value);
+    const url = new URL(location.href);
+    url.searchParams.set("tab", value);
+    history.replaceState({}, "", url.pathname + url.search);
+  }
   const [form, setForm] = useState({ ...data.me }),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false),
@@ -922,7 +1251,7 @@ export function ProfilePage({
     [blocking, setBlocking] = useState(false),
     [blocks, setBlocks] = useState<Player[]>([]),
     [shares, setShares] = useState<any[]>([]),
-    [category, setCategory] = useState<Category>("Doubles"),
+    [category, setCategory] = useState<Category>(preferredCategory),
     [reliability, setReliability] = useState<any>(null),
     [recoveryModal, setRecoveryModal] = useState(false),
     [recoveryPassword, setRecoveryPassword] = useState(""),
@@ -992,11 +1321,6 @@ export function ProfilePage({
       "Share only your selected district, never precise location.",
     ],
     [
-      "publicHistory",
-      "Public match summaries",
-      "Allow your own summaries to be shared. Other people’s private details stay protected.",
-    ],
-    [
       "discoverable",
       "Discoverable by username",
       "Let other signed-in players find your public player identity.",
@@ -1020,57 +1344,121 @@ export function ProfilePage({
           Share my progress
         </button>
       </PageHeading>
-      <div className="page-grid">
-        <div>
-          <section className="panel profile-card">
-            <div className="profile-identity">
-              <Avatar player={data.me} />
-              <div>
-                <h2>{data.me.name}</h2>
-                <p>
-                  @{data.me.username}
-                  {data.me.district
-                    ? " · " + data.me.district + " (declared)"
-                    : ""}
-                </p>
-              </div>
-            </div>
-            {data.me.ratings.map((r: PublicRating) => (
-              <div className="profile-rating-line" key={r.category}>
-                <Gem league={r.league} size={30} />
-                <div>
-                  <strong>{r.category}</strong>
-                  <small>
-                    {r.status} · {r.count} confirmed results
-                  </small>
+      <div className="section-tabs" aria-label="Profile sections">
+        {[
+          ["overview", "Passport"],
+          ["insights", "Insights"],
+          ["history", "History"],
+          ["settings", "Settings"],
+        ].map(([key, label]) => (
+          <button
+            key={key}
+            aria-pressed={tab === key}
+            onClick={() => setTab(key)}
+          >
+            {key === "settings" && <Settings size={16} />} {label}
+          </button>
+        ))}
+      </div>
+      <div className={"page-grid profile-layout profile-" + tab}>
+        <div hidden={tab === "settings"}>
+          {tab === "overview" && (
+            <>
+              <section className="panel profile-card">
+                <div className="profile-identity">
+                  <Avatar player={data.me} />
+                  <div>
+                    <h2>{data.me.name}</h2>
+                    <p>
+                      @{data.me.username}
+                      {data.me.district
+                        ? " · " + data.me.district + " (declared)"
+                        : ""}
+                    </p>
+                  </div>
                 </div>
-                <b>{r.score ?? "—"}</b>
+                {data.me.ratings.map((r: PublicRating) => (
+                  <div className="profile-rating-line" key={r.category}>
+                    <Gem league={r.league} size={30} />
+                    <div>
+                      <strong>{r.category}</strong>
+                      <small>
+                        {r.status} · {r.count} confirmed results
+                      </small>
+                    </div>
+                    <b>{r.score ?? "—"}</b>
+                  </div>
+                ))}
+                <p className="form-help">
+                  Five results reveal a developing estimate. Fixed partners,
+                  disconnected circles and mixed pairing rules can leave
+                  individual comparisons uncertain.
+                </p>
+              </section>
+              <div className="profile-actions">
+                <button
+                  className="button secondary"
+                  onClick={() => setTab("history")}
+                >
+                  Explore your match history
+                </button>
+                <button
+                  className="button secondary"
+                  onClick={() => setTab("settings")}
+                >
+                  Manage goals and settings <Settings size={16} />
+                </button>
               </div>
-            ))}
-            <p className="form-help">
-              Five results reveal a developing estimate. Fixed partners,
-              disconnected circles and mixed pairing rules can leave individual
-              comparisons uncertain.
-            </p>
-          </section>
-          <section className="settings-panel">
-            <SectionHeading title="Your actual results" />
-            <CategoryTabs value={category} onChange={setCategory} />
-            <ResultList
-              results={data.results.filter((r: any) => r.category === category)}
-              open={open}
-            />
-            {!data.results.some((r: any) => r.category === category) && (
-              <Empty title="No results in this category">
-                Your Singles, Doubles and Mixed histories stay separate.
-              </Empty>
+              <RatingGuide category={preferredCategory} />
+            </>
+          )}
+          {tab === "history" && (
+            <section className="settings-panel">
+              <SectionHeading title="Your actual results" />
+              <CareerHistory
+                category={category}
+                setCategory={setCategory}
+                open={open}
+              />
+            </section>
+          )}
+          {tab === "insights" && (
+            <PlayingInsights category={category} setCategory={setCategory} />
+          )}
+        </div>
+        <div hidden={tab !== "settings"}>
+          <section className="account-menu">
+            <button className="button secondary" onClick={signOut}>
+              <LogOut size={17} /> Sign out
+            </button>
+            <a className="text-button" href="/agreements">
+              Rated agreements
+            </a>
+            {data.me.role === "reviewer" && (
+              <a className="text-button" href="/reviewer">
+                Review desk
+              </a>
             )}
           </section>
-        </div>
-        <div>
           <section className="panel">
             <SectionHeading title="Your choices" />
             <form onSubmit={save}>
+              <div className="field">
+                <label htmlFor="preferred-category">
+                  Preferred category on this device
+                </label>
+                <select
+                  id="preferred-category"
+                  value={preferredCategory}
+                  onChange={(e) =>
+                    setPreferredCategory(e.target.value as Category)
+                  }
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
               <div className="field">
                 <label htmlFor="profile-name">Display name</label>
                 <input
@@ -1114,6 +1502,9 @@ export function ProfilePage({
                       "Europe/London",
                       "America/New_York",
                       "Australia/Sydney",
+                      ...(typeof Intl.supportedValuesOf === "function"
+                        ? Intl.supportedValuesOf("timeZone")
+                        : []),
                     ]),
                   ].map((t) => (
                     <option key={t}>{t}</option>
@@ -1164,6 +1555,11 @@ export function ProfilePage({
               </button>
             </form>
           </section>
+          <DeviceNotifications
+            owner={data.me.id}
+            timezone={data.me.timezone}
+            notify={notify}
+          />
           <section className="panel settings-panel">
             <SectionHeading title="Your public links" />
             {shares
@@ -1247,7 +1643,7 @@ export function ProfilePage({
           </section>
         </div>
       </div>
-      {reliability && (
+      {reliability && tab === "settings" && (
         <section className="panel settings-panel">
           <SectionHeading title="Private response record" />
           <p className="form-help">
@@ -1341,7 +1737,7 @@ export function ProfilePage({
               try {
                 await api("/account", { password, confirmation }, "DELETE");
                 localStorage.removeItem("shuttl:draft:" + data.me.id);
-                logout();
+                deleted();
               } catch (e) {
                 setError(errorMessage(e));
               }
@@ -1381,19 +1777,44 @@ export function SharePassport({
   me,
   close,
   notify,
+  initialCategory = "Doubles",
 }: {
   me: any;
   close: () => void;
   notify: (message: string) => void;
+  initialCategory?: Category;
 }) {
-  const [category, setCategory] = useState<Category>("Doubles"),
+  const [category, setCategory] = useState<Category>(initialCategory),
     [includeName, setIncludeName] = useState(false),
     [includeDistrict, setIncludeDistrict] = useState(false),
     [shape, setShape] = useState<"feed" | "story">("story"),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [link, setLink] = useState("");
+  const [template, setTemplate] = useState<"passport" | "reveal" | "best">(
+      "passport",
+    ),
+    [milestones, setMilestones] = useState<any>(null);
+  useEffect(() => {
+    let active = true;
+    setMilestones(null);
+    api("/milestones?category=" + category)
+      .then((v) => {
+        if (active) setMilestones(v);
+      })
+      .catch((e) => {
+        if (active) setError(errorMessage(e));
+      });
+    return () => {
+      active = false;
+    };
+  }, [category]);
+  useEffect(() => {
+    setLink("");
+  }, [category, template, includeName, includeDistrict]);
   const rating = me.ratings.find((r: PublicRating) => r.category === category);
+  const milestone = template === "passport" ? null : milestones?.[template];
+  const preview = milestone ? { ...rating, ...milestone } : rating;
   async function create(download: boolean) {
     setError("");
     setBusy(true);
@@ -1402,81 +1823,11 @@ export function SharePassport({
         category,
         includeName,
         includeDistrict,
+        template,
       });
       setLink(location.origin + response.path);
       if (download) {
-        await document.fonts.ready;
-        const canvas = document.createElement("canvas");
-        canvas.width = 1080;
-        canvas.height = shape === "story" ? 1920 : 1080;
-        const ctx = canvas.getContext("2d")!;
-        ctx.fillStyle = "#F6F7F2";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#14372C";
-        ctx.font = "800 45px Manrope";
-        ctx.fillText("SHUTTL.", 85, 110);
-        const top = shape === "story" ? 450 : 210;
-        ctx.fillStyle = "#14372C";
-        ctx.beginPath();
-        ctx.roundRect(75, top, 930, 620, 42);
-        ctx.fill();
-        ctx.fillStyle = "#C8DAB4";
-        ctx.font = "600 27px Manrope";
-        ctx.fillText(category.toUpperCase() + " RATING", 130, top + 80);
-        ctx.fillStyle = "#F4F7EC";
-        ctx.font = "600 232px Barlow";
-        ctx.fillText(String(rating.score), 123, top + 340);
-        ctx.font = "600 40px Manrope";
-        ctx.fillText(rating.league, 132, top + 430);
-        ctx.font = "500 24px Manrope";
-        ctx.fillStyle = "#C8DAB4";
-        ctx.fillText(
-          rating.status + " estimate · Player-confirmed results",
-          132,
-          top + 510,
-        );
-        ctx.fillText(
-          "Snapshot: " + dateLabel(response.payload.asOf),
-          132,
-          top + 560,
-        );
-        ctx.fillStyle = "#14372C";
-        ctx.font = "500 27px Manrope";
-        if (includeName) ctx.fillText(me.name, 86, top - 38);
-        if (includeDistrict)
-          ctx.fillText(me.district + " · Declared district", 86, top + 678);
-        ctx.fillText("Your game. Your progress.", 86, canvas.height - 110);
-        if (response.payload.title) {
-          ctx.font = "600 20px Manrope";
-          ctx.fillText(
-            response.payload.title.label + " · " + response.payload.title.pool,
-            86,
-            canvas.height - 155,
-          );
-          ctx.font = "500 18px Manrope";
-          ctx.fillText(
-            "Among " +
-              response.payload.title.eligible +
-              " eligible players · dated snapshot",
-            86,
-            canvas.height - 185,
-          );
-        }
-        if (category === "Mixed") {
-          ctx.font = "500 20px Manrope";
-          ctx.fillText(
-            "Mixed estimate · individual ranking requires supported context",
-            86,
-            canvas.height - 65,
-          );
-        }
-        const blob = await new Promise<Blob>((resolve, reject) =>
-          canvas.toBlob(
-            (b) =>
-              b ? resolve(b) : reject(new Error("Image could not be created.")),
-            "image/png",
-          ),
-        );
+        const blob = await ratingImage(response.payload, shape);
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -1495,8 +1846,40 @@ export function SharePassport({
   }
   return (
     <Modal title="A number worth earning" close={close}>
-      <CategoryTabs value={category} onChange={setCategory} />
-      <RatingCard rating={rating} category={category} compact />
+      <CategoryTabs
+        value={category}
+        onChange={(c) => {
+          if (!busy) {
+            setCategory(c);
+            setTemplate("passport");
+          }
+        }}
+      />
+      <div className="field">
+        <label htmlFor="share-template">Your story</label>
+        <select
+          id="share-template"
+          value={template}
+          disabled={busy}
+          onChange={(e) => setTemplate(e.target.value as typeof template)}
+        >
+          <option value="passport">My current rating</option>
+          <option value="reveal" disabled={!milestones?.reveal}>
+            My first rating reveal
+          </option>
+          <option value="best" disabled={!milestones?.best}>
+            My personal best
+          </option>
+        </select>
+      </div>
+      <RatingCard rating={preview} category={category} compact />
+      {milestone && (
+        <p className="form-help">
+          {template === "best" ? "Personal best" : "Starting point"} · match
+          played {dateLabel(milestone.asOf)} · a dated milestone; your current
+          rating may differ.
+        </p>
+      )}
       <div className="field-row">
         <label htmlFor="share-name">
           Include my public name

@@ -181,6 +181,7 @@ export interface Player {
   name: string;
   district?: string;
   guest?: boolean;
+  canonicalId?: string;
 }
 export interface PublicRating {
   category: Category;

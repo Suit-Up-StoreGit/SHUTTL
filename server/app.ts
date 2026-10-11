@@ -8,6 +8,13 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { Database, type Row } from "./database.ts";
 import {
+  PushWorker,
+  pushConfiguration,
+  createPushSender,
+  trustedPushEndpoint,
+  defaultPushPreferences,
+} from "./push.ts";
+import {
   Service,
   Problem,
   requireThat,
@@ -221,9 +228,15 @@ export async function buildApp(
           password: secret,
           name: z.string().trim().min(1).max(60),
           adult: z.literal(true),
+          timezone: z.string().max(60).default("UTC"),
         })
         .strict(),
     );
+    try {
+      new Intl.DateTimeFormat("en", { timeZone: input.timezone }).format();
+    } catch {
+      throw new Problem(400, "Choose a valid timezone.");
+    }
     requireThat(
       !db.get("SELECT 1 FROM users WHERE username=?", input.username),
       "That username is already used.",
@@ -234,13 +247,14 @@ export async function buildApp(
       recoveryCode = randomBytes(24).toString("base64url");
     db.transaction(() => {
       db.run(
-        "INSERT INTO users(id,username,name,password,recovery,created_at) VALUES(?,?,?,?,?,?)",
+        "INSERT INTO users(id,username,name,password,recovery,created_at,timezone) VALUES(?,?,?,?,?,?,?)",
         user,
         input.username,
         input.name,
         encoded,
         hash(recoveryCode),
         now(),
+        input.timezone,
       );
       service.audit(user, "account.created", user, {});
     });
@@ -297,6 +311,7 @@ export async function buildApp(
         user.id,
       );
       db.run("DELETE FROM sessions WHERE user_id=?", user.id);
+      db.run("DELETE FROM push_subscriptions WHERE owner=?", user.id);
       service.audit(user.id, "account.recovered", user.id, {});
     });
     return { ...authenticate(reply, user.id), recoveryCode };
@@ -324,8 +339,135 @@ export async function buildApp(
     return { recoveryCode: code };
   });
   app.post("/api/logout", async (req, reply) => {
+    const input = body(
+      req,
+      z.object({ endpoint: z.string().max(2048).optional() }).strict(),
+    );
+    db.run(
+      "DELETE FROM push_subscriptions WHERE owner=? AND (session_hash=? OR endpoint=?)",
+      req.actor.id,
+      req.sessionToken,
+      input.endpoint || "",
+    );
     db.run("DELETE FROM sessions WHERE token=?", req.sessionToken);
     reply.clearCookie("shuttl_session", { path: "/" });
+    return { ok: true };
+  });
+  app.get("/api/push", async (req) => ({
+    configured: !!pushConfiguration(),
+    publicKey: pushConfiguration()?.publicKey || null,
+    devices: db
+      .all(
+        "SELECT id,preferences,created_at AS createdAt FROM push_subscriptions WHERE owner=?",
+        req.actor.id,
+      )
+      .map((v) => ({ ...v, preferences: JSON.parse(v.preferences) })),
+  }));
+  app.post("/api/push", async (req) => {
+    requireThat(
+      pushConfiguration(),
+      "Device notifications are unavailable on this host.",
+      503,
+    );
+    const input = body(
+      req,
+      z
+        .object({
+          subscription: z
+            .object({
+              endpoint: z
+                .string()
+                .max(2048)
+                .refine(
+                  trustedPushEndpoint,
+                  "Choose a supported browser push service.",
+                ),
+              expirationTime: z.number().nullable().optional(),
+              keys: z
+                .object({
+                  p256dh: z.string().regex(/^[A-Za-z0-9_-]{87}$/),
+                  auth: z.string().regex(/^[A-Za-z0-9_-]{22}$/),
+                })
+                .strict(),
+            })
+            .strict(),
+          preferences: z
+            .object({
+              actions: z.boolean(),
+              updates: z.boolean(),
+              comparisons: z.boolean(),
+              quietHours: z.boolean(),
+            })
+            .strict()
+            .optional(),
+        })
+        .strict(),
+    );
+    return mutate(req, "push.subscribe", input, () => {
+      const existing = db.get(
+        "SELECT id,owner FROM push_subscriptions WHERE endpoint=?",
+        input.subscription.endpoint,
+      );
+      requireThat(
+        !existing || existing.owner === req.actor.id,
+        "This device subscription belongs to another account. Disable it before switching.",
+        409,
+      );
+      requireThat(
+        existing ||
+          db.get(
+            "SELECT count(*) AS n FROM push_subscriptions WHERE owner=?",
+            req.actor.id,
+          )!.n < 10,
+        "Manage your existing notification devices before adding another.",
+      );
+      const subscriptionId = existing?.id || randomUUID();
+      db.run(
+        "INSERT INTO push_subscriptions VALUES(?,?,?,?,?,?,?) ON CONFLICT(endpoint) DO UPDATE SET session_hash=excluded.session_hash,subscription=excluded.subscription,preferences=excluded.preferences",
+        subscriptionId,
+        req.actor.id,
+        req.sessionToken,
+        input.subscription.endpoint,
+        JSON.stringify(input.subscription),
+        JSON.stringify(input.preferences || defaultPushPreferences),
+        now(),
+      );
+      return { id: subscriptionId };
+    });
+  });
+  app.patch("/api/push/:id", async (req) => {
+    const input = body(
+      req,
+      z
+        .object({
+          actions: z.boolean(),
+          updates: z.boolean(),
+          comparisons: z.boolean(),
+          quietHours: z.boolean(),
+        })
+        .strict(),
+    );
+    return mutate(req, "push.preferences", { ...input, id: id(req) }, () => {
+      const result = db.run(
+        "UPDATE push_subscriptions SET preferences=? WHERE id=? AND owner=?",
+        JSON.stringify(input),
+        id(req),
+        req.actor.id,
+      );
+      requireThat(
+        result.changes,
+        "This notification device is unavailable.",
+        404,
+      );
+      return { ok: true };
+    });
+  });
+  app.delete("/api/push/:id", async (req) => {
+    db.run(
+      "DELETE FROM push_subscriptions WHERE id=? AND owner=?",
+      id(req),
+      req.actor.id,
+    );
     return { ok: true };
   });
   app.get("/api/players", async (req) => {
@@ -374,11 +516,20 @@ export async function buildApp(
         if (change)
           feed.push({
             id: row.unit_id + friend.id,
+            unitId: row.unit_id,
             player: friend,
             category: row.category,
             playedAt: row.played_at,
             score: change.count >= 5 ? change.after : null,
-            delta: change.count >= 5 ? change.delta : null,
+            delta: change.count > 5 ? change.delta : null,
+            milestone:
+              change.count === 5
+                ? "reveal"
+                : change.peakBefore !== null &&
+                    change.peakBefore !== undefined &&
+                    change.after > change.peakBefore
+                  ? "best"
+                  : null,
             won: change.won,
           });
       }
@@ -397,6 +548,14 @@ export async function buildApp(
         "SELECT c.id,c.name,c.owner,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
         actor,
       ),
+      competitionUpdate: (() => {
+        const n = db.get(
+          "SELECT title,detail,created_at AS createdAt FROM notifications WHERE user_id=? AND kind='comparison' AND created_at>? ORDER BY created_at DESC LIMIT 1",
+          actor,
+          new Date(Date.now() - 7 * 86400000).toISOString(),
+        );
+        return n || null;
+      })(),
       unread:
         db.get(
           "SELECT count(*) AS n FROM notifications WHERE user_id=? AND read_at IS NULL",
@@ -405,6 +564,141 @@ export async function buildApp(
     };
   });
   app.get("/api/inbox", async (req) => service.inbox(req.actor.id));
+  app.get("/api/history", async (req) => {
+    const input = z
+      .object({ category, before: uuid.optional() })
+      .strict()
+      .parse(req.query);
+    const aliases = service.actorIds(req.actor.id);
+    const cursor = input.before
+      ? service.unitFor(req.actor.id, input.before)
+      : null;
+    const rows = db.all(
+      `SELECT DISTINCT u.* FROM units u JOIN unit_players p ON p.unit_id=u.id WHERE p.player_id IN (${aliases.map(() => "?").join(",")}) AND u.category=? ${cursor ? "AND (u.created_at<? OR (u.created_at=? AND u.id<?))" : ""} ORDER BY u.created_at DESC,u.id DESC LIMIT 51`,
+      ...aliases,
+      input.category,
+      ...(cursor ? [cursor.created_at, cursor.created_at, cursor.id] : []),
+    );
+    return {
+      results: rows.slice(0, 50).map((u) => service.unitView(req.actor.id, u)),
+      next: rows.length > 50 ? rows[49].id : null,
+    };
+  });
+  app.get("/api/comparisons/:id", async (req) => {
+    const target = id(req),
+      actor = req.actor.id,
+      [a, b] = pair(actor, target);
+    requireThat(
+      !service.blocked(actor, target) &&
+        (db.get(
+          "SELECT 1 FROM connections WHERE a=? AND b=? AND status='accepted'",
+          a,
+          b,
+        ) ||
+          db.get(
+            "SELECT 1 FROM circle_members m JOIN circle_members n ON n.circle_id=m.circle_id WHERE m.user_id=? AND n.user_id=? AND m.status='accepted' AND n.status='accepted'",
+            actor,
+            target,
+          )),
+      "Connect as friends or join the same circle before comparing.",
+      403,
+    );
+    const own = service.actorIds(actor),
+      theirs = service.actorIds(target);
+    const rows = db.all(
+      `SELECT DISTINCT u.* FROM units u JOIN unit_players p ON p.unit_id=u.id JOIN unit_players q ON q.unit_id=u.id WHERE p.player_id IN (${own.map(() => "?").join(",")}) AND q.player_id IN (${theirs.map(() => "?").join(",")}) AND u.status='rated' ORDER BY u.created_at DESC,u.id DESC LIMIT 201`,
+      ...own,
+      ...theirs,
+    );
+    return {
+      player: {
+        ...service.player(target, actor),
+        ratings: CATEGORIES.map((c) => service.rating(target, c)),
+      },
+      results: rows.slice(0, 200).map((u) => service.unitView(actor, u)),
+      limited: rows.length > 200,
+    };
+  });
+  app.get("/api/insights", async (req) => {
+    const input = z
+      .object({ category, period: z.enum(["7", "30", "90", "all"]) })
+      .strict()
+      .parse(req.query);
+    const actor = req.actor.id,
+      aliases = service.actorIds(actor);
+    const cutoff =
+      input.period === "all"
+        ? null
+        : new Date(Date.now() - Number(input.period) * 86400000).toISOString();
+    const rows = db.all(
+      `SELECT e.* FROM rating_events e WHERE e.category=? AND e.unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")})) ${cutoff ? "AND e.played_at>=?" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 2001`,
+      input.category,
+      ...aliases,
+      ...(cutoff ? [cutoff] : []),
+    );
+    const events = rows.slice(0, 2000).reverse();
+    const partners = new Map<string, any>(),
+      opponents = new Map<string, any>(),
+      formats = new Map<string, any>();
+    const visible: any[] = [];
+    let wins = 0;
+    for (const event of events) {
+      const change = JSON.parse(event.changes)[actor];
+      if (!change) continue;
+      wins += Number(change.won);
+      if (change.count >= 5) visible.push(change);
+      const revision = db.get(
+        "SELECT roster,format FROM revisions WHERE id=?",
+        event.revision_id,
+      )!;
+      const roster = JSON.parse(revision.roster).map((p: string) =>
+          service.canonical(p),
+        ),
+        size = roster.length / 2,
+        index = roster.indexOf(actor);
+      const collect = (map: Map<string, any>, p: string) => {
+        const v = map.get(p) || {
+          player: service.player(p, actor),
+          count: 0,
+          wins: 0,
+        };
+        v.count++;
+        v.wins += Number(change.won);
+        map.set(p, v);
+      };
+      if (size === 2 && index >= 0)
+        collect(partners, roster[index % 2 === 0 ? index + 1 : index - 1]);
+      roster
+        .slice(index < size ? size : 0, index < size ? size * 2 : size)
+        .forEach((p: string) => collect(opponents, p));
+      const f = formats.get(revision.format) || {
+        format: revision.format,
+        count: 0,
+        wins: 0,
+      };
+      f.count++;
+      f.wins += Number(change.won);
+      formats.set(revision.format, f);
+    }
+    const first = visible[0],
+      last = visible.at(-1),
+      baseline = first?.count === 5 ? first.after : first?.before;
+    const ordered = (map: Map<string, any>) =>
+      [...map.values()].sort((a, b) => b.count - a.count);
+    return {
+      category: input.category,
+      period: input.period,
+      count: events.length,
+      wins,
+      delta: last && baseline !== undefined ? last.after - baseline : null,
+      firstPlayed: events[0]?.played_at || null,
+      lastPlayed: events.at(-1)?.played_at || null,
+      partners: ordered(partners),
+      opponents: ordered(opponents),
+      formats: [...formats.values()],
+      limited: rows.length > 2000,
+    };
+  });
   app.post("/api/notifications/read", async (req) => {
     db.run(
       "UPDATE notifications SET read_at=COALESCE(read_at,?) WHERE user_id=?",
@@ -1046,6 +1340,7 @@ export async function buildApp(
           category,
           includeName: z.boolean(),
           includeDistrict: z.boolean(),
+          template: z.enum(["passport", "reveal", "best"]).optional(),
         })
         .strict(),
     );
@@ -1070,13 +1365,29 @@ export async function buildApp(
           league: rating.league,
           status: rating.status,
           asOf: now(),
+          createdAt: now(),
           ...(input.includeDistrict
             ? { title: service.localTitle(req.actor.id, input.category) }
             : {}),
           ...(input.includeName ? { name: req.actor.name } : {}),
           ...(input.includeDistrict ? { district: req.actor.district } : {}),
           owner: req.actor.id,
+          template: input.template || "passport",
         };
+      if (input.template && input.template !== "passport") {
+        const milestone = service.milestone(
+          req.actor.id,
+          input.category,
+          input.template,
+        );
+        requireThat(
+          milestone,
+          "This milestone does not yet have published evidence.",
+        );
+        Object.assign(payload, milestone);
+        // A career milestone cannot borrow today's local title.
+        delete (payload as any).title;
+      }
       db.run(
         "INSERT INTO shares VALUES(?,?,?,0,?)",
         share,
@@ -1087,6 +1398,13 @@ export async function buildApp(
       return { id: share, path: "/share/" + share, payload };
     });
   });
+  app.get("/api/milestones", async (req) => {
+    const input = z.object({ category }).strict().parse(req.query);
+    return {
+      reveal: service.milestone(req.actor.id, input.category, "reveal"),
+      best: service.milestone(req.actor.id, input.category, "best"),
+    };
+  });
   app.get("/api/shares/:id", async (req) => {
     const share = db.get(
       "SELECT * FROM shares WHERE id=? AND revoked=0",
@@ -1095,12 +1413,12 @@ export async function buildApp(
     requireThat(share, "This share has been revoked or removed.", 404);
     const payload = JSON.parse(share.payload),
       current = service.rating(share.owner, payload.category);
+    payload.createdAt ||= share.created_at;
     delete payload.owner;
     return {
       id: share.id,
       ...payload,
       isCurrent: current.score === payload.score,
-      currentScore: current.score,
     };
   });
   app.get("/api/my-shares", async (req) => ({
@@ -1184,6 +1502,7 @@ export async function buildApp(
         actor,
       );
       db.run("DELETE FROM sessions WHERE user_id=?", actor);
+      db.run("DELETE FROM push_subscriptions WHERE owner=?", actor);
       db.run("DELETE FROM connections WHERE a=? OR b=?", actor, actor);
       db.run("DELETE FROM notifications WHERE user_id=?", actor);
       db.run("DELETE FROM circle_members WHERE user_id=?", actor);
@@ -1261,9 +1580,15 @@ export async function buildApp(
     );
   }
   let timer: ReturnType<typeof setInterval> | undefined;
+  const configuration = pushConfiguration();
+  const pushWorker = new PushWorker(
+    db,
+    configuration ? createPushSender(configuration) : null,
+  );
   if (options.worker !== false) {
     timer = setInterval(() => {
       service.work();
+      void pushWorker.work();
       const stamp = now();
       db.run(
         "UPDATE duties SET state='unhandled' WHERE state='open' AND due_at<? AND revision_id IN (SELECT current_revision FROM units WHERE status IN ('pending','correction_pending'))",
@@ -1275,6 +1600,7 @@ export async function buildApp(
   }
   app.addHook("onClose", async () => {
     if (timer) clearInterval(timer);
+    await pushWorker.close();
     db.close();
   });
   await app.ready();

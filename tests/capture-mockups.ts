@@ -16,13 +16,7 @@ mkdirSync("docs/mockups", { recursive: true });
 const measurements: any[] = [];
 for (const concept of ["passport", "court", "circle", "arena", "editorial"]) {
   await page.goto("http://127.0.0.1:4173/design?concept=" + concept);
-  await page
-    .getByRole("heading", {
-      name: /Worth measuring|On|Your next level|next move|Every match/,
-    })
-    .first()
-    .waitFor({ state: "visible" })
-    .catch(() => {});
+  await page.locator(".home-heading h1").waitFor({ state: "visible" });
   await page.evaluate(() => document.fonts.ready);
   await page.addStyleTag({
     content: ".design-controls,.design-caption{display:none}",
@@ -30,6 +24,7 @@ for (const concept of ["passport", "court", "circle", "arena", "editorial"]) {
   const box = await page.locator(".main-stage").boundingBox();
   if (!box) throw new Error("Home screen missing");
   await page.screenshot({
+    animations: "disabled",
     path: `docs/mockups/home-${concept}.jpg`,
     type: "jpeg",
     quality: 88,

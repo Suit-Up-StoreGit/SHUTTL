@@ -1,0 +1,18 @@
+{
+  "criterionId": null,
+  "testedCommit": null,
+  "frozenProtocolReference": null,
+  "scope": null,
+  "independentReviewers": [],
+  "playerCohortProvenance": null,
+  "devicesAndConditions": [],
+  "observationsReference": null,
+  "metricDefinitionAndDenominator": null,
+  "sampleSizeAndUncertainty": null,
+  "scoresWithRationale": [],
+  "criticalDefects": [],
+  "remainingWork": [],
+  "accepted": false,
+  "acceptanceDate": null,
+  "limitations": "Template only; null fields are unmeasured, not passing values. Both independent scores must reach 9.5 with applicable evidence and no material blocker."
+}

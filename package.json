@@ -16,6 +16,8 @@
     "admin": "node --env-file-if-exists=.env server/admin.ts",
     "backup": "node --env-file-if-exists=.env server/backup.ts",
     "replay": "node --env-file-if-exists=.env server/replay.ts",
+    "pilot:report": "node --env-file-if-exists=.env server/pilot-report.ts",
+    "push:keys": "node server/push-keys.ts",
     "format": "prettier --write src server tests/*.test.ts tests/browser tests/capture-mockups.ts vite.config.ts playwright.config.ts README.md docs/*.md"
   },
   "dependencies": {
@@ -27,6 +29,7 @@
     "lucide-react": "1.55.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "web-push": "3.6.7",
     "zod": "4.6.5"
   },
   "devDependencies": {
@@ -34,6 +37,7 @@
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@types/web-push": "3.6.4",
     "@vitejs/plugin-react": "6.1.2",
     "concurrently": "10.0.6",
     "prettier": "3.9.10",
