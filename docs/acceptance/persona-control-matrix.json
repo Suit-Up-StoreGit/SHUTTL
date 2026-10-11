@@ -7951,7 +7951,7 @@
       "runId": "final-matching-full70-2026-10-11-1835"
     },
     "remoteCi": {
-      "status": "no_current_remote_success_verified",
+      "status": "success_verified_for_executable_commit",
       "runs": [
         {
           "id": 38161912077,
@@ -7971,11 +7971,24 @@
           "observedFailure": "69 browser cases passed and the third guest-persona case timed out; cleanup masked the original stuck-action stack.",
           "sourceInspectionFinding": "Fixture navigated immediately without waiting for asynchronous sign-out to settle. Bounded action steps and an authoritative sign-out wait were added; six matching guest/account checks and the final local full70 pass.",
           "originalStuckActionEstablished": false
+        },
+        {
+          "id": 38165090244,
+          "url": "https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38165090244",
+          "commit": "d6a804239f1f9fbee380f99a10d771d41935f2ac",
+          "conclusion": "success",
+          "browserPassed": 70,
+          "browserFailed": 0,
+          "browserReportedDuration": "3.4m",
+          "buildStep": "success",
+          "serverChecksStep": "success",
+          "provenance": "Public run API, public job-step metadata and Playwright GitHub annotation; separate Linux environment using the same synthetic engineering checks, not real-player acceptance."
         }
       ],
       "diagnosticReporterCommit": "f6961471222f07b37ab6c4cb5046e79dbdefeb1a",
       "diagnosticReporterPurpose": "Expose browser failures in GitHub annotations; this commit is not evidence that CI passed.",
-      "currentSourceCiOutcome": null
+      "currentSourceCiOutcome": "success",
+      "verifiedExecutableCommit": "d6a804239f1f9fbee380f99a10d771d41935f2ac"
     },
     "verificationHistory": [
       {

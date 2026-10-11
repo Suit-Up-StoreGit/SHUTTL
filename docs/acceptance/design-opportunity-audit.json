@@ -2172,7 +2172,7 @@
     },
     "serverPassed": 54,
     "serverFailed": 0,
-    "scope": "Single completed frozen-source local matching-Chromium full70, plus final54 server checks. Fictional fixtures and local emulation; no current remote CI or original150 outcome acceptance.",
+    "scope": "Single completed frozen-source local matching-Chromium full70, plus final54 server checks. Public Linux run38165090244 also passed build, server and70browser checks on executable commitd6a804239f1f9fbee380f99a10d771d41935f2ac. Fictional engineering fixtures do not establish original150 outcome acceptance.",
     "localExpertFunctionalAverage": 9.5,
     "functionalExpertTargetMet": true,
     "priorLocalExpertFunctionalAverage": 9.43,
@@ -2194,7 +2194,7 @@
     }
   ],
   "currentReassessmentPending": {
-    "reason": "Finite local source and functional reassessment complete on frozen source. Original150/player/device/behavior outcomes remain separately unmeasured; remote CI after source push remains pending.",
+    "reason": "Finite local source and functional reassessment complete on frozen source, followed by successful public Linux CI. Original150/player/device/behavior outcomes remain separately unmeasured; the separate environment pass does not raise presentation or real-outcome scores.",
     "globalAcceptanceScore": null,
     "allOriginalCriteriaAccepted": false
   },
