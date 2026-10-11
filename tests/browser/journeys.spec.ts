@@ -165,7 +165,7 @@ test("signup, local draft offline retry, cross-account Singles approval and cate
   await signup(page, "UI Court Player");
   const otherContext = await browser.newContext({
       viewport: { width: 390, height: 844 },
-      baseURL: "http://127.0.0.1:4174",
+      baseURL: "http://localhost:4174",
     }),
     other = await otherContext.newPage();
   try {
@@ -236,7 +236,11 @@ test("profile preferences survive refresh and a draft survives navigation", asyn
     .getByLabel("Declared district", { exact: true })
     .selectOption("Tampines");
   await page.getByRole("button", { name: "Save my preferences" }).click();
-  await expect(page.getByRole("status")).toContainText("saved");
+  await expect(
+    page
+      .getByRole("status")
+      .filter({ hasText: "Your player preferences are saved" }),
+  ).toBeVisible();
   await page.reload();
   await expect(
     page.getByLabel("Declared district", { exact: true }),
@@ -265,7 +269,7 @@ test("a five-result reveal has a robust compact share and exports a verified sto
   const name = "Alexandria".repeat(5);
   await signup(page, name);
   const context = await browser.newContext({
-      baseURL: "http://127.0.0.1:4174",
+      baseURL: "http://localhost:4174",
     }),
     other = await context.newPage();
   try {
@@ -273,7 +277,7 @@ test("a five-result reveal has a robust compact share and exports a verified sto
     const author = await (await page.request.get("/api/me")).json(),
       opponent = await (await other.request.get("/api/me")).json();
     const headers = (csrf: string) => ({
-      origin: "http://127.0.0.1:4174",
+      origin: "http://localhost:4174",
       "x-csrf-token": csrf,
       "idempotency-key": randomUUID(),
     });
@@ -396,7 +400,7 @@ test("a live correction clears both exact-result and batch acknowledgements", as
   await signup(page, "Revision Author");
   const context = await browser.newContext({
       viewport: { width: 390, height: 844 },
-      baseURL: "http://127.0.0.1:4174",
+      baseURL: "http://localhost:4174",
     }),
     other = await context.newPage();
   try {

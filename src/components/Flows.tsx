@@ -17,6 +17,9 @@ import {
 } from "../api.ts";
 import { recentRosters } from "../experience.ts";
 import { ResultReward } from "./Progress.tsx";
+import { Encouragement } from "./Community.tsx";
+import { startAuthentication } from "@simplewebauthn/browser";
+import { passkeysSupported } from "./Preferences.tsx";
 import {
   CATEGORIES,
   FORMATS,
@@ -249,6 +252,29 @@ export function Auth({
               <ArrowRight size={17} />
             </button>
           </form>
+          {passkeysSupported() && (
+            <button
+              className="button secondary block"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                setError("");
+                try {
+                  const options = await api("/auth/passkey/options", {});
+                  const response = await startAuthentication({
+                    optionsJSON: options.options,
+                  });
+                  done(await api("/auth/passkey/verify", { response }));
+                } catch (e) {
+                  setError(errorMessage(e));
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              Sign in with a passkey
+            </button>
+          )}
           {mode !== "register" && (
             <button
               className="text-button"
@@ -265,8 +291,8 @@ export function Auth({
           <p className="auth-footer">
             For players aged 18 and over. Singles, Doubles and Mixed stay
             separate. Accepted friends see your name and confirmed activity.
-            Public name and district sharing are optional. Local pools currently
-            cover Singapore districts.
+            Public identity and declared local-area sharing are optional. No
+            precise location is collected.
           </p>
           <p className="auth-footer">
             Founded by Featherballer. Built around the people already on your
@@ -1304,6 +1330,7 @@ export function ResultReview({
         </div>
       )}
       <ResultReward result={result} share={share} />
+      <Encouragement result={result} />
       {result.publishedResult && (
         <div className="notice neutral">
           <strong>The earlier approved score still counts</strong>

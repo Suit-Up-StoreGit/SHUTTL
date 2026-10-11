@@ -24,6 +24,10 @@ import {
   now,
 } from "./service.ts";
 import { CATEGORIES, FORMATS, type Category } from "../src/domain.ts";
+import { localityKey, localityLabel, validCountry } from "../src/location.ts";
+import { registerCommunity } from "./community.ts";
+import { registerPasskeys } from "./passkeys.ts";
+import { RatingRunner } from "./rating-runner.ts";
 declare module "fastify" {
   interface FastifyRequest {
     actor: Row;
@@ -64,6 +68,7 @@ export async function buildApp(
     worker?: boolean;
     validated?: boolean;
     origin?: string;
+    authRateLimit?: number;
   } = {},
 ) {
   const app = Fastify({
@@ -77,6 +82,18 @@ export async function buildApp(
   app.decorate("service", service);
   app.decorateRequest("actor", null as any);
   app.decorateRequest("sessionToken", "");
+  // Older Singapore-only profiles retain their declared pool after migration.
+  if (!db.get("SELECT 1 FROM app_meta WHERE key='global-locality-v1'")) {
+    for (const player of db.all(
+      "SELECT id,district FROM users WHERE country='' AND district<>'' AND locality_key=''",
+    ))
+      db.run(
+        "UPDATE users SET country='SG',city='Singapore',locality_key=? WHERE id=?",
+        localityKey("SG", "Singapore", player.district),
+        player.id,
+      );
+    db.run("INSERT INTO app_meta VALUES('global-locality-v1','done')");
+  }
   const origin =
     options.origin || process.env.APP_ORIGIN || "http://localhost:5173";
   const development = process.env.NODE_ENV !== "production";
@@ -160,14 +177,19 @@ export async function buildApp(
     }
   });
   app.setErrorHandler((error, req, reply) => {
-    const status =
-      error instanceof Problem
+    const busy = String((error as Error).message).includes(
+      "database is locked",
+    );
+    const status = busy
+      ? 503
+      : error instanceof Problem
         ? error.status
         : error instanceof z.ZodError
           ? 400
           : (error as any).statusCode || 500;
-    const message =
-      error instanceof Problem
+    const message = busy
+      ? "SHUTTL is busy. Your change has not been confirmed. Please try again shortly."
+      : error instanceof Problem
         ? error.message
         : error instanceof z.ZodError
           ? error.issues
@@ -216,9 +238,41 @@ export async function buildApp(
       action,
     );
   const authLimit = {
-    config: { rateLimit: { max: 8, timeWindow: "15 minutes" } },
+    config: {
+      rateLimit: { max: options.authRateLimit ?? 8, timeWindow: "15 minutes" },
+    },
   };
-  app.get("/api/health", async () => ({ status: "ok", version: "0.1.0" }));
+  let ratingRunner: RatingRunner | null = null;
+  app.get("/api/health", async (req, reply) => {
+    const failed = db.get(
+      "SELECT 1 FROM jobs WHERE status<>'done' AND attempts>=3 LIMIT 1",
+    );
+    const degraded =
+      !!failed || (!!ratingRunner && ratingRunner.status !== "running");
+    return reply
+      .code(degraded ? 503 : 200)
+      .send({ status: degraded ? "degraded" : "ok", version: "0.1.0" });
+  });
+  app.get("/api/reviewer/operations", async (req) => {
+    requireThat(
+      req.actor.role === "reviewer",
+      "Reviewer access required.",
+      403,
+    );
+    return {
+      ratingWorker: ratingRunner
+        ? {
+            status: ratingRunner.status,
+            lastHeartbeat: ratingRunner.lastHeartbeat,
+          }
+        : { status: "in-process-test" },
+      jobs: db.all("SELECT status,count(*) AS count FROM jobs GROUP BY status"),
+      push: db.all(
+        "SELECT status,count(*) AS count FROM push_deliveries GROUP BY status",
+      ),
+      asOf: now(),
+    };
+  });
   app.post("/api/auth/register", authLimit, async (req, reply) => {
     const input = body(
       req,
@@ -312,6 +366,8 @@ export async function buildApp(
       );
       db.run("DELETE FROM sessions WHERE user_id=?", user.id);
       db.run("DELETE FROM push_subscriptions WHERE owner=?", user.id);
+      db.run("DELETE FROM passkeys WHERE owner=?", user.id);
+      db.run("DELETE FROM passkey_challenges WHERE owner=?", user.id);
       service.audit(user.id, "account.recovered", user.id, {});
     });
     return { ...authenticate(reply, user.id), recoveryCode };
@@ -490,78 +546,100 @@ export async function buildApp(
         .map((p) => service.player(p.id, req.actor.id)),
     };
   });
-  app.get("/api/dashboard", async (req) => {
-    const actor = req.actor.id,
-      connections = db.all(
-        "SELECT * FROM connections WHERE (a=? OR b=?) AND status='accepted'",
-        actor,
-        actor,
-      );
-    const friends = connections
-      .map((c) => (c.a === actor ? c.b : c.a))
-      .filter((p) => !service.blocked(actor, p))
-      .map((p) => ({
-        ...service.player(p, actor),
-        ratings: CATEGORIES.map((c) => service.rating(p, c)),
-      }));
-    const feed: any[] = [];
-    for (const friend of friends) {
-      const rows = db.all(
-        "SELECT e.* FROM rating_events e JOIN unit_players p ON p.unit_id=e.unit_id WHERE p.player_id IN (SELECT id FROM users WHERE id=? OR claimed_by=?) ORDER BY e.played_at DESC LIMIT 8",
-        friend.id,
-        friend.id,
-      );
-      for (const row of rows) {
-        const change = JSON.parse(row.changes)[friend.id];
-        if (change)
-          feed.push({
-            id: row.unit_id + friend.id,
-            unitId: row.unit_id,
-            player: friend,
-            category: row.category,
-            playedAt: row.played_at,
-            score: change.count >= 5 ? change.after : null,
-            delta: change.count > 5 ? change.delta : null,
-            milestone:
-              change.count === 5
-                ? "reveal"
-                : change.peakBefore !== null &&
-                    change.peakBefore !== undefined &&
-                    change.after > change.peakBefore
-                  ? "best"
-                  : null,
-            won: change.won,
-          });
-      }
-    }
-    return {
-      demo:
-        db.get("SELECT value FROM app_meta WHERE key='demo_seeded'")?.value ===
-        "true",
-      me: service.profile(actor),
-      friends,
-      feed: feed
-        .sort((a, b) => b.playedAt.localeCompare(a.playedAt))
-        .slice(0, 20),
-      results: service.results(actor),
-      circles: db.all(
-        "SELECT c.id,c.name,c.owner,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
-        actor,
-      ),
-      competitionUpdate: (() => {
-        const n = db.get(
-          "SELECT title,detail,created_at AS createdAt FROM notifications WHERE user_id=? AND kind='comparison' AND created_at>? ORDER BY created_at DESC LIMIT 1",
+  const dashboardCache = new Map<
+    string,
+    { stamp: string; expires: number; json: string }
+  >();
+  app.get("/api/dashboard", async (req, reply) => {
+    const stamp =
+        String(db.get("PRAGMA data_version")!.data_version) +
+        ":" +
+        String(db.get("SELECT total_changes() AS count")!.count),
+      cached = dashboardCache.get(req.actor.id);
+    if (cached && cached.stamp === stamp && cached.expires > Date.now())
+      return reply.type("application/json").send(cached.json);
+    const value = db.readSnapshot(() => {
+      const actor = req.actor.id,
+        connections = db.all(
+          "SELECT * FROM connections WHERE (a=? OR b=?) AND status='accepted'",
           actor,
-          new Date(Date.now() - 7 * 86400000).toISOString(),
+          actor,
         );
-        return n || null;
-      })(),
-      unread:
-        db.get(
-          "SELECT count(*) AS n FROM notifications WHERE user_id=? AND read_at IS NULL",
+      const friends = connections
+        .map((c) => (c.a === actor ? c.b : c.a))
+        .filter((p) => !service.blocked(actor, p))
+        .map((p) => ({
+          ...service.player(p, actor),
+          ratings: CATEGORIES.map((c) => service.rating(p, c)),
+        }));
+      const feed: any[] = [];
+      for (const friend of friends) {
+        const rows = db.all(
+          "SELECT e.* FROM rating_events e JOIN unit_players p ON p.unit_id=e.unit_id WHERE p.player_id IN (SELECT id FROM users WHERE id=? OR claimed_by=?) ORDER BY e.played_at DESC LIMIT 8",
+          friend.id,
+          friend.id,
+        );
+        for (const row of rows) {
+          const change = JSON.parse(row.changes)[friend.id];
+          if (change)
+            feed.push({
+              id: row.unit_id + friend.id,
+              unitId: row.unit_id,
+              player: friend,
+              category: row.category,
+              playedAt: row.played_at,
+              score: change.count >= 5 ? change.after : null,
+              delta: change.count > 5 ? change.delta : null,
+              milestone:
+                change.count === 5
+                  ? "reveal"
+                  : change.peakBefore !== null &&
+                      change.peakBefore !== undefined &&
+                      change.after > change.peakBefore
+                    ? "best"
+                    : null,
+              won: change.won,
+            });
+        }
+      }
+      return {
+        demo:
+          db.get("SELECT value FROM app_meta WHERE key='demo_seeded'")
+            ?.value === "true",
+        me: service.profile(actor),
+        friends,
+        feed: feed
+          .sort((a, b) => b.playedAt.localeCompare(a.playedAt))
+          .slice(0, 20),
+        results: service.results(actor),
+        circles: db.all(
+          "SELECT c.id,c.name,c.owner,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
           actor,
-        )?.n || 0,
-    };
+        ),
+        competitionUpdate: (() => {
+          const n = db.get(
+            "SELECT title,detail,created_at AS createdAt FROM notifications WHERE user_id=? AND kind='comparison' AND created_at>? ORDER BY created_at DESC LIMIT 1",
+            actor,
+            new Date(Date.now() - 7 * 86400000).toISOString(),
+          );
+          return n || null;
+        })(),
+        unread:
+          db.get(
+            "SELECT count(*) AS n FROM notifications WHERE user_id=? AND read_at IS NULL",
+            actor,
+          )?.n || 0,
+      };
+    });
+    const json = JSON.stringify(value);
+    if (dashboardCache.size >= 100)
+      dashboardCache.delete(dashboardCache.keys().next().value!);
+    dashboardCache.set(req.actor.id, {
+      stamp,
+      expires: Date.now() + 1000,
+      json,
+    });
+    return reply.type("application/json").send(json);
   });
   app.get("/api/inbox", async (req) => service.inbox(req.actor.id));
   app.get("/api/history", async (req) => {
@@ -580,7 +658,7 @@ export async function buildApp(
       ...(cursor ? [cursor.created_at, cursor.created_at, cursor.id] : []),
     );
     return {
-      results: rows.slice(0, 50).map((u) => service.unitView(req.actor.id, u)),
+      results: service.projectUnits(req.actor.id, rows.slice(0, 50)),
       next: rows.length > 50 ? rows[49].id : null,
     };
   });
@@ -615,7 +693,7 @@ export async function buildApp(
         ...service.player(target, actor),
         ratings: CATEGORIES.map((c) => service.rating(target, c)),
       },
-      results: rows.slice(0, 200).map((u) => service.unitView(actor, u)),
+      results: service.projectUnits(actor, rows.slice(0, 200)),
       limited: rows.length > 200,
     };
   });
@@ -1196,26 +1274,13 @@ export async function buildApp(
       z
         .object({
           name: z.string().trim().min(1).max(60),
-          district: z.enum([
-            "",
-            "Tampines",
-            "Bedok",
-            "Pasir Ris",
-            "Hougang",
-            "Sengkang",
-            "Punggol",
-            "Ang Mo Kio",
-            "Bishan",
-            "Toa Payoh",
-            "Woodlands",
-            "Yishun",
-            "Bukit Batok",
-            "Jurong",
-            "Clementi",
-            "Queenstown",
-            "Central",
-            "Other",
-          ]),
+          district: z.string().trim().max(60),
+          country: z
+            .string()
+            .refine(validCountry, "Choose an available country or territory.")
+            .optional(),
+          city: z.string().trim().max(80).optional(),
+          publicPortrait: z.boolean().optional(),
           publicName: z.boolean(),
           publicDistrict: z.boolean(),
           publicHistory: z.boolean(),
@@ -1241,6 +1306,14 @@ export async function buildApp(
       throw new Problem(400, "Choose a valid timezone.");
     }
     return mutate(req, "profile", input, () => {
+      const country =
+          input.country ?? (req.actor.country || (input.district ? "SG" : "")),
+        city =
+          input.city ?? (req.actor.city || (input.district ? "Singapore" : ""));
+      requireThat(
+        !input.localOptIn || !!localityKey(country, city, input.district),
+        "Choose a country, city and area before joining a local pool.",
+      );
       if (
         (req.actor.public_name && !input.publicName) ||
         (req.actor.public_district && !input.publicDistrict)
@@ -1258,6 +1331,14 @@ export async function buildApp(
         Number(input.breakMode),
         input.timezone,
         JSON.stringify(input.goals || {}),
+        req.actor.id,
+      );
+      db.run(
+        "UPDATE users SET country=?,city=?,locality_key=?,public_portrait=? WHERE id=?",
+        country,
+        city,
+        localityKey(country, city, input.district),
+        Number(input.publicPortrait ?? !!req.actor.public_portrait),
         req.actor.id,
       );
       return service.profile(req.actor.id);
@@ -1288,11 +1369,13 @@ export async function buildApp(
         input.circle,
       );
     } else {
-      name = req.actor.district || "Your district";
-      players = req.actor.district
+      name =
+        localityLabel(req.actor.country, req.actor.city, req.actor.district) ||
+        "Your declared area";
+      players = req.actor.locality_key
         ? db.all(
-            "SELECT * FROM users WHERE district=? AND local_opt_in=1 AND deleted=0 AND guest=0 ORDER BY id LIMIT 129",
-            req.actor.district,
+            "SELECT * FROM users WHERE locality_key=? AND local_opt_in=1 AND deleted=0 AND guest=0 ORDER BY id LIMIT 129",
+            req.actor.locality_key,
           )
         : [];
     }
@@ -1329,7 +1412,7 @@ export async function buildApp(
         top: (p.rating.score || 0) === (eligible[0]?.rating.score || 0),
       })),
       developing: scores.filter((p) => p.rating.score !== null).slice(0, 128),
-      needsDistrict: !input.circle && !req.actor.district,
+      needsDistrict: !input.circle && !req.actor.locality_key,
     };
   });
   app.post("/api/shares", async (req) => {
@@ -1454,6 +1537,25 @@ export async function buildApp(
         profile: service.profile(req.actor.id),
         results: service.results(req.actor.id, 150000),
         agreements: service.scopes(req.actor.id),
+        research: {
+          consent: db.get(
+            "SELECT enabled,version,updated_at AS updatedAt FROM research_consent WHERE owner=?",
+            req.actor.id,
+          ) || { enabled: 0 },
+          events: db.all(
+            "SELECT kind,created_at AS createdAt FROM research_events WHERE owner=? ORDER BY created_at",
+            req.actor.id,
+          ),
+          retentionDays: 90,
+        },
+        passkeys: db.all(
+          "SELECT id,label,created_at AS createdAt FROM passkeys WHERE owner=?",
+          req.actor.id,
+        ),
+        invitations: db.all(
+          "SELECT id,expires,revoked FROM player_invites WHERE owner=? ORDER BY created_at",
+          req.actor.id,
+        ),
         model: "gaussian-participant-0.1",
       };
     },
@@ -1483,7 +1585,7 @@ export async function buildApp(
         "Transfer ownership of your circles before deleting your account.",
       );
       db.run(
-        "UPDATE users SET username=?,name='Former player',password=NULL,recovery=NULL,district='',public_name=0,public_district=0,public_history=0,discoverable=0,local_opt_in=0,goal='{}',deleted=1 WHERE id=?",
+        "UPDATE users SET username=?,name='Former player',password=NULL,recovery=NULL,district='',country='',city='',locality_key='',public_portrait=0,public_name=0,public_district=0,public_history=0,discoverable=0,local_opt_in=0,goal='{}',deleted=1 WHERE id=?",
         "deleted_" + actor,
         actor,
       );
@@ -1503,6 +1605,20 @@ export async function buildApp(
       );
       db.run("DELETE FROM sessions WHERE user_id=?", actor);
       db.run("DELETE FROM push_subscriptions WHERE owner=?", actor);
+      for (const table of [
+        "portraits",
+        "passkeys",
+        "research_events",
+        "research_consent",
+        "player_invites",
+      ])
+        db.run(`DELETE FROM ${table} WHERE owner=?`, actor);
+      db.run("DELETE FROM passkey_challenges WHERE owner=?", actor);
+      db.run(
+        "DELETE FROM encouragement WHERE sender=? OR recipient=?",
+        actor,
+        actor,
+      );
       db.run("DELETE FROM connections WHERE a=? OR b=?", actor, actor);
       db.run("DELETE FROM notifications WHERE user_id=?", actor);
       db.run("DELETE FROM circle_members WHERE user_id=?", actor);
@@ -1571,6 +1687,8 @@ export async function buildApp(
     db.run("UPDATE jobs SET attempts=0,status='queued' WHERE status<>'done'");
     return { ok: true };
   });
+  registerCommunity(app, db, service);
+  registerPasskeys(app, db, service, origin, authenticate);
   if (existsSync(resolve("dist/index.html"))) {
     await app.register(staticFiles, { root: resolve("dist"), prefix: "/" });
     app.setNotFoundHandler((req, reply) =>
@@ -1586,21 +1704,44 @@ export async function buildApp(
     configuration ? createPushSender(configuration) : null,
   );
   if (options.worker !== false) {
+    const path = db.get("PRAGMA database_list")?.file;
+    if (path) {
+      db.raw.exec("PRAGMA busy_timeout=100");
+      ratingRunner = new RatingRunner(path, service.validated);
+    }
     timer = setInterval(() => {
-      service.work();
-      void pushWorker.work();
+      if (!ratingRunner) service.work();
+      if (!ratingRunner)
+        void pushWorker
+          .work()
+          .catch(() =>
+            console.error(
+              "SHUTTL device delivery failed; operator review required.",
+            ),
+          );
       const stamp = now();
-      db.run(
-        "UPDATE duties SET state='unhandled' WHERE state='open' AND due_at<? AND revision_id IN (SELECT current_revision FROM units WHERE status IN ('pending','correction_pending'))",
-        stamp,
-      );
-      db.run("DELETE FROM sessions WHERE expires<?", stamp);
+      try {
+        db.run(
+          "UPDATE duties SET state='unhandled' WHERE state='open' AND due_at<? AND revision_id IN (SELECT current_revision FROM units WHERE status IN ('pending','correction_pending'))",
+          stamp,
+        );
+        db.run("DELETE FROM sessions WHERE expires<?", stamp);
+        db.run(
+          "DELETE FROM research_events WHERE created_at<?",
+          new Date(Date.now() - 90 * 86400000).toISOString(),
+        );
+        db.run("DELETE FROM passkey_challenges WHERE expires<?", stamp);
+      } catch (error) {
+        if (!String((error as Error).message).includes("database is locked"))
+          console.error("SHUTTL maintenance failed; operator review required.");
+      }
     }, 500);
     timer.unref();
   }
   app.addHook("onClose", async () => {
     if (timer) clearInterval(timer);
     await pushWorker.close();
+    await ratingRunner?.close();
     db.close();
   });
   await app.ready();

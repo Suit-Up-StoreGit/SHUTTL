@@ -31,6 +31,8 @@ import {
   mockDashboard,
   RatingCard,
 } from "./pages/Home.tsx";
+import { InvitationLanding, PlayerArrival } from "./components/Community.tsx";
+import { recordResearch } from "./components/Preferences.tsx";
 import {
   FriendsPage,
   RankingsPage,
@@ -231,7 +233,10 @@ function PublicView({
                 </p>
               )}
           </div>
-          <a className="button block" href="/home">
+          <a
+            className="button block"
+            href={"/home?fromShare=" + encodeURIComponent(token)}
+          >
             Start your own badminton story
             <ArrowRight size={17} />
           </a>
@@ -341,13 +346,34 @@ export function App() {
   const accountEpoch = useRef(0);
   const design = location.pathname === "/design";
   const publicClaim = location.pathname.startsWith("/claim/"),
-    publicShare = location.pathname.startsWith("/share/");
+    publicShare = location.pathname.startsWith("/share/"),
+    publicConnect = location.pathname.startsWith("/connect/");
+  const [arrivalPlayer, setArrivalPlayer] = useState<string | null>(() =>
+    new URLSearchParams(location.search).get("player"),
+  );
+  const [sharedArrival, setSharedArrival] = useState<any>(null);
   const [data, setData] = useState<any>(null),
     [inbox, setInbox] = useState<any>(null),
     [loading, setLoading] = useState(!design),
     [page, setCurrentPage] = useState<Page>(pageFromPath),
     [category, setCategoryState] = useState<Category>("Doubles");
   const [comparisonId, setComparisonId] = useState<string | null>(null);
+  useEffect(() => {
+    if (data && page === "home") recordResearch("home-view", data.me.id);
+  }, [page, data?.me.id]);
+  useEffect(() => {
+    const token = new URLSearchParams(location.search).get("fromShare");
+    if (!token) return;
+    let active = true;
+    api("/shares/" + encodeURIComponent(token))
+      .then((v) => {
+        if (active) setSharedArrival(v);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
   function setCategory(value: Category) {
     setCategoryState(value);
     if (data)
@@ -481,7 +507,11 @@ export function App() {
       data.results.some((r: any) => r.status === "confirmed") ? 2000 : 20000,
     );
     const returned = () => {
-      if (document.visibilityState === "visible") refresh();
+      if (document.visibilityState === "visible") {
+        refresh();
+        if (page === "home" && data?.me.id)
+          recordResearch("home-view", data.me.id);
+      }
     };
     window.addEventListener("focus", returned);
     document.addEventListener("visibilitychange", returned);
@@ -600,7 +630,17 @@ export function App() {
       </div>
     );
   else if (forceAuth)
-    content = <Auth done={authenticated} invited={publicClaim} />;
+    content = (
+      <Auth done={authenticated} invited={publicClaim || publicConnect} />
+    );
+  else if (publicConnect)
+    content = (
+      <InvitationLanding
+        loggedIn={!!data}
+        signIn={() => setForceAuth(true)}
+        notify={notify}
+      />
+    );
   else if (publicClaim || publicShare)
     content = (
       <PublicView
@@ -659,26 +699,64 @@ export function App() {
               </div>
             </header>
             {page === "home" && (
-              <Home
-                data={data}
-                category={category}
-                setCategory={setCategory}
-                setPage={setPage}
-                record={() => setModal("record")}
-                addFriend={() => setModal("friend")}
-                open={open}
-                compare={setComparisonId}
-              />
+              <>
+                {sharedArrival && (
+                  <section className="notice">
+                    <strong>
+                      A {sharedArrival.category.toLowerCase()} story brought you
+                      here.
+                    </strong>
+                    <p>
+                      Your own starting point comes from your real matches, with
+                      each player’s agreement.
+                    </p>
+                    <button
+                      className="text-button"
+                      onClick={() => {
+                        setCategory(sharedArrival.category);
+                        setModal("record");
+                        setSharedArrival(null);
+                      }}
+                    >
+                      Start my {sharedArrival.category.toLowerCase()} story
+                    </button>
+                    <button
+                      className="text-button"
+                      onClick={() => setSharedArrival(null)}
+                    >
+                      Dismiss
+                    </button>
+                  </section>
+                )}
+                <Home
+                  data={data}
+                  category={category}
+                  setCategory={setCategory}
+                  setPage={setPage}
+                  record={() => setModal("record")}
+                  addFriend={() => setModal("friend")}
+                  open={open}
+                  compare={(id) => {
+                    setComparisonId(id);
+                    recordResearch("comparison-view", data.me.id);
+                  }}
+                />
+              </>
             )}
             {page === "friends" && (
               <FriendsPage
+                key={data.me.id}
                 data={data}
                 refresh={refresh}
                 add={() => setModal("friend")}
                 notify={notify}
-                compare={setComparisonId}
+                compare={(id) => {
+                  setComparisonId(id);
+                  recordResearch("comparison-view", data.me.id);
+                }}
                 category={category}
                 setCategory={setCategory}
+                open={open}
               />
             )}
             {page === "rankings" && (
@@ -690,6 +768,7 @@ export function App() {
             )}
             {page === "profile" && (
               <ProfilePage
+                key={data.me.id}
                 data={data}
                 refresh={refresh}
                 open={open}
@@ -736,6 +815,19 @@ export function App() {
         </div>
       )}
       {content}
+      {data && arrivalPlayer && (
+        <PlayerArrival
+          username={arrivalPlayer}
+          close={() => {
+            setArrivalPlayer(null);
+            const url = new URL(location.href);
+            url.searchParams.delete("player");
+            history.replaceState({}, "", url.pathname + url.search);
+          }}
+          notify={notify}
+          refresh={refresh}
+        />
+      )}
       {recovery && (
         <RecoveryCode code={recovery} close={() => setRecovery("")} />
       )}

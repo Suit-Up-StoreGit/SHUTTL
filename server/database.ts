@@ -1,9 +1,20 @@
-import { DatabaseSync } from "node:sqlite";
+import { DatabaseSync, type StatementSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 export type Row = Record<string, any>;
 export class Database {
   raw: DatabaseSync;
+  private statements = new Map<string, StatementSync>();
+  private statement(sql: string) {
+    let statement = this.statements.get(sql);
+    if (!statement) {
+      statement = this.raw.prepare(sql);
+      if (this.statements.size >= 256)
+        this.statements.delete(this.statements.keys().next().value!);
+      this.statements.set(sql, statement);
+    }
+    return statement;
+  }
   constructor(path = process.env.DATABASE_PATH || "./data/shuttl.sqlite") {
     if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true });
     this.raw = new DatabaseSync(path, { timeout: 5000 });
@@ -56,15 +67,40 @@ export class Database {
     this.raw.exec(
       "CREATE TABLE IF NOT EXISTS app_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL)",
     );
+    for (const [name, definition] of [
+      ["country", "TEXT NOT NULL DEFAULT ''"],
+      ["city", "TEXT NOT NULL DEFAULT ''"],
+      ["locality_key", "TEXT NOT NULL DEFAULT ''"],
+      ["public_portrait", "INTEGER NOT NULL DEFAULT 0"],
+    ])
+      if (
+        !this.all("PRAGMA table_info(users)").some(
+          (column) => column.name === name,
+        )
+      )
+        this.raw.exec(`ALTER TABLE users ADD COLUMN ${name} ${definition}`);
+    this.raw.exec(`
+      CREATE INDEX IF NOT EXISTS local_pool ON users(locality_key,local_opt_in,deleted);
+      CREATE TABLE IF NOT EXISTS circle_identity(circle_id TEXT PRIMARY KEY REFERENCES circles(id) ON DELETE CASCADE,crest TEXT NOT NULL DEFAULT 'shuttle',tagline TEXT NOT NULL DEFAULT '',recap_day INTEGER NOT NULL DEFAULT 0);
+      CREATE TABLE IF NOT EXISTS portraits(owner TEXT PRIMARY KEY REFERENCES users(id),image BLOB NOT NULL,updated_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS encouragement(unit_id TEXT NOT NULL REFERENCES units(id),sender TEXT NOT NULL REFERENCES users(id),recipient TEXT NOT NULL REFERENCES users(id),kind TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(unit_id,sender,recipient));
+      CREATE TABLE IF NOT EXISTS research_consent(owner TEXT PRIMARY KEY REFERENCES users(id),enabled INTEGER NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS research_events(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),kind TEXT NOT NULL,created_at TEXT NOT NULL);
+      CREATE INDEX IF NOT EXISTS research_event_time ON research_events(owner,created_at);
+      CREATE INDEX IF NOT EXISTS research_retention ON research_events(created_at);
+      CREATE TABLE IF NOT EXISTS passkeys(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),public_key BLOB NOT NULL,counter INTEGER NOT NULL,transports TEXT NOT NULL,label TEXT NOT NULL,created_at TEXT NOT NULL,last_used TEXT);
+      CREATE TABLE IF NOT EXISTS passkey_challenges(id TEXT PRIMARY KEY,owner TEXT,session_hash TEXT,kind TEXT NOT NULL,challenge TEXT NOT NULL,expires TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS player_invites(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),expires TEXT NOT NULL,revoked INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL);
+    `);
   }
   get(sql: string, ...params: any[]): Row | undefined {
-    return this.raw.prepare(sql).get(...params) as Row | undefined;
+    return this.statement(sql).get(...params) as Row | undefined;
   }
   all(sql: string, ...params: any[]): Row[] {
-    return this.raw.prepare(sql).all(...params) as Row[];
+    return this.statement(sql).all(...params) as Row[];
   }
   run(sql: string, ...params: any[]) {
-    return this.raw.prepare(sql).run(...params);
+    return this.statement(sql).run(...params);
   }
   transaction<T>(action: () => T): T {
     this.raw.exec("BEGIN IMMEDIATE");
@@ -78,6 +114,18 @@ export class Database {
     }
   }
   close() {
+    this.statements.clear();
     this.raw.close();
+  }
+  readSnapshot<T>(action: () => T): T {
+    this.raw.exec("BEGIN");
+    try {
+      const result = action();
+      this.raw.exec("COMMIT");
+      return result;
+    } catch (error) {
+      this.raw.exec("ROLLBACK");
+      throw error;
+    }
   }
 }

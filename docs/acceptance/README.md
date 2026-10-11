@@ -51,15 +51,15 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 ### 7. Color discipline
 
 - Earlier-build expert baseline: 8/10. Current score: **unmeasured**. Status: implemented validation pending.
-- Current implementation: One default forest system remains; alternate concepts use explicit palettes.
-- Remaining: Contrast review across every state and independent palette appraisal.
+- Current implementation: Light, dark and device-following appearance now cover shared core cards, forms, dialogs and navigation.
+- Remaining: Independent palette/contrast appraisal, actual devices and incomplete automated contrast items.
 - Required outcome: The same state always carries the same visual meaning.
 
 ### 8. Typography character
 
 - Earlier-build expert baseline: 8/10. Current score: **unmeasured**. Status: implemented validation pending.
-- Current implementation: Manrope and Barlow remain local, with larger functional labels and condensed rating numerals.
-- Remaining: Typography review at system text enlargement and on low-end phones.
+- Current implementation: Local fonts, rem-based functional sizes and a selectable 200% text setting are implemented.
+- Remaining: Physical-device text-size and typography review, including long labels.
 - Required outcome: Hierarchy remains recognizable at small and enlarged text sizes.
 
 ### 9. Numerical authority
@@ -106,9 +106,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 15. Avatar personality
 
-- Earlier-build expert baseline: 5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Initial avatars use a refined bordered treatment; photos are not implemented.
-- Remaining: Friend recognition testing; implement optional private-controlled portraits only if justified.
+- Earlier-build expert baseline: 5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Optional portraits are cropped/flattened locally, bounded and stripped to a static WebP raster. Access defaults to the owner and accepted friends, with separate public visibility and deletion.
+- Remaining: Actual friend recognition and desirability; image validation is structural, not a complete image decoder.
 - Required outcome: Players recognize friends quickly without exposing unwanted identity.
 
 ### 16. Copy voice
@@ -220,9 +220,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 31. Color contrast consistency
 
-- Earlier-build expert baseline: 6.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Muted colors were strengthened and arena recap contrast repaired.
-- Remaining: Complete contrast audit, including focus, disabled and error states; not WCAG-certified.
+- Earlier-build expert baseline: 6.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Automated WCAG AA scans and explicit light/dark/focus colors are implemented; failures found by the scans have been repaired. Incomplete items are recorded with element targets.
+- Remaining: Resolve remaining manual scan items and actual assistive/device review; zero detected violations is not WCAG certification.
 - Required outcome: Relevant WCAG contrast checks pass; tiny text is reviewed separately for usability.
 
 ### 32. Touch ergonomics
@@ -242,15 +242,15 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 ### 34. Screen-reader comprehension
 
 - Earlier-build expert baseline: 6.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Semantic controls, labels and accessible chart descriptions are implemented.
+- Current implementation: Semantic category/period/history groups and labeled keyboard dialogs are implemented and included in browser checks.
 - Remaining: Actual VoiceOver/TalkBack/NVDA task testing remains required.
 - Required outcome: A screen-reader user completes the same core tasks without extra help.
 
 ### 35. Text enlargement
 
-- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Responsive layouts use flexible wrapping; no complete enlarged-text acceptance proof.
-- Remaining: 200% text and device font-size journeys; repair any newly discovered obstruction.
+- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: A real 200% text preference, rem typography and wrapping layouts are implemented; narrow-phone/action checks include 320/390px and result dialogs.
+- Remaining: Physical-device system text sizing, further error/history states and target-player review.
 - Required outcome: At enlarged text, controls and rating labels remain readable without loss of information.
 
 ### 36. Long-name handling
@@ -262,9 +262,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 37. Dark appearance completeness
 
-- Earlier-build expert baseline: 3.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: The consumer default is a single coherent light shell with a dark passport.
-- Remaining: Arena is an alternate home concept, not a complete selectable dark theme.
+- Earlier-build expert baseline: 3.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Selectable Light, Dark and Follow device now cover core settings, authentication, dialogs, comparisons and rating cards.
+- Remaining: Independent full-state visual review on actual devices; Arena remains a separate concept.
 - Required outcome: Theme changes do not leave bright dialogs, low contrast or mismatched assets.
 
 ### 38. Settings discoverability
@@ -299,9 +299,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 42. Rating-update motion
 
-- Earlier-build expert baseline: 2/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Published score and earned recap respond to actual ledger changes.
-- Remaining: No cinematic numeric roll is implemented; judge whether motion is satisfying and clear.
+- Earlier-build expert baseline: 2/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: A voluntary 600ms replay animates only a visible before/after estimate. The published final value is always accessible; reveal has no invisible-prior roll and reduced motion skips animation.
+- Remaining: Observed clarity and satisfaction on actual devices; numeric motion is not proof of motivating reward.
 - Required outcome: Users understand the change and can replay or inspect it without waiting through decoration.
 
 ### 43. Fifth-result reveal
@@ -406,16 +406,16 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 57. Account-entry friction
 
-- Earlier-build expert baseline: 5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Local signup requires no provider; no social login is added.
-- Remaining: Measure account effort; provider integration cannot be claimed complete.
+- Earlier-build expert baseline: 5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Password/recovery entry remains available and optional user-verified passkeys now support registration, sign-in and revocation on a valid domain.
+- Remaining: Physical-device/passkey-manager friction trials; no Apple/Google OAuth provider integration is claimed.
 - Required outcome: Interested players can establish an identity quickly on court.
 
 ### 58. Recovery burden
 
 - Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Single-use recovery codes and rotation remain; recovery invalidates sessions/devices.
-- Remaining: Real phone-loss study; verified email recovery is not implemented.
+- Current implementation: Recovery codes remain single-use; optional passkeys add another access method. Recovery removes passkeys, challenges, sessions and device alerts.
+- Remaining: Real phone-loss and synced-passkey recovery trials. Email/SMS recovery and staffed identity recovery are not implemented.
 - Required outcome: Typical players can regain access after changing phones or forgetting a password.
 
 ### 59. Age-scope clarity
@@ -491,8 +491,8 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 ### 69. International onboarding
 
 - Earlier-build expert baseline: 3/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Timezone includes device, saved profile and all browser-supported choices; district pools remain Singapore-specific.
-- Remaining: Choose launch geography or build a verified global location taxonomy; translations are not implemented.
+- Current implementation: Country/territory, city and playing-area declarations now form separate normalized pools. Earlier Singapore profiles migrate once. No GPS is collected.
+- Remaining: Choose actual launch markets; spelling variants, verified residence, localization and local taxonomy quality remain unresolved.
 - Required outcome: Players in intended launch markets can select a meaningful local context.
 
 ### 70. Invitation comprehension
@@ -697,9 +697,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 98. Season and lifetime separation
 
-- Earlier-build expert baseline: 3/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Seven-day and selected-period records are distinct from lifetime skill; no seasonal skill reset.
-- Remaining: A dedicated shared season view remains a product decision and research gap.
+- Earlier-build expert baseline: 3/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Shared group recaps offer actual 7/30/90-day activity and visible period change separately from lifetime category skill. No season reset fabricates rating loss.
+- Remaining: Validate period usefulness and season terminology; this is not a competition season or seasonal rank.
 - Required outcome: Competition refreshes without giving misleading skill points for activity.
 
 ### 99. Replay and correction consistency
@@ -748,30 +748,30 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 105. Friendly social interaction
 
-- Earlier-build expert baseline: 2.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Positive comparison/history exploration is prominent; removal is in relationship management.
-- Remaining: Kudos or encouragement is not implemented; decide using player research and abuse controls.
+- Earlier-build expert baseline: 2.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Participants can give private, idempotent encouragement to another current registered participant in a published result. It changes no rating and sends no device alert.
+- Remaining: Real friendliness/reward study and abuse/blocked/deleted-identity review.
 - Required outcome: Positive social actions are easier to discover than relationship removal.
 
 ### 106. Group identity
 
-- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Accepted named circles remain; no custom crest or group passport is added.
-- Remaining: Existing-group identity, collective evidence milestones and repeat-use study.
+- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Owner-controlled original crests, group motto and voluntary recap weekday give existing groups a shared identity. Actual whole-group matches drive published recap statistics.
+- Remaining: Group recognition, usefulness, identity attachment and repeated use require real groups.
 - Required outcome: Members recognize the group as their own existing badminton community.
 
 ### 107. Invitation conversion
 
 - Earlier-build expert baseline: 4/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Friend and guest invitations remain; no contact harvesting or automatic acceptance.
-- Remaining: Measure invite-to-first-value conversion in genuine recipient cohorts.
+- Current implementation: Revocable seven-day invitations preserve their context through signup and require explicit recipient request plus inviter review.
+- Remaining: Genuine invite-to-value cohort conversion and identity comprehension; synthetic signup is not conversion evidence.
 - Required outcome: Invited players complete the intended flow without an organizer doing support work.
 
 ### 108. Contact-free discovery
 
-- Earlier-build expert baseline: 6.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Recent/friend lookup improves contact-free discovery; usernames remain the public lookup key.
-- Remaining: Identity QR/player-code discovery is still absent; test actual lookup time.
+- Earlier-build expert baseline: 6.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Player QR codes open an exact username or private invitation, without contact access. Self scans are identified and expired/revoked links fail closed.
+- Remaining: Camera scan and lookup speed on actual devices; spelling/discovery and privacy comprehension.
 - Required outcome: Players find each other quickly while keeping private contacts private.
 
 ### 109. Activity richness
@@ -804,9 +804,9 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 113. Social-link continuation
 
-- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Hosted share context remains a public snapshot leading to app entry.
-- Remaining: A richer contextual invitation continuation is not implemented; test existing path first.
+- Earlier-build expert baseline: 4.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Invitation and dated public-share context survives account entry; explicit continuation does not grant score consent or automatically copy a rating.
+- Remaining: Unassisted recipient comprehension, identity and real cross-device continuation.
 - Required outcome: A viewer can reach their own first value from a shared milestone.
 
 ### 114. Competition without pressure
@@ -918,16 +918,16 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 
 ### 129. Community ritual
 
-- Earlier-build expert baseline: 2.5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Individual weekly recap is implemented; no automatic circle digest or invented group event.
-- Remaining: Design and test a voluntary real group recap ritual before claiming community habit.
+- Earlier-build expert baseline: 2.5/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Existing groups have a voluntary recap weekday, actual activity/playing connections and 7/30/90-day recaps. No automatic habit or participation reward is asserted.
+- Remaining: Observe real repeated group check-ins without prompting and assess usefulness/pressure.
 - Required outcome: Groups return for a real shared update at a cadence suited to their play.
 
 ### 130. Retention experimentation readiness
 
-- Earlier-build expert baseline: 2/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Aggregate, right-censored ledger report and a pre-registered pilot kit are supplied.
-- Remaining: Meaningful check/view telemetry is not captured by this proxy; consented research logs required.
+- Earlier-build expert baseline: 2/10. Current score: **unmeasured**. Status: implemented validation pending.
+- Current implementation: Optional account-bound view events are off by default, rate-deduplicated and erased on withdrawal. Read-only aggregate reports separate consent-epoch view returns from ledger proxies, exclude immature/expired windows and disclose withdrawal bias.
+- Remaining: Real consented cohorts, frozen meaningful-return definitions, observation windows and independent research review. No experiment assignment or causal retention proof.
 - Required outcome: Changes can be evaluated against real activation and retention outcomes.
 
 ## Price and paid value
@@ -1007,8 +1007,8 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 ### 141. Privacy choice usefulness
 
 - Earlier-build expert baseline: 7.5/10. Current score: **unmeasured**. Status: implemented validation pending.
-- Current implementation: Privacy choices, blocking, deletion/export and explicit share disclosure remain.
-- Remaining: Complete privacy task study and operational/legal review for actual launch markets.
+- Current implementation: Export now includes private research metadata/events, passkey metadata and invitation status; no recovery secrets, private keys or raw invitation secrets are exported. Portrait visibility, withdrawal, blocking and deletion remain explicit.
+- Remaining: Privacy task study, retained-ledger disclosure and operational/legal review in actual launch markets.
 - Required outcome: Users can predict and verify what becomes visible to whom.
 
 ### 142. Settings truthfulness
@@ -1049,22 +1049,22 @@ Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](m
 ### 147. Global community fit
 
 - Earlier-build expert baseline: 3/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: The English adult pilot is clear; Singapore district taxonomy remains.
-- Remaining: Human launch-market decision, localization and verified global location support remain.
+- Current implementation: Global declared-location pools replace the Singapore-only restriction; English, adult-only pilot boundaries remain explicit.
+- Remaining: Launch-market decision, translations, spelling/locality normalization, support ownership and verified geography are still unresolved.
 - Required outcome: The launch audience can use the core location, language and identity workflows naturally.
 
 ### 148. Performance and scale proof
 
 - Earlier-build expert baseline: 3/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: History/queue indexes and bounded insights reduce some work; architecture remains single-instance.
-- Remaining: Target-load proof, replay isolation and distributed limits before creator-scale rollout.
+- Current implementation: File-backed rating replay and encrypted push processing run in a background worker. Prepared/batched projections, consistent dashboard read snapshots and an actor-bound invalidating cache reduce repeated work. A local synthetic read/replay benchmark is provided.
+- Remaining: Hosted read/write/signup burst tests, continuous-ledger replay retry behavior, distributed limits and larger evidence bounds remain. This is still a single-instance SQLite pilot.
 - Required outcome: Expected launch demand preserves responsive scoring, approval and browsing.
 
 ### 149. Operational confidence
 
 - Earlier-build expert baseline: 5/10. Current score: **unmeasured**. Status: work and validation required.
-- Current implementation: Backup/replay tools and durable jobs remain; optional push adds bounded retries/expiry handling.
-- Remaining: Actual hosted restore, monitoring, incident ownership and delivery drills.
+- Current implementation: Worker health, bounded restart, queued retry, publication race guards and graceful close are implemented. Existing backup/replay tools remain.
+- Remaining: Actual hosted restore, alerting, incident staffing, deployment/container and real-device delivery drills.
 - Required outcome: A failure is detected, communicated and recovered without silent rating corruption.
 
 ### 150. Independent acceptance evidence

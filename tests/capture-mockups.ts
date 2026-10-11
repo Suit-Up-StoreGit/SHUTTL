@@ -9,6 +9,7 @@ const browser = await chromium.launch({
 const page = await browser.newPage({
   viewport: { width: 430, height: 1080 },
   deviceScaleFactor: 1,
+  colorScheme: "light",
 });
 const errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
@@ -42,8 +43,19 @@ for (const concept of ["passport", "court", "circle", "arena", "editorial"]) {
 }
 writeFileSync(
   "docs/mockups/render-results.json",
-  JSON.stringify({ measurements, errors }, null, 2),
+  JSON.stringify(
+    {
+      capturedAt: new Date().toISOString(),
+      fictional: true,
+      measurements,
+      errors,
+    },
+    null,
+    2,
+  ),
 );
 await browser.close();
 if (errors.length) throw new Error(errors.join("; "));
+if (measurements.some((m) => m.overflow))
+  throw new Error("A captured home overflows the phone width.");
 console.log(JSON.stringify({ screens: 5, errors, measurements }));

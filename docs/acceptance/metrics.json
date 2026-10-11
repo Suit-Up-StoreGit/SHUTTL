@@ -19,6 +19,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Forest, ivory, restrained lime, local fonts and original league assets continue across core surfaces.",
       "requiredEvidenceOrWork": "Independent full-journey brand review.",
       "acceptanceCriterion": "Independent review sees a recognizable SHUTTL identity on every core surface.",
@@ -28,7 +29,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -44,6 +46,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Court geometry now appears in the passport and actual exported stories; generic dashboard conventions remain.",
       "requiredEvidenceOrWork": "Blind recognition study; refine signature compositions if identification is weak.",
       "acceptanceCriterion": "Unbranded screen recognition separates SHUTTL from unrelated dashboards.",
@@ -53,7 +56,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -69,6 +73,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Badminton category, court geometry and player-confirmed match language are explicit.",
       "requiredEvidenceOrWork": "Real player review and licensed Featherballer editorial material; no supplied photography has been invented.",
       "acceptanceCriterion": "Players recognize their sport immediately without reading the app description.",
@@ -78,7 +83,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -94,6 +100,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Functional text is larger; mobile number and seal overflow is repaired.",
       "requiredEvidenceOrWork": "Independent ordinary-phone premium-perception review.",
       "acceptanceCriterion": "Premium perception remains high on ordinary phones, not just curated captures.",
@@ -103,7 +110,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -119,6 +127,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Earned milestone recaps and sporting color treatment add energy without decorative points.",
       "requiredEvidenceOrWork": "Perceived energy and motion quality on actual devices.",
       "acceptanceCriterion": "Competitive players distinguish routine browsing from an earned achievement.",
@@ -128,7 +137,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -144,6 +154,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "A player passport, real peak and earned league milestones support athlete identity.",
       "requiredEvidenceOrWork": "Research whether recreational and competitive players aspire to this identity.",
       "acceptanceCriterion": "Players can explain why the next milestone matters to them.",
@@ -153,7 +164,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -169,8 +181,9 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
-      "currentImplementation": "One default forest system remains; alternate concepts use explicit palettes.",
-      "requiredEvidenceOrWork": "Contrast review across every state and independent palette appraisal.",
+      "previousRegisterStatus": "implemented-validation-pending",
+      "currentImplementation": "Light, dark and device-following appearance now cover shared core cards, forms, dialogs and navigation.",
+      "requiredEvidenceOrWork": "Independent palette/contrast appraisal, actual devices and incomplete automated contrast items.",
       "acceptanceCriterion": "The same state always carries the same visual meaning.",
       "originalImprovement": "Define semantic color rules for wins, losses, pending work, milestones and selection.",
       "implementationReferences": [
@@ -178,7 +191,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -194,8 +208,9 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
-      "currentImplementation": "Manrope and Barlow remain local, with larger functional labels and condensed rating numerals.",
-      "requiredEvidenceOrWork": "Typography review at system text enlargement and on low-end phones.",
+      "previousRegisterStatus": "implemented-validation-pending",
+      "currentImplementation": "Local fonts, rem-based functional sizes and a selectable 200% text setting are implemented.",
+      "requiredEvidenceOrWork": "Physical-device text-size and typography review, including long labels.",
       "acceptanceCriterion": "Hierarchy remains recognizable at small and enlarged text sizes.",
       "originalImprovement": "Preserve the pair and replace scattered tiny sizes with a deliberate type scale.",
       "implementationReferences": [
@@ -203,7 +218,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -219,6 +235,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "One integer display rule and responsive number sizing are retained.",
       "requiredEvidenceOrWork": "Perceived authority without misunderstanding estimates as certified skill.",
       "acceptanceCriterion": "Users distinguish a developing estimate from an official skill credential.",
@@ -228,7 +245,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -244,6 +262,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Original shuttle monogram is retained.",
       "requiredEvidenceOrWork": "Independent identity craft, small-size recognition and app-icon review.",
       "acceptanceCriterion": "The icon remains recognizable at notification and app-icon sizes.",
@@ -253,7 +272,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -269,6 +289,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "All eight original seals fit phone passports in browser checks.",
       "requiredEvidenceOrWork": "Independent craft/desirability assessment; recognition in exported cards.",
       "acceptanceCriterion": "Players can recognize tiers at small sizes without relying on color.",
@@ -278,7 +299,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -294,6 +316,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "The rating guide includes the league collection and honestly labels candidate boundaries.",
       "requiredEvidenceOrWork": "Validate badge progression and boundaries with badminton data.",
       "acceptanceCriterion": "Users understand the ladder without confusing a badge with verified badminton ability.",
@@ -303,7 +326,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -319,6 +343,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Compact home and separate profile sections reduce accumulated information; no paid upsell.",
       "requiredEvidenceOrWork": "Task-based density and restraint review under realistic history.",
       "acceptanceCriterion": "The main task stays obvious without making every section another card.",
@@ -328,7 +353,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -344,6 +370,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "One Lucide icon system remains, with restrained pressed states.",
       "requiredEvidenceOrWork": "Audit all icon meanings and assistive labels.",
       "acceptanceCriterion": "Icons retain clear meaning in keyboard, touch and screen-reader use.",
@@ -353,7 +380,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -368,9 +396,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Initial avatars use a refined bordered treatment; photos are not implemented.",
-      "requiredEvidenceOrWork": "Friend recognition testing; implement optional private-controlled portraits only if justified.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Optional portraits are cropped/flattened locally, bounded and stripped to a static WebP raster. Access defaults to the owner and accepted friends, with separate public visibility and deletion.",
+      "requiredEvidenceOrWork": "Actual friend recognition and desirability; image validation is structural, not a complete image decoder.",
       "acceptanceCriterion": "Players recognize friends quickly without exposing unwanted identity.",
       "originalImprovement": "Offer optional player photos or a refined initials treatment, with privacy controls.",
       "implementationReferences": [
@@ -378,7 +407,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -394,6 +424,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Reveal, loss, break and uncertainty copy are more concrete and respectful.",
       "requiredEvidenceOrWork": "Non-leading comprehension review across complete flows.",
       "acceptanceCriterion": "Players understand the screen before reading secondary explanations.",
@@ -403,7 +434,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -419,6 +451,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "A restrained Featherballer founding attribution is included on home.",
       "requiredEvidenceOrWork": "Creator-approved story and useful guidance content remain needed.",
       "acceptanceCriterion": "New arrivals understand why Featherballer endorses this product and what value that brings.",
@@ -428,7 +461,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -444,6 +478,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Current, first-reveal and personal-best stories use one authored export system.",
       "requiredEvidenceOrWork": "Voluntary sharing and blind visual review of actual exports.",
       "acceptanceCriterion": "A shared card is both recognizable and meaningful to another badminton player.",
@@ -453,7 +488,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -469,6 +505,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Result recaps, dialogs, profile tabs and insights use the shared system.",
       "requiredEvidenceOrWork": "Independent review of every error, empty, correction and account state.",
       "acceptanceCriterion": "Premium quality remains consistent throughout a complete session.",
@@ -478,7 +515,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -494,6 +532,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Five executable directions remain; Court and Circle layouts were repaired after visual inspection.",
       "requiredEvidenceOrWork": "Five directions are alternatives, not five independently accepted products; choose and validate one.",
       "acceptanceCriterion": "The chosen direction handles empty, active, winning, losing and long-content states equally well.",
@@ -503,7 +542,8 @@
         "src/pages/Home.tsx",
         "src/share-image.ts",
         "docs/mockups",
-        "public/leagues"
+        "public/leagues",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -519,6 +559,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Heading and action share a compact row; number and rival have priority on phones.",
       "requiredEvidenceOrWork": "Measure real-device viewport coverage and text enlargement; no universal fold guarantee.",
       "acceptanceCriterion": "The first screen answers my rating, what changed and what I can do next.",
@@ -527,7 +568,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -543,6 +585,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Closest supported rival, or an honest no-comparison state, appears directly near the rating.",
       "requiredEvidenceOrWork": "Discoverability study under no-friend, long-name, break and lead-change states.",
       "acceptanceCriterion": "A returning player finds their relevant rival without a long scroll.",
@@ -551,7 +594,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -567,6 +611,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "A real dated activity preview appears near rivalry; full grouped feed remains available below.",
       "requiredEvidenceOrWork": "Verify voluntary activity discovery rather than assuming a preview guarantees return.",
       "acceptanceCriterion": "Fresh relevant activity is discoverable within the first two screens.",
@@ -575,7 +620,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -591,6 +637,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Record result / continue draft has a stable accessible name and explicit intent.",
       "requiredEvidenceOrWork": "Unassisted action discovery and recording task success.",
       "acceptanceCriterion": "Players identify the main action quickly in every home state.",
@@ -599,7 +646,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -615,6 +663,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Functional controls and supporting text were enlarged; annotations remain distinct.",
       "requiredEvidenceOrWork": "Real-device legibility and enlarged-text review.",
       "acceptanceCriterion": "Players of varied ages read the interface comfortably on actual devices.",
@@ -623,7 +672,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -639,6 +689,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Phone headings are smaller and yield space to rating and action.",
       "requiredEvidenceOrWork": "Independent hierarchy assessment across widths and large text.",
       "acceptanceCriterion": "Player passport and Rated agreements headings remain balanced at 320–430 pixels.",
@@ -647,7 +698,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -663,6 +715,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Responsive grid isolates seal and rating; all eight league names fit tested widths, with digits checked to stay on a single line.",
       "requiredEvidenceOrWork": "Real-device, zoom and translated-label stress review.",
       "acceptanceCriterion": "Every league name and realistic rating value fits with intact padding.",
@@ -671,7 +724,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -687,6 +741,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Compact passport has single-line number checks at 320px; a verified first-reveal PNG with an unusually long name was inspected.",
       "requiredEvidenceOrWork": "Review all templates, long names and both export shapes on target devices.",
       "acceptanceCriterion": "The complete rating and badge fit in the sharing sheet at common phone widths.",
@@ -695,7 +750,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -711,6 +767,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Actual published points can be inspected by date, value and change using buttons.",
       "requiredEvidenceOrWork": "Players must correctly interpret the line, sample coverage and placement baseline.",
       "acceptanceCriterion": "Users can tell the amount and timing of progress rather than only the line's direction.",
@@ -719,7 +776,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -735,6 +793,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "One-point and no-history states explain the evidence instead of drawing invented lines.",
       "requiredEvidenceOrWork": "Comprehension with developing and sparse accounts.",
       "acceptanceCriterion": "New players never mistake illustrative content for their own evidence.",
@@ -743,7 +802,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -758,16 +818,18 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Muted colors were strengthened and arena recap contrast repaired.",
-      "requiredEvidenceOrWork": "Complete contrast audit, including focus, disabled and error states; not WCAG-certified.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Automated WCAG AA scans and explicit light/dark/focus colors are implemented; failures found by the scans have been repaired. Incomplete items are recorded with element targets.",
+      "requiredEvidenceOrWork": "Resolve remaining manual scan items and actual assistive/device review; zero detected violations is not WCAG certification.",
       "acceptanceCriterion": "Relevant WCAG contrast checks pass; tiny text is reviewed separately for usability.",
       "originalImprovement": "Check rendered foreground/background combinations and all selected, disabled and empty states.",
       "implementationReferences": [
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -783,6 +845,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Core touch controls target 44px and score formats expand across narrow screens.",
       "requiredEvidenceOrWork": "Touch task study on real small phones and with motor-access needs.",
       "acceptanceCriterion": "Users reliably tap intended controls after a match without accidental adjacent actions.",
@@ -791,7 +854,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -807,6 +871,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Native modal focus handling, Escape and keyboard chart controls remain.",
       "requiredEvidenceOrWork": "Complete keyboard journeys including nested pickers, correction and settings.",
       "acceptanceCriterion": "Signup, scoring, approval, sharing and account controls work without a pointer.",
@@ -815,7 +880,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -831,7 +897,8 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "Semantic controls, labels and accessible chart descriptions are implemented.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Semantic category/period/history groups and labeled keyboard dialogs are implemented and included in browser checks.",
       "requiredEvidenceOrWork": "Actual VoiceOver/TalkBack/NVDA task testing remains required.",
       "acceptanceCriterion": "A screen-reader user completes the same core tasks without extra help.",
       "originalImprovement": "Test actual assistive technologies, status announcements and category controls.",
@@ -839,7 +906,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -854,16 +922,18 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Responsive layouts use flexible wrapping; no complete enlarged-text acceptance proof.",
-      "requiredEvidenceOrWork": "200% text and device font-size journeys; repair any newly discovered obstruction.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "A real 200% text preference, rem typography and wrapping layouts are implemented; narrow-phone/action checks include 320/390px and result dialogs.",
+      "requiredEvidenceOrWork": "Physical-device system text sizing, further error/history states and target-player review.",
       "acceptanceCriterion": "At enlarged text, controls and rating labels remain readable without loss of information.",
       "originalImprovement": "Test browser text scaling and device accessibility sizes, with true reflow rules.",
       "implementationReferences": [
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -879,6 +949,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Names wrap in friend/result contexts and canvas exports wrap Unicode safely.",
       "requiredEvidenceOrWork": "Stress actual exports, scripts and long names on real devices.",
       "acceptanceCriterion": "Important identity and result information remains accessible rather than silently clipped.",
@@ -887,7 +958,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -902,16 +974,18 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "The consumer default is a single coherent light shell with a dark passport.",
-      "requiredEvidenceOrWork": "Arena is an alternate home concept, not a complete selectable dark theme.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Selectable Light, Dark and Follow device now cover core settings, authentication, dialogs, comparisons and rating cards.",
+      "requiredEvidenceOrWork": "Independent full-state visual review on actual devices; Arena remains a separate concept.",
       "acceptanceCriterion": "Theme changes do not leave bright dialogs, low contrast or mismatched assets.",
       "originalImprovement": "Either keep a polished single theme or build a complete optional dark system across all screens.",
       "implementationReferences": [
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -927,6 +1001,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Settings has a top-level profile tab and goals link routes there directly.",
       "requiredEvidenceOrWork": "Unassisted settings discovery with realistic history.",
       "acceptanceCriterion": "Users find privacy, goals and account controls without scrolling through their match archive.",
@@ -935,7 +1010,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -951,6 +1027,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Category preference persists per account; comparison and share use the chosen category.",
       "requiredEvidenceOrWork": "Verify navigation/back/forward and category continuity in real sessions.",
       "acceptanceCriterion": "Users can locate every relevant destination on mobile and desktop.",
@@ -959,7 +1036,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -975,6 +1053,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Displayed dates use the profile timezone; device timezone is captured at signup and Settings offers browser-supported zones. Result review includes exact time and zone.",
       "requiredEvidenceOrWork": "DST, international timezones and entered-device-time comprehension.",
       "acceptanceCriterion": "The same match displays the same date across home, history, review and export.",
@@ -983,7 +1062,8 @@
         "src/components/UI.tsx",
         "src/components/Progress.tsx",
         "src/styles.css",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -999,6 +1079,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Short entry and pressed states are authored.",
       "requiredEvidenceOrWork": "Device motion appraisal and performance measurement.",
       "acceptanceCriterion": "Transitions clarify where the player went and remain responsive on ordinary phones.",
@@ -1008,7 +1089,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1023,9 +1105,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Published score and earned recap respond to actual ledger changes.",
-      "requiredEvidenceOrWork": "No cinematic numeric roll is implemented; judge whether motion is satisfying and clear.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "A voluntary 600ms replay animates only a visible before/after estimate. The published final value is always accessible; reveal has no invisible-prior roll and reduced motion skips animation.",
+      "requiredEvidenceOrWork": "Observed clarity and satisfaction on actual devices; numeric motion is not proof of motivating reward.",
       "acceptanceCriterion": "Users understand the change and can replay or inspect it without waiting through decoration.",
       "originalImprovement": "Create a short, interruptible rating-change sequence tied to an actually published result.",
       "implementationReferences": [
@@ -1033,7 +1116,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1049,6 +1133,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "The fifth result gets an explicit starting-point reveal with no hidden-prior delta.",
       "requiredEvidenceOrWork": "Observed emotional response and fifth-result comprehension.",
       "acceptanceCriterion": "The reveal feels earned and is understood as a starting estimate, not a final certification.",
@@ -1058,7 +1143,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1074,6 +1160,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "A genuine upward league boundary produces a promotion recap.",
       "requiredEvidenceOrWork": "Validate league boundaries and player response; corrections may undo milestones.",
       "acceptanceCriterion": "A real crossing is celebrated exactly once; corrections do not manufacture promotional hype.",
@@ -1083,7 +1170,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1099,6 +1187,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "A new visible peak is recognized; sharing uses a server-derived historical peak.",
       "requiredEvidenceOrWork": "Real-player reward desirability and repeated-use fatigue.",
       "acceptanceCriterion": "Players notice genuine new bests without searching the profile.",
@@ -1108,7 +1197,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1124,6 +1214,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Real lead-change inbox updates can surface on home, with optional device alerts.",
       "requiredEvidenceOrWork": "Configured-device delivery and meaningful return behavior.",
       "acceptanceCriterion": "The reason to return is clear and reflects a real published result.",
@@ -1133,7 +1224,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1149,6 +1241,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Loss recap explains evidence, preserves the peak and avoids punitive streak language.",
       "requiredEvidenceOrWork": "Observe frustrated and losing-player journeys over time.",
       "acceptanceCriterion": "Players feel informed and willing to return after a loss.",
@@ -1158,7 +1251,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1174,6 +1268,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Result review and latest-home recap show the real score, outcome and visible before/after.",
       "requiredEvidenceOrWork": "Verify players understand score approval versus rating publication.",
       "acceptanceCriterion": "Players can answer what happened and why it mattered from the recap.",
@@ -1183,7 +1278,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1199,6 +1295,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Consistent press, focus and brief earned states exist.",
       "requiredEvidenceOrWork": "Independent interaction polish on ordinary devices.",
       "acceptanceCriterion": "Every interaction acknowledges input clearly without visual noise.",
@@ -1208,7 +1305,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1224,6 +1322,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Special celebration is tied to reveal, promotion or new best; no daily gifts.",
       "requiredEvidenceOrWork": "Assess repetition/fatigue and correct stale/corrected recognition.",
       "acceptanceCriterion": "Rare achievements remain special while routine updates stay quick.",
@@ -1233,7 +1332,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1249,6 +1349,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Rewards derive from approved ledger events; historical shares exclude today’s local title.",
       "requiredEvidenceOrWork": "Adversarial and independent review; attested play is not proof of physical play.",
       "acceptanceCriterion": "Players understand that paid access, volume and posting cannot buy a higher skill rating.",
@@ -1258,7 +1359,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1274,6 +1376,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Eight earned seals and milestone stories exist.",
       "requiredEvidenceOrWork": "Badge desirability and voluntary display require player evidence.",
       "acceptanceCriterion": "Players voluntarily show meaningful badges to peers.",
@@ -1283,7 +1386,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1299,6 +1403,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Reduced-motion CSS suppresses transitions, animation and smooth scroll.",
       "requiredEvidenceOrWork": "Complete reduced-motion task review on actual devices.",
       "acceptanceCriterion": "All reward information remains available with motion disabled.",
@@ -1308,7 +1413,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1324,6 +1430,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Individual and batch acknowledgement is bound to the exact current revision and clears on live corrections.",
       "requiredEvidenceOrWork": "Regression check passes; independent consent comprehension and race review remain.",
       "acceptanceCriterion": "A second-player correction while the dialog is open invalidates prior acknowledgement and requires an explicit fresh check before the new score can be approved.",
@@ -1333,7 +1440,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1349,6 +1457,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Connection errors distinguish result drafts from unsaved settings; asynchronous controls expose busy/errors.",
       "requiredEvidenceOrWork": "Audit every server failure and recovery path; broad crash-free proof remains open.",
       "acceptanceCriterion": "Users understand success, waiting and failure for the actual task, without false promises that unrelated settings were saved as a draft.",
@@ -1358,7 +1467,8 @@
         "src/experience.ts",
         "server/service.ts",
         "tests/experience.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1374,6 +1484,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Rating-first promise and three independent categories remain explicit.",
       "requiredEvidenceOrWork": "Five-second proposition comprehension without leading prompts.",
       "acceptanceCriterion": "A new badminton player accurately describes the benefit in their own words.",
@@ -1382,7 +1493,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1397,16 +1509,18 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Local signup requires no provider; no social login is added.",
-      "requiredEvidenceOrWork": "Measure account effort; provider integration cannot be claimed complete.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Password/recovery entry remains available and optional user-verified passkeys now support registration, sign-in and revocation on a valid domain.",
+      "requiredEvidenceOrWork": "Physical-device/passkey-manager friction trials; no Apple/Google OAuth provider integration is claimed.",
       "acceptanceCriterion": "Interested players can establish an identity quickly on court.",
       "originalImprovement": "Consider secure platform sign-in or a similarly low-friction identity path, without weakening recovery.",
       "implementationReferences": [
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1422,15 +1536,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "Single-use recovery codes and rotation remain; recovery invalidates sessions/devices.",
-      "requiredEvidenceOrWork": "Real phone-loss study; verified email recovery is not implemented.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Recovery codes remain single-use; optional passkeys add another access method. Recovery removes passkeys, challenges, sessions and device alerts.",
+      "requiredEvidenceOrWork": "Real phone-loss and synced-passkey recovery trials. Email/SMS recovery and staffed identity recovery are not implemented.",
       "acceptanceCriterion": "Typical players can regain access after changing phones or forgetting a password.",
       "originalImprovement": "Offer a reliable consumer-friendly recovery choice and clear backup guidance.",
       "implementationReferences": [
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1446,6 +1562,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Adult-only scope is explicit at signup.",
       "requiredEvidenceOrWork": "Validate intended audience; a youth release needs a separate operational design.",
       "acceptanceCriterion": "Onboarding promises match the actual audience and safeguards.",
@@ -1454,7 +1571,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1470,6 +1588,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Preferred category is account-scoped per device and configurable in accessible Settings.",
       "requiredEvidenceOrWork": "Verify players discover and use their actual preferred category.",
       "acceptanceCriterion": "Singles-focused users land in the relevant category across sessions.",
@@ -1478,7 +1597,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1494,6 +1614,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Empty home presents three practical steps and a rated-session action.",
       "requiredEvidenceOrWork": "First-session unassisted comprehension and completion.",
       "acceptanceCriterion": "A first-time group completes a result without founder assistance.",
@@ -1502,7 +1623,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1518,6 +1640,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Placement and friends offer earlier context; aggregate first-publication timing tool added.",
       "requiredEvidenceOrWork": "Publication time is not recognized user value; measure actual first benefit.",
       "acceptanceCriterion": "Players identify a useful benefit during their first session rather than waiting weeks.",
@@ -1526,7 +1649,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1542,6 +1666,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Private first-four count and five-result progress remain per category.",
       "requiredEvidenceOrWork": "Measure abandonment and misunderstanding; five is not a proven optimum.",
       "acceptanceCriterion": "Players understand exactly what remains before their category estimate appears.",
@@ -1550,7 +1675,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1566,6 +1692,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Exact roster/score consent, revision-change alert and awaiting-person guidance are explicit.",
       "requiredEvidenceOrWork": "Test teach-back for prior consent, retrospective approval and silence.",
       "acceptanceCriterion": "Players correctly predict who must approve a result in ordinary and retrospective cases.",
@@ -1574,7 +1701,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1590,6 +1718,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Rating help explains category independence, uncertainty, team effects and disconnected estimates.",
       "requiredEvidenceOrWork": "Scenario-based understanding with real recreational and competitive players.",
       "acceptanceCriterion": "Players explain why equally rated partners may move different amounts.",
@@ -1598,7 +1727,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1614,6 +1744,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "First reveal hides change from the invisible prior; subsequent deltas use a visible estimate.",
       "requiredEvidenceOrWork": "Functional check passes; verify players can explain the first visible number.",
       "acceptanceCriterion": "Players do not ask what their first visible rating supposedly fell from.",
@@ -1622,7 +1753,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1638,6 +1770,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "User copy explains categories, evidence and agreements in context.",
       "requiredEvidenceOrWork": "Glossary/terminology comprehension; technical evidence labels may still need refinement.",
       "acceptanceCriterion": "New users locate friends, history and score approval without learning a glossary.",
@@ -1646,7 +1779,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1662,6 +1796,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Profile tabs, optional recent lineups and expandable league guide reduce first-view detail.",
       "requiredEvidenceOrWork": "Evaluate information finding and accidental omission in real tasks.",
       "acceptanceCriterion": "Users can act confidently while still accessing complete explanations.",
@@ -1670,7 +1805,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1686,15 +1822,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "Timezone includes device, saved profile and all browser-supported choices; district pools remain Singapore-specific.",
-      "requiredEvidenceOrWork": "Choose launch geography or build a verified global location taxonomy; translations are not implemented.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Country/territory, city and playing-area declarations now form separate normalized pools. Earlier Singapore profiles migrate once. No GPS is collected.",
+      "requiredEvidenceOrWork": "Choose actual launch markets; spelling variants, verified residence, localization and local taxonomy quality remain unresolved.",
       "acceptanceCriterion": "Players in intended launch markets can select a meaningful local context.",
       "originalImprovement": "Make launch geography explicit or support structured country, city and district choices.",
       "implementationReferences": [
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1710,6 +1848,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Guest claim and independent friend request paths remain private and explicit.",
       "requiredEvidenceOrWork": "Unassisted inviter/recipient comprehension across devices.",
       "acceptanceCriterion": "Guest and inviter both understand that identity verification does not approve the score.",
@@ -1718,7 +1857,8 @@
         "src/components/Flows.tsx",
         "src/App.tsx",
         "src/pages/Pages.tsx",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1734,6 +1874,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Supported scoring formats and terminal series are validated centrally.",
       "requiredEvidenceOrWork": "Existing numerical/API tests pass; inspect score errors with players.",
       "acceptanceCriterion": "Players can recover from an invalid score without abandoning the result.",
@@ -1743,7 +1884,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1759,6 +1901,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Singles has recent/friend suggestions, a saved draft and fresh acknowledgement.",
       "requiredEvidenceOrWork": "Measure correct task completion, errors and elapsed time.",
       "acceptanceCriterion": "Returning players submit an accurate Singles result with minimal effort.",
@@ -1768,7 +1911,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1784,6 +1928,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Doubles preserves actual teammates/opponents and can reuse a recent lineup.",
       "requiredEvidenceOrWork": "Four-player task study, side-switching and guest ambiguity.",
       "acceptanceCriterion": "A returning group can record a complete Doubles result quickly and accurately.",
@@ -1793,7 +1938,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1809,6 +1955,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Known friends/recent players appear before search; selected roster IDs are excluded.",
       "requiredEvidenceOrWork": "Measure finding known players without address-book upload.",
       "acceptanceCriterion": "Players select familiar partners without remembering usernames.",
@@ -1818,7 +1965,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1834,6 +1982,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Score-format options are readable full-width on narrow screens.",
       "requiredEvidenceOrWork": "Real touch and enlarged-text selection study.",
       "acceptanceCriterion": "Users can identify the current scoring format without opening the selector.",
@@ -1843,7 +1992,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1859,6 +2009,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Up to three genuine recent lineups restore people and format; scores/time stay fresh.",
       "requiredEvidenceOrWork": "Measure repeated-session time savings and wrong-roster error rate.",
       "acceptanceCriterion": "Several matches in one session remain distinct with few repeated inputs.",
@@ -1868,7 +2019,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1884,6 +2036,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Prior rated scopes are exact and revocable; creation acknowledgement binds current details.",
       "requiredEvidenceOrWork": "Observe pre-session agreement completion; do not assume confirmations are unnecessary.",
       "acceptanceCriterion": "The group can tell whether one opponent or all players are required without guessing.",
@@ -1893,7 +2046,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1909,6 +2063,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Teammates cannot replace opposite-side confirmation; retrospective results require all players.",
       "requiredEvidenceOrWork": "API regression passes; coordinated-account attacks and real confusion need review.",
       "acceptanceCriterion": "Authorization tests and real-user comprehension both pass.",
@@ -1918,7 +2073,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1934,6 +2090,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Home review banner, inbox and exact-result awaiting names surface required actions.",
       "requiredEvidenceOrWork": "Real delivery, latency and completion study.",
       "acceptanceCriterion": "A requested player knows what needs review and reaches it directly.",
@@ -1943,7 +2100,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1959,6 +2117,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Correction clears individual/batch acknowledgement; earlier published score is separately shown.",
       "requiredEvidenceOrWork": "Live browser regression passes; user correction task study.",
       "acceptanceCriterion": "Players can inspect a correction without confusing proposed and published evidence.",
@@ -1968,7 +2127,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -1984,6 +2144,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Independent-review state preserves earlier publication and appeal/correction controls.",
       "requiredEvidenceOrWork": "Staff a review service with measured response targets; no invented service deadline.",
       "acceptanceCriterion": "Players know what a dispute does and how they will learn the outcome.",
@@ -1993,7 +2154,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2009,6 +2171,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Stable account-scoped draft and idempotency key preserve retries without duplicate units.",
       "requiredEvidenceOrWork": "Offline/retry browser check passes; real network interruption tests.",
       "acceptanceCriterion": "Connection retries do not duplicate results; suspicious near-duplicates are handled transparently.",
@@ -2018,7 +2181,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2034,6 +2198,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Draft is local for seven days; APIs and approvals are never cached as offline writes.",
       "requiredEvidenceOrWork": "Storage-disabled, device-change and offline recovery comprehension.",
       "acceptanceCriterion": "Users recover a failed submission without lost input or false rating changes.",
@@ -2043,7 +2208,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2059,6 +2225,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "History has category/status/player filters and owner-authorized cursor pagination.",
       "requiredEvidenceOrWork": "Verify archive finding with long histories and alias claims.",
       "acceptanceCriterion": "Long-term users can retrieve an old match and understand its effect.",
@@ -2068,7 +2235,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2084,6 +2252,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Authenticated exact-result URL opens the authorized result after login/reload.",
       "requiredEvidenceOrWork": "Browser regression passes; real device-notification continuation still unverified.",
       "acceptanceCriterion": "A legitimate approval notification opens the correct current revision after sign-in.",
@@ -2093,7 +2262,8 @@
         "src/pages/Pages.tsx",
         "server/app.ts",
         "tests/api.test.ts",
-        "tests/browser/journeys.spec.ts"
+        "tests/browser/journeys.spec.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2109,6 +2279,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Gaussian uncertainty-aware singles model is retained and arithmetic checked.",
       "requiredEvidenceOrWork": "Held-out badminton probability and ranking evaluation; no best-possible model claim.",
       "acceptanceCriterion": "The selected model meets predeclared predictive and calibration criteria.",
@@ -2118,7 +2289,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2134,6 +2306,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Both teammates and opponents contribute to expected outcome and posterior uncertainty.",
       "requiredEvidenceOrWork": "Evaluate doubles/mixed predictive calibration and partner-rotation contexts.",
       "acceptanceCriterion": "Arithmetic checks and player-facing examples agree on partner effects.",
@@ -2143,7 +2316,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2159,6 +2333,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Singles, Doubles and Mixed remain independent ledgers.",
       "requiredEvidenceOrWork": "Regression checks pass; evaluate category-specific data without cross-category leakage.",
       "acceptanceCriterion": "A result in one category never secretly awards points in another.",
@@ -2168,7 +2343,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2184,6 +2360,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "400 independent numerical reference cases agree with the engine.",
       "requiredEvidenceOrWork": "Independent method review and exceptional numerical/adversarial ranges.",
       "acceptanceCriterion": "Published calculations reproduce independently at stated tolerances.",
@@ -2193,7 +2370,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2209,6 +2387,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Parameters and league thresholds are unchanged candidates.",
       "requiredEvidenceOrWork": "Consented badminton dataset, held-out testing and uncertainty analysis are outstanding.",
       "acceptanceCriterion": "A documented holdout study supports the published model parameters.",
@@ -2218,7 +2397,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2234,6 +2414,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "First four estimates remain private; fifth is explicitly developing.",
       "requiredEvidenceOrWork": "Cold-start calibration, convergence and optimum reveal rule require real data.",
       "acceptanceCriterion": "Players correctly interpret a fresh rating's limits.",
@@ -2243,7 +2424,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2259,6 +2441,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Exact evidence classes distinguish identifiable contrasts from fixed-pair ambiguity.",
       "requiredEvidenceOrWork": "Review matrix/evidence policy and fairness using real partner networks.",
       "acceptanceCriterion": "No unsupported individual rank is implied by an ambiguous partnership.",
@@ -2268,7 +2451,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2284,6 +2468,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Home/comparison gaps require same category and same non-null comparison class.",
       "requiredEvidenceOrWork": "Real fragmented networks and cross-network uncertainty study.",
       "acceptanceCriterion": "Disconnected players are not led to believe a small raw point difference proves relative ability.",
@@ -2293,7 +2478,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2309,6 +2495,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Recaps explain both sides and uncertainty; full rating guide supplies context.",
       "requiredEvidenceOrWork": "Teach-back of surprises, losses and correction-induced history change.",
       "acceptanceCriterion": "Users understand surprising large or small moves without interpreting them as bugs.",
@@ -2318,7 +2505,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2334,6 +2522,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Consent, authorization, immutable revisions and disputes remain; no mature collusion classifier.",
       "requiredEvidenceOrWork": "Red-team simulations plus independently labeled anomaly/appeal process.",
       "acceptanceCriterion": "Attack simulations cannot cheaply create prestigious status without detectable review evidence.",
@@ -2343,7 +2532,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2359,6 +2549,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Named supported pools, ties and candidate eligibility remain; global neighbourhood claims are avoided.",
       "requiredEvidenceOrWork": "Calibrate evidence policy before awarding any local title.",
       "acceptanceCriterion": "A badge never claims to rank every neighborhood resident.",
@@ -2368,7 +2559,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2384,6 +2576,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Local titles remain disabled by default while policy is unvalidated.",
       "requiredEvidenceOrWork": "Do not flip the flag to manufacture FOMO; validate cohort size, evidence and eligibility.",
       "acceptanceCriterion": "Eligible real pools can genuinely earn, share and lose a named title.",
@@ -2393,7 +2586,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2408,9 +2602,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Seven-day and selected-period records are distinct from lifetime skill; no seasonal skill reset.",
-      "requiredEvidenceOrWork": "A dedicated shared season view remains a product decision and research gap.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Shared group recaps offer actual 7/30/90-day activity and visible period change separately from lifetime category skill. No season reset fabricates rating loss.",
+      "requiredEvidenceOrWork": "Validate period usefulness and season terminology; this is not a competition season or seasonal rank.",
       "acceptanceCriterion": "Competition refreshes without giving misleading skill points for activity.",
       "originalImprovement": "Consider optional season progress or current-period records without resetting the underlying skill ledger.",
       "implementationReferences": [
@@ -2418,7 +2613,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2434,6 +2630,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Atomic replay and fresh correction approvals are retained and tested.",
       "requiredEvidenceOrWork": "Production crash/restore and historical correction trials remain required.",
       "acceptanceCriterion": "The same ledger and model reproduce the same published ratings.",
@@ -2443,7 +2640,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2459,6 +2657,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Existing circles can inspect evidence-qualified estimates for level conversations.",
       "requiredEvidenceOrWork": "Organizer screening study; no calibrated mapping to universally certified levels.",
       "acceptanceCriterion": "Organizers can use the estimate appropriately without treating it as a guaranteed standard.",
@@ -2468,7 +2667,8 @@
         "server/evidence.ts",
         "server/service.ts",
         "tests/domain.test.ts",
-        "docs/rating-system.md"
+        "docs/rating-system.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2484,6 +2684,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Friend rows open category-specific comparisons instead of leading with Remove.",
       "requiredEvidenceOrWork": "Repeated value in real accepted playing groups.",
       "acceptanceCriterion": "Players can identify their meaningful comparison without scanning an arbitrary list.",
@@ -2493,7 +2694,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2509,6 +2711,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Closest eligible friend is chosen; a privately pinned supported friend can replace it.",
       "requiredEvidenceOrWork": "Measure relevance and preference stability across changing evidence.",
       "acceptanceCriterion": "The highlighted rival is relevant and understandable.",
@@ -2518,7 +2721,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2534,6 +2738,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Shared match outcomes distinguish teammates from opponents and expose sample coverage.",
       "requiredEvidenceOrWork": "Test whether head-to-head views satisfy real group needs; 200-result bound is explicit.",
       "acceptanceCriterion": "Friends can see their actual competitive story with sample counts.",
@@ -2543,7 +2748,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2559,6 +2765,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Recent real comparison updates can appear near home; optional alerts have category preferences.",
       "requiredEvidenceOrWork": "Real delivery/discovery/return data; no fabricated urgency.",
       "acceptanceCriterion": "A returning player notices a genuine change quickly.",
@@ -2568,7 +2775,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2583,9 +2791,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Positive comparison/history exploration is prominent; removal is in relationship management.",
-      "requiredEvidenceOrWork": "Kudos or encouragement is not implemented; decide using player research and abuse controls.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Participants can give private, idempotent encouragement to another current registered participant in a published result. It changes no rating and sends no device alert.",
+      "requiredEvidenceOrWork": "Real friendliness/reward study and abuse/blocked/deleted-identity review.",
       "acceptanceCriterion": "Positive social actions are easier to discover than relationship removal.",
       "originalImprovement": "Move destructive controls to management and consider optional restrained kudos or acknowledgement.",
       "implementationReferences": [
@@ -2593,7 +2802,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2608,9 +2818,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Accepted named circles remain; no custom crest or group passport is added.",
-      "requiredEvidenceOrWork": "Existing-group identity, collective evidence milestones and repeat-use study.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Owner-controlled original crests, group motto and voluntary recap weekday give existing groups a shared identity. Actual whole-group matches drive published recap statistics.",
+      "requiredEvidenceOrWork": "Group recognition, usefulness, identity attachment and repeated use require real groups.",
       "acceptanceCriterion": "Members recognize the group as their own existing badminton community.",
       "originalImprovement": "Add a restrained group passport and actual collective evidence milestones.",
       "implementationReferences": [
@@ -2618,7 +2829,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2634,8 +2846,9 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "Friend and guest invitations remain; no contact harvesting or automatic acceptance.",
-      "requiredEvidenceOrWork": "Measure invite-to-first-value conversion in genuine recipient cohorts.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Revocable seven-day invitations preserve their context through signup and require explicit recipient request plus inviter review.",
+      "requiredEvidenceOrWork": "Genuine invite-to-value cohort conversion and identity comprehension; synthetic signup is not conversion evidence.",
       "acceptanceCriterion": "Invited players complete the intended flow without an organizer doing support work.",
       "originalImprovement": "Create context-rich invitations that preserve intended identity and explain the first benefit.",
       "implementationReferences": [
@@ -2643,7 +2856,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2658,9 +2872,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Recent/friend lookup improves contact-free discovery; usernames remain the public lookup key.",
-      "requiredEvidenceOrWork": "Identity QR/player-code discovery is still absent; test actual lookup time.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Player QR codes open an exact username or private invitation, without contact access. Self scans are identified and expired/revoked links fail closed.",
+      "requiredEvidenceOrWork": "Camera scan and lookup speed on actual devices; spelling/discovery and privacy comprehension.",
       "acceptanceCriterion": "Players find each other quickly while keeping private contacts private.",
       "originalImprovement": "Offer player codes or QR identity links and recent-player selection without contact harvesting.",
       "implementationReferences": [
@@ -2668,7 +2883,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2684,6 +2900,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Grouped activity shows real per-player visible change and reveal/best context.",
       "requiredEvidenceOrWork": "Observe social relevance without leaking unrelated participants or inventing activity.",
       "acceptanceCriterion": "The feed explains something worth knowing rather than repeating ledger entries.",
@@ -2693,7 +2910,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2709,6 +2927,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Feed groups by physical unit ID; per-player deltas remain distinguishable.",
       "requiredEvidenceOrWork": "Regression/projection review and real multi-friend match comprehension.",
       "acceptanceCriterion": "A single match does not make the feed appear busier than it really was.",
@@ -2718,7 +2937,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2734,6 +2954,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Neighbourhood title FOMO is deliberately unavailable until evidence policy is validated.",
       "requiredEvidenceOrWork": "Validate real eligible local pools and desirability before enabling.",
       "acceptanceCriterion": "Players compete for an available title with clearly understood eligibility and scope.",
@@ -2743,7 +2964,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2759,6 +2981,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Dated current/reveal/best cards and revocable hosted snapshots exist.",
       "requiredEvidenceOrWork": "Voluntary share study with actual exports, privacy choices and downstream viewers.",
       "acceptanceCriterion": "Players voluntarily share and peers understand the achievement.",
@@ -2768,7 +2991,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2783,9 +3007,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Hosted share context remains a public snapshot leading to app entry.",
-      "requiredEvidenceOrWork": "A richer contextual invitation continuation is not implemented; test existing path first.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Invitation and dated public-share context survives account entry; explicit continuation does not grant score consent or automatically copy a rating.",
+      "requiredEvidenceOrWork": "Unassisted recipient comprehension, identity and real cross-device continuation.",
       "acceptanceCriterion": "A viewer can reach their own first value from a shared milestone.",
       "originalImprovement": "Carry relevant public context into onboarding without auto-linking people or leaking private data.",
       "implementationReferences": [
@@ -2793,7 +3018,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2809,6 +3035,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Break mode, no inactivity mean penalty and discreet opt-in alerts protect player control.",
       "requiredEvidenceOrWork": "Longitudinal pressure, fatigue and losing-player research.",
       "acceptanceCriterion": "Players can opt out without fabricated urgency or playing-rating penalties.",
@@ -2818,7 +3045,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2834,6 +3062,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Accepted playing relationships and honest shared evidence remain core.",
       "requiredEvidenceOrWork": "Cohesive-group retention and active network density; creator views are not proof.",
       "acceptanceCriterion": "A new cohort develops repeat interaction and useful evidence rather than isolated accounts.",
@@ -2843,7 +3072,8 @@
         "src/pages/Pages.tsx",
         "src/experience.ts",
         "server/app.ts",
-        "server/service.ts"
+        "server/service.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2859,6 +3089,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Published recap, visible change, real peak and new milestones reward a played session.",
       "requiredEvidenceOrWork": "Observe voluntary return and value after real play.",
       "acceptanceCriterion": "Players find value after each normal playing session.",
@@ -2869,7 +3100,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2885,6 +3117,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Closest supported comparison and dated shared-activity preview give checking context.",
       "requiredEvidenceOrWork": "Measure voluntary between-session returns; no manufactured daily points.",
       "acceptanceCriterion": "Returns correspond to meaningful changes and retain value during quiet weeks.",
@@ -2895,7 +3128,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2911,6 +3145,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Actual seven-day count, wins and visible change appear on home; longer periods in Insights.",
       "requiredEvidenceOrWork": "Verify cadence suitability and understanding of published-history coverage.",
       "acceptanceCriterion": "Players understand the period's story in under a minute.",
@@ -2921,7 +3156,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2937,6 +3173,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Manage goals routes directly to Settings; targets are aspirations without promised win counts.",
       "requiredEvidenceOrWork": "Task success and repeat usefulness when a goal is reached or becomes inappropriate.",
       "acceptanceCriterion": "Users can set, understand and review a relevant goal easily.",
@@ -2947,7 +3184,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2963,6 +3201,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Outcome context, partner/opponent samples and format records support evidence-based interpretation.",
       "requiredEvidenceOrWork": "Actionability review; win/loss records cannot diagnose stroke or fitness weaknesses.",
       "acceptanceCriterion": "The player learns something actionable that the stored data can actually justify.",
@@ -2973,7 +3212,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -2989,6 +3229,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Optional Web Push queue, VAPID sender, service-worker click and device controls are implemented.",
       "requiredEvidenceOrWork": "Host credentials, actual iOS/Android/desktop delivery and lifecycle tests remain unconfigured.",
       "acceptanceCriterion": "Players receive requested actionable updates reliably and can control them.",
@@ -2999,7 +3240,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3015,6 +3257,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Actions default on; progress/comparison alerts opt in; quiet hours and break checks apply.",
       "requiredEvidenceOrWork": "Delivery frequency, preference comprehension and fatigue evidence.",
       "acceptanceCriterion": "Players know what needs action without treating every unread update as urgent.",
@@ -3025,7 +3268,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3041,6 +3285,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Exact-result awaiting names and stale-action cancellation supplement inbox and optional alerts.",
       "requiredEvidenceOrWork": "Measure approval completion/latency without converting silence into acceptance.",
       "acceptanceCriterion": "Result completion improves without silence becoming consent.",
@@ -3051,7 +3296,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3067,6 +3313,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Preferred category, local draft, exact-result links and focus-return refresh preserve continuity.",
       "requiredEvidenceOrWork": "Device-change and long-gap returning-player study.",
       "acceptanceCriterion": "Players resume the correct category and task across sessions.",
@@ -3077,7 +3324,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3093,6 +3341,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Quiet-week copy preserves the estimate; break mode can suspend comparison prompts.",
       "requiredEvidenceOrWork": "Observe genuine returning users; uncertainty may widen despite stable mean.",
       "acceptanceCriterion": "Returning after a gap feels informative rather than punitive.",
@@ -3103,7 +3352,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3119,6 +3369,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Loss copy and lasting personal peak avoid framing a loss as personal failure.",
       "requiredEvidenceOrWork": "Post-loss voluntary-return cohorts and qualitative reasons.",
       "acceptanceCriterion": "Players continue valuing the app through normal losing periods.",
@@ -3129,7 +3380,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3145,6 +3397,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Period insights, head-to-head context and records add value beyond a changing number.",
       "requiredEvidenceOrWork": "Plateau players must demonstrate actual usefulness.",
       "acceptanceCriterion": "Established users still gain useful insight when their rating barely changes.",
@@ -3155,7 +3408,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3171,6 +3425,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Private full cursor archive and period insights improve longitudinal access.",
       "requiredEvidenceOrWork": "Long-history performance, retrieval and correction trials.",
       "acceptanceCriterion": "The app becomes a useful record of a player's badminton life.",
@@ -3181,7 +3436,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3196,9 +3452,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Individual weekly recap is implemented; no automatic circle digest or invented group event.",
-      "requiredEvidenceOrWork": "Design and test a voluntary real group recap ritual before claiming community habit.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Existing groups have a voluntary recap weekday, actual activity/playing connections and 7/30/90-day recaps. No automatic habit or participation reward is asserted.",
+      "requiredEvidenceOrWork": "Observe real repeated group check-ins without prompting and assess usefulness/pressure.",
       "acceptanceCriterion": "Groups return for a real shared update at a cadence suited to their play.",
       "originalImprovement": "Offer an optional weekly circle recap or supported season snapshot, without creating hosted games.",
       "implementationReferences": [
@@ -3207,7 +3464,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3222,9 +3480,10 @@
       },
       "currentScore": null,
       "accepted": false,
-      "status": "work-and-validation-required",
-      "currentImplementation": "Aggregate, right-censored ledger report and a pre-registered pilot kit are supplied.",
-      "requiredEvidenceOrWork": "Meaningful check/view telemetry is not captured by this proxy; consented research logs required.",
+      "status": "implemented-validation-pending",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Optional account-bound view events are off by default, rate-deduplicated and erased on withdrawal. Read-only aggregate reports separate consent-epoch view returns from ledger proxies, exclude immature/expired windows and disclose withdrawal bias.",
+      "requiredEvidenceOrWork": "Real consented cohorts, frozen meaningful-return definitions, observation windows and independent research review. No experiment assignment or causal retention proof.",
       "acceptanceCriterion": "Changes can be evaluated against real activation and retention outcomes.",
       "originalImprovement": "Define meaningful retained activity, event collection and consent-aware cohort reporting.",
       "implementationReferences": [
@@ -3233,7 +3492,8 @@
         "server/push.ts",
         "server/pilot-report.ts",
         "tests/pilot.test.ts",
-        "tests/push.test.ts"
+        "tests/push.test.ts",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3249,6 +3509,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "No paywall or $20-value claim is introduced.",
       "requiredEvidenceOrWork": "Actual recurring value and willingness-to-pay evidence; billing integration is excluded.",
       "acceptanceCriterion": "Target players pay $20 and continue renewing after novelty fades.",
@@ -3256,7 +3517,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3272,6 +3534,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "All current pilot functionality is available without an entitlement wall.",
       "requiredEvidenceOrWork": "Define and test a paid promise later; no paid tier is falsely advertised.",
       "acceptanceCriterion": "Users can explain what payment adds without reading a feature wall.",
@@ -3279,7 +3542,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3295,6 +3559,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Players can experience the full current rating/social loop before payment.",
       "requiredEvidenceOrWork": "Measure recognized value; having free access does not establish value.",
       "acceptanceCriterion": "Players understand the benefit before they are asked to pay.",
@@ -3302,7 +3567,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3318,6 +3584,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Friends and core evidence remain available without payment.",
       "requiredEvidenceOrWork": "Test organic group participation and economics; payment cannot compensate for thin networks.",
       "acceptanceCriterion": "A subscriber's normal opponent can approve a match without buying a subscription.",
@@ -3325,7 +3592,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3341,6 +3609,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Recurring period, partner/opponent and format insights are implemented.",
       "requiredEvidenceOrWork": "Observed repeated usefulness and paid differentiation remain unproven.",
       "acceptanceCriterion": "The subscriber gets useful new interpretation as their evidence grows.",
@@ -3348,7 +3617,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3364,6 +3634,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Guidance is limited to rating/evidence explanations, without fabricated technical coaching.",
       "requiredEvidenceOrWork": "Creator-approved genuine guidance or direct observations would be needed for a coaching offer.",
       "acceptanceCriterion": "Advice avoids pretending that win/loss records reveal a player's stroke weaknesses.",
@@ -3371,7 +3642,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3387,6 +3659,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Circle comparisons and shared history can support existing-group level discussions.",
       "requiredEvidenceOrWork": "Organizer time savings and actual willingness to pay remain unmeasured.",
       "acceptanceCriterion": "Organizers demonstrate repeated time savings and actual payment intent.",
@@ -3394,7 +3667,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3410,6 +3684,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "excluded",
+      "previousRegisterStatus": "excluded",
       "currentImplementation": "Payment integration, subscriptions and billing flows are excluded by current instruction.",
       "requiredEvidenceOrWork": "Excluded from this acceptance pass; no payment code or paid conversion claim.",
       "acceptanceCriterion": "Users can buy, understand, manage and cancel a paid plan correctly.",
@@ -3417,7 +3692,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3433,6 +3709,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Archive and social context remain accessible in quiet months without a recurring charge.",
       "requiredEvidenceOrWork": "A recurring paid quiet-month benefit is not defined or validated.",
       "acceptanceCriterion": "Customers understand why they keep paying during ordinary periods of lower activity.",
@@ -3440,7 +3717,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3456,6 +3734,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "No price experiment or actual payment data exists.",
       "requiredEvidenceOrWork": "Real pricing/renewal validation later; stated intent cannot establish a $20 offer.",
       "acceptanceCriterion": "Pricing decisions follow actual paid behavior rather than survey enthusiasm or follower counts.",
@@ -3463,7 +3742,8 @@
       "implementationReferences": [
         "docs/pilot-protocol.md",
         "docs/implementation.md",
-        "src/components/Insights.tsx"
+        "src/components/Insights.tsx",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3479,15 +3759,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
-      "currentImplementation": "Privacy choices, blocking, deletion/export and explicit share disclosure remain.",
-      "requiredEvidenceOrWork": "Complete privacy task study and operational/legal review for actual launch markets.",
+      "previousRegisterStatus": "implemented-validation-pending",
+      "currentImplementation": "Export now includes private research metadata/events, passkey metadata and invitation status; no recovery secrets, private keys or raw invitation secrets are exported. Portrait visibility, withdrawal, blocking and deletion remain explicit.",
+      "requiredEvidenceOrWork": "Privacy task study, retained-ledger disclosure and operational/legal review in actual launch markets.",
       "acceptanceCriterion": "Users can predict and verify what becomes visible to whom.",
       "originalImprovement": "Improve settings access and confirm that every visible setting has a real, understandable effect.",
       "implementationReferences": [
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3503,6 +3785,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Inert public-history UI control was removed; implemented preferences retain actual behavior.",
       "requiredEvidenceOrWork": "Audit every remaining setting and migration; legacy stored field is not advertised.",
       "acceptanceCriterion": "Every control produces the result promised by its label.",
@@ -3511,7 +3794,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3527,6 +3811,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Mobile Settings includes real sign out; logout revokes this device’s push registration. Account-epoch guards prevent delayed private responses restoring a signed-out session.",
       "requiredEvidenceOrWork": "Held-response browser regression passes; device/shared-phone lifecycle review remains.",
       "acceptanceCriterion": "A phone user can leave the account immediately and the session is actually invalidated.",
@@ -3535,7 +3820,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3551,6 +3837,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Recovery, export, deletion, break mode and private response records remain.",
       "requiredEvidenceOrWork": "Real support/recovery usability and external operational/legal review.",
       "acceptanceCriterion": "Users can access their data and leave without losing other players' valid history.",
@@ -3559,7 +3846,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3575,6 +3863,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "implemented-validation-pending",
+      "previousRegisterStatus": "implemented-validation-pending",
       "currentImplementation": "Hosted snapshots can be revoked; historical match dates and snapshot creation dates are distinct. Public links expose no newer rating number. Downloaded PNGs remain external copies.",
       "requiredEvidenceOrWork": "Player teach-back of hosted versus copied sharing, and public-cache/device review.",
       "acceptanceCriterion": "Revoked links stop exposing the snapshot and users understand downloaded copies remain.",
@@ -3583,7 +3872,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3599,6 +3889,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "Independent reviewer tools and audit records remain; no staffed live service is provisioned.",
       "requiredEvidenceOrWork": "Named support owner, response target, escalation, appeal and staffing trial.",
       "acceptanceCriterion": "Real disputes are resolved within a stated, measured service expectation.",
@@ -3607,7 +3898,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3623,15 +3915,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "The English adult pilot is clear; Singapore district taxonomy remains.",
-      "requiredEvidenceOrWork": "Human launch-market decision, localization and verified global location support remain.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Global declared-location pools replace the Singapore-only restriction; English, adult-only pilot boundaries remain explicit.",
+      "requiredEvidenceOrWork": "Launch-market decision, translations, spelling/locality normalization, support ownership and verified geography are still unresolved.",
       "acceptanceCriterion": "The launch audience can use the core location, language and identity workflows naturally.",
       "originalImprovement": "Choose a coherent initial market and communicate it, then localize using verified demand.",
       "implementationReferences": [
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3647,15 +3941,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "History/queue indexes and bounded insights reduce some work; architecture remains single-instance.",
-      "requiredEvidenceOrWork": "Target-load proof, replay isolation and distributed limits before creator-scale rollout.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "File-backed rating replay and encrypted push processing run in a background worker. Prepared/batched projections, consistent dashboard read snapshots and an actor-bound invalidating cache reduce repeated work. A local synthetic read/replay benchmark is provided.",
+      "requiredEvidenceOrWork": "Hosted read/write/signup burst tests, continuous-ledger replay retry behavior, distributed limits and larger evidence bounds remain. This is still a single-instance SQLite pilot.",
       "acceptanceCriterion": "Expected launch demand preserves responsive scoring, approval and browsing.",
       "originalImprovement": "Load-test realistic cohorts, isolate replay work and remove inappropriate pool caps before scaling.",
       "implementationReferences": [
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3671,15 +3967,17 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
-      "currentImplementation": "Backup/replay tools and durable jobs remain; optional push adds bounded retries/expiry handling.",
-      "requiredEvidenceOrWork": "Actual hosted restore, monitoring, incident ownership and delivery drills.",
+      "previousRegisterStatus": "work-and-validation-required",
+      "currentImplementation": "Worker health, bounded restart, queued retry, publication race guards and graceful close are implemented. Existing backup/replay tools remain.",
+      "requiredEvidenceOrWork": "Actual hosted restore, alerting, incident staffing, deployment/container and real-device delivery drills.",
       "acceptanceCriterion": "A failure is detected, communicated and recovered without silent rating corruption.",
       "originalImprovement": "Verify deployment, restore drills, alerting and owner response before a broad release.",
       "implementationReferences": [
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     },
     {
@@ -3695,6 +3993,7 @@
       "currentScore": null,
       "accepted": false,
       "status": "work-and-validation-required",
+      "previousRegisterStatus": "work-and-validation-required",
       "currentImplementation": "All original criteria are retained with null new scores and explicit remaining proof.",
       "requiredEvidenceOrWork": "Independent reviewers and real-player evidence must establish acceptance; no self-issued 9.5.",
       "acceptanceCriterion": "Acceptance covers visible quality, full workflows and real behavior rather than passing a few happy paths.",
@@ -3703,7 +4002,8 @@
         "server/app.ts",
         "server/service.ts",
         "docs/operations.md",
-        "docs/pilot-protocol.md"
+        "docs/pilot-protocol.md",
+        "docs/verification-2026-10-11.md"
       ]
     }
   ],

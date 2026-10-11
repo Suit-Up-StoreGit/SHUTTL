@@ -18,23 +18,31 @@
     "replay": "node --env-file-if-exists=.env server/replay.ts",
     "pilot:report": "node --env-file-if-exists=.env server/pilot-report.ts",
     "push:keys": "node server/push-keys.ts",
-    "format": "prettier --write src server tests/*.test.ts tests/browser tests/capture-mockups.ts vite.config.ts playwright.config.ts README.md docs/*.md"
+    "format": "prettier --write src server tests/*.test.ts tests/browser tests/capture-mockups.ts vite.config.ts playwright.config.ts README.md docs/*.md",
+    "calibrate": "node server/calibration-report.ts",
+    "benchmark": "node server/benchmark.ts"
   },
   "dependencies": {
     "@fastify/cookie": "11.1.3",
     "@fastify/rate-limit": "11.2.1",
     "@fastify/static": "10.1.6",
+    "@simplewebauthn/browser": "14.0.0",
+    "@simplewebauthn/server": "14.0.3",
     "@stdlib/math-base-special-erfc": "0.2.5",
+    "countries-list": "3.4.1",
     "fastify": "5.12.5",
     "lucide-react": "1.55.0",
+    "qrcode": "1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "web-push": "3.6.7",
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.64.0",
     "@types/node": "24.19.2",
+    "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/web-push": "3.6.4",

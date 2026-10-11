@@ -28,12 +28,14 @@ The server serves the built application at http://127.0.0.1:3000. Copy `.env.exa
 - Affirmative consent for rated sessions, opposite-side confirmation, all-player approval for retrospective results, corrections and independent dispute review.
 - Durable rating publication and chronological replay, idempotent retries, private drafts and offline recovery.
 - Accepted friends, existing-group comparison circles, activity and supported lead-change updates.
+- Optional private portraits, player QR codes, revocable invitation links, group crests/mottos/period recaps and private post-match encouragement.
 - Closest supported rival, optional private comparison pin, real shared-match context and a dated activity preview.
 - First-rating reveal, league-promotion and personal-best recaps; current/reveal/best sharing from published history.
 - Readable mobile passports, separate profile sections, full paginated history and period/partner/opponent/format insights.
 - Optional device alerts with explicit permission, channel preferences, quiet hours and sign-out revocation. Hosting credentials and real-device delivery still need setup.
 - Private response records, account recovery, blocking, export, deletion, privacy controls and revocable dated sharing.
 - Five responsive home designs, accessible dialogs, reduced motion, local fonts and original league assets.
+- Light/dark/device appearance, 200% text, optional user-verified passkeys on supported origins and explicit opt-in research with withdrawal/export.
 
 [View the five home designs](docs/home-designs.md). The `/design` preview uses clearly labeled fictional data. Normal accounts show actual activity and honest empty states.
 

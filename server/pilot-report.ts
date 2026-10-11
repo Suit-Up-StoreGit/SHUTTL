@@ -1,7 +1,11 @@
 import { DatabaseSync } from "node:sqlite";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { pilotMetrics, type PilotParticipant } from "./pilot-metrics.ts";
+import {
+  pilotMetrics,
+  researchMetrics,
+  type PilotParticipant,
+} from "./pilot-metrics.ts";
 const path = resolve(process.env.DATABASE_PATH || "./data/shuttl.sqlite");
 if (!existsSync(path))
   throw new Error(
@@ -41,6 +45,32 @@ try {
   const demo = !!db
     .prepare("SELECT 1 FROM app_meta WHERE key='demo_seeded' AND value='true'")
     .get();
+  const hasResearch = !!db
+    .prepare(
+      "SELECT 1 FROM sqlite_master WHERE type='table' AND name='research_events'",
+    )
+    .get();
+  const research = hasResearch
+    ? researchMetrics(
+        (
+          db
+            .prepare(
+              "SELECT owner,updated_at FROM research_consent WHERE enabled=1",
+            )
+            .all() as any[]
+        ).map((p) => ({
+          enrolled: p.updated_at,
+          events: (
+            db
+              .prepare(
+                "SELECT kind,created_at FROM research_events WHERE owner=? AND created_at<=?",
+              )
+              .all(p.owner, asOf) as any[]
+          ).map((e) => ({ kind: e.kind, at: e.created_at })),
+        })),
+        asOf,
+      )
+    : { status: "No consented research collection in this database." };
   console.log(
     JSON.stringify(
       {
@@ -49,6 +79,7 @@ try {
         method:
           "Aggregate database-ledger proxies. Includes deleted registered accounts to avoid survivor bias. A return means submitting or approving a result, not opening the app or viewing a rivalry. Day-7 uses days 7–13; day-30 uses days 30–36, with only fully observed windows in the denominator. First publication is availability, not verified time-to-user-value.",
         ...pilotMetrics(participants, asOf),
+        consentedResearch: research,
         acceptance:
           "No 9.5 rating or market-success claim is derived from this report. Verify cohort membership and study provenance separately.",
       },

@@ -134,6 +134,7 @@ export function RatingCard({
           <div
             className="placement-pips"
             aria-label={`${rating.count} of five confirmed results`}
+            role="img"
           >
             {[0, 1, 2, 3, 4].map((i) => (
               <span className={i < rating.count ? "filled" : ""} key={i}>

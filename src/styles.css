@@ -4,6 +4,9 @@
   font-weight: 200 800;
   font-display: swap;
 }
+html[data-text-size="large"] {
+  font-size: 200%;
+}
 @font-face {
   font-family: Barlow;
   src: url("/fonts/barlow.ttf") format("truetype");
@@ -85,7 +88,7 @@ textarea {
   background: var(--card);
   width: 100%;
   min-height: 48px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 input:focus,
 select:focus,
@@ -106,12 +109,12 @@ textarea {
 }
 label {
   display: block;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 650;
   margin-bottom: 7px;
 }
 small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 svg {
   flex-shrink: 0;
@@ -121,7 +124,7 @@ svg {
   color: #14372c;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 750;
   letter-spacing: 0.15em;
   line-height: 1.5;
@@ -143,7 +146,7 @@ svg {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 25px;
+  font-size: 1.5625rem;
   font-weight: 800;
   letter-spacing: -0.07em;
   white-space: nowrap;
@@ -157,13 +160,13 @@ svg {
   margin-left: -8px;
 }
 .brand.small {
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 .sidebar .brand {
   margin-left: 15px;
 }
 .sidebar-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   color: #778575;
   margin: 62px 16px 17px;
@@ -183,7 +186,7 @@ svg {
   background: none;
   border-radius: 12px;
   padding: 12px 16px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 650;
 }
 .sidebar nav button[aria-current="page"] {
@@ -209,14 +212,14 @@ svg {
 .side-link {
   font-weight: 500;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .side-link.active {
   color: var(--forest);
   background: #e6ecd9;
 }
 .count-badge {
-  font-size: 10px;
+  font-size: 0.625rem;
   background: var(--lime);
   color: var(--forest);
   border-radius: 6px;
@@ -228,7 +231,7 @@ svg {
   padding-top: 50px;
 }
 .sidebar-quote {
-  font-size: 22px;
+  font-size: 1.375rem;
   letter-spacing: -0.05em;
   color: #506748;
   line-height: 1.3;
@@ -243,7 +246,7 @@ svg {
   padding: 19px 7px 8px;
   width: 100%;
   text-align: left;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 .account-chip span:not(.avatar) {
@@ -252,13 +255,13 @@ svg {
 .account-chip small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 500;
   margin-top: 4px;
 }
 .side-link.signout {
   min-height: 35px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding-left: 9px;
 }
 .main-stage {
@@ -279,7 +282,7 @@ svg {
   display: none;
 }
 .topbar-caption {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   display: flex;
   gap: 9px;
@@ -327,7 +330,7 @@ svg {
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 750;
   background: #e5ebd8;
   color: #415932;
@@ -337,7 +340,7 @@ svg {
   width: 34px;
   height: 34px;
   flex-basis: 34px;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .button {
   background: var(--forest);
@@ -349,7 +352,7 @@ svg {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 650;
   padding: 12px 19px;
   text-decoration: none;
@@ -395,7 +398,7 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 650;
   min-height: 44px;
   padding: 4px 0;
@@ -408,7 +411,7 @@ svg {
 }
 .pill {
   display: inline-flex;
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 0.02em;
   padding: 5px 9px;
   border-radius: 6px;
@@ -423,7 +426,7 @@ svg {
   gap: 30px;
 }
 .home-heading h1 {
-  font-size: 49px;
+  font-size: 3.0625rem;
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.055em;
@@ -433,13 +436,13 @@ svg {
   color: #7e926c;
 }
 .home-heading p {
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 17px;
   line-height: 1.7;
   color: var(--muted);
 }
 .greeting-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -457,7 +460,7 @@ svg {
   background: none;
   min-height: 47px;
   padding: 12px 24px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 650;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
@@ -520,11 +523,11 @@ svg {
 }
 .passport-top .eyebrow {
   color: #c2d5b1;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .passport-code {
   color: #8fa68b;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.2em;
 }
 .passport-number-row {
@@ -538,7 +541,7 @@ svg {
   font-family: Barlow, Impact, sans-serif;
   font-weight: 600;
   letter-spacing: -0.035em;
-  font-size: 128px;
+  font-size: 8rem;
   line-height: 0.95;
   display: block;
   font-variant-numeric: tabular-nums;
@@ -551,7 +554,7 @@ svg {
   padding-right: 8px;
 }
 .passport-seal span {
-  font-size: 14px;
+  font-size: 0.875rem;
   letter-spacing: -0.01em;
   font-weight: 550;
 }
@@ -560,7 +563,7 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1.6;
   border-bottom: 1px solid #b8cea52e;
   padding-bottom: 19px;
@@ -583,7 +586,7 @@ svg {
   border: 1px solid #a9b89d55;
   padding: 3px 7px;
   border-radius: 5px;
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 500;
 }
 .evidence.established {
@@ -596,7 +599,7 @@ svg {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #d0debd;
 }
 .rating-progress {
@@ -613,7 +616,7 @@ svg {
   border-radius: 3px;
 }
 .passport-footnote {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #b4c6a8;
   margin-top: 14px;
 }
@@ -633,14 +636,14 @@ svg {
   border-radius: 5px;
   background: #ffffff0d;
   color: #b4c6a8;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .placement-pips .filled {
   background: var(--lime);
   color: var(--forest);
 }
 .placement-progress p {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #cbd9bc;
   margin-top: 13px;
   line-height: 1.7;
@@ -661,12 +664,12 @@ svg {
   border: 0;
 }
 .home-stats .eyebrow {
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 0.11em;
 }
 .home-stats strong {
   font-family: Barlow, sans-serif;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 600;
   display: block;
   line-height: 1.1;
@@ -674,7 +677,7 @@ svg {
 }
 .home-stats small {
   font-family: Manrope, sans-serif;
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 500;
   color: var(--muted);
 }
@@ -691,16 +694,16 @@ svg {
   gap: 8px;
 }
 .section-heading h2 {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.04em;
 }
 .section-heading .text-button {
-  font-size: 10px;
+  font-size: 0.625rem;
   min-height: 30px;
 }
 .panel-intro {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   line-height: 1.6;
   margin: 5px 0 12px;
@@ -711,7 +714,7 @@ svg {
   justify-content: space-between;
   margin-top: 9px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .progress-panel > svg {
   display: block;
@@ -745,7 +748,7 @@ svg {
   display: flex;
   justify-content: space-between;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 0.5625rem;
   margin-top: 6px;
 }
 .chart-empty {
@@ -755,7 +758,7 @@ svg {
   gap: 12px;
   min-height: 145px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.6;
 }
 .friend-line {
@@ -770,12 +773,12 @@ svg {
   min-width: 0;
 }
 .friend-text strong {
-  font-size: 11px;
+  font-size: 0.6875rem;
   display: block;
   overflow-wrap: anywhere;
 }
 .friend-text > span {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: var(--muted);
   display: block;
   margin-top: 4px;
@@ -784,12 +787,12 @@ svg {
   text-align: right;
 }
 .friend-score strong {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 750;
   letter-spacing: -0.06em;
 }
 .friend-score small {
-  font-size: 8px;
+  font-size: 0.5rem;
   display: block;
   margin-top: 2px;
   color: var(--muted);
@@ -801,7 +804,7 @@ svg {
   gap: 6px;
   color: #496541;
   width: 100%;
-  font-size: 10px;
+  font-size: 0.625rem;
   min-height: 44px;
   padding: 17px 0 0;
   font-weight: 650;
@@ -834,18 +837,18 @@ svg {
   min-width: 0;
 }
 .activity-row p {
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1.7;
 }
 .activity-row div > span {
-  font-size: 8px;
+  font-size: 0.5rem;
   color: var(--muted);
   line-height: 1.7;
   display: block;
   margin-top: 3px;
 }
 .activity-row > strong {
-  font-size: 10px;
+  font-size: 0.625rem;
   padding-top: 2px;
 }
 .positive {
@@ -869,18 +872,18 @@ svg {
   color: #668451;
 }
 .next-step .eyebrow {
-  font-size: 8px;
+  font-size: 0.5rem;
   color: #587144;
 }
 .next-step h3 {
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1.2;
   margin: 10px 0 8px;
   max-width: 85%;
   letter-spacing: -0.055em;
 }
 .next-step p {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #54684a;
   line-height: 1.8;
 }
@@ -895,13 +898,13 @@ svg {
   margin: 21px 6px;
 }
 .tiny-shuttle {
-  font-size: 27px;
+  font-size: 1.6875rem;
   font-weight: 800;
   letter-spacing: -0.11em;
   color: #789269;
 }
 .court-footnote p {
-  font-size: 8px;
+  font-size: 0.5rem;
   line-height: 1.8;
   color: var(--muted);
 }
@@ -922,13 +925,13 @@ svg {
 }
 .pending-banner strong {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .pending-banner small {
   display: block;
   color: #536d43;
   margin-top: 5px;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .pending-icon {
   width: 30px;
@@ -950,11 +953,11 @@ svg {
 }
 .quiet-state strong {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
 }
 .quiet-state p {
-  font-size: 10px;
+  font-size: 0.625rem;
   margin-top: 7px;
 }
 .empty {
@@ -973,17 +976,17 @@ svg {
   margin-bottom: 14px;
 }
 .empty h3 {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .empty p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.8;
   margin: 8px auto 15px;
   max-width: 300px;
 }
 .empty .button {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .mobile-nav {
   display: none;
@@ -996,12 +999,12 @@ svg {
   margin: 18px 0 28px;
 }
 .page-heading h1 {
-  font-size: 38px;
+  font-size: 2.375rem;
   margin-top: 7px;
   font-weight: 600;
 }
 .page-subtitle {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
   line-height: 1.8;
   max-width: 600px;
@@ -1031,19 +1034,19 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
 }
 .result-top .pill {
-  font-size: 9px;
+  font-size: 0.5625rem;
 }
 .result-card h3 {
-  font-size: 15px;
+  font-size: 0.9375rem;
   margin: 12px 0 7px;
   line-height: 1.6;
 }
 .result-bottom {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -1056,7 +1059,7 @@ svg {
   align-items: center;
   margin: 12px 0;
   font-family: Barlow, sans-serif;
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 .result-games span {
   padding-right: 10px;
@@ -1070,7 +1073,7 @@ svg {
   border: 1px solid #d5e1c7;
   background: #ecf2e2;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.8;
   margin-bottom: 18px;
 }
@@ -1081,7 +1084,7 @@ svg {
 }
 .notice p {
   color: #5a7050;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .notice.neutral {
   background: #f1f3eb;
@@ -1090,7 +1093,7 @@ svg {
 .form-error {
   border-left: 3px solid #a64746;
   padding: 9px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #9c3d3f;
   background: #fcf1ed;
   margin: 12px 0;
@@ -1098,7 +1101,7 @@ svg {
   line-height: 1.7;
 }
 .form-help {
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.8;
   color: var(--muted);
   margin: 8px 0 16px;
@@ -1117,7 +1120,7 @@ svg {
   align-items: flex-start;
   min-height: 44px;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.8;
   margin: 17px 0;
 }
@@ -1134,11 +1137,11 @@ svg {
 }
 .field-row label {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .field-row label > small {
   display: block;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 400;
   line-height: 1.7;
   color: var(--muted);
@@ -1174,7 +1177,7 @@ svg {
   margin-bottom: 22px;
 }
 .modal-heading h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 650;
 }
 .modal-heading .icon-button {
@@ -1211,10 +1214,10 @@ svg {
 }
 .score-games strong {
   font-family: Barlow, sans-serif;
-  font-size: 32px;
+  font-size: 2rem;
 }
 .score-games span {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
 }
 .team-row {
@@ -1223,7 +1226,7 @@ svg {
   gap: 15px;
   margin: 17px 0;
   text-align: center;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 650;
 }
 .score-inputs {
@@ -1235,7 +1238,7 @@ svg {
 }
 .score-inputs .game-label {
   text-align: center;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   margin-bottom: 13px;
 }
@@ -1245,13 +1248,13 @@ svg {
   gap: 12px;
 }
 .score-inputs label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 500;
 }
 .score-inputs input {
   font-family: Barlow, sans-serif;
   text-align: center;
-  font-size: 28px;
+  font-size: 1.75rem;
 }
 .player-picker {
   display: grid;
@@ -1278,12 +1281,12 @@ svg {
   min-height: 30px;
 }
 .picked-player > span:not(.avatar) {
-  font-size: 12px;
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
 .picked-player small {
   display: block;
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -1297,7 +1300,7 @@ svg {
   padding: 15px;
   border-radius: 12px;
   min-height: 62px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .lookup-results {
   display: grid;
@@ -1316,14 +1319,14 @@ svg {
   min-height: 54px;
 }
 .lookup-results strong {
-  font-size: 12px;
+  font-size: 0.75rem;
   display: block;
 }
 .lookup-results small {
   display: block;
   color: var(--muted);
   margin-top: 3px;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .lookup-results .result-action {
   margin-left: auto;
@@ -1336,10 +1339,10 @@ svg {
   border-radius: 14px;
 }
 .scope-card h3 {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .scope-card p {
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.8;
   color: var(--muted);
   margin: 8px 0;
@@ -1354,7 +1357,7 @@ svg {
   padding: 5px 8px;
   border-radius: 6px;
   background: #eff2e7;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .scope-people .accepted {
   background: #dae9c5;
@@ -1366,7 +1369,7 @@ svg {
 }
 .scope-card .button {
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .ranking-row {
   display: flex;
@@ -1378,25 +1381,25 @@ svg {
 .ranking-row > strong:first-child {
   width: 23px;
   font-family: Barlow, sans-serif;
-  font-size: 26px;
+  font-size: 1.625rem;
   color: #789263;
 }
 .ranking-person {
   flex: 1;
 }
 .ranking-person strong {
-  font-size: 12px;
+  font-size: 0.75rem;
   display: block;
 }
 .ranking-person small {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   display: block;
   margin-top: 5px;
 }
 .ranking-number {
   font-family: Barlow, sans-serif;
-  font-size: 30px;
+  font-size: 1.875rem;
 }
 .circle-tile {
   display: flex;
@@ -1413,11 +1416,11 @@ svg {
   flex: 1;
 }
 .circle-tile strong {
-  font-size: 14px;
+  font-size: 0.875rem;
   display: block;
 }
 .circle-tile small {
-  font-size: 10px;
+  font-size: 0.625rem;
   display: block;
   color: var(--muted);
   margin-top: 4px;
@@ -1449,17 +1452,17 @@ svg {
   margin-top: 6px;
 }
 .notification strong {
-  font-size: 12px;
+  font-size: 0.75rem;
   display: block;
 }
 .notification p {
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.8;
   color: var(--muted);
   margin: 5px 0;
 }
 .notification small {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: var(--muted);
 }
 .profile-card {
@@ -1474,13 +1477,13 @@ svg {
   width: 59px;
   height: 59px;
   flex-basis: 59px;
-  font-size: 19px;
+  font-size: 1.1875rem;
 }
 .profile-identity h2 {
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 .profile-identity p {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   margin-top: 5px;
 }
@@ -1495,24 +1498,24 @@ svg {
   flex: 1;
 }
 .profile-rating-line strong {
-  font-size: 13px;
+  font-size: 0.8125rem;
   display: block;
 }
 .profile-rating-line small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 0.625rem;
   margin-top: 5px;
 }
 .profile-rating-line > b {
   font-family: Barlow, sans-serif;
-  font-size: 33px;
+  font-size: 2.0625rem;
 }
 .settings-panel {
   margin-top: 20px;
 }
 .settings-panel h3 {
-  font-size: 16px;
+  font-size: 1rem;
   margin-bottom: 12px;
 }
 .loading {
@@ -1521,7 +1524,7 @@ svg {
   justify-content: center;
   gap: 12px;
   padding: 65px 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .spin {
@@ -1542,7 +1545,7 @@ svg {
   padding: 15px 19px;
   background: #14372c;
   color: #f4f8ee;
-  font-size: 12px;
+  font-size: 0.75rem;
   max-width: calc(100% - 30px);
   width: max-content;
   z-index: 20;
@@ -1553,7 +1556,7 @@ svg {
   color: #715d32;
   padding: 12px 20px;
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .recovery-code {
   background: #e8efdc;
@@ -1563,7 +1566,7 @@ svg {
   overflow-wrap: anywhere;
   user-select: all;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 0.875rem;
   margin: 14px 0;
 }
 .auth-shell {
@@ -1602,7 +1605,7 @@ svg {
   padding: 3px;
 }
 .auth-story h1 {
-  font-size: 65px;
+  font-size: 4.0625rem;
   line-height: 1.04;
   font-weight: 550;
   margin-top: 100px;
@@ -1613,14 +1616,14 @@ svg {
   color: var(--lime);
 }
 .auth-story p {
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.9;
   color: #bed0ac;
   max-width: 330px;
   margin-top: 25px;
 }
 .auth-story .story-bottom {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.1em;
   line-height: 2;
   margin-top: auto;
@@ -1641,12 +1644,12 @@ svg {
   display: none;
 }
 .auth-inner h2 {
-  font-size: 35px;
+  font-size: 2.1875rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
 .auth-intro {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.8;
   margin-bottom: 30px;
@@ -1659,7 +1662,7 @@ svg {
 }
 .auth-tabs button {
   background: none;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-height: 44px;
   padding: 10px 0;
   border-bottom: 2px solid transparent;
@@ -1670,13 +1673,13 @@ svg {
   color: var(--forest);
 }
 .auth-footer {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   line-height: 1.8;
   margin-top: 23px;
 }
 .auth-form .text-button {
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .claim-public,
 .share-public {
@@ -1689,10 +1692,10 @@ svg {
   margin-bottom: 40px;
 }
 .claim-public h1 {
-  font-size: 34px;
+  font-size: 2.125rem;
 }
 .claim-public p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.8;
   margin-top: 13px;
@@ -1704,7 +1707,7 @@ svg {
   margin: 30px 0;
 }
 .share-public h1 {
-  font-size: 30px;
+  font-size: 1.875rem;
 }
 .design-layout {
   background: #f6f7f2;
@@ -1726,7 +1729,7 @@ svg {
 .design-controls button {
   background: #e9eede;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 11px 14px;
   min-height: 44px;
 }
@@ -1735,7 +1738,7 @@ svg {
   color: #f4f7ec;
 }
 .design-caption {
-  font-size: 10px;
+  font-size: 0.625rem;
   text-align: center;
   color: #65745d;
   background: #eef2e6;
@@ -1782,7 +1785,7 @@ svg {
   color: #5a7e45;
 }
 .concept-court .rating-number {
-  font-size: 139px;
+  font-size: 8.6875rem;
 }
 .concept-court .home-stats {
   background: #e7eddd;
@@ -1797,7 +1800,7 @@ svg {
 }
 .circle-spotlight .eyebrow {
   color: #796344;
-  font-size: 9px;
+  font-size: 0.5625rem;
 }
 .avatar-stack {
   display: flex;
@@ -1812,19 +1815,19 @@ svg {
   flex-basis: 47px;
 }
 .circle-spotlight h2 {
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: 600;
   max-width: 290px;
   line-height: 1.2;
 }
 .circle-spotlight p {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #716751;
   margin-top: 10px;
   line-height: 1.8;
 }
 .concept-circle .rating-number {
-  font-size: 95px;
+  font-size: 5.9375rem;
 }
 .concept-circle .rating-passport {
   padding: 24px;
@@ -1854,6 +1857,10 @@ svg {
 .concept-arena .category-tabs button[aria-pressed="true"] {
   color: #d4e8ab;
   border-color: #d4e8ab;
+}
+.concept-arena :is(.pill, .category-pill) {
+  background: #2b4935;
+  color: #dcebc7;
 }
 .concept-arena .record-button {
   background: #d4e8ab;
@@ -1939,10 +1946,10 @@ svg {
   border-color: #b1cd89;
 }
 .league-strip strong {
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .league-strip span {
-  font-size: 6px;
+  font-size: 0.375rem;
   letter-spacing: 0.07em;
   color: #afbc9e;
 }
@@ -1950,7 +1957,7 @@ svg {
   font-family: Georgia, serif;
   line-height: 1.09;
   font-weight: 400;
-  font-size: 55px;
+  font-size: 3.4375rem;
   letter-spacing: -0.055em;
 }
 .concept-editorial .home-heading h1 em {
@@ -1965,7 +1972,7 @@ svg {
   padding: 25px 27px;
 }
 .concept-editorial .rating-number {
-  font-size: 142px;
+  font-size: 8.875rem;
 }
 .concept-editorial .passport-top .eyebrow,
 .concept-editorial .passport-code,
@@ -2022,10 +2029,10 @@ svg {
     padding-right: 60px;
   }
   .rating-number {
-    font-size: 155px;
+    font-size: 9.6875rem;
   }
   .home-heading h1 {
-    font-size: 60px;
+    font-size: 3.75rem;
   }
   .rating-passport {
     padding: 33px 36px 27px;
@@ -2054,7 +2061,7 @@ svg {
   }
   .sidebar nav button,
   .side-link {
-    font-size: 11px;
+    font-size: 0.6875rem;
     padding-left: 12px;
     gap: 10px;
   }
@@ -2067,10 +2074,10 @@ svg {
     gap: 18px;
   }
   .home-heading h1 {
-    font-size: 40px;
+    font-size: 2.5rem;
   }
   .rating-number {
-    font-size: 105px;
+    font-size: 6.5625rem;
   }
   .rating-passport {
     padding: 24px;
@@ -2083,7 +2090,7 @@ svg {
     height: 45px;
   }
   .passport-seal span {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .panel {
     padding: 18px;
@@ -2092,7 +2099,7 @@ svg {
     gap: 15px;
   }
   .record-button {
-    font-size: 10px;
+    font-size: 0.625rem;
     padding: 10px 12px;
   }
   .button-arrow {
@@ -2113,10 +2120,10 @@ svg {
   .side-link {
     gap: 8px;
     padding: 12px 10px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .sidebar .brand {
-    font-size: 23px;
+    font-size: 1.4375rem;
     margin-left: 10px;
   }
   .sidebar .brand img {
@@ -2142,7 +2149,7 @@ svg {
     display: none;
   }
   .home-heading h1 {
-    font-size: 41px;
+    font-size: 2.5625rem;
   }
   .home-heading {
     align-items: flex-end;
@@ -2154,7 +2161,7 @@ svg {
     max-width: 245px;
   }
   .rating-number {
-    font-size: 130px;
+    font-size: 8.125rem;
   }
   .passport-status {
     flex-wrap: nowrap;
@@ -2163,7 +2170,7 @@ svg {
     margin: 22px 0;
   }
   .auth-story h1 {
-    font-size: 51px;
+    font-size: 3.1875rem;
   }
   .auth-form {
     padding: 50px 30px;
@@ -2192,7 +2199,7 @@ svg {
     display: none;
   }
   .topbar .brand {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
   .topbar-actions > button:last-child {
     display: none;
@@ -2221,7 +2228,7 @@ svg {
     gap: 5px;
     flex: 1;
     min-height: 48px;
-    font-size: 9px;
+    font-size: 0.5625rem;
     color: #7e8c74;
   }
   .mobile-nav button[aria-current="page"] {
@@ -2233,21 +2240,21 @@ svg {
     position: relative;
   }
   .home-heading h1 {
-    font-size: 41px;
+    font-size: 2.5625rem;
     line-height: 1.05;
     margin-top: 13px;
   }
   .home-heading p {
     max-width: 290px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     margin-top: 13px;
   }
   .greeting-label {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .record-button {
     margin-top: 21px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     min-height: 45px;
     padding: 11px 15px;
   }
@@ -2262,7 +2269,7 @@ svg {
   .category-tabs button {
     padding: 10px 22px;
     flex: 1;
-    font-size: 11px;
+    font-size: 0.6875rem;
     min-height: 44px;
   }
   .home-grid {
@@ -2273,38 +2280,38 @@ svg {
     border-radius: 16px;
   }
   .rating-number {
-    font-size: 117px;
+    font-size: 7.3125rem;
   }
   .passport-seal img {
     width: 47px;
     height: 47px;
   }
   .passport-seal span {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .passport-status {
-    font-size: 9px;
+    font-size: 0.5625rem;
     flex-wrap: wrap;
     row-gap: 10px;
     padding-bottom: 17px;
   }
   .passport-progress-label {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .passport-bottom {
     padding-top: 15px;
   }
   .passport-footnote {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .passport-number-row {
     padding: 19px 0 14px;
   }
   .passport-top .eyebrow {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .passport-code {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .home-stats {
     margin: 24px 0;
@@ -2313,13 +2320,13 @@ svg {
     padding: 0 13px;
   }
   .home-stats .eyebrow {
-    font-size: 7px;
+    font-size: 0.4375rem;
   }
   .home-stats strong {
-    font-size: 27px;
+    font-size: 1.6875rem;
   }
   .home-stats small {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .panel {
     padding: 19px;
@@ -2336,39 +2343,39 @@ svg {
     padding: 15px 0;
   }
   .friend-text strong {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .friend-text > span {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .friend-score strong {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .friend-score small {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .panel-intro {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .invite-link {
-    font-size: 11px;
+    font-size: 0.6875rem;
     min-height: 49px;
   }
   .section-heading h2 {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .section-heading .text-button {
-    font-size: 10px;
+    font-size: 0.625rem;
     min-height: 44px;
   }
   .activity-row p {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .activity-row div > span {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .progress-caption {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .court-footnote {
     display: flex;
@@ -2377,14 +2384,14 @@ svg {
     align-items: flex-start;
   }
   .page-heading h1 {
-    font-size: 34px;
+    font-size: 2.125rem;
   }
   .page-heading > .button {
-    font-size: 10px;
+    font-size: 0.625rem;
     padding: 10px 12px;
   }
   .page-subtitle {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .modal {
     padding: 22px;
@@ -2402,11 +2409,11 @@ svg {
     gap: 12px;
   }
   .form-grid label {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .toast {
     bottom: 85px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     line-height: 1.7;
   }
   .auth-shell {
@@ -2428,17 +2435,17 @@ svg {
     margin-bottom: 65px;
   }
   .auth-inner h2 {
-    font-size: 35px;
+    font-size: 2.1875rem;
   }
   .auth-intro {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .auth-inner .button {
     min-height: 50px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .auth-tabs button {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .claim-public,
   .share-public {
@@ -2456,11 +2463,11 @@ svg {
     gap: 5px;
   }
   .design-controls button {
-    font-size: 9px;
+    font-size: 0.5625rem;
     padding: 8px 10px;
   }
   .design-caption {
-    font-size: 9px;
+    font-size: 0.5625rem;
     line-height: 1.7;
     padding: 11px 20px;
   }
@@ -2468,7 +2475,7 @@ svg {
     padding-top: 21px;
   }
   .concept-court .rating-number {
-    font-size: 125px;
+    font-size: 7.8125rem;
   }
   .concept-arena {
     padding: 21px 17px;
@@ -2477,22 +2484,22 @@ svg {
     border-radius: 16px;
   }
   .concept-arena .home-heading h1 {
-    font-size: 42px;
+    font-size: 2.625rem;
   }
   .concept-arena .rating-passport {
     padding: 22px 19px;
   }
   .concept-arena .rating-number {
-    font-size: 107px;
+    font-size: 6.6875rem;
   }
   .concept-arena .home-stats > div {
     padding: 0 8px;
   }
   .concept-editorial .home-heading h1 {
-    font-size: 43px;
+    font-size: 2.6875rem;
   }
   .concept-editorial .rating-number {
-    font-size: 129px;
+    font-size: 8.0625rem;
   }
   .concept-editorial .passport-seal {
     flex-direction: column;
@@ -2503,7 +2510,7 @@ svg {
     align-items: center;
   }
   .concept-circle .circle-spotlight h2 {
-    font-size: 25px;
+    font-size: 1.5625rem;
   }
   .home-heading .record-button {
     width: 100%;
@@ -2524,30 +2531,30 @@ svg {
     padding-right: 16px;
   }
   .home-heading h1 {
-    font-size: 37px;
+    font-size: 2.3125rem;
   }
   .rating-passport {
     padding: 23px 20px;
   }
   .rating-number {
-    font-size: 106px;
+    font-size: 6.625rem;
   }
   .passport-seal img {
     width: 40px;
     height: 40px;
   }
   .home-stats .eyebrow {
-    font-size: 6.5px;
+    font-size: 0.40625rem;
   }
   .home-stats small {
     display: block;
     margin-top: 3px;
   }
   .friend-text strong {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .friend-text > span {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .player-picker {
     grid-template-columns: 1fr;
@@ -2559,10 +2566,10 @@ svg {
     grid-template-columns: 1fr;
   }
   .concept-arena .rating-number {
-    font-size: 98px;
+    font-size: 6.125rem;
   }
   .concept-editorial .rating-number {
-    font-size: 115px;
+    font-size: 7.1875rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2596,10 +2603,10 @@ svg {
 .passport-footnote,
 .placement-progress p,
 .evidence {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .home-stats .eyebrow {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.05em;
 }
 .home-stats small,
@@ -2609,19 +2616,19 @@ svg {
 .greeting-label,
 .panel-intro,
 .activity-row div > span {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .home-stats strong {
-  font-size: 28px;
+  font-size: 1.75rem;
 }
 .friend-text > span {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .passport-status {
   gap: 10px;
 }
 .progress-caption {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .concept-court .weekly-panel {
   background: #e7eddd;
@@ -2678,18 +2685,18 @@ svg {
 }
 @media (max-width: 700px) {
   .home-stats strong {
-    font-size: 26px;
+    font-size: 1.625rem;
   }
   .home-stats small {
     display: block;
     margin-top: 4px;
   }
   .home-stats .eyebrow {
-    font-size: 9px;
+    font-size: 0.5625rem;
     letter-spacing: 0.025em;
   }
   .greeting-label {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .home-stats > div {
     padding: 0 10px;
@@ -2701,7 +2708,7 @@ svg {
     flex-wrap: wrap;
   }
   .court-footnote p {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .concept-court .home-stats {
     margin-top: 0;
@@ -2718,7 +2725,7 @@ svg {
   display: none !important;
 }
 body {
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.55;
 }
 button {
@@ -2731,7 +2738,7 @@ button:disabled {
 .text-button,
 .side-link,
 .sidebar nav button {
-  font-size: 14px;
+  font-size: 0.875rem;
   min-height: 44px;
 }
 .button {
@@ -2742,7 +2749,7 @@ button:disabled {
   gap: 8px;
 }
 .eyebrow {
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
 }
 .form-help,
@@ -2755,14 +2762,14 @@ label,
 .empty p,
 .quiet-state p,
 .quiet-state strong {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.65;
 }
 .field-row {
   gap: 16px;
 }
 .field-row label {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .field-row small,
 .profile-rating-line small,
@@ -2772,7 +2779,7 @@ label,
 .result-top,
 .result-bottom,
 .pill {
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.6;
 }
 .field-row small {
@@ -2786,20 +2793,20 @@ label,
   margin-top: 4px;
 }
 .section-heading h2 {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 .section-heading .text-button {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .topbar {
   padding-bottom: 22px;
 }
 .topbar-caption {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .page-heading h1 {
-  font-size: 34px;
+  font-size: 2.125rem;
   overflow-wrap: anywhere;
 }
 .page-heading {
@@ -2814,7 +2821,7 @@ label,
 }
 .team-row {
   gap: 16px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .result-card,
 .panel {
@@ -2830,12 +2837,12 @@ label,
 }
 .lookup-results strong,
 .picked-player > span {
-  font-size: 14px;
+  font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
 .lookup-results small,
 .picked-player small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .ranking-row {
   flex-wrap: wrap;
@@ -2845,11 +2852,11 @@ label,
   min-width: 100px;
 }
 .ranking-person strong {
-  font-size: 15px;
+  font-size: 0.9375rem;
   overflow-wrap: anywhere;
 }
 .ranking-number {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .account-chip span,
 .sidebar-label {
@@ -2861,7 +2868,7 @@ label,
   color: #294c34;
 }
 .auth-footer {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.7;
 }
@@ -2872,12 +2879,12 @@ label,
   gap: 18px;
 }
 .experience-home .home-heading h1 {
-  font-size: 38px;
+  font-size: 2.375rem;
   line-height: 1.12;
   margin-top: 5px;
 }
 .experience-home .home-heading p {
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-top: 8px;
 }
 .home-heading p {
@@ -2887,7 +2894,7 @@ label,
   margin: 22px 0 18px;
 }
 .category-tabs button {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 12px 16px;
 }
 .rating-passport {
@@ -2903,8 +2910,8 @@ label,
 }
 .rating-passport .rating-number {
   font-size: min(
-    116px,
-    calc((100cqi - 100px) / var(--rating-number-ratio, 2.4))
+    7.25rem,
+    calc((100cqi - 6.25rem) / var(--rating-number-ratio, 2.4))
   );
   min-width: 0;
   white-space: nowrap;
@@ -2919,7 +2926,7 @@ label,
 }
 .rating-passport .passport-seal span {
   max-width: 100%;
-  font-size: 13px;
+  font-size: 0.8125rem;
   overflow-wrap: anywhere;
   text-align: center;
 }
@@ -2931,14 +2938,14 @@ label,
 .rating-passport .passport-status,
 .rating-passport .passport-progress-label,
 .rating-passport .placement-progress p {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .rating-passport .passport-code {
   color: #bdcfb4;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .rating-passport .passport-footnote {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .rating-passport .passport-progress-label {
   gap: 10px;
@@ -2949,14 +2956,17 @@ label,
   padding-bottom: 14px;
 }
 .rating-passport .evidence {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .rating-passport.compact {
   padding: 20px;
   border-radius: 14px;
 }
 .rating-passport.compact .rating-number {
-  font-size: min(80px, calc((100cqi - 88px) / var(--rating-number-ratio, 2.4)));
+  font-size: min(
+    5rem,
+    calc((100cqi - 5.5rem) / var(--rating-number-ratio, 2.4))
+  );
 }
 .rating-passport.compact .passport-seal img {
   width: 38px;
@@ -2979,7 +2989,7 @@ html:has(dialog[open]) {
 }
 .rating-help {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin: 2px 0 8px;
 }
 .rival-strip {
@@ -3007,11 +3017,11 @@ html:has(dialog[open]) {
 }
 .lead-update strong {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .lead-update small {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -3035,7 +3045,7 @@ html:has(dialog[open]) {
   min-width: 0;
 }
 .rival-content strong {
-  font-size: 17px;
+  font-size: 1.0625rem;
   overflow-wrap: anywhere;
 }
 .rival-content b {
@@ -3045,16 +3055,16 @@ html:has(dialog[open]) {
 }
 .rival-content p,
 .rival-note {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #466044;
   margin-top: 4px;
 }
 .rival-strip > h2 {
-  font-size: 22px;
+  font-size: 1.375rem;
   margin: 8px 0;
 }
 .rival-strip > p {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #466044;
 }
 .friend-open {
@@ -3063,26 +3073,26 @@ html:has(dialog[open]) {
   text-align: left;
 }
 .friend-text strong {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .friend-text > span {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .friend-score strong {
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 .friend-score small,
 .panel-intro {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .invite-link {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .pending-banner strong {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .pending-banner small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .latest-result {
   margin-bottom: 24px;
@@ -3102,12 +3112,12 @@ html:has(dialog[open]) {
   flex: 1;
 }
 .activity-peek strong {
-  font-size: 14px;
+  font-size: 0.875rem;
   overflow-wrap: anywhere;
   display: block;
 }
 .activity-peek small {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 #court-activity {
@@ -3134,7 +3144,7 @@ html:has(dialog[open]) {
   justify-content: space-between;
 }
 .result-reward h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   margin: 12px 0 8px;
 }
 .reward-score {
@@ -3145,16 +3155,16 @@ html:has(dialog[open]) {
 }
 .reward-score strong {
   font:
-    600 64px/1.1 Barlow,
+    600 4rem/1.1 Barlow,
     sans-serif;
   letter-spacing: -0.035em;
 }
 .reward-score > span {
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 650;
 }
 .result-reward p {
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-top: 12px;
 }
 .reward-context {
@@ -3189,10 +3199,10 @@ html:has(dialog[open]) {
   padding: 20px;
 }
 .reward-small h3 {
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 .reward-small .reward-score strong {
-  font-size: 50px;
+  font-size: 3.125rem;
 }
 .reward-loss {
   border-left: 3px solid #a36b5e;
@@ -3208,7 +3218,7 @@ html:has(dialog[open]) {
   margin: 16px 0;
 }
 .placement-recap p {
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-top: 6px;
 }
 .first-court {
@@ -3228,7 +3238,7 @@ html:has(dialog[open]) {
 .first-court li b,
 .first-court li span {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .first-court li span {
   color: var(--muted);
@@ -3254,7 +3264,7 @@ html:has(dialog[open]) {
 }
 .weekly-facts span {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--muted);
   margin-top: 5px;
@@ -3267,10 +3277,10 @@ html:has(dialog[open]) {
   margin-top: 12px;
 }
 .chart-inspection strong {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .chart-inspection span {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .chart-controls {
@@ -3283,7 +3293,7 @@ html:has(dialog[open]) {
   min-width: 44px;
   min-height: 44px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   background: #edf2e4;
 }
 .chart-controls button[aria-pressed="true"] {
@@ -3291,7 +3301,7 @@ html:has(dialog[open]) {
   color: white;
 }
 .chart-labels {
-  font-size: 12px;
+  font-size: 0.75rem;
   gap: 12px;
 }
 .progress-panel > svg {
@@ -3301,28 +3311,28 @@ html:has(dialog[open]) {
   margin-top: 12px;
 }
 .activity-row p {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .activity-row div > span {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .feed-changes {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 5px;
 }
 .next-step p,
 .court-footnote p {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .next-step .eyebrow {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .next-step h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .section-tabs {
   display: flex;
@@ -3334,7 +3344,7 @@ html:has(dialog[open]) {
 }
 .section-tabs button {
   min-height: 44px;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px 14px;
   display: inline-flex;
   align-items: center;
@@ -3363,12 +3373,12 @@ html:has(dialog[open]) {
 }
 .insight-person strong {
   display: block;
-  font-size: 15px;
+  font-size: 0.9375rem;
   overflow-wrap: anywhere;
 }
 .insight-person span {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .insight-person b {
@@ -3387,7 +3397,7 @@ html:has(dialog[open]) {
   margin-top: 0;
 }
 .profile-rating-line strong {
-  font-size: 16px;
+  font-size: 1rem;
 }
 .profile-identity {
   align-items: flex-start;
@@ -3397,7 +3407,7 @@ html:has(dialog[open]) {
   overflow-wrap: anywhere;
 }
 .profile-identity p {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .history-filters {
   display: grid;
@@ -3428,11 +3438,11 @@ html:has(dialog[open]) {
     sans-serif;
 }
 .comparison-score span {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 .guide-lead {
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.7;
 }
 .guide-steps section {
@@ -3440,11 +3450,11 @@ html:has(dialog[open]) {
   border-bottom: 1px solid var(--line);
 }
 .guide-steps b {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .guide-steps p,
 .guide-details p {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   margin-top: 8px;
 }
@@ -3456,7 +3466,7 @@ summary {
   cursor: pointer;
   min-height: 44px;
   padding: 12px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 650;
 }
 .league-guide {
@@ -3479,7 +3489,7 @@ summary {
 }
 .league-guide strong,
 .league-guide span {
-  font-size: 12px;
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
 .roster-shortcut {
@@ -3490,7 +3500,7 @@ summary {
   margin-top: 8px;
   border-radius: 12px;
   text-align: left;
-  font-size: 14px;
+  font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
 .roster-shortcut span {
@@ -3507,7 +3517,7 @@ summary {
   overscroll-behavior: contain;
 }
 .toast {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.6;
 }
 .main-stage > .experience-home {
@@ -3607,11 +3617,11 @@ summary {
   }
   .experience-home .home-heading h1,
   .concept-editorial .home-heading h1 {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
   .experience-home .home-heading p {
     margin-top: 6px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -3619,7 +3629,7 @@ summary {
   .experience-home .home-heading .record-button {
     margin-top: 0;
     padding: 12px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     white-space: nowrap;
     gap: 8px;
     width: auto;
@@ -3632,7 +3642,7 @@ summary {
     margin: 14px 0 16px;
   }
   .category-tabs button {
-    font-size: 14px;
+    font-size: 0.875rem;
     padding: 12px 6px;
   }
   .rating-passport,
@@ -3670,16 +3680,16 @@ summary {
     gap: 10px;
   }
   .rival-content b {
-    font-size: 26px;
+    font-size: 1.625rem;
   }
   .rival-kicker {
     flex-wrap: wrap;
   }
   .rival-kicker .eyebrow {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .mobile-nav button {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #52635b;
   }
   .form-grid,
@@ -3687,35 +3697,530 @@ summary {
     grid-template-columns: minmax(0, 1fr);
   }
   .form-grid label {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .modal {
     padding: 20px;
     width: calc(100% - 24px);
   }
   .modal-heading h2 {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
   .section-tabs {
     gap: 4px;
   }
   .section-tabs button {
     padding: 10px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .section-heading {
     flex-wrap: wrap;
   }
   .toast {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .page-heading > .button {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .concept-arena {
     padding: 18px 14px;
   }
   .league-guide {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Existing communities, deliberate discovery, and accessible device choices. */
+.avatar {
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.group-crest {
+  width: 64px;
+  height: 64px;
+  color: var(--forest);
+  flex: 0 0 64px;
+}
+.group-crest path,
+.group-crest ellipse,
+.group-crest circle,
+.group-crest rect:not(:first-child) {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.group-passport {
+  margin: 20px 0 28px;
+}
+.group-passport-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.group-passport-header > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.group-passport-header p {
+  margin-top: 7px;
+  color: var(--muted);
+}
+.weekly-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 22px 0;
+}
+.weekly-stats strong {
+  font:
+    600 2rem/1.2 Barlow,
+    sans-serif;
+  display: block;
+}
+.weekly-stats span {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.group-result {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+  overflow-wrap: anywhere;
+}
+.player-code {
+  text-align: center;
+  margin: 15px 0 20px;
+}
+.player-code img {
+  width: min(100%, 260px);
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  margin: auto auto 12px;
+}
+.player-code strong {
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+}
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+.appearance-choices,
+.portrait-choice,
+.passkey-choices,
+.research-choice {
+  display: grid;
+  gap: 12px;
+  margin: 8px 0 30px;
+}
+.appearance-choices h3,
+.portrait-choice h3,
+.passkey-choices h3,
+.research-choice h3 {
+  font-size: 1.125rem;
+}
+.encouragement {
+  padding-top: 18px;
+  margin: 18px 0;
+  border-top: 1px solid var(--line);
+}
+.encouragement h3 {
+  font-size: 1.125rem;
+  margin-bottom: 10px;
+}
+.encouragement .button {
+  margin: 10px 8px 0 0;
+}
+.replay-change {
+  flex-basis: 100%;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+html:not([data-palette="dark"])
+  .experience-home:not(.concept-arena)
+  :is(
+    .home-heading p,
+    .category-tabs button:not([aria-pressed="true"]),
+    .rating-help,
+    .court-footnote p
+  ) {
+  color: #52635b;
+}
+.next-step :is(.eyebrow, p) {
+  color: #405d35;
+}
+.tiny-shuttle {
+  color: #567047;
+}
+.design-caption {
+  color: #4a5e40;
+  font-size: 0.75rem;
+}
+html:not([data-palette="dark"])
+  .experience-home:not(.concept-arena)
+  .result-reward:not(.reward-best):not(.reward-promotion):not(.reward-reveal)
+  .positive {
+  color: #315c32;
+}
+.concept-arena :is(.form-help, .pill) {
+  color: #d0dfc2;
+}
+.concept-arena
+  .result-reward:not(.reward-best):not(.reward-promotion):not(.reward-reveal)
+  .positive {
+  color: #d4e8ab;
+}
+.concept-arena .tiny-shuttle {
+  color: #c0d2ad;
+}
+button:focus-visible,
+a:focus-visible {
+  outline-color: #315c32;
+}
+html[data-palette="dark"] input[type="checkbox"] {
+  accent-color: #d4e8ab;
+}
+.auth-inner > .button {
+  margin-top: 12px;
+}
+
+:root[data-palette="dark"] {
+  color-scheme: dark;
+  background: #101f19;
+  color: #edf3e8;
+  --ink: #edf3e8;
+  --paper: #101f19;
+  --card: #1c3027;
+  --muted: #c0cfc1;
+  --line: #4b6152;
+  --danger: #ffb9b5;
+  --positive: #cee8a9;
+}
+html[data-palette="dark"]
+  :is(
+    .sidebar,
+    .mobile-nav,
+    .modal,
+    .panel,
+    .first-court,
+    .notice,
+    .quiet-state,
+    .goal-card,
+    .comparison-summary,
+    .insight-cell,
+    .placement-recap,
+    .empty,
+    .chart-inspection,
+    .chart-point-controls button,
+    .history-filters,
+    .rating-mini,
+    .circle-tile,
+    .scope-card,
+    .notification,
+    .result-card,
+    .publication-note,
+    .design-caption,
+    .guide-details,
+    .device-row,
+    .share-options,
+    .share-public,
+    .claim-public
+  ) {
+  background: #1c3027;
+  color: #edf3e8;
+  border-color: #4b6152;
+}
+html[data-palette="dark"]
+  :is(
+    .text-button,
+    .button.secondary,
+    .section-tabs button,
+    .category-tabs button,
+    .auth-tabs button,
+    .sidebar nav button,
+    .mobile-nav button,
+    .brand-dot,
+    .comparison-context,
+    .chart-inspection span
+  ) {
+  color: #d4e8ab;
+}
+html[data-palette="dark"] :is(.button, .button.lime) {
+  background: #d4e8ab;
+  color: #142d23;
+  border-color: #d4e8ab;
+}
+html[data-palette="dark"] .button.secondary {
+  background: transparent;
+  color: #d4e8ab;
+  border-color: #829579;
+}
+html[data-palette="dark"] .button:hover {
+  background: #e4f2c8;
+  color: #142d23;
+}
+html[data-palette="dark"] .button.danger {
+  background: #923d3b;
+  color: #fff;
+  border-color: #efaca7;
+}
+html[data-palette="dark"] :is(.text-button.danger, .negative, .inline-error) {
+  color: #ffb9b5;
+}
+html[data-palette="dark"] :is(.positive, .group-crest) {
+  color: #d4e8ab;
+}
+html[data-palette="dark"]
+  :is(
+    .section-tabs button[aria-pressed="true"],
+    .category-tabs button[aria-pressed="true"],
+    .auth-tabs button.active,
+    .sidebar nav button.active,
+    .mobile-nav button.active
+  ) {
+  color: #e5f5c5;
+  background: #324c37;
+  border-color: #d4e8ab;
+}
+html[data-palette="dark"] .rival-strip {
+  background: #263e2b;
+  border-color: #4b6152;
+  color: #eef3e8;
+}
+html[data-palette="dark"] .rival-strip > p {
+  color: #c6d9b7;
+}
+html[data-palette="dark"] :is(.next-step, .first-court) {
+  background: #233f2c;
+  border-color: #58744e;
+  color: #eef5e7;
+}
+html[data-palette="dark"] .next-step :is(.eyebrow, p) {
+  color: #c9dbbe;
+}
+html[data-palette="dark"]
+  :is(
+    .invite-link,
+    .experience-home .category-tabs button,
+    .rating-help,
+    .court-footnote p,
+    .home-heading p
+  ) {
+  color: #c9dbbe;
+}
+html[data-palette="dark"] .result-reward .positive {
+  color: #d4e8ab;
+}
+html[data-palette="dark"]
+  .rival-strip
+  :is(.eyebrow, .rival-content p, .rival-footnote) {
+  color: #c6d9b7;
+}
+html[data-palette="dark"] .rival-kicker > span {
+  color: #c6d9b7;
+}
+html[data-palette="dark"] .notice :is(strong, p) {
+  color: #c9dbbe;
+}
+html[data-palette="dark"] .design-layout {
+  background: #101f19;
+}
+html[data-palette="dark"] .design-controls button {
+  background: #324c37;
+  color: #e5f5c5;
+}
+html[data-palette="dark"]
+  :is(
+    .rating-passport,
+    .concept-court .rating-passport,
+    .concept-circle .rating-passport,
+    .concept-editorial .rating-passport
+  ) {
+  color: #f1f6e8;
+  background: #16382b;
+  border-color: #5b7852;
+}
+html[data-palette="dark"]
+  .rating-passport
+  :is(
+    .passport-category,
+    .passport-code,
+    .passport-status,
+    .passport-footnote,
+    .passport-progress-copy,
+    .passport-status small,
+    .passport-status small span,
+    .evidence
+  ) {
+  color: #d1e4bd;
+}
+html[data-palette="dark"] :is(.evidence, .pill, .category-pill) {
+  background: transparent;
+}
+html[data-palette="dark"]
+  :is(
+    .rating-passport .passport-code,
+    .rating-passport .passport-status .evidence
+  ) {
+  border-color: #7b9270;
+}
+html[data-palette="dark"] .passport-bottom {
+  border-color: #607954;
+}
+html[data-palette="dark"]
+  :is(
+    .result-reward,
+    .result-reward.reward-best,
+    .result-reward.reward-promotion,
+    .result-reward.reward-reveal,
+    .weekly-panel,
+    .concept-court .weekly-panel,
+    .league-guide > div
+  ) {
+  background: #233f2c;
+  color: #eef5e7;
+  border-color: #58744e;
+}
+html[data-palette="dark"]
+  :is(
+    .reward-context,
+    .weekly-facts span,
+    .weekly-panel p,
+    .result-reward .eyebrow,
+    .profile-identity p,
+    .scope-people span,
+    .ranking-person small,
+    .league-guide > div span
+  ) {
+  color: #c9dbbe;
+}
+html[data-palette="dark"] :is(.avatar, .circle-icon, .insight-note) {
+  background: #3b5032;
+  color: #ecf4df;
+  border-color: #81976c;
+}
+html[data-palette="dark"]
+  :is(
+    button:focus-visible,
+    a:focus-visible,
+    input:focus,
+    select:focus,
+    textarea:focus
+  ) {
+  outline-color: #d4e8ab;
+}
+html[data-palette="dark"] .auth-story {
+  background: #14372c;
+  color: #eef5e7;
+}
+html[data-palette="dark"] .profile-rating-line b {
+  color: #eef5e7;
+}
+html[data-palette="dark"] .concept-editorial .home-heading h1 {
+  color: #edf3e8;
+}
+html[data-palette="dark"] :is(.settings-panel, .modal) .form-help {
+  color: #c0cfc1;
+}
+
+html[data-text-size="large"]
+  :is(
+    .home-heading,
+    .topbar,
+    .ranking-row,
+    .field-row,
+    .profile-identity,
+    .device-row,
+    .group-passport-header,
+    .modal-actions
+  ) {
+  flex-wrap: wrap;
+}
+html[data-text-size="large"] .passport-number-row {
+  grid-template-columns: minmax(0, 1fr);
+  --rating-fixed-width: 0px;
+}
+html[data-text-size="large"] .passport-seal {
+  width: auto;
+  flex-wrap: wrap;
+  justify-self: start;
+}
+html[data-text-size="large"] .weekly-stats {
+  grid-template-columns: minmax(0, 1fr);
+}
+html[data-text-size="large"] .ranking-row {
+  display: flex;
+}
+html[data-text-size="large"] .ranking-person {
+  min-width: 100px;
+  flex: 1;
+}
+html[data-text-size="large"] .experience-home .home-heading .record-button {
+  max-width: none;
+  white-space: normal;
+}
+html[data-text-size="large"] .experience-home .home-heading p {
+  white-space: normal;
+}
+html[data-text-size="large"] .experience-home .home-heading > div {
+  flex: 1 1 100%;
+}
+html[data-text-size="large"] .experience-home .home-heading .record-button {
+  width: 100%;
+}
+html[data-text-size="large"] .category-tabs {
+  flex-wrap: wrap;
+}
+html[data-text-size="large"] .category-tabs button {
+  flex: 1 1 120px;
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  html[data-text-size="large"] .experience-home .home-heading {
+    flex-wrap: wrap;
+  }
+  html[data-text-size="large"] .mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  html[data-text-size="large"] .main-stage {
+    padding-bottom: 180px;
+  }
+  html[data-text-size="large"] .section-tabs {
+    flex-wrap: wrap;
+  }
+  html[data-text-size="large"] .profile-actions {
+    flex-direction: column;
+  }
+  .group-passport-header {
+    gap: 12px;
+  }
+  .group-passport-header h2 {
+    font-size: 1.25rem;
   }
 }

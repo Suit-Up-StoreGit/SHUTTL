@@ -48,6 +48,15 @@ import {
 import { ratingImage } from "../share-image.ts";
 import { PlayingInsights } from "../components/Insights.tsx";
 import { DeviceNotifications } from "../components/Notifications.tsx";
+import { GroupRecap, PlayerCode } from "../components/Community.tsx";
+import {
+  AppearanceChoices,
+  PortraitChoice,
+  PasskeyChoices,
+  ResearchChoice,
+  recordResearch,
+} from "../components/Preferences.tsx";
+import { countryOptions, localityLabel } from "../location.ts";
 const statusLabels: Record<string, string> = {
   rated: "Rating published",
   pending: "Awaiting approval",
@@ -406,6 +415,7 @@ export function FriendsPage({
   compare,
   category,
   setCategory,
+  open,
 }: {
   data: any;
   refresh: () => void;
@@ -414,6 +424,7 @@ export function FriendsPage({
   compare: (id: string) => void;
   category: Category;
   setCategory: (c: Category) => void;
+  open: (id: string) => void;
 }) {
   const [circle, setCircle] = useState<any>(null),
     [creating, setCreating] = useState(false),
@@ -450,13 +461,15 @@ export function FriendsPage({
         eyebrow="REAL PLAYERS. SHARED PROGRESS."
         title={circle ? circle.name : "Your circle"}
       >
-        <button
-          className="button"
-          onClick={circle ? () => setLookup(true) : add}
-        >
-          <Plus size={16} />
-          Add a player
-        </button>
+        {(!circle || circle.owner === data.me.id) && (
+          <button
+            className="button"
+            onClick={circle ? () => setLookup(true) : add}
+          >
+            <Plus size={16} />
+            Add a player
+          </button>
+        )}
       </PageHeading>
       <p className="page-subtitle">
         Compare your own progress with the people you play with. Developing
@@ -470,6 +483,15 @@ export function FriendsPage({
       )}
       <CategoryTabs value={category} onChange={setCategory} />
       <InlineError message={error} />
+      {circle && (
+        <GroupRecap
+          circle={circle}
+          category={category}
+          me={data.me}
+          open={open}
+          refresh={refresh}
+        />
+      )}
       <div className="page-grid">
         <section className="panel">
           <SectionHeading title={circle ? "Circle members" : "Your players"} />
@@ -1257,6 +1279,13 @@ export function ProfilePage({
     [recoveryPassword, setRecoveryPassword] = useState(""),
     [newRecovery, setNewRecovery] = useState("");
   useEffect(() => {
+    if (tab === "history" || tab === "insights")
+      recordResearch(
+        tab === "history" ? "history-view" : "insight-view",
+        data.me.id,
+      );
+  }, [tab, data.me.id]);
+  useEffect(() => {
     api("/account/reliability")
       .then(setReliability)
       .catch(() => {});
@@ -1286,6 +1315,9 @@ export function ProfilePage({
         breakMode,
         timezone,
         goals,
+        country,
+        city,
+        publicPortrait,
       } = form;
       await api(
         "/profile",
@@ -1300,6 +1332,9 @@ export function ProfilePage({
           breakMode,
           timezone,
           goals,
+          country,
+          city,
+          publicPortrait,
         },
         "PATCH",
       );
@@ -1310,6 +1345,11 @@ export function ProfilePage({
     }
   }
   const toggles: [string, string, string][] = [
+    [
+      "publicPortrait",
+      "Public portrait",
+      "Let other signed-in players see your optional portrait. Accepted friends already see it.",
+    ],
     [
       "publicName",
       "Public display name",
@@ -1344,7 +1384,7 @@ export function ProfilePage({
           Share my progress
         </button>
       </PageHeading>
-      <div className="section-tabs" aria-label="Profile sections">
+      <div className="section-tabs" role="group" aria-label="Profile sections">
         {[
           ["overview", "Passport"],
           ["insights", "Insights"],
@@ -1372,7 +1412,13 @@ export function ProfilePage({
                     <p>
                       @{data.me.username}
                       {data.me.district
-                        ? " · " + data.me.district + " (declared)"
+                        ? " · " +
+                          localityLabel(
+                            data.me.country,
+                            data.me.city,
+                            data.me.district,
+                          ) +
+                          " (declared)"
                         : ""}
                     </p>
                   </div>
@@ -1396,6 +1442,7 @@ export function ProfilePage({
                 </p>
               </section>
               <div className="profile-actions">
+                <PlayerCode me={data.me} notify={notify} />
                 <button
                   className="button secondary"
                   onClick={() => setTab("history")}
@@ -1470,20 +1517,82 @@ export function ProfilePage({
                 />
               </div>
               <div className="field">
-                <label htmlFor="profile-district">Declared district</label>
+                <label htmlFor="profile-country">
+                  Country or territory · optional
+                </label>
                 <select
-                  id="profile-district"
-                  value={form.district}
+                  id="profile-country"
+                  value={form.country || ""}
                   onChange={(e) =>
-                    setForm({ ...form, district: e.target.value })
+                    setForm({
+                      ...form,
+                      country: e.target.value,
+                      city: e.target.value === "SG" ? "Singapore" : "",
+                      district: "",
+                      localOptIn: false,
+                    })
                   }
                 >
-                  {DISTRICTS.map((d) => (
-                    <option key={d} value={d}>
-                      {d || "Keep my district private"}
+                  <option value="">Keep my local context private</option>
+                  {countryOptions.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
                     </option>
                   ))}
                 </select>
+              </div>
+              {form.country && (
+                <div className="field">
+                  <label htmlFor="profile-city">City or town · declared</label>
+                  <input
+                    id="profile-city"
+                    maxLength={80}
+                    value={form.city || ""}
+                    onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  />
+                </div>
+              )}
+              <div className="field">
+                <label htmlFor="profile-district">Declared district</label>
+                {!form.country || form.country === "SG" ? (
+                  <select
+                    id="profile-district"
+                    value={form.district}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        district: e.target.value,
+                        country: e.target.value
+                          ? form.country || "SG"
+                          : form.country,
+                        city: e.target.value
+                          ? form.city || "Singapore"
+                          : form.city,
+                      })
+                    }
+                  >
+                    {DISTRICTS.map((d) => (
+                      <option key={d} value={d}>
+                        {d || "Keep my district private"}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    id="profile-district"
+                    maxLength={60}
+                    value={form.district}
+                    onChange={(e) =>
+                      setForm({ ...form, district: e.target.value })
+                    }
+                    placeholder="Your usual playing area"
+                  />
+                )}
+                <p className="form-help">
+                  Country, city and area identify a declared SHUTTL pool. No GPS
+                  is collected. Matching text does not verify residence;
+                  spelling variants can split a pool.
+                </p>
               </div>
               <div className="field">
                 <label htmlFor="profile-timezone">Timezone</label>
@@ -1560,6 +1669,12 @@ export function ProfilePage({
             timezone={data.me.timezone}
             notify={notify}
           />
+          <section className="panel settings-panel">
+            <AppearanceChoices />
+            <PortraitChoice me={data.me} refresh={refresh} notify={notify} />
+            <PasskeyChoices notify={notify} />
+            <ResearchChoice />
+          </section>
           <section className="panel settings-panel">
             <SectionHeading title="Your public links" />
             {shares

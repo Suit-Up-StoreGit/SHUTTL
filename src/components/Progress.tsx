@@ -9,6 +9,7 @@ import {
 import { dateLabel } from "../api.ts";
 import { ownChange, resultMoment } from "../experience.ts";
 import { Gem, Modal } from "./UI.tsx";
+import { RatingMotion } from "./RatingMotion.tsx";
 
 export function RatingGuide({ category }: { category: Category }) {
   const [open, setOpen] = useState(false);
@@ -153,7 +154,10 @@ export function ResultReward({
       </div>
       <h3>{title}</h3>
       <div className="reward-score">
-        <strong>{change.after.toLocaleString("en-SG")}</strong>
+        <RatingMotion
+          before={kind === "reveal" ? null : change.before}
+          after={change.after}
+        />
         <Gem league={leagueFor(change.after).name} size={44} />
         {kind !== "reveal" && (
           <span className={change.delta < 0 ? "negative" : "positive"}>
@@ -263,7 +267,11 @@ export function ProgressChart({
           />
         ))}
       </svg>
-      <div className="chart-controls" aria-label="Inspect rating history">
+      <div
+        className="chart-controls"
+        role="group"
+        aria-label="Inspect rating history"
+      >
         {rows.map((r, i) => (
           <button
             key={r.id}

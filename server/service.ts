@@ -23,6 +23,7 @@ import {
 } from "../src/domain.ts";
 import { comparisonClasses } from "./evidence.ts";
 import { enqueuePush } from "./push.ts";
+import { localityLabel } from "../src/location.ts";
 const derive = promisify(scrypt);
 export const now = () => new Date().toISOString();
 export const hash = (value: string) =>
@@ -121,6 +122,12 @@ export class Service {
       viewer === u.id ||
       (!!viewer && this.friends(viewer, u.id)) ||
       u.public_name;
+    const portrait =
+      viewer &&
+      !this.blocked(viewer, u.id) &&
+      (viewer === u.id || this.friends(viewer, u.id) || u.public_portrait)
+        ? this.db.get("SELECT updated_at FROM portraits WHERE owner=?", u.id)
+        : null;
     return {
       id,
       canonicalId: u.id,
@@ -128,6 +135,15 @@ export class Service {
       name:
         allowed || (u.guest && u.invited_by === viewer) ? u.name : u.username,
       guest: !!u.guest,
+      ...(portrait
+        ? {
+            portrait:
+              "/api/portraits/" +
+              u.id +
+              "?v=" +
+              encodeURIComponent(portrait.updated_at),
+          }
+        : {}),
       ...(u.public_district || viewer === u.id ? { district: u.district } : {}),
     };
   }
@@ -299,11 +315,24 @@ export class Service {
   }
   profile(actor: string) {
     const u = this.user(actor);
+    const portrait = this.db.get(
+      "SELECT updated_at FROM portraits WHERE owner=?",
+      u.id,
+    );
     return {
       id: u.id,
       username: u.username,
       name: u.name,
       district: u.district,
+      country: u.country,
+      city: u.city,
+      publicPortrait: !!u.public_portrait,
+      portrait: portrait
+        ? "/api/portraits/" +
+          u.id +
+          "?v=" +
+          encodeURIComponent(portrait.updated_at)
+        : undefined,
       role: u.role,
       publicName: !!u.public_name,
       publicDistrict: !!u.public_district,
@@ -849,22 +878,35 @@ export class Service {
       );
     return { id: unit.id };
   }
-  unitView(actor: string, unit: Row) {
-    const revision = this.db.get(
-      "SELECT * FROM revisions WHERE id=?",
-      unit.current_revision,
-    )!;
+  unitView(
+    actor: string,
+    unit: Row,
+    context?: {
+      revisions: Map<string, Row>;
+      approvals: Map<string, string[]>;
+      events: Map<string, Row>;
+      player: (p: string) => any;
+      canonical: (p: string) => string;
+    },
+  ) {
+    const revision = context
+      ? context.revisions.get(unit.current_revision)!
+      : this.db.get(
+          "SELECT * FROM revisions WHERE id=?",
+          unit.current_revision,
+        )!;
     const roster = JSON.parse(revision.roster) as string[],
-      approvals = this.db
-        .all(
-          "SELECT participant FROM approvals WHERE revision_id=?",
-          revision.id,
-        )
-        .map((a) => a.participant);
-    const event = this.db.get(
-      "SELECT * FROM rating_events WHERE unit_id=?",
-      unit.id,
-    );
+      approvals = context
+        ? context.approvals.get(revision.id) || []
+        : this.db
+            .all(
+              "SELECT participant FROM approvals WHERE revision_id=?",
+              revision.id,
+            )
+            .map((a) => a.participant);
+    const event = context
+      ? context.events.get(unit.id)
+      : this.db.get("SELECT * FROM rating_events WHERE unit_id=?", unit.id);
     const ownChange = event ? JSON.parse(event.changes)[actor] : null;
     return {
       id: unit.id,
@@ -875,14 +917,22 @@ export class Service {
       format: revision.format,
       games: JSON.parse(revision.games),
       playedAt: revision.played_at,
-      players: roster.map((p) => this.player(p, actor)),
-      author: this.player(revision.author, actor),
+      players: roster.map((p) =>
+        context ? context.player(p) : this.player(p, actor),
+      ),
+      author: context
+        ? context.player(revision.author)
+        : this.player(revision.author, actor),
       authorParticipant: roster.find(
-        (p) => this.canonical(p) === revision.author,
+        (p) =>
+          (context ? context.canonical(p) : this.canonical(p)) ===
+          revision.author,
       ),
       retrospective: !!revision.retrospective,
       approvals,
-      ownParticipant: roster.find((p) => this.canonical(p) === actor),
+      ownParticipant: roster.find(
+        (p) => (context ? context.canonical(p) : this.canonical(p)) === actor,
+      ),
       ratingChanges: ownChange?.count >= 5 ? { [actor]: ownChange } : null,
       ownProgress: ownChange
         ? { count: ownChange.count, won: ownChange.won }
@@ -891,10 +941,12 @@ export class Service {
       publishedResult:
         unit.published_revision && unit.published_revision !== revision.id
           ? (() => {
-              const published = this.db.get(
-                "SELECT games,format,played_at FROM revisions WHERE id=?",
-                unit.published_revision,
-              )!;
+              const published = context
+                ? context.revisions.get(unit.published_revision)!
+                : this.db.get(
+                    "SELECT games,format,played_at FROM revisions WHERE id=?",
+                    unit.published_revision,
+                  )!;
               return {
                 games: JSON.parse(published.games),
                 format: published.format,
@@ -907,13 +959,67 @@ export class Service {
   }
   results(actor: string, limit = 100) {
     const aliases = this.actorIds(actor);
-    return this.db
-      .all(
+    return this.projectUnits(
+      actor,
+      this.db.all(
         `SELECT DISTINCT u.* FROM units u JOIN unit_players p ON p.unit_id=u.id WHERE p.player_id IN (${aliases.map(() => "?").join(",")}) ORDER BY u.created_at DESC LIMIT ?`,
         ...aliases,
         limit,
-      )
-      .map((u) => this.unitView(actor, u));
+      ),
+    );
+  }
+  projectUnits(actor: string, units: Row[]) {
+    const revisions = new Map<string, Row>(),
+      events = new Map<string, Row>(),
+      approvals = new Map<string, string[]>(),
+      people = new Map<string, any>(),
+      aliases = new Map<string, string>();
+    const load = (table: string, field: string, ids: string[]) => {
+      const rows: Row[] = [];
+      for (let i = 0; i < ids.length; i += 500) {
+        const batch = ids.slice(i, i + 500);
+        rows.push(
+          ...this.db.all(
+            `SELECT * FROM ${table} WHERE ${field} IN (${batch.map(() => "?").join(",")})`,
+            ...batch,
+          ),
+        );
+      }
+      return rows;
+    };
+    const revisionIds = [
+      ...new Set(
+        units.flatMap((u) =>
+          [u.current_revision, u.published_revision].filter(Boolean),
+        ),
+      ),
+    ];
+    for (const row of load("revisions", "id", revisionIds))
+      revisions.set(row.id, row);
+    for (const row of load("approvals", "revision_id", revisionIds)) {
+      if (!approvals.has(row.revision_id)) approvals.set(row.revision_id, []);
+      approvals.get(row.revision_id)!.push(row.participant);
+    }
+    for (const row of load(
+      "rating_events",
+      "unit_id",
+      units.map((u) => u.id),
+    ))
+      events.set(row.unit_id, row);
+    const context = {
+      revisions,
+      events,
+      approvals,
+      player: (p: string) => {
+        if (!people.has(p)) people.set(p, this.player(p, actor));
+        return people.get(p);
+      },
+      canonical: (p: string) => {
+        if (!aliases.has(p)) aliases.set(p, this.canonical(p));
+        return aliases.get(p)!;
+      },
+    };
+    return units.map((u) => this.unitView(actor, u, context));
   }
   reliability(actor: string) {
     const aliases = this.actorIds(actor),
@@ -945,14 +1051,14 @@ export class Service {
     if (
       !this.validated ||
       !player.local_opt_in ||
-      !player.district ||
+      !player.locality_key ||
       player.district === "Other" ||
       own.status !== "Established"
     )
       return null;
     const population = this.db.all(
-      "SELECT id FROM users WHERE district=? AND local_opt_in=1 AND guest=0 AND deleted=0 ORDER BY id LIMIT 129",
-      player.district,
+      "SELECT id FROM users WHERE locality_key=? AND local_opt_in=1 AND guest=0 AND deleted=0 ORDER BY id LIMIT 129",
+      player.locality_key,
     );
     if (population.length > 128) return null;
     const eligible = population
@@ -969,7 +1075,11 @@ export class Service {
       return null;
     return {
       label: "Top-rated SHUTTL player",
-      pool: player.district + " · supported " + category + " pool",
+      pool:
+        localityLabel(player.country, player.city, player.district) +
+        " · supported " +
+        category +
+        " pool",
       eligible: eligible.length,
       category,
       asOf: now(),
@@ -1060,10 +1170,28 @@ export class Service {
     };
   }
   rebuild(category: Category) {
-    const selected = this.db.all(
-      "SELECT u.*,r.id AS rid,r.roster,r.games,r.format,r.played_at FROM units u JOIN revisions r ON r.id=CASE WHEN u.status='disputed' THEN u.published_revision ELSE u.accepted_revision END WHERE u.category=? AND u.status<>'void' ORDER BY r.played_at,u.id",
-      category,
-    );
+    const readRows = () =>
+      this.db.all(
+        "SELECT u.*,r.id AS rid,r.roster,r.games,r.format,r.played_at FROM units u JOIN revisions r ON r.id=CASE WHEN u.status='disputed' THEN u.published_revision ELSE u.accepted_revision END WHERE u.category=? AND u.status<>'void' ORDER BY r.played_at,u.id",
+        category,
+      );
+    const selected = readRows();
+    const aliases = new Map<string, string>();
+    for (const row of selected)
+      for (const p of JSON.parse(row.roster))
+        if (!aliases.has(p)) aliases.set(p, this.canonical(p));
+    const signature = (rows: Row[], resolve: (p: string) => string) =>
+      hash(
+        JSON.stringify(
+          rows.map((u) => [
+            u.id,
+            u.rid,
+            u.status,
+            JSON.parse(u.roster).map(resolve),
+          ]),
+        ),
+      );
+    const expected = signature(selected, (p) => aliases.get(p)!);
     const ratings = new Map<string, Rating>(),
       partners = new Map<string, Set<string>>(),
       events: any[] = [],
@@ -1075,7 +1203,7 @@ export class Service {
     );
     for (const unit of selected) {
       const roster = (JSON.parse(unit.roster) as string[]).map((p) =>
-        this.canonical(p),
+        aliases.get(p)!,
       );
       requireThat(
         new Set(roster).size === roster.length,
@@ -1139,6 +1267,18 @@ export class Service {
       (this.db.get("SELECT version FROM snapshots WHERE category=?", category)
         ?.version || 0) + 1;
     this.db.transaction(() => {
+      const freshAliases = new Map<string, string>();
+      if (
+        signature(readRows(), (p) => {
+          if (!freshAliases.has(p)) freshAliases.set(p, this.canonical(p));
+          return freshAliases.get(p)!;
+        }) !== expected
+      )
+        throw new Problem(
+          409,
+          "Playing evidence changed during replay; retrying the fresh ledger.",
+          "replay_changed",
+        );
       const previous = new Map(
         this.db
           .all("SELECT * FROM rating_events WHERE category=?", category)
@@ -1295,6 +1435,13 @@ export class Service {
     try {
       this.rebuild(job.category);
     } catch (error) {
+      if (error instanceof Problem && error.code === "replay_changed") {
+        this.db.run(
+          "UPDATE jobs SET status='queued',attempts=max(0,attempts-1),error=NULL WHERE id=?",
+          job.id,
+        );
+        return;
+      }
       this.db.run(
         "UPDATE jobs SET status='queued',error=? WHERE id=?",
         error instanceof Error ? error.message : "Rating processing failed",

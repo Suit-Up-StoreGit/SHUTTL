@@ -23,6 +23,13 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:ui
       - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: local-engineering-evidence
+          path: outputs/validation-2026-10-11/
+          retention-days: 14
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: browser-test-diagnostics

@@ -182,6 +182,7 @@ export interface Player {
   district?: string;
   guest?: boolean;
   canonicalId?: string;
+  portrait?: string;
 }
 export interface PublicRating {
   category: Category;

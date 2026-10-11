@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   X,
   ArrowUpRight,
@@ -38,7 +38,7 @@ export function CategoryTabs({
   onChange: (value: Category) => void;
 }) {
   return (
-    <div className="category-tabs" aria-label="Rating category">
+    <div className="category-tabs" role="group" aria-label="Rating category">
       {CATEGORIES.map((c) => (
         <button key={c} aria-pressed={c === value} onClick={() => onChange(c)}>
           {c}
@@ -55,17 +55,23 @@ export function Avatar({
   small?: boolean;
 }) {
   const name = player.name || player.username || "Player";
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [player.portrait]);
   return (
     <span
       className={"avatar " + (small ? "avatar-small" : "")}
       aria-hidden="true"
     >
-      {name
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((n) => Array.from(n)[0])
-        .join("")
-        .toUpperCase()}
+      {player.portrait && !failed ? (
+        <img src={player.portrait} alt="" onError={() => setFailed(true)} />
+      ) : (
+        name
+          .split(/\s+/)
+          .slice(0, 2)
+          .map((n) => Array.from(n)[0])
+          .join("")
+          .toUpperCase()
+      )}
     </span>
   );
 }

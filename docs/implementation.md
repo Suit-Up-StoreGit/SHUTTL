@@ -27,7 +27,7 @@ Account changes invalidate pending dashboard, inbox, scope and result loads. A d
 
 Profile separates Passport, Insights, History and Settings. Goals/history links open the relevant section; mobile sign out calls the real account endpoint. Preferred category persists per account on that device. Archive uses owner-authorized cursors rather than a 100-result presentation ceiling. Period insights show actual published results, visible change, team outcomes by partner/opponent and scoring format, with small-sample and bounded-coverage disclosures. These are outcome context, not individual-contribution estimates or stroke coaching.
 
-Signup uses the detected device timezone, with server validation and a neutral UTC fallback. Settings offers browser-supported timezones. This improves international dates; it does not expand the Singapore district taxonomy or create localization.
+Signup uses the detected device timezone, with server validation and a neutral UTC fallback. Settings offers browser-supported timezones. Optional country/territory, city and playing-area declarations now separate local pools by all three values. Existing Singapore profiles migrate once. Locations are declared, not residence-verified; spelling/transliteration variants can split pools. The interface remains English.
 
 Player selection offers accepted friends/recent players before searching. Up to three genuine recent rosters can be reused, preserving sides and format while requiring new score, time and acknowledgement. Account-scoped local drafts keep stable retry identity. Error wording no longer implies unsaved preferences are an offline draft.
 
@@ -35,20 +35,30 @@ Optional Web Push includes encrypted VAPID requests, a durable bounded-retry que
 
 ## Limits that remain material
 
-- This is a single-instance pilot architecture using SQLite. The worker rebuilds categories synchronously and caps the pilot ledger at 50,000 results. Load testing and a queued multi-process architecture are required before a large creator-led rollout.
+- This is a single-instance pilot architecture using SQLite. File-backed replay and push processing run in a background thread with their own connection. Category replay still caps the pilot ledger at 50,000 results. A changed ledger or identity during computation rejects stale publication and requeues without consuming a failure attempt. Continuous changes can repeatedly defer publication; hosted write/signup burst tests and larger-network capacity work remain necessary.
 - Exact comparison evidence fails closed beyond 128 players per connected component or 2,048 evidence rows. Rational-arithmetic bounds also fail closed. Large pools do not receive unsupported crowns.
 - Real badminton calibration, league boundaries, account-collusion detection and useful prediction confidence require a measured pilot. Outcome confirmation is player-attested, not independent proof that a physical match happened.
 - Five games reveal a developing estimate, not certified skill. Doubles partnership ambiguity remains visible. Separate categories never borrow hidden points.
 - Response history is private and factual. It does not reduce playing ratings. No response becomes automatic score acceptance.
 - Account deletion removes account access and personal presentation, while pseudonymous references required for other players' valid result ledgers remain. This is not a claim that all retained records are anonymous.
 - Public sharing is voluntary. Existing downloaded images cannot be remotely revoked; hosted links can.
-- Email/SMS recovery, tournaments, hosting, bookings, direct messaging and cosmetics are outside this V1. Recovery uses a player-held recovery code. Optional device push is implemented but requires a configured host and actual-device verification.
+- Password and player-held recovery codes remain. Optional user-verified passkeys can be registered, used to sign in and revoked. They require HTTPS with a valid domain or localhost; a numerical IP origin is unsupported. Emergency recovery revokes passkeys, challenges, sessions and device alerts. Email/SMS and staffed identity recovery are not implemented. Tournaments, hosting games, bookings, direct messaging and cosmetics remain outside V1.
 - Hosting, domain configuration, operational incident staffing and device-specific installation still require setup. The Docker configuration is provided but has not been executed in this environment.
 - Appearance, comprehensibility, day-7/day-30 retention and network growth need external user evidence. They are not reported as completed 9.5 metrics.
-- International location/localization, substantive creator guidance, optional portraits, group identity/recap ritual, contextual invitation continuation and mature collusion review still have gaps. They remain explicit in the [150-criterion register](acceptance/README.md), not silently classified as finished.
+- Locality normalization/localization, substantive creator-approved guidance and mature collusion review still have gaps. Optional portraits, group identity/recaps and invitation continuation now exist, but their usefulness requires real-player evidence. They remain explicit in the [150-criterion register](acceptance/README.md).
+
+## Identity, community and comfort
+
+Optional portraits are cropped and flattened in the browser into a bounded opaque raster. The server accepts bounded static WebP chunks, strips color-profile containers and rejects animation/extra metadata. Structural validation is not a complete image decoder. Portrait access defaults to the owner and accepted friends, with a separate public visibility preference; public display-name permission alone does not publish a portrait. Blocking/deletion removes access and owners can remove the image.
+
+Original group crests, an optional motto and a voluntary recap weekday are owner-controlled. Recaps count published matches whose entire roster is in the current visible group; they show 7/30/90-day activity, playing connections and visible rating change. Group membership does not reveal another participant's exact result details. Bounded recaps label their coverage; activity counts are not skill points or rankings. Private encouragement is participant-only, idempotent, blocked/deleted/guest-aware and changes no rating.
+
+Player QR codes open exact username discovery or a revocable private invitation. Secret invitation links expire after seven days; the raw secret cannot be recovered from storage. Owners can revoke earlier links. Signup preserves invitation/share context, and an explicit recipient request still needs inviter identity review. Friendship never grants rated-play consent. Self-scans are identified without offering a self-connection.
+
+Light, Dark and Follow device cover shared core components. Functional type uses rem sizes and players can select 200% text. Result review offers voluntary numerical replay only from a previously visible estimate, keeps the published final value accessible and honors reduced motion. The fifth-result reveal does not animate from the hidden prior.
 
 ## Verification scope
 
 Automated checks exercise the rating algorithm against 400 independent reference cases, score formats, exact evidence classes, authorization, consent, revisions, replay, recovery and sharing. Browser journeys exercise onboarding, offline retries, opponent confirmation, privacy, drafts and the five designs at phone and desktop widths. These checks establish implemented behavior, not adoption or retention.
 
-The [pilot protocol](pilot-protocol.md) defines the missing independent evidence. The read-only aggregate pilot report uses submission/approval timestamps and fully observed Day-7/Day-30 windows. It cannot measure voluntary checking, recognized value or real purchases. Payment integration is excluded, and no premium launch is certified.
+The [pilot protocol](pilot-protocol.md) defines the missing independent evidence. The read-only aggregate pilot report separates submission/approval ledger proxies from optional consented view events. View collection is off by default, account-bound, deduplicated and deleted on withdrawal; 90-day retention and withdrawal/selection bias are explicit. Fully observed Day-7/Day-30 windows remain null for immature cohorts. These observations cannot establish recognized value, checking motivation, causal retention or purchases. [Offline calibration tooling](calibration-study.md) supports a frozen private dataset and held-out predictions without certifying real-play provenance or a 9.5 score. Payment integration is excluded, and no premium launch is certified.
