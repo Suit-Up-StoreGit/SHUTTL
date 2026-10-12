@@ -1,0 +1,634 @@
+.profile-layout.profile-overview {
+  max-width: 1080px;
+}
+.player-identity-passport.profile-card {
+  padding: 0;
+  background: var(--card);
+  border-color: var(--line);
+  overflow: hidden;
+  animation: player-passport-enter 450ms ease-out both;
+}
+.player-passport-cover {
+  position: relative;
+  isolation: isolate;
+  padding: 27px 30px 23px;
+  color: #f1f5e9;
+  background: linear-gradient(115deg, #173c2f, #102b22);
+}
+.player-passport-court {
+  position: absolute;
+  right: -25px;
+  bottom: -44px;
+  width: min(55%, 390px);
+  height: auto;
+  fill: none;
+  stroke: #cadcbb;
+  stroke-width: 1;
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+.player-passport-kicker {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #d4e8ab;
+}
+.player-passport-cover .profile-identity {
+  align-items: center;
+  gap: 22px;
+}
+.player-portrait-frame {
+  padding: 5px;
+  border: 1px solid #809881;
+  border-radius: 50%;
+  background: #234333;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 7px rgb(212 232 171 / 5%);
+}
+.player-portrait-frame .avatar {
+  width: 88px;
+  height: 88px;
+  flex-basis: 88px;
+  font-size: 1.75rem;
+  color: #18372a;
+  background: #dce8c9;
+}
+.player-portrait-frame .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.player-identity-copy {
+  min-width: 0;
+  flex: 1;
+}
+.player-passport-cover .profile-identity h2 {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.14;
+  color: #f3f6ed;
+}
+.player-passport-cover .profile-identity p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #d8e5d5;
+}
+.player-passport-cover .player-username {
+  margin-top: 8px;
+}
+.player-passport-cover .player-declared-area {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+}
+.player-declared-area svg {
+  flex: 0 0 auto;
+}
+.player-declared-area span {
+  font-size: 0.75rem;
+  color: #d8e5d5;
+}
+.player-passport-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+  border-top: 1px solid #45604b;
+  margin-top: 26px;
+  padding-top: 18px;
+}
+.player-passport-summary div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.player-passport-summary strong {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f3f6ed;
+}
+.player-passport-summary .player-focus-summary strong {
+  font-family: Barlow, sans-serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.player-passport-summary span {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #d8e5d5;
+}
+.player-passport-actions {
+  padding: 19px 28px;
+  border-bottom: 1px solid var(--line);
+}
+.player-passport-actions .profile-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  gap: 4px 16px;
+}
+.player-passport-actions .profile-actions .button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-width: 0;
+  white-space: normal;
+  background: #183d2f;
+  border-color: #183d2f;
+  color: #f3f6ed;
+}
+.player-passport-actions .profile-actions .text-button {
+  min-height: 44px;
+  padding: 8px 0;
+  text-align: left;
+  justify-content: flex-start;
+  white-space: normal;
+}
+.player-passport-actions .text-button svg {
+  flex-shrink: 0;
+}
+.player-disciplines-heading {
+  padding: 27px 28px 20px;
+}
+.player-disciplines-heading .eyebrow {
+  color: #53644f;
+  font-size: 0.625rem;
+  line-height: 1.6;
+}
+.player-disciplines-heading h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.player-discipline-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding: 0 24px;
+}
+.player-identity-passport .profile-rating-line.player-discipline {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  container-type: inline-size;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #dce4d5;
+  border-radius: 20px;
+  color: #1d392b;
+  background: #f0f4e9;
+}
+.player-identity-passport .player-discipline > div {
+  flex: none;
+}
+.player-discipline-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.player-discipline-heading > div:first-child {
+  min-width: 0;
+}
+.player-discipline-code {
+  font-size: 0.625rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #53644f;
+}
+.player-discipline-heading h3 {
+  font-size: 1.125rem;
+  margin-top: 5px;
+  font-weight: 600;
+}
+.player-discipline-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.player-discipline-seal .gem {
+  flex-shrink: 0;
+}
+.player-discipline-seal span {
+  font-size: 0.6875rem;
+  color: #334d3a;
+}
+.player-discipline-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 15px;
+}
+.player-identity-passport .player-rating-number {
+  display: block;
+  font-family: Barlow, sans-serif;
+  font-weight: 600;
+  font-size: 4rem;
+  font-size: min(4.75rem, calc(100cqw / var(--profile-number-ratio)));
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  color: #14392c;
+}
+.player-rating-evidence {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  border: 1px solid #93a68b;
+  border-radius: 6px;
+  padding: 3px 7px;
+  color: #334d3a;
+}
+.player-rating-caption {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #52634f;
+  margin-top: 10px;
+}
+.player-league-progress,
+.player-placement {
+  margin-top: 20px;
+}
+.player-league-next {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #334d3a;
+}
+.player-league-track {
+  height: 4px;
+  border-radius: 3px;
+  background: #c7d4bc;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.player-league-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #42633b;
+}
+.player-placement-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+.player-placement-track > span {
+  display: block;
+  height: 5px;
+  border-radius: 4px;
+  background: #c7d4bc;
+}
+.player-placement-track > .is-filled {
+  background: #42633b;
+}
+.player-placement p,
+.player-rating-unavailable {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  margin-top: 10px;
+  color: #52634f;
+}
+.player-identity-passport .player-discipline-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #cdd9c4;
+}
+.player-discipline-facts strong {
+  color: #14392c;
+  font-family: Barlow, sans-serif;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.player-identity-passport .player-discipline-facts small {
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  margin-top: 4px;
+  color: #52634f;
+}
+.player-discipline-note {
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  margin-top: 13px;
+  color: #52634f;
+}
+.player-identity-passport .player-discipline[data-focus="false"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 12px;
+  padding: 18px 20px;
+}
+.player-discipline[data-focus="false"] .player-discipline-heading {
+  grid-column: 1;
+  grid-row: 1;
+}
+.player-discipline[data-focus="false"] .player-discipline-seal {
+  display: none;
+}
+.player-discipline[data-focus="false"] .player-discipline-value {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+}
+.player-identity-passport
+  .player-discipline[data-focus="false"]
+  .player-rating-number {
+  font-size: min(2.75rem, calc(100cqw / var(--profile-number-ratio)));
+}
+.player-secondary-count {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  margin-top: 9px;
+  color: #52634f;
+}
+.player-identity-passport .player-secondary-count strong {
+  display: inline;
+  font-size: inherit;
+  font-weight: 700;
+  color: inherit;
+}
+.player-discipline[data-focus="false"] .player-partner-note {
+  grid-column: 1 / -1;
+}
+.player-playing-context {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  border-top: 1px solid #cdd9c4;
+}
+.player-playing-context > summary {
+  min-height: 44px;
+  padding: 13px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  font-weight: 600;
+  color: #334d3a;
+  cursor: pointer;
+}
+.player-playing-context > summary:focus-visible {
+  outline: 3px solid #80985c;
+  outline-offset: 4px;
+  border-radius: 5px;
+}
+.player-playing-context-body {
+  padding-top: 8px;
+}
+.player-secondary-league {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #334d3a;
+}
+.player-identity-passport .player-passport-explanation {
+  padding: 22px 28px 26px;
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.player-identity-passport .player-discipline[data-focus="true"] {
+  color: #f0f5e8;
+  background: #1b4031;
+  border-color: #43664d;
+}
+.player-discipline[data-focus="true"]
+  :is(
+    .player-discipline-code,
+    .player-discipline-seal span,
+    .player-rating-evidence,
+    .player-rating-caption,
+    .player-league-next,
+    .player-placement p,
+    .player-rating-unavailable,
+    .player-discipline-facts small,
+    .player-discipline-note,
+    .player-secondary-count,
+    .player-playing-context > summary,
+    .player-secondary-league
+  ) {
+  color: #d7e5ce;
+}
+.player-identity-passport
+  .player-discipline[data-focus="true"]
+  :is(.player-rating-number, .player-discipline-facts strong) {
+  color: #ecf4db;
+}
+.player-discipline[data-focus="true"] .player-rating-evidence {
+  border-color: #839b70;
+}
+.player-discipline[data-focus="true"]
+  :is(.player-league-track, .player-placement-track > span) {
+  background: #4b674a;
+}
+.player-discipline[data-focus="true"]
+  :is(.player-league-track > span, .player-placement-track > .is-filled) {
+  background: #c5e193;
+}
+.player-identity-passport
+  .player-discipline[data-focus="true"]
+  .player-discipline-facts {
+  border-color: #527046;
+}
+html[data-palette="dark"] .player-identity-passport .player-passport-cover {
+  background: #122d22;
+}
+html[data-palette="dark"] .player-identity-passport .player-discipline {
+  color: #edf3e5;
+  background: #1d3529;
+  border-color: #405540;
+}
+html[data-palette="dark"]
+  .player-identity-passport
+  .player-discipline[data-focus="true"] {
+  background: #244737;
+  border-color: #779865;
+}
+html[data-palette="dark"]
+  .player-identity-passport
+  .player-discipline
+  :is(
+    .player-discipline-code,
+    .player-discipline-seal span,
+    .player-rating-evidence,
+    .player-rating-caption,
+    .player-league-next,
+    .player-placement p,
+    .player-rating-unavailable,
+    .player-discipline-facts small,
+    .player-discipline-note,
+    .player-secondary-count,
+    .player-playing-context > summary,
+    .player-secondary-league
+  ) {
+  color: #d4e3cb;
+}
+html[data-palette="dark"]
+  .player-identity-passport
+  .player-discipline
+  :is(.player-rating-number, .player-discipline-facts strong) {
+  color: #e8f2dc;
+}
+html[data-palette="dark"]
+  .player-identity-passport
+  .player-disciplines-heading
+  .eyebrow {
+  color: #c7d9bb;
+}
+html[data-palette="dark"]
+  .player-discipline
+  :is(.player-league-track, .player-placement-track > span) {
+  background: #486345;
+}
+html[data-palette="dark"]
+  .player-discipline
+  :is(.player-league-track > span, .player-placement-track > .is-filled) {
+  background: #c5e193;
+}
+html[data-palette="dark"] .player-identity-passport .player-discipline-facts {
+  border-color: #496342;
+}
+html[data-palette="dark"] .player-playing-context {
+  border-color: #496342;
+}
+html[data-palette="dark"] .player-passport-actions .profile-actions .button {
+  background: #cbe3a1;
+  border-color: #cbe3a1;
+  color: #18372a;
+}
+@media (min-width: 880px) {
+  .player-passport-actions .profile-actions {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+  }
+  .player-passport-actions .profile-actions .button {
+    grid-column: auto;
+  }
+}
+@media (min-width: 1150px) {
+  .player-discipline-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+  .player-discipline[data-focus="true"] {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+  }
+  .player-discipline[data-focus="false"] {
+    grid-column: 3;
+  }
+}
+@media (max-width: 560px) {
+  .player-passport-cover {
+    padding: 24px 22px 22px;
+  }
+  .player-passport-cover .profile-identity {
+    gap: 17px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .player-portrait-frame .avatar {
+    width: 72px;
+    height: 72px;
+    flex-basis: 72px;
+    font-size: 1.5rem;
+  }
+  .player-identity-copy {
+    flex-basis: 160px;
+  }
+  .player-passport-actions {
+    padding: 16px 20px;
+  }
+  .player-disciplines-heading {
+    padding: 25px 20px 18px;
+  }
+  .player-discipline-grid {
+    padding: 0 14px;
+    gap: 12px;
+  }
+  .player-identity-passport .profile-rating-line.player-discipline {
+    padding: 20px;
+  }
+  .player-identity-passport .player-passport-explanation {
+    padding: 20px;
+  }
+}
+html[data-text-size="large"] .player-discipline-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+html[data-text-size="large"] .player-discipline {
+  grid-column: 1;
+  grid-row: auto;
+}
+html[data-text-size="large"]
+  .player-identity-passport
+  .player-discipline[data-focus="false"] {
+  display: flex;
+}
+html[data-text-size="large"]
+  .player-discipline[data-focus="false"]
+  .player-discipline-value {
+  flex-direction: row;
+  align-items: baseline;
+  align-self: stretch;
+  margin-top: 14px;
+}
+html[data-text-size="large"] .player-passport-actions .profile-actions .button {
+  flex: none;
+  width: 100%;
+}
+html[data-text-size="large"] .player-passport-actions .profile-actions {
+  grid-template-columns: minmax(0, 1fr);
+}
+html[data-text-size="large"] .player-passport-cover .profile-identity,
+html[data-text-size="large"] .player-discipline-heading {
+  flex-wrap: wrap;
+}
+html[data-text-size="large"]
+  :is(
+    .player-passport-summary,
+    .player-identity-passport .player-discipline-facts
+  ) {
+  grid-template-columns: minmax(0, 1fr);
+}
+@keyframes player-passport-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .player-identity-passport.profile-card {
+    animation: none;
+  }
+}

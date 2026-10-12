@@ -579,7 +579,55 @@ test("independent reviewer persona resolves both decisions and retries processin
         .click();
       await expect(panel).toHaveCount(0);
     }
+    // Normal result publication can finish before this desk is inspected.
+    // Create one exhausted job in the existing disposable fixture database so
+    // the visible retry action is exercised against an actual delayed job.
+    await expect
+      .poll(async () => {
+        const processing = await (
+          await personas.reviewer.client.get("/api/reviewer")
+        ).json();
+        return processing.jobs.filter((job: any) => job.category === "Mixed")
+          .length;
+      })
+      .toBe(0);
+    const delayedJobId = randomUUID();
+    const delayedJobError =
+      "Synthetic exhausted processing job for reviewer retry regression.";
+    const fixtureDb = new Database("data/browser-tests.sqlite");
+    try {
+      fixtureDb.run(
+        "INSERT INTO jobs(id,category,status,attempts,error,created_at) VALUES(?,?,'queued',3,?,?)",
+        delayedJobId,
+        "Mixed",
+        delayedJobError,
+        new Date().toISOString(),
+      );
+    } finally {
+      fixtureDb.close();
+    }
+    await page.reload();
+    const delayedJobRow = page
+      .locator(".settings-panel .form-help")
+      .filter({ hasText: delayedJobError });
+    await expect(delayedJobRow).toContainText("Mixed: queued · Attempt 3");
+    const retried = page.waitForResponse(
+      (response) =>
+        response.url().endsWith("/api/reviewer/retry-jobs") &&
+        response.request().method() === "POST",
+    );
     await page.getByRole("button", { name: "Retry delayed jobs" }).click();
+    expect((await retried).ok()).toBe(true);
+    await expect
+      .poll(async () => {
+        const processing = await (
+          await personas.reviewer.client.get("/api/reviewer")
+        ).json();
+        return processing.jobs.some((job: any) => job.id === delayedJobId);
+      })
+      .toBe(false);
+    await page.reload();
+    await expect(delayedJobRow).toHaveCount(0);
     const voided = await (
       await personas.regular.client.get("/api/results/" + units[1])
     ).json();

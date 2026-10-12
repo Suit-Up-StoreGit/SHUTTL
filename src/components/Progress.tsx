@@ -171,6 +171,7 @@ export function ResultReward({
     change.peakAfter > change.peakBefore;
   const ratingMotion = (
     <RatingMotion
+      key={`${result.ownParticipant}:${result.id}:${result.publishedRevisionId}`}
       before={hasVisibleBaseline ? change.before : null}
       after={change.after}
     />

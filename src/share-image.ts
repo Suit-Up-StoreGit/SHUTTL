@@ -48,7 +48,7 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
   const ctx = canvas.getContext("2d")!,
     story = shape === "story",
     top = story ? 430 : 225,
-    height = story ? 1010 : 590;
+    height = story ? 1010 : 545;
   ctx.fillStyle = "#f6f7f2";
   ctx.fillRect(0, 0, 1080, canvas.height);
   ctx.fillStyle = "#14372c";
@@ -68,10 +68,24 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
   ctx.fillStyle = "#14372c";
   ctx.font = `700 ${story ? 68 : 34}px Manrope`;
   wrapped(ctx, title, 75, story ? 300 : 205, 930, 84);
-  ctx.fillStyle = "#14372c";
+  const passportMaterial = ctx.createLinearGradient(
+    75,
+    top,
+    1005,
+    top + height,
+  );
+  passportMaterial.addColorStop(0, "#244a38");
+  passportMaterial.addColorStop(0.46, "#14372c");
+  passportMaterial.addColorStop(1, "#0e2921");
+  ctx.fillStyle = passportMaterial;
   ctx.beginPath();
   ctx.roundRect(75, top, 930, height, 36);
   ctx.fill();
+  ctx.strokeStyle = "#d4e8ab38";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(77, top + 2, 926, height - 4, 34);
+  ctx.stroke();
   ctx.save();
   ctx.beginPath();
   ctx.roundRect(75, top, 930, height, 36);
@@ -101,8 +115,30 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
     top + (story ? 365 : 295),
     650,
   );
-  const slug = LEAGUES.find((l) => l.name === payload.league)?.slug;
+  const league = LEAGUES.find((l) => l.name === payload.league);
+  const slug = league?.slug;
   if (slug) {
+    ctx.save();
+    const sealCenterY = top + (story ? 251 : 196);
+    const sealLight = ctx.createRadialGradient(
+      873,
+      sealCenterY,
+      18,
+      873,
+      sealCenterY,
+      92,
+    );
+    sealLight.addColorStop(0, league!.color + "45");
+    sealLight.addColorStop(1, league!.color + "00");
+    ctx.fillStyle = sealLight;
+    ctx.beginPath();
+    ctx.arc(873, sealCenterY, 92, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#f4f7ec30";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(873, sealCenterY, 74, 0, Math.PI * 2);
+    ctx.stroke();
     const gem = new Image();
     gem.src = "/leagues/" + slug + ".svg";
     await new Promise<void>((resolve) => {
@@ -111,6 +147,7 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
     });
     if (gem.complete && gem.naturalWidth)
       ctx.drawImage(gem, 812, top + (story ? 190 : 135), 122, 122);
+    ctx.restore();
   }
   ctx.font = "650 42px Manrope";
   ctx.fillText(payload.league, 128, top + (story ? 455 : 365));
@@ -126,7 +163,7 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
   ctx.fillText(
     "From confirmed results. Earned on court.",
     128,
-    top + (story ? 640 : 495),
+    top + (story ? 640 : 480),
   );
   const date = new Intl.DateTimeFormat("en-SG", {
     timeZone: "UTC",
@@ -141,7 +178,7 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
       date +
       " UTC",
     128,
-    top + (story ? 688 : 535),
+    top + (story ? 688 : 520),
   );
   if (story) {
     ctx.font = "650 36px Manrope";
@@ -168,8 +205,8 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
   }
   ctx.fillStyle = "#14372c";
   ctx.font = "600 30px Manrope";
-  if (!story && payload.name) wrapped(ctx, payload.name, 75, 875, 930, 38, 1);
-  const footer = story ? 1575 : payload.name ? 935 : 885;
+  if (!story && payload.name) wrapped(ctx, payload.name, 75, 824, 930, 38, 1);
+  const footer = story ? 1575 : payload.name ? 879 : 870;
   ctx.font = "600 28px Manrope";
   wrapped(
     ctx,
@@ -197,20 +234,19 @@ export async function ratingImage(payload: any, shape: "story" | "feed") {
   );
   if (payload.title) {
     ctx.font = "600 23px Manrope";
+    const eligibility = `${payload.title.eligible.toLocaleString("en")} eligible players`;
+    const eligibilityWidth = ctx.measureText(eligibility).width;
+    const titleY = story ? 1760 : 1034;
     wrapped(
       ctx,
-      payload.title.label +
-        " · " +
-        payload.title.pool +
-        " · " +
-        payload.title.eligible +
-        " eligible players",
+      payload.title.label + " · " + payload.title.pool,
       75,
-      story ? 1760 : 1035,
-      930,
+      titleY,
+      930 - eligibilityWidth - 28,
       30,
       1,
     );
+    ctx.fillText(eligibility, 1005 - eligibilityWidth, titleY);
   }
   if (story) {
     ctx.font = "750 25px Manrope";

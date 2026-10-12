@@ -93,9 +93,14 @@ export function RatingCard({
       : null;
   return (
     <section
-      className={"rating-passport " + (compact ? "compact" : "")}
+      key={`${category}:${rating.score ?? "placement"}:${rating.count}`}
+      className={
+        "rating-passport passport-settle " + (compact ? "compact" : "")
+      }
+      data-rating-state={rating.score === null ? "placement" : "published"}
       style={
         {
+          "--passport-league-light": (league?.color || "#d4e8ab") + "18",
           "--rating-number-ratio": Math.max(
             2.4,
             (rating.score === null ? "—" : rating.score.toLocaleString("en-SG"))
@@ -105,6 +110,24 @@ export function RatingCard({
       }
       aria-label={`${category} player passport`}
     >
+      <svg
+        className="passport-court-detail"
+        viewBox="0 0 244 400"
+        aria-hidden="true"
+        focusable="false"
+        fill="none"
+      >
+        <path
+          className="passport-court-boundary"
+          d="M49 38H195V360H49Z M49 199H195"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          className="passport-court-service"
+          d="M60 38V360M184 38V360M49 56H195M49 342H195M49 151H195M49 247H195M122 56V151M122 247V342"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
       <div className="passport-top">
         <span className="eyebrow">{category} rating</span>
         <span className="passport-code">
@@ -118,7 +141,9 @@ export function RatingCard({
         </strong>
         {rating.score !== null && (
           <div className="passport-seal">
-            <Gem league={rating.league} size={58} />
+            <div className="passport-seal-mark">
+              <Gem league={rating.league} size={58} />
+            </div>
             <span>{rating.league}</span>
           </div>
         )}

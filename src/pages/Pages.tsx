@@ -61,6 +61,7 @@ import {
 import { ratingImage } from "../share-image.ts";
 import { PlayingInsights } from "../components/Insights.tsx";
 import { DeviceNotifications } from "../components/Notifications.tsx";
+import { PlayerIdentity } from "../components/PlayerIdentity.tsx";
 import { GroupRecap, PlayerCode } from "../components/Community.tsx";
 import {
   AppearanceChoices,
@@ -69,7 +70,7 @@ import {
   ResearchChoice,
   recordResearch,
 } from "../components/Preferences.tsx";
-import { countryOptions, localityLabel } from "../location.ts";
+import { countryOptions } from "../location.ts";
 const statusLabels: Record<string, string> = {
   rated: "Rating published",
   pending: "Awaiting approval",
@@ -977,163 +978,7 @@ export function FriendsPage({
     </>
   );
 }
-export function RankingsPage({
-  data,
-  category,
-  setCategory,
-}: {
-  data: any;
-  category: Category;
-  setCategory: (category: Category) => void;
-}) {
-  const [circle, setCircle] = useState(""),
-    [ranking, setRanking] = useState<any>(null),
-    [error, setError] = useState(""),
-    [attempt, setAttempt] = useState(0);
-  useEffect(() => {
-    let active = true;
-    setRanking(null);
-    setError("");
-    api("/rankings?category=" + category + (circle ? "&circle=" + circle : ""))
-      .then((r) => {
-        if (active) setRanking(r);
-      })
-      .catch((e) => {
-        if (active) setError(errorMessage(e));
-      });
-    return () => {
-      active = false;
-    };
-  }, [
-    category,
-    circle,
-    data.me.country,
-    data.me.city,
-    data.me.district,
-    data.me.localOptIn,
-    attempt,
-  ]);
-  return (
-    <>
-      <PageHeading eyebrow="A LEAD WORTH EARNING" title="Your local picture" />
-      <p className="page-subtitle">
-        Qualified tables compare players in a named SHUTTL pool. A title never
-        claims to rank every resident or certify someone’s ability.
-      </p>
-      <CategoryTabs value={category} onChange={setCategory} />
-      <div className="field" style={{ maxWidth: 400 }}>
-        <label htmlFor="comparison-pool">Comparison pool</label>
-        <select
-          id="comparison-pool"
-          value={circle}
-          onChange={(e) => setCircle(e.target.value)}
-        >
-          <option value="">
-            {data.me.district || "Your district"} · declared district
-          </option>
-          {data.circles.map((c: any) => (
-            <option value={c.id} key={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <InlineError message={error} />
-      {error && (
-        <button
-          className="button secondary"
-          onClick={() => setAttempt((v) => v + 1)}
-        >
-          Retry comparison pool
-        </button>
-      )}
-      {!ranking && !error ? (
-        <Spinner />
-      ) : ranking ? (
-        <div className="page-grid">
-          <section className="panel">
-            <SectionHeading title={ranking.name} />
-            <p className="form-help">
-              {category} · {ranking.total} opted-in or accepted players ·{" "}
-              {dateLabel(ranking.asOf)}
-            </p>
-            {ranking.crownAvailable ? (
-              <>
-                <div className="notice">
-                  <strong>
-                    {ranking.eligible} eligible players in your supported
-                    comparison pool
-                  </strong>
-                  <p>
-                    Ties share their position and any title. Only supported,
-                    recent individual evidence qualifies.
-                  </p>
-                </div>
-                {ranking.players.map((p: any) => (
-                  <div className="ranking-row" key={p.id}>
-                    <strong>{p.position}</strong>
-                    <Avatar player={p} />
-                    <div className="ranking-person">
-                      <strong>
-                        {p.name}
-                        {p.id === data.me.id ? " · You" : ""}
-                      </strong>
-                      <small>
-                        {p.top
-                          ? "Top-rated in this named pool"
-                          : p.rating.status}
-                      </small>
-                    </div>
-                    <Gem league={p.rating.league} />
-                    <strong className="ranking-number">{p.rating.score}</strong>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <Empty
-                title={
-                  ranking.needsDistrict
-                    ? "Choose your local context"
-                    : "Your local table is forming"
-                }
-              >
-                Individual titles need enough supported, recent playing evidence
-                and a validated comparison policy. No crown has been issued for
-                this pool. Your friends and real results still count.
-              </Empty>
-            )}
-          </section>
-          <section className="panel">
-            <SectionHeading title="Developing player estimates" />
-            <p className="form-help">
-              These estimates are shown without individual rank. Separate
-              playing networks and fixed partners can leave comparisons
-              unresolved.
-            </p>
-            {ranking.developing.length ? (
-              ranking.developing.map((p: any) => (
-                <div className="ranking-row" key={p.id}>
-                  <Avatar player={p} />
-                  <div className="ranking-person">
-                    <strong>{p.name}</strong>
-                    <small>
-                      {p.rating.status} · {p.rating.partnerCount} partners
-                    </small>
-                  </div>
-                  <strong className="ranking-number">{p.rating.score}</strong>
-                </div>
-              ))
-            ) : (
-              <Empty title="The first chapter is yours">
-                Five confirmed results reveal an estimate in this category.
-              </Empty>
-            )}
-          </section>
-        </div>
-      ) : null}
-    </>
-  );
-}
+export { RankingsPage } from "./Rankings.tsx";
 export function AgreementsPage({
   inbox,
   create,
@@ -1948,59 +1793,27 @@ export function ProfilePage({
         <div hidden={tab === "settings"}>
           {tab === "overview" && (
             <>
-              <section className="panel profile-card">
-                <div className="profile-identity">
-                  <Avatar player={data.me} />
-                  <div>
-                    <h2>{data.me.name}</h2>
-                    <p>
-                      @{data.me.username}
-                      {data.me.district
-                        ? " · " +
-                          localityLabel(
-                            data.me.country,
-                            data.me.city,
-                            data.me.district,
-                          ) +
-                          " (declared)"
-                        : ""}
-                    </p>
+              <PlayerIdentity
+                me={data.me}
+                preferredCategory={preferredCategory}
+                actions={
+                  <div className="profile-actions">
+                    <PlayerCode me={data.me} notify={notify} />
+                    <button
+                      className="text-button"
+                      onClick={() => setTab("history")}
+                    >
+                      Explore your match history
+                    </button>
+                    <button
+                      className="text-button"
+                      onClick={() => setTab("settings")}
+                    >
+                      Manage goals and settings <Settings size={16} />
+                    </button>
                   </div>
-                </div>
-                {data.me.ratings.map((r: PublicRating) => (
-                  <div className="profile-rating-line" key={r.category}>
-                    <Gem league={r.league} size={30} />
-                    <div>
-                      <strong>{r.category}</strong>
-                      <small>
-                        {r.status} · {r.count} confirmed{" "}
-                        {r.count === 1 ? "result" : "results"}
-                      </small>
-                    </div>
-                    <b>{r.score ?? "—"}</b>
-                  </div>
-                ))}
-                <p className="form-help">
-                  Five results reveal a developing estimate. Fixed partners,
-                  disconnected circles and mixed pairing rules can leave
-                  individual comparisons uncertain.
-                </p>
-              </section>
-              <div className="profile-actions">
-                <PlayerCode me={data.me} notify={notify} />
-                <button
-                  className="button secondary"
-                  onClick={() => setTab("history")}
-                >
-                  Explore your match history
-                </button>
-                <button
-                  className="button secondary"
-                  onClick={() => setTab("settings")}
-                >
-                  Manage goals and settings <Settings size={16} />
-                </button>
-              </div>
+                }
+              />
               <RatingGuide category={preferredCategory} />
             </>
           )}

@@ -4,9 +4,7 @@
   "type": "independent_source_and_saved_image_opportunity_review",
   "reviewedCriteria": 110,
   "inScopeCriteria": 109,
-  "excludedCriteria": [
-    138
-  ],
+  "excludedCriteria": [138],
   "globalRegisterUnchanged": true,
   "sourceBaselineCommit": "706ecb6f9b49bba9e4bbad0578b87d84769e073d",
   "workingTreeChangesInProgress": false,
@@ -68,136 +66,43 @@
     "A chosen accepted friend stays visible even when direct comparison is unsupported; automatic choice is labelled Closest comparable friend, with concrete placement/pending/partner-linked next actions. Weekly recap failed versus empty states have explicit Retry.",
     "A new server-authoritative published promotion snapshot is implemented end-to-end and its historical public/PNG export passed representative reward-context checks in full69. Promotion export was absent before this work, rather than a reachable generic-label fallback.",
     "Post-full70 compact Home recaps now state only the real won/lost outcome below their numeric/delta/peak block; full result reviews retain before/after and model context. Small best cards remove the redundant transition arrow and reduce spacing. These latest presentation edits passed the rebuilt affected11 checks; final compact Home/best captures have now been inspected with their bundle/hash provenance.",
-    "Routine Home result uses a compact published-rating line, actual delta and outcome; special reveal/best/promotion and full review remain distinct. A genuine Arena label contrast regression was detected and received a specific color fix; final frozen-source full70 passed, including its accessibility case."
+    "Routine Home result uses a compact published-rating line, actual delta and outcome; special reveal/best/promotion and full review remain distinct. A genuine Arena label contrast regression was detected and received a specific color fix; final frozen-source full70 passed, including its accessibility case.",
+    "12October visual pass adds court material/seal framing, a focused player identity, semantic scope-aware standings with first-screen personal status, purpose-bound motion and complete export scope facts. Independent local craft review supports the9.5 band for22 selected execution criteria; global150 scores remain unchanged."
   ],
   "groups": [
     {
       "name": "Visual identity",
       "metricIds": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
       ],
-      "provisionalLocalPresentationBand": [
-        8.5,
-        9
-      ],
+      "provisionalLocalPresentationBand": [8.5, 9],
       "basis": "Fresh developed-Doubles phone capture and current original seals improve coherent sporting identity; independent premium/recognition/desirability evidence remains absent."
     },
     {
       "name": "Layout and accessibility",
       "metricIds": [
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+        39, 40
       ],
-      "provisionalLocalPresentationBand": [
-        8.5,
-        9
-      ],
+      "provisionalLocalPresentationBand": [8.5, 9],
       "basis": "Fresh phone rating context and reduced duplicate copy improve hierarchy; local emulation does not establish every state, physical touch, assistive technology or player comprehension."
     },
     {
       "name": "Motion and rewards",
-      "metricIds": [
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55
-      ],
-      "provisionalLocalPresentationBand": [
-        8.5,
-        9
-      ],
+      "metricIds": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55],
+      "provisionalLocalPresentationBand": [8.5, 9],
       "basis": "Fresh confirmed personal-best phone view plus current distinct genuine milestone headings, original seals, direct sharing and once-per-visit entrance; actual motion quality, emotional reward and repeated-use fatigue remain unmeasured."
     },
     {
       "name": "Onboarding and simplicity",
-      "metricIds": [
-        56,
-        57,
-        58,
-        59,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
-        68,
-        69,
-        70
-      ],
-      "provisionalLocalPresentationBand": [
-        8,
-        9
-      ],
+      "metricIds": [56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
+      "provisionalLocalPresentationBand": [8, 9],
       "basis": "Local functional completeness and readable intent; first-value and unassisted comprehension unmeasured."
     },
     {
       "name": "Social competition and FOMO",
       "metricIds": [
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113,
-        114,
+        101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114,
         115
       ],
       "provisionalLocalPresentationBand": null,
@@ -206,20 +111,7 @@
     {
       "name": "Retention and progress",
       "metricIds": [
-        116,
-        117,
-        118,
-        119,
-        120,
-        121,
-        122,
-        123,
-        124,
-        125,
-        126,
-        127,
-        128,
-        129,
+        116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129,
         130
       ],
       "provisionalLocalPresentationBand": null,
@@ -227,18 +119,7 @@
     },
     {
       "name": "Price and paid value",
-      "metricIds": [
-        131,
-        132,
-        133,
-        134,
-        135,
-        136,
-        137,
-        138,
-        139,
-        140
-      ],
+      "metricIds": [131, 132, 133, 134, 135, 136, 137, 138, 139, 140],
       "provisionalLocalPresentationBand": null,
       "basis": "No actual price acceptance/renewal evidence. Billing138 excluded."
     }
@@ -246,64 +127,21 @@
   "opportunities": [
     {
       "id": "signature_identity",
-      "metricIds": [
-        2,
-        3,
-        4,
-        5,
-        6,
-        10,
-        11,
-        12,
-        17,
-        18,
-        20,
-        52
-      ],
+      "metricIds": [2, 3, 4, 5, 6, 10, 11, 12, 17, 18, 20, 52],
       "finding": "The fresh phone passport has coherent forest/ivory typography, strong number hierarchy and original shuttle-bearing league seals. The overall restrained dashboard composition still needs independent sporting recognition and premium desirability evidence; creator connection is mainly attribution.",
       "implementationCandidate": "Inspect the authored sporting composition consistently across current results and exports. Integrate useful creator-approved guidance when supplied, without inventing editorial endorsement or photos; evaluate the refined identity with actual players before treating premium perception as accepted.",
       "requires": "Current-state visual inspection and independent recognition/desirability evidence."
     },
     {
       "id": "hierarchy_and_density",
-      "metricIds": [
-        13,
-        16,
-        19,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        28,
-        36,
-        38,
-        39,
-        67,
-        68
-      ],
+      "metricIds": [13, 16, 19, 21, 22, 23, 24, 25, 26, 28, 36, 38, 39, 67, 68],
       "finding": "The final Home view puts latest published earned context directly below the main rating guide, before friend comparison. Current estimate, confirmed count, personal best and genuine dated reward are distinct; enlarged final review preserves all sides/score/time through scrolling. Actual unassisted comprehension is still absent.",
       "implementationCandidate": "Retain the current hierarchy and truthful contextual disclosure. Inspect future long-name, losing, empty, pending and mixed states before making layout-wide claims; measure unassisted task comprehension separately.",
       "requires": "Inspected empty, developed, winning, losing, pending, long-name and enlarged-text states; unassisted comprehension remains separate."
     },
     {
       "id": "earned_moments",
-      "metricIds": [
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53
-      ],
+      "metricIds": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53],
       "finding": "Current source and final views differentiate reveal, personal best and promotion through actual earned evidence. Historical promotion now has a published dated snapshot, public view and PNG; shared/revisited numbers remain distinct from the current estimate. Actual motion emotion and repeated-use fatigue remain unmeasured.",
       "implementationCandidate": "Preserve authoritative published numbers and historical context; assess real motion quality, reward strength and fatigue through device/player evidence before scoring emotional outcomes.",
       "requires": "Current animated device inspection, calibrated league boundaries, player emotion and repeated-use fatigue evidence."
@@ -311,31 +149,8 @@
     {
       "id": "contextual_next_action",
       "metricIds": [
-        6,
-        9,
-        12,
-        29,
-        30,
-        56,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
-        69,
-        70,
-        101,
-        102,
-        103,
-        108,
-        111,
-        114,
-        115,
-        120,
-        136
+        6, 9, 12, 29, 30, 56, 60, 61, 62, 63, 64, 65, 66, 67, 69, 70, 101, 102,
+        103, 108, 111, 114, 115, 120, 136
       ],
       "finding": "Current Home/source uses exact placement count, chosen-versus-automatic comparison, waiting-result, reached-goal and partner-linked next actions. The direct comparison explanation uses actual history limitations rather than a generic promise. First-session and placement-abandonment outcomes remain unmeasured.",
       "implementationCandidate": "Retain one legitimate action for each actual evidence state and verify new states as they arise. Use scenario teach-back and real rating calibration to assess understanding and first value; do not promise match counts or outcomes.",
@@ -344,25 +159,8 @@
     {
       "id": "social_context",
       "metricIds": [
-        15,
-        22,
-        23,
-        46,
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113,
-        114,
-        115
+        15, 22, 23, 46, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+        112, 113, 114, 115
       ],
       "finding": "Current accepted-friend context explicitly identifies automatic closest comparable selection and allows a chosen accepted friend to remain visible when unsupported. Real feed milestone chips and dated player-progress actions improve relevance. Local titles remain disabled; actual rival relevance, sharing pressure and group effects are unmeasured.",
       "implementationCandidate": "Evaluate chosen-comparison relevance, real lead changes and genuine group density with players. Preserve friendship/group/consent boundaries and avoid unsupported neighborhood crowns.",
@@ -371,20 +169,7 @@
     {
       "id": "goals_recaps_and_return",
       "metricIds": [
-        116,
-        117,
-        118,
-        119,
-        120,
-        121,
-        122,
-        123,
-        124,
-        125,
-        126,
-        127,
-        128,
-        129,
+        116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129,
         130
       ],
       "finding": "Reached goals now offer a direct category-focused next-target action; Home shows real period facts and explicit weekly recap failure Retry. These inspectable mechanisms provide relevant next steps but do not establish return behavior or quiet-month value.",
@@ -394,30 +179,8 @@
     {
       "id": "accessibility_and_craft",
       "metricIds": [
-        7,
-        8,
-        11,
-        14,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40,
-        49,
-        53,
-        54,
-        55
+        7, 8, 11, 14, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+        39, 40, 49, 53, 54, 55
       ],
       "finding": "Phone number/seal robustness, bounded requests, exact consent and recovery controls have extensive local checks. Existing automatically indeterminate contrast items, current error-state layouts, actual assistive technology and physical touch/OS text sizing still need distinct evidence.",
       "implementationCandidate": "Inspect all current states in both themes at narrow/large-text sizes. Resolve ambiguous contrast geometries, verify focus and label meaning, and keep long names, interrupted actions and controls legible. Preserve the new visit-only appearance fallback when storage is denied.",
@@ -425,17 +188,7 @@
     },
     {
       "id": "paid_value_hypothesis",
-      "metricIds": [
-        131,
-        132,
-        133,
-        134,
-        135,
-        136,
-        137,
-        139,
-        140
-      ],
+      "metricIds": [131, 132, 133, 134, 135, 136, 137, 139, 140],
       "finding": "The current pilot has no paid entitlement distinction or actual price/renewal evidence. Complete rating and social controls do not demonstrate a broad20-dollar monthly recurring benefit.",
       "implementationCandidate": "Define a coherent future recurring benefit from evidence the platform actually stores, while keeping opponent approval and core social evidence accessible. Separate individual-player and organizer hypotheses. Do not invent coaching diagnoses or payment behavior.",
       "requires": "Actual value/price and renewal evidence before a broad paid launch. Payment integration138 remains excluded."
@@ -461,9 +214,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Blind recognition study; refine signature compositions if identification is weak.",
       "acceptanceCriterion": "Unbranded screen recognition separates SHUTTL from unrelated dashboards.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -475,9 +226,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Real player review and licensed Featherballer editorial material; no supplied photography has been invented.",
       "acceptanceCriterion": "Players recognize their sport immediately without reading the app description.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -489,9 +238,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Independent ordinary-phone premium-perception review.",
       "acceptanceCriterion": "Premium perception remains high on ordinary phones, not just curated captures.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -503,9 +250,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Perceived energy and motion quality on actual devices.",
       "acceptanceCriterion": "Competitive players distinguish routine browsing from an earned achievement.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -517,10 +262,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity",
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["signature_identity", "contextual_next_action"],
       "requiredEvidenceFromRegister": "Research whether recreational and competitive players aspire to this identity.",
       "acceptanceCriterion": "Players can explain why the next milestone matters to them.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -532,9 +274,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Independent palette/contrast appraisal, actual devices and incomplete automated contrast items.",
       "acceptanceCriterion": "The same state always carries the same visual meaning.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -546,9 +286,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Physical-device text-size and typography review, including long labels.",
       "acceptanceCriterion": "Hierarchy remains recognizable at small and enlarged text sizes.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -560,9 +298,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Perceived authority without misunderstanding estimates as certified skill.",
       "acceptanceCriterion": "Users distinguish a developing estimate from an official skill credential.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -574,9 +310,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Independent identity craft, small-size recognition and app-icon review.",
       "acceptanceCriterion": "The icon remains recognizable at notification and app-icon sizes.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -588,10 +322,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["signature_identity", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Independent craft/desirability assessment; recognition in exported cards.",
       "acceptanceCriterion": "Players can recognize tiers at small sizes without relying on color.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -603,10 +334,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity",
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["signature_identity", "contextual_next_action"],
       "requiredEvidenceFromRegister": "Validate badge progression and boundaries with badminton data.",
       "acceptanceCriterion": "Users understand the ladder without confusing a badge with verified badminton ability.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -618,9 +346,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Task-based density and restraint review under realistic history.",
       "acceptanceCriterion": "The main task stays obvious without making every section another card.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -632,9 +358,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Audit all icon meanings and assistive labels.",
       "acceptanceCriterion": "Icons retain clear meaning in keyboard, touch and screen-reader use.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -646,9 +370,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Actual friend recognition and desirability; image validation is structural, not a complete image decoder.",
       "acceptanceCriterion": "Players recognize friends quickly without exposing unwanted identity.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -660,9 +382,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Non-leading comprehension review across complete flows.",
       "acceptanceCriterion": "Players understand the screen before reading secondary explanations.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -674,9 +394,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Creator-approved story and useful guidance content remain needed.",
       "acceptanceCriterion": "New arrivals understand why Featherballer endorses this product and what value that brings.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -688,9 +406,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Voluntary sharing and blind visual review of actual exports.",
       "acceptanceCriterion": "A shared card is both recognizable and meaningful to another badminton player.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -702,9 +418,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Independent review of every error, empty, correction and account state.",
       "acceptanceCriterion": "Premium quality remains consistent throughout a complete session.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -716,9 +430,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity"
-      ],
+      "opportunityRefs": ["signature_identity"],
       "requiredEvidenceFromRegister": "Five directions are alternatives, not five independently accepted products; choose and validate one.",
       "acceptanceCriterion": "The chosen direction handles empty, active, winning, losing and long-content states equally well.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -730,9 +442,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Measure real-device viewport coverage and text enlargement; no universal fold guarantee.",
       "acceptanceCriterion": "The first screen answers my rating, what changed and what I can do next.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -744,10 +454,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "social_context"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "social_context"],
       "requiredEvidenceFromRegister": "Discoverability study under no-friend, long-name, break and lead-change states.",
       "acceptanceCriterion": "A returning player finds their relevant rival without a long scroll.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -759,10 +466,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "social_context"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "social_context"],
       "requiredEvidenceFromRegister": "Verify voluntary activity discovery rather than assuming a preview guarantees return.",
       "acceptanceCriterion": "Fresh relevant activity is discoverable within the first two screens.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -774,9 +478,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Unassisted action discovery and recording task success.",
       "acceptanceCriterion": "Players identify the main action quickly in every home state.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -788,10 +490,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Real-device legibility and enlarged-text review.",
       "acceptanceCriterion": "Players of varied ages read the interface comfortably on actual devices.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -803,10 +502,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Independent hierarchy assessment across widths and large text.",
       "acceptanceCriterion": "Player passport and Rated agreements headings remain balanced at 320–430 pixels.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -818,9 +514,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Real-device, zoom and translated-label stress review.",
       "acceptanceCriterion": "Every league name and realistic rating value fits with intact padding.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -832,10 +526,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Review all templates, long names and both export shapes on target devices.",
       "acceptanceCriterion": "The complete rating and badge fit in the sharing sheet at common phone widths.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -847,10 +538,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["contextual_next_action", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Players must correctly interpret the line, sample coverage and placement baseline.",
       "acceptanceCriterion": "Users can tell the amount and timing of progress rather than only the line's direction.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -862,10 +550,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["contextual_next_action", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Comprehension with developing and sparse accounts.",
       "acceptanceCriterion": "New players never mistake illustrative content for their own evidence.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -877,9 +562,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Resolve remaining manual scan items and actual assistive/device review; zero detected violations is not WCAG certification.",
       "acceptanceCriterion": "Relevant WCAG contrast checks pass; tiny text is reviewed separately for usability.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -891,9 +574,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Touch task study on real small phones and with motor-access needs.",
       "acceptanceCriterion": "Users reliably tap intended controls after a match without accidental adjacent actions.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -905,9 +586,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Complete keyboard journeys including nested pickers, correction and settings.",
       "acceptanceCriterion": "Signup, scoring, approval, sharing and account controls work without a pointer.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -919,9 +598,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Actual VoiceOver/TalkBack/NVDA task testing remains required.",
       "acceptanceCriterion": "A screen-reader user completes the same core tasks without extra help.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -933,9 +610,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Physical-device system text sizing, further error/history states and target-player review.",
       "acceptanceCriterion": "At enlarged text, controls and rating labels remain readable without loss of information.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -947,10 +622,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Stress actual exports, scripts and long names on real devices.",
       "acceptanceCriterion": "Important identity and result information remains accessible rather than silently clipped.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -962,9 +634,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Independent full-state visual review on actual devices; Arena remains a separate concept.",
       "acceptanceCriterion": "Theme changes do not leave bright dialogs, low contrast or mismatched assets.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -976,10 +646,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Unassisted settings discovery with realistic history.",
       "acceptanceCriterion": "Users find privacy, goals and account controls without scrolling through their match archive.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -991,10 +658,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Verify navigation/back/forward and category continuity in real sessions.",
       "acceptanceCriterion": "Users can locate every relevant destination on mobile and desktop.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1006,9 +670,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "DST, international timezones and entered-device-time comprehension.",
       "acceptanceCriterion": "The same match displays the same date across home, history, review and export.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1020,9 +682,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Device motion appraisal and performance measurement.",
       "acceptanceCriterion": "Transitions clarify where the player went and remain responsive on ordinary phones.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1034,9 +694,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Observed clarity and satisfaction on actual devices; numeric motion is not proof of motivating reward.",
       "acceptanceCriterion": "Users understand the change and can replay or inspect it without waiting through decoration.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1048,9 +706,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Observed emotional response and fifth-result comprehension.",
       "acceptanceCriterion": "The reveal feels earned and is understood as a starting estimate, not a final certification.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1062,9 +718,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Validate league boundaries and player response; corrections may undo milestones.",
       "acceptanceCriterion": "A real crossing is celebrated exactly once; corrections do not manufacture promotional hype.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1076,9 +730,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Real-player reward desirability and repeated-use fatigue.",
       "acceptanceCriterion": "Players notice genuine new bests without searching the profile.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1090,10 +742,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments",
-        "social_context"
-      ],
+      "opportunityRefs": ["earned_moments", "social_context"],
       "requiredEvidenceFromRegister": "Configured-device delivery and meaningful return behavior.",
       "acceptanceCriterion": "The reason to return is clear and reflects a real published result.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1105,9 +754,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Observe frustrated and losing-player journeys over time.",
       "acceptanceCriterion": "Players feel informed and willing to return after a loss.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1119,9 +766,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Verify players understand score approval versus rating publication.",
       "acceptanceCriterion": "Players can answer what happened and why it mattered from the recap.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1133,10 +778,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["earned_moments", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Independent interaction polish on ordinary devices.",
       "acceptanceCriterion": "Every interaction acknowledges input clearly without visual noise.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1148,9 +790,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Assess repetition/fatigue and correct stale/corrected recognition.",
       "acceptanceCriterion": "Rare achievements remain special while routine updates stay quick.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1162,9 +802,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments"
-      ],
+      "opportunityRefs": ["earned_moments"],
       "requiredEvidenceFromRegister": "Adversarial and independent review; attested play is not proof of physical play.",
       "acceptanceCriterion": "Players understand that paid access, volume and posting cannot buy a higher skill rating.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1176,10 +814,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "signature_identity",
-        "earned_moments"
-      ],
+      "opportunityRefs": ["signature_identity", "earned_moments"],
       "requiredEvidenceFromRegister": "Badge desirability and voluntary display require player evidence.",
       "acceptanceCriterion": "Players voluntarily show meaningful badges to peers.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1191,10 +826,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "earned_moments",
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["earned_moments", "accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Complete reduced-motion task review on actual devices.",
       "acceptanceCriterion": "All reward information remains available with motion disabled.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1206,9 +838,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Regression check passes; independent consent comprehension and race review remain.",
       "acceptanceCriterion": "A second-player correction while the dialog is open invalidates prior acknowledgement and requires an explicit fresh check before the new score can be approved.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1220,9 +850,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "accessibility_and_craft"
-      ],
+      "opportunityRefs": ["accessibility_and_craft"],
       "requiredEvidenceFromRegister": "Audit every server failure and recovery path; broad crash-free proof remains open.",
       "acceptanceCriterion": "Users understand success, waiting and failure for the actual task, without false promises that unrelated settings were saved as a draft.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1234,9 +862,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Five-second proposition comprehension without leading prompts.",
       "acceptanceCriterion": "A new badminton player accurately describes the benefit in their own words.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1284,9 +910,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Verify players discover and use their actual preferred category.",
       "acceptanceCriterion": "Singles-focused users land in the relevant category across sessions.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1298,9 +922,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "First-session unassisted comprehension and completion.",
       "acceptanceCriterion": "A first-time group completes a result without founder assistance.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1312,9 +934,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Publication time is not recognized user value; measure actual first benefit.",
       "acceptanceCriterion": "Players identify a useful benefit during their first session rather than waiting weeks.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1326,9 +946,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Measure abandonment and misunderstanding; five is not a proven optimum.",
       "acceptanceCriterion": "Players understand exactly what remains before their category estimate appears.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1340,9 +958,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Test teach-back for prior consent, retrospective approval and silence.",
       "acceptanceCriterion": "Players correctly predict who must approve a result in ordinary and retrospective cases.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1354,9 +970,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Scenario-based understanding with real recreational and competitive players.",
       "acceptanceCriterion": "Players explain why equally rated partners may move different amounts.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1368,9 +982,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Functional check passes; verify players can explain the first visible number.",
       "acceptanceCriterion": "Players do not ask what their first visible rating supposedly fell from.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1382,10 +994,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density",
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["hierarchy_and_density", "contextual_next_action"],
       "requiredEvidenceFromRegister": "Glossary/terminology comprehension; technical evidence labels may still need refinement.",
       "acceptanceCriterion": "New users locate friends, history and score approval without learning a glossary.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1397,9 +1006,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "hierarchy_and_density"
-      ],
+      "opportunityRefs": ["hierarchy_and_density"],
       "requiredEvidenceFromRegister": "Evaluate information finding and accidental omission in real tasks.",
       "acceptanceCriterion": "Users can act confidently while still accessing complete explanations.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1411,9 +1018,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Choose actual launch markets; spelling variants, verified residence, localization and local taxonomy quality remain unresolved.",
       "acceptanceCriterion": "Players in intended launch markets can select a meaningful local context.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1425,9 +1030,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action"
-      ],
+      "opportunityRefs": ["contextual_next_action"],
       "requiredEvidenceFromRegister": "Unassisted inviter/recipient comprehension across devices.",
       "acceptanceCriterion": "Guest and inviter both understand that identity verification does not approve the score.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1439,10 +1042,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Repeated value in real accepted playing groups.",
       "acceptanceCriterion": "Players can identify their meaningful comparison without scanning an arbitrary list.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1454,10 +1054,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Measure relevance and preference stability across changing evidence.",
       "acceptanceCriterion": "The highlighted rival is relevant and understandable.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1469,10 +1066,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Test whether head-to-head views satisfy real group needs; 200-result bound is explicit.",
       "acceptanceCriterion": "Friends can see their actual competitive story with sample counts.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1484,9 +1078,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Real delivery/discovery/return data; no fabricated urgency.",
       "acceptanceCriterion": "A returning player notices a genuine change quickly.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1498,9 +1090,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Real friendliness/reward study and abuse/blocked/deleted-identity review.",
       "acceptanceCriterion": "Positive social actions are easier to discover than relationship removal.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1512,9 +1102,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Group recognition, usefulness, identity attachment and repeated use require real groups.",
       "acceptanceCriterion": "Members recognize the group as their own existing badminton community.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1526,9 +1114,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Genuine invite-to-value cohort conversion and identity comprehension; synthetic signup is not conversion evidence.",
       "acceptanceCriterion": "Invited players complete the intended flow without an organizer doing support work.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1540,10 +1126,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Camera scan and lookup speed on actual devices; spelling/discovery and privacy comprehension.",
       "acceptanceCriterion": "Players find each other quickly while keeping private contacts private.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1555,9 +1138,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Observe social relevance without leaking unrelated participants or inventing activity.",
       "acceptanceCriterion": "The feed explains something worth knowing rather than repeating ledger entries.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1569,9 +1150,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Regression/projection review and real multi-friend match comprehension.",
       "acceptanceCriterion": "A single match does not make the feed appear busier than it really was.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1583,10 +1162,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Validate real eligible local pools and desirability before enabling.",
       "acceptanceCriterion": "Players compete for an available title with clearly understood eligibility and scope.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1598,9 +1174,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Voluntary share study with actual exports, privacy choices and downstream viewers.",
       "acceptanceCriterion": "Players voluntarily share and peers understand the achievement.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1612,9 +1186,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "social_context"
-      ],
+      "opportunityRefs": ["social_context"],
       "requiredEvidenceFromRegister": "Unassisted recipient comprehension, identity and real cross-device continuation.",
       "acceptanceCriterion": "A viewer can reach their own first value from a shared milestone.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1626,10 +1198,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Longitudinal pressure, fatigue and losing-player research.",
       "acceptanceCriterion": "Players can opt out without fabricated urgency or playing-rating penalties.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1641,10 +1210,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "social_context"
-      ],
+      "opportunityRefs": ["contextual_next_action", "social_context"],
       "requiredEvidenceFromRegister": "Cohesive-group retention and active network density; creator views are not proof.",
       "acceptanceCriterion": "A new cohort develops repeat interaction and useful evidence rather than isolated accounts.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1656,9 +1222,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Observe voluntary return and value after real play.",
       "acceptanceCriterion": "Players find value after each normal playing session.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1670,9 +1234,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Measure voluntary between-session returns; no manufactured daily points.",
       "acceptanceCriterion": "Returns correspond to meaningful changes and retain value during quiet weeks.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1684,9 +1246,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Verify cadence suitability and understanding of published-history coverage.",
       "acceptanceCriterion": "Players understand the period's story in under a minute.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1698,9 +1258,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Task success and repeat usefulness when a goal is reached or becomes inappropriate.",
       "acceptanceCriterion": "Users can set, understand and review a relevant goal easily.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1712,10 +1270,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["contextual_next_action", "goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Actionability review; win/loss records cannot diagnose stroke or fitness weaknesses.",
       "acceptanceCriterion": "The player learns something actionable that the stored data can actually justify.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1727,9 +1282,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Host credentials, actual iOS/Android/desktop delivery and lifecycle tests remain unconfigured.",
       "acceptanceCriterion": "Players receive requested actionable updates reliably and can control them.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1741,9 +1294,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Delivery frequency, preference comprehension and fatigue evidence.",
       "acceptanceCriterion": "Players know what needs action without treating every unread update as urgent.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1755,9 +1306,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Measure approval completion/latency without converting silence into acceptance.",
       "acceptanceCriterion": "Result completion improves without silence becoming consent.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1769,9 +1318,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Device-change and long-gap returning-player study.",
       "acceptanceCriterion": "Players resume the correct category and task across sessions.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1783,9 +1330,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Observe genuine returning users; uncertainty may widen despite stable mean.",
       "acceptanceCriterion": "Returning after a gap feels informative rather than punitive.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1797,9 +1342,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Post-loss voluntary-return cohorts and qualitative reasons.",
       "acceptanceCriterion": "Players continue valuing the app through normal losing periods.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1811,9 +1354,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Plateau players must demonstrate actual usefulness.",
       "acceptanceCriterion": "Established users still gain useful insight when their rating barely changes.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1825,9 +1366,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Long-history performance, retrieval and correction trials.",
       "acceptanceCriterion": "The app becomes a useful record of a player's badminton life.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1839,9 +1378,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Observe real repeated group check-ins without prompting and assess usefulness/pressure.",
       "acceptanceCriterion": "Groups return for a real shared update at a cadence suited to their play.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1853,9 +1390,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "goals_recaps_and_return"
-      ],
+      "opportunityRefs": ["goals_recaps_and_return"],
       "requiredEvidenceFromRegister": "Real consented cohorts, frozen meaningful-return definitions, observation windows and independent research review. No experiment assignment or causal retention proof.",
       "acceptanceCriterion": "Changes can be evaluated against real activation and retention outcomes.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1867,9 +1402,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Actual recurring value and willingness-to-pay evidence; billing integration is excluded.",
       "acceptanceCriterion": "Target players pay $20 and continue renewing after novelty fades.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1881,9 +1414,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Define and test a paid promise later; no paid tier is falsely advertised.",
       "acceptanceCriterion": "Users can explain what payment adds without reading a feature wall.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1895,9 +1426,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Measure recognized value; having free access does not establish value.",
       "acceptanceCriterion": "Players understand the benefit before they are asked to pay.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1909,9 +1438,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Test organic group participation and economics; payment cannot compensate for thin networks.",
       "acceptanceCriterion": "A subscriber's normal opponent can approve a match without buying a subscription.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1923,9 +1450,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Observed repeated usefulness and paid differentiation remain unproven.",
       "acceptanceCriterion": "The subscriber gets useful new interpretation as their evidence grows.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1937,10 +1462,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "contextual_next_action",
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["contextual_next_action", "paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Creator-approved genuine guidance or direct observations would be needed for a coaching offer.",
       "acceptanceCriterion": "Advice avoids pretending that win/loss records reveal a player's stroke weaknesses.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1952,9 +1474,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Organizer time savings and actual willingness to pay remain unmeasured.",
       "acceptanceCriterion": "Organizers demonstrate repeated time savings and actual payment intent.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1978,9 +1498,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "A recurring paid quiet-month benefit is not defined or validated.",
       "acceptanceCriterion": "Customers understand why they keep paying during ordinary periods of lower activity.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -1992,9 +1510,7 @@
       "currentAcceptanceScore": null,
       "accepted": false,
       "excluded": false,
-      "opportunityRefs": [
-        "paid_value_hypothesis"
-      ],
+      "opportunityRefs": ["paid_value_hypothesis"],
       "requiredEvidenceFromRegister": "Real pricing/renewal validation later; stated intent cannot establish a $20 offer.",
       "acceptanceCriterion": "Pricing decisions follow actual paid behavior rather than survey enthusiasm or follower counts.",
       "assessment": "Current source and inspected saved mobile views identify presentation improvements and remaining evidence; no new global metric score or achieved player outcome is inferred."
@@ -2094,14 +1610,8 @@
   ],
   "independentPanelReview": {
     "type": "read_only_source_and_saved_mobile_view_review",
-    "presentationBand": [
-      7.8,
-      8.5
-    ],
-    "functionalClarityBand": [
-      8.1,
-      8.8
-    ],
+    "presentationBand": [7.8, 8.5],
+    "functionalClarityBand": [8.1, 8.8],
     "scope": "Preferences, device alerts, playing insights and result entry/review. Expert prioritization only; not independent real-player task evidence or an acceptance score.",
     "currentSourceCandidates": [
       {
@@ -2149,14 +1659,8 @@
         "detail": "Compact account-only dirty notice and sticky Save are visible above fixed phone navigation in mobile-preference-save-refined.png; independent task/device evidence remains separate."
       }
     ],
-    "postResolutionPresentationBand": [
-      8.5,
-      9
-    ],
-    "postResolutionFunctionalClarityBand": [
-      9,
-      9.2
-    ],
+    "postResolutionPresentationBand": [8.5, 9],
+    "postResolutionFunctionalClarityBand": [9, 9.2],
     "postResolutionScope": "Local expert judgment after current source fixes and new saved views; neither band is a measured original acceptance criterion or an independent player outcome."
   },
   "sourceFrozenForFinalVerification": true,
@@ -2177,9 +1681,7 @@
     "functionalExpertTargetMet": true,
     "priorLocalExpertFunctionalAverage": 9.43,
     "globalAcceptanceScoresUnchanged": true,
-    "appliesToRunIds": [
-      "final-matching-full70-2026-10-11-1835"
-    ],
+    "appliesToRunIds": ["final-matching-full70-2026-10-11-1835"],
     "currentSourceRerunPending": false,
     "serverSourceRerunPending": false
   },
@@ -2217,38 +1719,23 @@
     "fonts": [
       {
         "concept": "?concept=passport",
-        "fonts": [
-          "Manrope",
-          "Barlow"
-        ]
+        "fonts": ["Manrope", "Barlow"]
       },
       {
         "concept": "?concept=court",
-        "fonts": [
-          "Manrope",
-          "Barlow"
-        ]
+        "fonts": ["Manrope", "Barlow"]
       },
       {
         "concept": "?concept=circle",
-        "fonts": [
-          "Manrope",
-          "Barlow"
-        ]
+        "fonts": ["Manrope", "Barlow"]
       },
       {
         "concept": "?concept=arena",
-        "fonts": [
-          "Manrope",
-          "Barlow"
-        ]
+        "fonts": ["Manrope", "Barlow"]
       },
       {
         "concept": "?concept=editorial",
-        "fonts": [
-          "Manrope",
-          "Barlow"
-        ]
+        "fonts": ["Manrope", "Barlow"]
       }
     ],
     "expertPresentationScore": 9,
@@ -2323,5 +1810,366 @@
       "currentSourceRerunPending": true,
       "serverSourceRerunPending": false
     }
-  ]
+  ],
+  "scopedVisualCraftReview20261012": {
+    "date": "2026-10-12",
+    "method": "Independent implementation-agent review of shipped source, regenerated captures, motion checks and iterative concrete defect correction, followed by root inspection.",
+    "judgmentType": "Scoped local expert visual-craft assessment; not an empirical player outcome or independent human acceptance study.",
+    "rubric": {
+      "10": "Not awarded; universal perfection and personal preference are not established by finite inspection.",
+      "9.0": "Strong but a material observed hierarchy, responsive or export polish gap remains.",
+      "9.5": "Exceptional coherent local execution with no material defect identified in the reviewed representative states, supported by source, render and relevant interaction evidence."
+    },
+    "baselineCommit": "c3b5ba943a7f168c86e5bc9a99a27f005774d8a2",
+    "finalClient": "index-OL_4kYey",
+    "finalCss": "index-BqADR-Kn",
+    "criteria": [
+      {
+        "id": "local_visual_01",
+        "name": "Home rating hierarchy",
+        "score": 9.5,
+        "basis": "The actual rating remains the focal point; earned league and evidence support it.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_02",
+        "name": "Earned league-seal treatment",
+        "score": 9.5,
+        "basis": "Quiet framing adds significance without overpowering the number.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_03",
+        "name": "Authored sporting material and court detail",
+        "score": 9.5,
+        "basis": "Original court geometry, subtle depth and controlled texture form a coherent visual identity.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_04",
+        "name": "Typography and numerical hierarchy",
+        "score": 9.5,
+        "basis": "Body text, headings and sports numerals have distinct consistent roles.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_05",
+        "name": "Spacing, alignment and visual rhythm",
+        "score": 9.5,
+        "basis": "Cards, controls and facts follow a deliberate layout.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_06",
+        "name": "Color restraint and tonal hierarchy",
+        "score": 9.5,
+        "basis": "Forest surfaces and limited accents preserve focus.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_07",
+        "name": "Light/dark coherence",
+        "score": 9.5,
+        "basis": "Both palettes preserve hierarchy, readable detail and surface separation.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_08",
+        "name": "Profile identity presentation",
+        "score": 9.5,
+        "basis": "Portrait/initials, full name, identity and focused rating form one passport.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_09",
+        "name": "Focused-category prominence",
+        "score": 9.5,
+        "basis": "Actual focused score is in the cover; its detailed card leads.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_10",
+        "name": "Placement and secondary-category disclosure",
+        "score": 9.5,
+        "basis": "Unknown states are honest; secondary ratings are concise and expandable.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_11",
+        "name": "Profile action hierarchy",
+        "score": 9.5,
+        "basis": "Player code is early; supporting navigation has lower visual weight.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_12",
+        "name": "Avatar and initials integration",
+        "score": 9.5,
+        "basis": "Fallback identity is intentional and coherent.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_13",
+        "name": "Named-pool scope presentation",
+        "score": 9.5,
+        "basis": "Exact pool identity and category stay visible and distinct.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_14",
+        "name": "Leaderboard row alignment and readability",
+        "score": 9.5,
+        "basis": "Player, place and rating have clear columns and emphasis.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_15",
+        "name": "Personal-row recognition",
+        "score": 9.5,
+        "basis": "You and surface treatment identify the player without relying only on colour.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_16",
+        "name": "Shared-place/tie presentation",
+        "score": 9.5,
+        "basis": "Shared position and joint lead are explicit.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_17",
+        "name": "Qualified versus unranked visual distinction",
+        "score": 9.5,
+        "basis": "Estimates remain visible while unsupported positions/crowns stay absent.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_18",
+        "name": "Mobile competitive-status priority",
+        "score": 9.5,
+        "basis": "Actual position or explicitly unranked estimate precedes secondary facts; measured above navigation.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_19",
+        "name": "Narrow-phone and tablet adaptation",
+        "score": 9.5,
+        "basis": "Final layouts are coherent; the tablet identity avoids awkward fragmentation.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_20",
+        "name": "Long names and 200% text reflow",
+        "score": 9.5,
+        "basis": "Primary identity remains complete; compact ancillary identity preserves its accessible name.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_21",
+        "name": "Earned rewards and purposeful motion",
+        "score": 9.5,
+        "basis": "Bounded actual-result animation cancels on identity changes and reduced-motion settings.",
+        "independentPlayerOutcomeScore": null
+      },
+      {
+        "id": "local_visual_22",
+        "name": "Feed/story sharing craft and scope readability",
+        "score": 9.5,
+        "basis": "Separate name/milestone/disclaimer/title lanes preserve exact eligibility units.",
+        "independentPlayerOutcomeScore": null
+      }
+    ],
+    "minimum": 9.5,
+    "equalWeightMean": 9.5,
+    "thresholdBand": true,
+    "scorePrecisionNote": "All22 meet the9.5 craft band. Decimal arithmetic does not provide calibrated quantitative precision or a player-perception estimate.",
+    "knownMaterialLocalDefectsRemaining": [],
+    "inspectedStates": [
+      "Player Passport home",
+      "Profile default/long names/focused category/placement/secondary details",
+      "Qualified shared-position standings",
+      "Gate-closed unranked estimates",
+      "Light/dark320/390/768/1366px",
+      "320px200% text",
+      "Live reduced-motion change",
+      "Same numeric change on a different result",
+      "Feed/story long identity/scope exports"
+    ],
+    "verified": {
+      "date": "2026-10-12",
+      "baselineCommit": "c3b5ba943a7f168c86e5bc9a99a27f005774d8a2",
+      "finalClient": "index-OL_4kYey",
+      "finalCss": "index-BqADR-Kn",
+      "fullLocalRun": {
+        "startTime": "2026-10-12T02:02:21.202Z",
+        "duration": 271224.607,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "sourceClient": "index-aKCTIeUT",
+        "sourceCss": "index-Rd3H00kb",
+        "report": "outputs/visual-design-2026-10-12/browser-full75-before-priority.json",
+        "sha256": "d07217d056f1d1977d5585042f477e44df8560a38118c31ab14ea63303b39501",
+        "scope": "Complete75 before final rankings-priority and tablet-identity presentation refinements."
+      },
+      "affectedFinalRun": {
+        "startTime": "2026-10-12T02:11:42.491Z",
+        "duration": 20906.811999999998,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "outputs/visual-design-2026-10-12/browser-affected5-final.json",
+        "sha256": "a93aae8cfe5f30936ec0e1cffadfe7fe56bf5158f1c67ef45dc8ae899d393f7d",
+        "scope": "Final five visual cases include all new presentation surfaces, tablet identity, qualified/unranked priority, both motion lifecycle cases and canvas exports."
+      },
+      "serverChecks": {
+        "passed": 54,
+        "failed": 0,
+        "backendSourceChanged": false
+      },
+      "accessibility": {
+        "combined": {
+          "states": 39,
+          "detectedViolationNodes": 0,
+          "indeterminateNodeInstances": 510
+        },
+        "coreFullRun": {
+          "states": 21,
+          "detectedViolationNodes": 0,
+          "indeterminateNodeInstances": 303
+        },
+        "finalProfile": {
+          "states": 9,
+          "detectedViolationNodes": 0,
+          "indeterminateNodeInstances": 52
+        },
+        "finalRankings": {
+          "states": 9,
+          "detectedViolationNodes": 0,
+          "indeterminateNodeInstances": 155
+        },
+        "conformanceClaimed": false
+      },
+      "firstScreenStatus": [
+        {
+          "state": "qualified 390 light",
+          "personalStatusBottom": 554.078125,
+          "navigationTop": 779
+        },
+        {
+          "state": "qualified 390 dark",
+          "personalStatusBottom": 554.078125,
+          "navigationTop": 779
+        },
+        {
+          "state": "unranked 390 light, including qualifier",
+          "personalStatusBottom": 582.48388671875,
+          "navigationTop": 779
+        }
+      ],
+      "homeCapture": {
+        "capturedAt": "2026-10-12T02:13:33.579Z",
+        "fictional": true,
+        "measurements": [
+          {
+            "concept": "?concept=passport",
+            "overflow": false,
+            "fonts": ["Manrope", "Barlow"]
+          },
+          {
+            "concept": "?concept=court",
+            "overflow": false,
+            "fonts": ["Manrope", "Barlow"]
+          },
+          {
+            "concept": "?concept=circle",
+            "overflow": false,
+            "fonts": ["Manrope", "Barlow"]
+          },
+          {
+            "concept": "?concept=arena",
+            "overflow": false,
+            "fonts": ["Manrope", "Barlow"]
+          },
+          {
+            "concept": "?concept=editorial",
+            "overflow": false,
+            "fonts": ["Manrope", "Barlow"]
+          }
+        ],
+        "errors": []
+      },
+      "failuresAndRepairs": [
+        {
+          "run": "initial affected5",
+          "passed": 3,
+          "failed": 2,
+          "findings": [
+            "Light desktop sidebar-label contrast3.53:1",
+            "Rankings category contrast during colour interpolation"
+          ],
+          "repairs": [
+            "Darker sidebar-label colour",
+            "Explicit contrast-safe rankings pill colours, removing colour interpolation"
+          ]
+        },
+        {
+          "run": "initial full74",
+          "passed": 71,
+          "failed": 3,
+          "findings": [
+            "Both new desktop-dark audits detected sidebar-quote contrast2.24:1",
+            "Reviewer retry test waited for a nonexistent delayed job after normal processing had completed"
+          ],
+          "repairs": [
+            "Readable dark sidebar quote colour",
+            "Deterministic exhausted-job fixture; real visible retry and completion asserted, no timeout relaxation"
+          ]
+        },
+        {
+          "run": "independent craft review",
+          "findings": [
+            "Profile action/focus hierarchy",
+            "Qualified title footer overlap and truncated eligibility unit",
+            "Mobile own status below initial viewport",
+            "Tablet account identity wrapping"
+          ],
+          "repairs": [
+            "Early QR/focused rating and compact secondary summaries",
+            "Distinct export lanes and separate exact eligibility fact",
+            "Own position/estimate first in pool hero",
+            "Two-line name with full accessible name and compact caption"
+          ]
+        },
+        {
+          "run": "independent motion review",
+          "findings": [
+            "Identical numeric before/after pair could retain replay in a different result"
+          ],
+          "repairs": [
+            "Replay keyed to actual player/result/published revision; integrated regression passed"
+          ]
+        }
+      ],
+      "publicCi": {
+        "status": "pending_after_push"
+      },
+      "limits": [
+        "Fictional people/results and synthetic qualified layout data.",
+        "Desktop browser emulation, not actual phones or screen-reader certification.",
+        "Local craft review does not establish perception, retention, FOMO effectiveness, calibration, production capacity or monthly value.",
+        "Original150 register and actual evidence-policy gate remain unchanged; payments excluded."
+      ]
+    },
+    "representativeImages": "docs/mockups/visual-2026-10-12",
+    "globalRegisterUnchanged": true,
+    "paymentExcluded": true,
+    "noHttpsDeployment": true,
+    "humanPerceivedPremiumScore": null,
+    "behaviorFomoScore": null,
+    "retentionScore": null,
+    "physicalDeviceScore": null
+  }
 }

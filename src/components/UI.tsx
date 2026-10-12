@@ -1,4 +1,11 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import {
   X,
   ArrowUpRight,
@@ -38,7 +45,13 @@ export function CategoryTabs({
   onChange: (value: Category) => void;
 }) {
   return (
-    <div className="category-tabs" role="group" aria-label="Rating category">
+    <div
+      className="category-tabs"
+      role="group"
+      aria-label="Rating category"
+      style={{ "--category-index": CATEGORIES.indexOf(value) } as CSSProperties}
+    >
+      <span className="category-selection-track" aria-hidden="true" />
       {CATEGORIES.map((c) => (
         <button key={c} aria-pressed={c === value} onClick={() => onChange(c)}>
           {c}
@@ -338,11 +351,16 @@ export function Navigation({
             <br />
             Stronger circles.
           </div>
-          <button className="account-chip" onClick={() => setPage("profile")}>
+          <button
+            className="account-chip"
+            aria-label={`${name} Your player passport`}
+            title={name}
+            onClick={() => setPage("profile")}
+          >
             <Avatar player={{ name }} small />
             <span>
-              {name}
-              <small>Your player passport</small>
+              <strong className="account-chip-name">{name}</strong>
+              <small>Your passport</small>
             </span>
             <ChevronRight size={16} />
           </button>

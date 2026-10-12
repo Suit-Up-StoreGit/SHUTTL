@@ -1,6 +1,22 @@
-# SHUTTL implementation verification — 11 October 2026
+# SHUTTL implementation verification — updated 12 October 2026
 
 These checks establish specific local behavior. They do not establish 9.5 product acceptance, real badminton calibration, physical-device delivery, retention, $20 monthly value or production capacity. All tests and visual review used fictional identities/results; no real players were contacted.
+
+## Visual design pass — 12 October 2026
+
+The Player Passport direction now has an authored court surface, restrained earned-seal framing, purposeful finite motion, a focused player identity and scope-aware standings. Profile connection actions come before detailed category cards; secondary scores stay visible with expandable context. The standings put the player's actual position or explicitly unranked estimate first, with full named scope, shared positions and actual counts retained. No unsupported titles were enabled.
+
+The independent agent's final source/render critique and root inspection support the **9.5 local craft band for each of22 reviewed execution criteria**. The complete table, evidence and limits are in [the design audit](acceptance/design-opportunity-audit.json). This is a qualitative assessment of the reviewed implementation, not22 measured player outcomes;10 is not awarded. The global150 register remains unchanged.
+
+The production build/type check passes. **54 server checks pass**, and a complete **75/75 local browser run** passed in271.2seconds before the final standings-priority/tablet-identity presentation refinements. The **final five affected visual cases pass** in20.9seconds against client `index-OL_4kYey` and CSS `index-BqADR-Kn`, with zero failures, skipped or flaky cases. Reports retain their distinct source scope and hashes; they are not presented as a full75 local run on the final bundle. GitHub verification of the final source is recorded after publishing.
+
+Those five cases cover phone/tablet/desktop light and dark layouts,320px200% text, actual tie/own-row display, closed-gate estimates, live reduced-motion changes, cancellation when different results share identical numbers, and real canvas-export text bounds. The player's complete status ends at554–581px in the390×844px fixture, above navigation at779px. Exported eligibility units stay complete even when the long pool label shortens.
+
+Across the complete and affected runs, **39 automated accessibility states detect zero violation nodes**. **510 repeated indeterminate node instances remain** (21core states303,9profile states52,9qualified-standings states155); this is not WCAG certification or a screen-reader study. Selected responsive and export captures are retained in [the visual evidence folder](mockups/visual-2026-10-12/); qualified-standing screenshots are explicitly synthetic layout fixtures, while production's evidence-policy gate stays closed.
+
+Initial checks found real desktop label/quote contrast defects and a transient standings-pill contrast issue; colors were repaired and affected audits passed without exclusions. The initial full74 run had71passes and3failures: two dark desktop contrast findings plus a reviewer test waiting for an absent delayed-job button after processing had finished. The reviewer fixture now creates an actual exhausted synthetic job, retries it through the real UI and verifies completion; it retains decision/access assertions and does not increase the timeout. Independent review also caught and corrected profile hierarchy, mobile competitive status, long tablet identity, export footer overlap/truncated scope, and replay ownership. Failure history remains in the audit.
+
+The five home directions were regenerated from the final bundle at430×1080px with both local fonts loaded, no page errors and no horizontal overflow. App source is frozen for publication; payment integration and public HTTPS deployment remain excluded. Actual-player appeal, recognition, reward desirability, FOMO, retention, physical-phone performance and willingness to pay remain unmeasured.
 
 ## Current routine recap and verification follow-up
 
