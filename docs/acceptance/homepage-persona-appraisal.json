@@ -1,0 +1,149 @@
+{
+  "reviewedOn": "2026-10-12",
+  "method": "Expert reviewer adopts fictional player perspectives while inspecting the actual app; these are not quotes from human participants.",
+  "accountCreation": "Ten actual local registered accounts using public APIs; 31 approved setup matches plus a separately published return-visit match.",
+  "accountEvidence": "outputs/home-persona-review-2026-10-12/accounts.json",
+  "walkthroughEvidence": "outputs/home-persona-review-2026-10-12/walkthroughs.json",
+  "screenshots": "outputs/home-persona-review-2026-10-12/<persona>-home.png and <persona>-viewport.png",
+  "personas": [
+    {
+      "id": "newcomer",
+      "name": "Asha First-Time Player",
+      "goal": "I want to know what this app does and get my first credible rating.",
+      "appraisal": "The opening tells me to record real matches, shows all five reveal steps and gives me one route to find people. There is no unexplained provisional number.",
+      "remaining": "Five confirmations is a real initial commitment; the full rules need the short rating guide.",
+      "reviewed": [
+        "home",
+        "Doubles placement",
+        "recording entry",
+        "player lookup",
+        "insights"
+      ]
+    },
+    {
+      "id": "recreational",
+      "name": "Ben Club Regular",
+      "goal": "I want to compare with familiar players without treating every match as a professional tournament.",
+      "appraisal": "A real named friend is immediately attached to my doubles rating. My peak and next league are clear; real outcomes make the feed meaningful.",
+      "remaining": "Other categories in All play require careful reading, and $20 every month would still need a stronger personal value case.",
+      "reviewed": [
+        "published Doubles",
+        "recording entry",
+        "named group",
+        "sharing entry",
+        "insights"
+      ]
+    },
+    {
+      "id": "competitive",
+      "name": "Chloe Singles Competitor",
+      "goal": "I want a fair singles comparison and a reason to check whether my friends caught me.",
+      "appraisal": "The supported point gap, category-specific circle and genuine published achievements make my progress understandable. A friend story opens its own category without moving my home selection.",
+      "remaining": "Developing estimates remain uncertain; new play from my actual friends drives the return loop.",
+      "reviewed": [
+        "Singles",
+        "group",
+        "sharing entry",
+        "cross-category friend progress",
+        "home category and focus return"
+      ]
+    },
+    {
+      "id": "doubles",
+      "name": "Dev Doubles Specialist",
+      "goal": "I want the app to consider both teams and distinguish partners naturally.",
+      "appraisal": "Actual varied-partner matches publish a doubles estimate, shared stories retain the real participants, and acknowledgement leads into the private encouragement flow.",
+      "remaining": "The home cannot reduce pair dependence to a simple universal skill number; partner diversity matters.",
+      "reviewed": [
+        "Doubles",
+        "recording entry",
+        "named group",
+        "shared activity",
+        "insights"
+      ]
+    },
+    {
+      "id": "organiser",
+      "name": "Ella Club Organiser",
+      "goal": "I want my regular group to feel recognizable and to compare people responsibly.",
+      "appraisal": "The named group, actual crest and member count are visible on home and open the specific group directly. Review duties are not lost merely because they are old.",
+      "remaining": "Group identity does not yet provide a strong ongoing ritual or qualified neighborhood crown.",
+      "reviewed": [
+        "group continuity",
+        "Doubles",
+        "recording entry",
+        "sharing entry",
+        "insights"
+      ]
+    },
+    {
+      "id": "privacy",
+      "name": "Farah Private Player",
+      "goal": "I want progress with friends while controlling public exposure and location.",
+      "appraisal": "Accepted-friend activity is explicit, the local link respects my opt-out, and sharing opens the actual privacy and preview controls. Pressure can be reduced through break mode.",
+      "remaining": "Saved public snapshots require their existing revocation controls; friends still see the limited category progress described by the product.",
+      "reviewed": [
+        "Mixed",
+        "local opt-out presentation",
+        "group",
+        "sharing entry",
+        "insights"
+      ]
+    },
+    {
+      "id": "returning",
+      "name": "Gabe Returning Player",
+      "goal": "I want to see what changed without rereading everything or being punished for time away.",
+      "appraisal": "A newly approved match appears once in my since-check summary, two friends stay grouped, Caught up persists through reload, and a failed refresh remains visible with retry.",
+      "remaining": "The acknowledgement baseline is per device; a quiet playing circle yields little new content.",
+      "reviewed": [
+        "actual new published match",
+        "new story",
+        "caught-up continuity",
+        "stale data and retry",
+        "older activity"
+      ]
+    },
+    {
+      "id": "accessible",
+      "name": "Harper Enlarged Text",
+      "goal": "I need readable type and usable controls on a narrow phone.",
+      "appraisal": "The actual 200% text setting at 320px has readable wrapping, no horizontal overflow and reachable recording, category and navigation actions. Motion is optional.",
+      "remaining": "The opening and navigation are much taller; real assistive technology and physical phones are not represented by viewport emulation.",
+      "reviewed": [
+        "200% text",
+        "320px viewport",
+        "reduced motion",
+        "recording entry",
+        "group",
+        "insights"
+      ]
+    },
+    {
+      "id": "fixedPartnership",
+      "name": "Iris Fixed Partnership",
+      "goal": "I always play with the same partner and need to understand what my five-match rating really means.",
+      "appraisal": "The real fifth confirmed doubles match reveals a number with Pair-linked status. The expanded circle explains why individual comparison is withheld.",
+      "remaining": "The published estimate does not fully separate my contribution from my regular partner.",
+      "reviewed": [
+        "actual five-match publication",
+        "pair-linked explanation",
+        "no individual rank",
+        "sharing entry"
+      ]
+    },
+    {
+      "id": "regularPartner",
+      "name": "Jae Regular Partner",
+      "goal": "I want my result history recognized without an unjustified individual position.",
+      "appraisal": "My regular partnership is represented honestly and the social feed and group stay useful even though the opening numerical rivalry is absent.",
+      "remaining": "An ordinary individual comparison needs varied partnerships and supporting shared evidence.",
+      "reviewed": [
+        "actual five-match publication",
+        "pair-linked explanation",
+        "no numerical friend comparison",
+        "group"
+      ]
+    }
+  ]
+}

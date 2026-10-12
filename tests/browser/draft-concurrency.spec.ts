@@ -24,7 +24,7 @@ async function signup(page: Page, name: string) {
 async function record(page: Page) {
   await page.getByRole("button", { name: "Singles", exact: true }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
 }
 
@@ -372,7 +372,7 @@ test("closing immediately after an edit waits for its guarded draft save", async
     await page.getByLabel("Other side", { exact: true }).fill("18");
     await page.getByRole("button", { name: "Close dialog" }).click();
     await expect(
-      page.getByRole("dialog", { name: "Record a result", exact: true }),
+      page.getByRole("dialog", { name: "Record a match", exact: true }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Close dialog" }),

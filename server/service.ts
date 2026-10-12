@@ -902,6 +902,76 @@ export class Service {
       );
     return { id: unit.id };
   }
+  friendActivity(actor: string, before?: string) {
+    const friends = this.db
+      .all(
+        "SELECT a,b FROM connections WHERE (a=? OR b=?) AND status='accepted'",
+        actor,
+        actor,
+      )
+      .map((c) => (c.a === actor ? c.b : c.a))
+      .filter((id) => !this.blocked(actor, id))
+      .map((id) => this.player(id, actor));
+    const aliases = [
+      ...new Set(friends.flatMap((friend) => this.actorIds(friend.id))),
+    ];
+    if (!aliases.length) return { feed: [], next: null };
+    const visible = `EXISTS(SELECT 1 FROM unit_players p WHERE p.unit_id=e.unit_id AND p.player_id IN (${aliases.map(() => "?").join(",")}))`;
+    const cursor = before
+      ? this.db.get(
+          `SELECT e.* FROM rating_events e WHERE e.unit_id=? AND ${visible}`,
+          before,
+          ...aliases,
+        )
+      : null;
+    requireThat(
+      !before || cursor,
+      "This activity has changed. Refresh your court before loading older matches.",
+      404,
+    );
+    const rows = this.db.all(
+      `SELECT e.* FROM rating_events e WHERE ${visible} ${cursor ? "AND (e.played_at<? OR (e.played_at=? AND e.unit_id<?))" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 21`,
+      ...aliases,
+      ...(cursor ? [cursor.played_at, cursor.played_at, cursor.unit_id] : []),
+    );
+    return {
+      feed: rows.slice(0, 20).flatMap((row) => {
+        const changes = JSON.parse(row.changes);
+        return friends.flatMap((friend) => {
+          const change = changes[friend.id];
+          if (!change) return [];
+          const score = change.count >= 5 ? change.after : null;
+          const delta = change.count > 5 ? change.delta : null;
+          return [
+            {
+              id: `${row.unit_id}:${row.revision_id}:${friend.id}:${score ?? "placement"}:${delta ?? "hidden"}:${Number(change.won)}`,
+              unitId: row.unit_id,
+              player: friend,
+              category: row.category,
+              playedAt: row.played_at,
+              score,
+              delta,
+              milestone:
+                change.count === 5
+                  ? "reveal"
+                  : change.count > 5 &&
+                      leagueFor(change.after).floor >
+                        leagueFor(change.before).floor
+                    ? "promotion"
+                    : change.peakBefore != null &&
+                        change.after > change.peakBefore
+                      ? "best"
+                      : null,
+              league: change.count >= 5 ? leagueFor(change.after).name : null,
+              won: change.won,
+              shared: !!changes[actor],
+            },
+          ];
+        });
+      }),
+      next: rows.length > 20 ? rows[19].unit_id : null,
+    };
+  }
   unitView(
     actor: string,
     unit: Row,
@@ -1141,11 +1211,7 @@ export class Service {
     const aliases = this.actorIds(actor),
       timestamp = now(),
       due = new Date(Date.now() + 7 * 86400000).toISOString();
-    const pending = this.results(actor).filter((u) =>
-      ["pending", "correction_pending", "confirmed", "disputed"].includes(
-        u.status,
-      ),
-    );
+    const pending = this.pendingResults(actor);
     for (const p of aliases)
       for (const result of pending)
         if (["pending", "correction_pending"].includes(result.status))
@@ -1192,6 +1258,14 @@ export class Service {
         new Date(Date.now() - 90 * 86400000).toISOString(),
       ),
     };
+  }
+  pendingResults(actor: string) {
+    const aliases = this.actorIds(actor);
+    const rows = this.db.all(
+      `SELECT DISTINCT u.* FROM units u JOIN unit_players p ON p.unit_id=u.id WHERE p.player_id IN (${aliases.map(() => "?").join(",")}) AND u.status IN ('pending','correction_pending','confirmed','disputed') ORDER BY u.created_at DESC`,
+      ...aliases,
+    );
+    return this.projectUnits(actor, rows);
   }
   rebuild(category: Category) {
     const readRows = () =>
@@ -1391,9 +1465,14 @@ export class Service {
         ...[...previous.values()].map((e) => Date.parse(e.played_at)),
       );
       if (
-        fresh.length === 1 &&
-        events.length === previous.size + 1 &&
-        Date.parse(fresh[0].unit.played_at) >= maxBefore
+        fresh.length > 0 &&
+        events.length === previous.size + fresh.length &&
+        fresh.every((e) => Date.parse(e.unit.played_at) >= maxBefore) &&
+        events.every(
+          (e) =>
+            !previous.has(e.unit.id) ||
+            previous.get(e.unit.id)!.revision_id === e.unit.rid,
+        )
       ) {
         for (const connection of this.db.all(
           "SELECT a,b FROM connections WHERE status='accepted'",
@@ -1415,9 +1494,15 @@ export class Service {
               current.comparisonClass !== peer.comparisonClass ||
               !old.comparison_class ||
               old.comparison_class !== oldFriend.comparison_class ||
-              !fresh[0].changes[friend]
+              current.status === "Pair-linked" ||
+              peer.status === "Pair-linked" ||
+              (category !== "Singles" &&
+                (JSON.parse(old.partners).length < 2 ||
+                  JSON.parse(oldFriend.partners).length < 2)) ||
+              !fresh.some((e) => e.changes[friend])
             )
               continue;
+            const leadResult = fresh.filter((e) => e.changes[friend]).at(-1)!;
             if (
               publicRating(old.mu) >= publicRating(oldFriend.mu) &&
               current.score !== null &&
@@ -1430,8 +1515,8 @@ export class Service {
                 "comparison",
                 `${this.player(friend, owner).name}’s ${category.toLowerCase()} estimate passed yours`,
                 `${peer.score - current.score} rating points apart after a confirmed result.`,
-                `lead:${fresh[0].unit.rid}:${owner}:${friend}`,
-                fresh[0].unit.id,
+                `lead:${leadResult.unit.rid}:${owner}:${friend}`,
+                leadResult.unit.id,
               );
           }
       }

@@ -157,7 +157,7 @@ test("returning and privacy personas use password recovery, block controls, expo
       await opponent.request.get("/api/me")
     ).json();
     await page.getByRole("button", { name: "Singles", exact: true }).click();
-    await page.getByRole("button", { name: /Record a result/ }).click();
+    await page.getByRole("button", { name: /Record a match/ }).click();
     await page
       .getByRole("button", { name: "Choose player", exact: true })
       .click();

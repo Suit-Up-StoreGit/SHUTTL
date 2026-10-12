@@ -119,7 +119,7 @@ test("core journeys have no detected WCAG AA violations in light and dark; large
       .last()
       .click();
     await page
-      .getByRole("button", { name: /Record a result|Continue your draft/ })
+      .getByRole("button", { name: /Record a match|Continue your draft/ })
       .first()
       .click();
     await page.getByRole("dialog").waitFor();
@@ -147,7 +147,7 @@ test("core journeys have no detected WCAG AA violations in light and dark; large
             .boundingBox(),
           action = await page
             .getByRole("button", {
-              name: /Record a result|Continue your draft/,
+              name: /Record a match|Continue your draft/,
             })
             .first()
             .boundingBox();
@@ -176,7 +176,7 @@ test("core journeys have no detected WCAG AA violations in light and dark; large
       .last()
       .click();
     await page
-      .getByRole("button", { name: /Record a result|Continue your draft/ })
+      .getByRole("button", { name: /Record a match|Continue your draft/ })
       .first()
       .click();
     await expect(page.getByRole("dialog")).toBeVisible();

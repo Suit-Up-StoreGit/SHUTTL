@@ -33,7 +33,7 @@ async function signup(page: Page, name: string) {
 async function fillResult(page: Page, opponent: string) {
   await page.getByRole("button", { name: "Singles", exact: true }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await page
     .getByRole("button", { name: "Choose player", exact: true })
@@ -356,7 +356,7 @@ test("a submitted result freezes its exact payload and clears only its matching 
       .click();
     await captured;
     const dialog = page.getByRole("dialog", {
-      name: "Record a result",
+      name: "Record a match",
       exact: true,
     });
     for (const label of [
@@ -517,7 +517,7 @@ test("an uncertain draft freezes edits and a legacy edited retry reveals the ori
     expect(lateAccepted.ok()).toBe(true);
     await page.getByRole("button", { name: "Close dialog" }).click();
     await expect(
-      page.getByRole("dialog", { name: "Record a result", exact: true }),
+      page.getByRole("dialog", { name: "Record a match", exact: true }),
     ).toHaveCount(0);
     // Older app versions permitted score edits after an ambiguous submission.
     // Restore such a local fixture while retaining its original immutable IDs.
@@ -562,7 +562,7 @@ test("an unsubmitted draft can be discarded explicitly and a share creation free
   test.setTimeout(90000);
   await signup(page, "Share selection author fixture");
   await page.getByRole("button", { name: "Singles", exact: true }).click();
-  await page.getByRole("button", { name: /Record a result/ }).click();
+  await page.getByRole("button", { name: /Record a match/ }).click();
   await page.getByLabel("Other side", { exact: true }).fill("17");
   await page
     .getByRole("button", { name: "Discard local draft", exact: true })
@@ -649,7 +649,7 @@ test("an unsubmitted draft can be discarded explicitly and a share creation free
     await page.reload();
     await page.getByRole("button", { name: "Singles", exact: true }).click();
     await page
-      .getByRole("button", { name: /Record a result|Continue your draft/ })
+      .getByRole("button", { name: /Record a match|Continue your draft/ })
       .click();
     await page.getByText("Use a recent lineup", { exact: true }).click();
     await page.locator(".roster-shortcut").first().click();
@@ -663,7 +663,7 @@ test("an unsubmitted draft can be discarded explicitly and a share creation free
       .check();
     await page.getByRole("button", { name: "Close dialog" }).click();
     await page
-      .getByRole("button", { name: /Record a result|Continue your draft/ })
+      .getByRole("button", { name: /Record a match|Continue your draft/ })
       .click();
     await expect(
       page.getByText("Use a recent lineup", { exact: true }),

@@ -1,10 +1,10 @@
 # SHUTTL acceptance evidence register
 
-The required minimum remains **9.5 for every in-scope criterion**. No revised criterion is accepted by self-scoring. This register preserves all 150 original criteria, shows what now exists and identifies the remaining proof or implementation gap. Payment integration (138) is excluded. Historical scores below are judgments from the earlier build, **not current ratings**.
+This original register preserves all 150 criteria and their earlier independent **9.5** acceptance basis. Payment integration (138) is excluded. Historical scores below are judgments from the earlier build, **not current ratings**. Actual outcome measures remain unmeasured where no observations exist.
 
 Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](metrics.json). The 40 original outcome measures remain unmeasured.
 
-The subsequent homepage review has a separate [ordered register of all 66 criteria](homepage-sequential-review.json). First impression is the active criterion. Local implementation and regression checks do not award a player-perception score or establish acceptance of the later criteria.
+For the subsequent homepage review, the user explicitly authorized **simulated player personas** and either each score at least **9.0** or an overall average at least **9.0**. The [ordered register of all 66 criteria](homepage-sequential-review.json) now reviews every criterion in its original order. Its equal-weight expert average is **9.12**, with **56 individual scores at least 9.0 and ten below 9.0**. It therefore meets the average option; it does not claim that every criterion is 9.0 or 9.5. The [ten persona appraisals](homepage-persona-appraisal.json) explain the perspectives and remaining friction. These are judgments of the implemented home and fictional-account journeys, not player-reported perceptions or measured retention, paid conversion or badminton calibration. The original 150 outcomes are unchanged.
 
 ## Visual identity
 

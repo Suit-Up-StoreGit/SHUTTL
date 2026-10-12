@@ -1,6 +1,37 @@
 # SHUTTL implementation verification — updated 12 October 2026
 
-## Sequential homepage review — first impression
+## Current homepage review — ten fictional player accounts
+
+The user has replaced the earlier first-impression gate with a simulated-persona appraisal and a minimum of either 9.0 for every criterion or 9.0 for the average. All 66 homepage criteria have now been reviewed in their original order. The **equal-weight expert average is 9.12/10**: 56 individual scores meet 9.0 and ten remain below it. This meets the average option, not a claim that every metric is 9.0 or 9.5. The scores describe the implemented homepage through expert player perspectives. They are not human participant responses or measured retention, willingness to pay or model calibration.
+
+The [full ordered review](acceptance/homepage-sequential-review.json) preserves each earlier baseline and records the current score, finding, remaining weakness, persona perspectives and evidence. The [persona appraisals](acceptance/homepage-persona-appraisal.json) describe eight core perspectives plus two fixed-partnership players. Ten real local accounts were registered through the app API; 31 setup matches were recorded, explicitly approved and published by the actual rating engine, followed by a separate return-visit match. No persona rating was inserted into the database or fabricated in the browser response. Other regression tests retain clearly synthetic response fixtures for specific layout and failure states.
+
+| Area | Criteria | Expert average |
+| --- | ---: | ---: |
+| Visual craft | 16 | 9.11 |
+| Clarity and ease | 14 | 9.18 |
+| Competition and FOMO | 12 | 9.12 |
+| Social, rewards and value | 13 | 8.91 |
+| Interaction and safeguards | 11 | 9.29 |
+
+The critical lower scores remain visible: wow effect 8.8, badminton identity 8.9, animation quality 8.8, neighborhood relevance 8.1, overall FOMO mechanisms 8.8, feed variety 8.9, reciprocity 8.5, loss support 8.6, quiet-week value 8.4 and visible premium differentiation 7.5. In particular, this review does not justify a broad $20/month offer. It does not raise a weaker score merely to satisfy the individual threshold.
+
+The implemented improvements are directly relevant to those perspectives:
+
+- Home gives actual supported friend movement since the device's previous check, distinguishes new from updated whole matches and persists an explicit Caught up action. Matching numbers and current peer metadata suppress obsolete crossing pressure.
+- Group names, actual crests and accepted member counts link directly into the named group. Local exploration reflects the player's declared area and opt-in. Sharing is discoverable beside history on a published passport.
+- Feed stories emphasize category, local date, win/loss, published post-result numbers and actual reveal, league or peak milestones. Whole-match pagination retains every accepted friend in a match, protects foreign details and provides retry and changed-cursor recovery. Shared real results expose the existing private participant encouragement.
+- A recent earned achievement survives a newer ordinary result. Pair-linked players get a specific regular-partner explanation while individual numerical rivalry remains withheld. Record a match and Rating guide use shorter plain labels.
+- Cross-category friend stories preserve the home category and keyboard focus. Failed refreshes retain the loaded home with persistent recovery and freshness information. The latest-response sequence protects account/session transitions and newer snapshots. Active old result duties are no longer lost beyond the recent history limit.
+- Compact fact rows, separate number lanes, actual group identity, restrained arrival effects, enlarged-text stacking and dark-theme treatment preserve the established forest/ivory sporting identity. All five rendered design alternatives have been refreshed.
+
+Build/type check and all **62 server tests** pass. All **98 distinct browser scenarios have passing coverage across documented runs**: the last complete 98-case local run passed 97, and the final changed actual-account file passed all 14 cases in 32.6 seconds. This is not described as a fictitious single local 98/98 run. GitHub repeats the complete suite on the pushed source. The new account runs cover home/category states, recording entry, direct group continuity, insights, sharing entry, privacy-conscious local presentation, 320px at 200% text, a newly published return match, acknowledgement persistence, cross-category focus and retry. Existing full-suite journeys cover actual recording/submission/approval, interrupted requests, correction, consent, recovery, sharing, privacy and accessibility states.
+
+The first expanded 95-case run had 94 passes and one new test-fixture failure: its retained-milestone result omitted required participant fields and category selection. Two subsequent 98-case runs each had 97 passes and one fixture navigation timeout: after newer fixed-partnership matches and a return match were added, the test tried to open a mixed story still behind Show more activity, initially without loading more and then with only one load. A bounded walk through the visible feed controls now reaches the actual story before testing category and focus preservation. These fixture defects were corrected without bypassing app behavior. Raw failed reports are retained at outputs/home-persona-review-2026-10-12/browser-failed-98.json and browser-failed-98-navigation.json; the earlier report's observed counts and cause are recorded here because its output path was subsequently overwritten.
+
+The ten new persona homes have **zero detected automated accessibility violations**, with **282 indeterminate node instances** retained. All five preview captures have zero page exceptions or horizontal overflow and load both authored fonts. New ordinary-phone persona captures and full-page captures are retained under outputs/home-persona-review-2026-10-12/. Expert review includes those rendered captures; automated accessibility results are engineering evidence rather than score generators. Physical devices, assistive technology, production traffic and causal retention are outside this finite review. The original 150-criterion outcome register, rating mathematics, neighborhood-title evidence gate and excluded payment integration are unchanged. No HTTPS deployment occurred.
+
+## Historical sequential homepage review — first impression
 
 The [ordered homepage register](acceptance/homepage-sequential-review.json) preserves all 66 criteria from the subsequent critical homepage review. Its required score is 9.5 per criterion; first impression is the active criterion. The broader review's 7.9 homepage judgment supersedes the earlier blanket Home craft signoff below. No revised player-perception score is accepted from implementation or synthetic tests.
 

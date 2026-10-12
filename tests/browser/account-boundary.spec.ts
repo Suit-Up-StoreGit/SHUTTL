@@ -29,7 +29,7 @@ async function signup(page: Page, name: string) {
 async function fillResult(page: Page, opponent: string, score = "17") {
   await page.getByRole("button", { name: "Singles", exact: true }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await page
     .getByRole("button", { name: "Choose player", exact: true })
@@ -150,7 +150,7 @@ test("a shared-context account change closes the previous identity’s modal and
     // in headless browsers, where OS focus timing is not reliable.
     await page.evaluate(() => window.dispatchEvent(new Event("focus")));
     await expect(
-      page.getByRole("dialog", { name: "Record a result", exact: true }),
+      page.getByRole("dialog", { name: "Record a match", exact: true }),
     ).toHaveCount(0);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       "Your game.",
@@ -165,7 +165,7 @@ test("a shared-context account change closes the previous identity’s modal and
     ).toBe(payloadA.unitId);
     await fillResult(page, usernameA, "16");
     const bDialog = page.getByRole("dialog", {
-      name: "Record a result",
+      name: "Record a match",
       exact: true,
     });
     await expect(bDialog.locator(".roster-self")).toContainText(
@@ -369,7 +369,7 @@ test("replacing a login session for the same player refreshes CSRF and protects 
     await page.bringToFront();
     await page.evaluate(() => window.dispatchEvent(new Event("focus")));
     await expect(
-      page.getByRole("dialog", { name: "Record a result", exact: true }),
+      page.getByRole("dialog", { name: "Record a match", exact: true }),
     ).toHaveCount(0);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       "Your game.",
@@ -386,7 +386,7 @@ test("replacing a login session for the same player refreshes CSRF and protects 
       .getByRole("button", { name: "Continue your draft", exact: true })
       .click();
     const retryDialog = page.getByRole("dialog", {
-      name: "Record a result",
+      name: "Record a match",
       exact: true,
     });
     await expect(
@@ -495,7 +495,7 @@ test("a dashboard identity that fails fresh identity verification is never activ
   expect((await (await page.request.get("/api/me")).json()).id).toBe(actual.id);
   await page.getByRole("button", { name: "Singles", exact: true }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await expect(page.getByRole("dialog").locator(".roster-self")).toContainText(
     "Identity Verification Fixture",

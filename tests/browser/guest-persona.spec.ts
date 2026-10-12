@@ -81,7 +81,7 @@ async function signup(page: Page, name: string) {
 async function recordInvitedOpponent(page: Page, nickname: string) {
   await page.getByRole("button", { name: "Singles", exact: true }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await page
     .getByRole("button", { name: "Choose player", exact: true })
@@ -123,7 +123,7 @@ async function recordInvitedOpponent(page: Page, nickname: string) {
     .getByRole("button", { name: "Use this player", exact: true })
     .click();
   const result = page.getByRole("dialog", {
-    name: "Record a result",
+    name: "Record a match",
     exact: true,
   });
   await expect(
@@ -331,7 +331,7 @@ test("a guest invitation with a lost committed response retains its nickname, or
   test.setTimeout(90000);
   await signup(page, "Guest Retry Author Fixture");
   await page.getByRole("button", { name: "Singles", exact: true }).click();
-  await page.getByRole("button", { name: /Record a result/ }).click();
+  await page.getByRole("button", { name: /Record a match/ }).click();
   await page
     .getByRole("button", { name: "Choose player", exact: true })
     .click();
@@ -365,7 +365,7 @@ test("a guest invitation with a lost committed response retains its nickname, or
     .getByRole("button", { name: "Close dialog", exact: true })
     .click();
   await page
-    .getByRole("dialog", { name: "Record a result", exact: true })
+    .getByRole("dialog", { name: "Record a match", exact: true })
     .getByRole("button", { name: "Choose player", exact: true })
     .click();
   await expect(lookup.getByLabel("Invited player’s nickname")).toHaveValue(
@@ -393,7 +393,7 @@ test("a guest invitation with a lost committed response retains its nickname, or
     .getByRole("button", { name: "Close dialog", exact: true })
     .click();
   await page
-    .getByRole("dialog", { name: "Record a result", exact: true })
+    .getByRole("dialog", { name: "Record a match", exact: true })
     .getByRole("button", { name: "Choose player", exact: true })
     .click();
   await expect(lookup.getByLabel("Private invitation link")).toHaveValue(
@@ -428,7 +428,7 @@ test("a guest invitation with a lost committed response retains its nickname, or
     .getByRole("button", { name: "Close dialog", exact: true })
     .click();
   const result = page.getByRole("dialog", {
-    name: "Record a result",
+    name: "Record a match",
     exact: true,
   });
   await result.getByLabel("Category", { exact: true }).selectOption("Doubles");
@@ -600,14 +600,12 @@ test("an existing player keeps a guest invitation through sign-in and wrong-pers
       "The inviter rejects the wrong person without approving the score",
       async () => {
         await page.goto("/inbox");
-        const claim = page
-          .locator(".notice")
-          .filter({
-            has: page.getByRole("button", {
-              name: "Wrong person",
-              exact: true,
-            }),
-          });
+        const claim = page.locator(".notice").filter({
+          has: page.getByRole("button", {
+            name: "Wrong person",
+            exact: true,
+          }),
+        });
         await expect(claim).toContainText(
           "wants to claim Different Guest Fixture",
         );

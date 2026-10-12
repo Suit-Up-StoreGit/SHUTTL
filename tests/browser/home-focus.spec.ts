@@ -98,6 +98,7 @@ async function fixture(page: Page) {
     },
     friends,
     results: [],
+    reviewResults: undefined,
     circles: [],
     unread: 0,
     feed,
@@ -143,7 +144,7 @@ test("Home puts recording, a supported circle snapshot and real grouped social p
   await expect(page.locator(".lead-update")).toHaveCount(0);
   await expect(page.locator(".home-feed-card")).toHaveCount(3);
   await expect(page.locator(".home-feed-card").first()).toContainText(
-    "Priya Lim & Chloe Featherstone-Kumar",
+    "Priya Lim",
   );
   await expect(page.locator(".home-feed-card").first()).toContainText(
     "Singles",
@@ -172,10 +173,10 @@ test("Home puts recording, a supported circle snapshot and real grouped social p
     page.locator(".weekly-panel,.latest-result,.rival-strip,.progress-panel"),
   ).toHaveCount(0);
   await page
-    .getByRole("button", { name: "Record a result", exact: true })
+    .getByRole("button", { name: "Record a match", exact: true })
     .click();
   await expect(
-    page.getByRole("dialog", { name: "Record a result", exact: true }),
+    page.getByRole("dialog", { name: "Record a match", exact: true }),
   ).toBeVisible();
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "History", exact: true }).click();
@@ -477,7 +478,7 @@ test("the opening fits phone viewports, preserves keyboard disclosure and makes 
         ),
       ).toBe(true);
       const record = await page
-        .getByRole("button", { name: "Record a result", exact: true })
+        .getByRole("button", { name: "Record a match", exact: true })
         .boundingBox();
       const contact = await page.locator(".passport-comparison").boundingBox();
       const nav =
@@ -646,7 +647,7 @@ test("Home never asks a covered doubles teammate to approve and only highlights 
   data.results.push(milestone);
   await page.reload();
   await expect(page.locator(".pending-banner")).toContainText(
-    "2 recent results need your review",
+    "2 results need your review",
   );
   await expect(page.locator(".home-earned")).toContainText("Obsidian reached");
   milestone.status = "correction_pending";
@@ -702,7 +703,7 @@ test("Home remains readable in light, dark and large text with accessible action
         });
       if (width === 390 && palette === "light") {
         const record = await page
-          .getByRole("button", { name: "Record a result", exact: true })
+          .getByRole("button", { name: "Record a match", exact: true })
           .boundingBox();
         const nav = await page.locator(".mobile-nav").boundingBox();
         expect(record!.y + record!.height).toBeLessThan(nav!.y - 8);
@@ -739,9 +740,158 @@ test("Home remains readable in light, dark and large text with accessible action
     animations: "disabled",
   });
   await page
-    .getByRole("button", { name: "Record a result", exact: true })
+    .getByRole("button", { name: "Record a match", exact: true })
     .click();
   await expect(
-    page.getByRole("dialog", { name: "Record a result", exact: true }),
+    page.getByRole("dialog", { name: "Record a match", exact: true }),
   ).toBeVisible();
+});
+
+test("return updates and comparison movements reflect saved evidence, and obsolete lead notices disappear", async ({
+  page,
+}) => {
+  const { data, friends } = await fixture(page);
+  await page.goto("/home");
+  await expect(page.locator(".passport-comparison")).toContainText(
+    "14 points ahead",
+  );
+  await page
+    .getByRole("button", { name: "Profile", exact: true })
+    .last()
+    .click();
+  data.me.ratings.find((r: any) => r.category === "Doubles").score = 1640;
+  data.feed.unshift({
+    id: "new-match-revision",
+    unitId: "new-match",
+    player: friends[0],
+    category: "Doubles",
+    playedAt: new Date().toISOString(),
+    score: 1642,
+    delta: 4,
+    milestone: null,
+    won: true,
+  });
+  data.competitionUpdates.push({
+    id: "new-lead",
+    peerId: friends[0].id,
+    category: "Doubles",
+    title: "Priya's estimate passed yours",
+    detail: "Earlier snapshot",
+    createdAt: new Date().toISOString(),
+  });
+  await page.getByRole("button", { name: "Home", exact: true }).last().click();
+  await expect(
+    page.getByRole("region", { name: "Since your last check" }),
+  ).toContainText("1 new match");
+  await expect(page.locator(".passport-comparison")).toContainText(
+    "The gap narrowed from 14 to 2 points",
+  );
+  await expect(page.locator(".lead-update")).toContainText(
+    "Current gap: 2 points",
+  );
+  await page.getByRole("button", { name: "Caught up", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Friends’ activity", exact: true }),
+  ).toBeFocused();
+  await expect(
+    page.getByRole("region", { name: "Since your last check" }),
+  ).toHaveCount(0);
+  data.me.ratings.find((r: any) => r.category === "Doubles").score = 1650;
+  await page.reload();
+  await expect(page.locator(".lead-update")).toHaveCount(0);
+});
+
+test("older activity retries in place, and a new ordinary result does not erase a recent earned milestone", async ({
+  page,
+}) => {
+  const { data, me, friends } = await fixture(page);
+  data.feedNext = randomUUID();
+  let fail = true;
+  await page.route("**/api/activity?before=*", (route) =>
+    fail
+      ? route.fulfill({
+          status: 503,
+          json: { error: "Temporary older activity failure" },
+        })
+      : route.fulfill({
+          json: {
+            feed: [
+              {
+                ...data.feed[2],
+                id: "older-feed",
+                unitId: "older-match",
+                playedAt: new Date(Date.now() - 8 * 86400000).toISOString(),
+              },
+            ],
+            next: null,
+          },
+        }),
+  );
+  const earned = {
+    id: "recent-best",
+    ownParticipant: me.id,
+    authorParticipant: me.id,
+    author: me,
+    players: [me, ...friends.slice(0, 3)],
+    approvals: [me.id],
+    retrospective: true,
+    games: [[21, 17]],
+    format: "ONE_21",
+    category: "Doubles",
+    status: "rated",
+    publishedRevisionId: "published-best",
+    playedAt: new Date(Date.now() - 3600000).toISOString(),
+    ratingChanges: {
+      [me.id]: {
+        before: 1620,
+        after: 1640,
+        count: 10,
+        peakBefore: 1630,
+        won: true,
+      },
+    },
+  };
+  const ordinary = {
+    ...earned,
+    id: "newer-loss",
+    playedAt: new Date().toISOString(),
+    ratingChanges: {
+      [me.id]: {
+        before: 1640,
+        after: 1628,
+        count: 11,
+        peakBefore: 1640,
+        won: false,
+      },
+    },
+  };
+  data.results = [ordinary, earned];
+  await page.goto("/home");
+  await page
+    .getByRole("group", { name: "Rating category" })
+    .getByRole("button", { name: "Doubles", exact: true })
+    .click();
+  await expect(page.locator(".home-earned")).toContainText(
+    "A new personal best",
+  );
+  await page
+    .getByRole("button", { name: "Show more activity", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Load older matches", exact: true })
+    .click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Temporary older activity failure",
+  );
+  fail = false;
+  await page
+    .getByRole("button", { name: "Retry older activity", exact: true })
+    .click();
+  await expect(page.locator(".home-feed-card")).toHaveCount(6);
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", {
+      name: /Load older matches|Retry older activity/,
+    }),
+  ).toHaveCount(0);
 });

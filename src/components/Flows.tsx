@@ -1445,7 +1445,7 @@ export function RecordResult({
   return (
     <>
       <Modal
-        title={correction ? "Correct the exact score" : "Record a result"}
+        title={correction ? "Correct the exact score" : "Record a match"}
         close={closeWithDraft}
         dismissible={!busy}
         wide

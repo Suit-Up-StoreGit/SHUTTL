@@ -30,6 +30,7 @@ jobs:
             outputs/validation-2026-10-11/
             outputs/visual-design-2026-10-12/
             outputs/home-focus-2026-10-12/
+            outputs/home-persona-review-2026-10-12/
           retention-days: 14
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v7

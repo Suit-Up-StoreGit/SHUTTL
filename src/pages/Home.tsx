@@ -1,4 +1,14 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  homeCheck,
+  readHomeCheck,
+  returnSummary,
+  comparisonMovement,
+  activityChange,
+  activityDateLabel,
+  type HomeCheck,
+} from "../home-context.ts";
+import { Crest } from "../components/Community.tsx";
 import {
   comparable,
   comparisonCopy,
@@ -20,9 +30,20 @@ import {
   Activity,
   ChevronRight,
   ChevronDown,
+  Share2,
+  MapPin,
+  Heart,
+  RefreshCw,
 } from "lucide-react";
 import { CategoryTabs, Gem, Evidence, Avatar } from "../components/UI.tsx";
-import { dateLabel, type Page } from "../api.ts";
+import {
+  api,
+  ApiError,
+  dateLabel,
+  dateTimeLabel,
+  errorMessage,
+  type Page,
+} from "../api.ts";
 import {
   CATEGORIES,
   leagueFor,
@@ -150,7 +171,10 @@ export function RatingCard({
         </div>
       ) : (
         <div className="passport-number-row">
-          <strong className="rating-number">
+          <strong
+            className="rating-number number-settle"
+            key={`${category}:${rating.score}`}
+          >
             {rating.score === null ? "—" : rating.score.toLocaleString("en-SG")}
           </strong>
           {rating.score !== null && (
@@ -261,6 +285,8 @@ export function Home({
   compare = () => {},
   variant = "passport",
   mock = false,
+  group,
+  sync,
 }: {
   data: any;
   category: Category;
@@ -273,9 +299,11 @@ export function Home({
   addFriend: () => void;
   share?: () => void;
   open?: (id: string) => void;
-  compare?: (id: string) => void;
+  compare?: (id: string, category?: Category) => void;
   variant?: string;
   mock?: boolean;
+  group?: (id: string) => void;
+  sync?: { at: number | null; error: string; retry: () => void };
 }) {
   const me = data.me,
     rating: PublicRating = me.ratings.find(
@@ -325,22 +353,32 @@ export function Home({
     pinned && pinned.owner === me.id && pinned.category === category
       ? friends.find((p: any) => p.id === pinned.id)
       : null;
-  const pending = data.results.filter(canReviewResult);
+  const pending = (data.reviewResults || data.results).filter(canReviewResult);
   const results = data.results.filter((r: any) => r.category === category);
-  const latest = [...results]
+  const earned = [...results]
     .filter((r: any) => r.publishedRevisionId)
-    .sort((a, b) =>
-      publishedPlayedAt(b).localeCompare(publishedPlayedAt(a)),
-    )[0];
-  const moment = latest && resultMoment(latest);
+    .sort((a, b) => publishedPlayedAt(b).localeCompare(publishedPlayedAt(a)))
+    .find(
+      (r) =>
+        ["reveal", "promotion", "best"].includes(resultMoment(r)?.kind || "") &&
+        Date.parse(publishedPlayedAt(r)) >= Date.now() - 7 * 86400000 &&
+        Date.parse(publishedPlayedAt(r)) <= Date.now(),
+    );
+  const moment = earned && resultMoment(earned);
   const recentEarnedMoment =
     moment &&
     ["reveal", "promotion", "best"].includes(moment.kind) &&
-    Date.parse(publishedPlayedAt(latest)) >= Date.now() - 7 * 86400000 &&
-    Date.parse(publishedPlayedAt(latest)) <= Date.now();
+    Date.parse(publishedPlayedAt(earned)) >= Date.now() - 7 * 86400000 &&
+    Date.parse(publishedPlayedAt(earned)) <= Date.now();
   const competition =
     data.competitionUpdates?.find(
-      (update: any) => update.category === category,
+      (update: any) =>
+        update.category === category &&
+        (!update.peerId ||
+          supported.some(
+            (p: any) =>
+              p.id === update.peerId && p.rating.score > rating.score!,
+          )),
     ) ||
     (data.competitionUpdate?.category === category
       ? data.competitionUpdate
@@ -348,8 +386,123 @@ export function Home({
   const [feedScope, setFeedScope] = useState("all");
   const [circleExpanded, setCircleExpanded] = useState(false);
   const [feedLimit, setFeedLimit] = useState(3);
+  const [older, setOlder] = useState<any[]>([]);
+  const [olderCursor, setOlderCursor] = useState<string | null | undefined>(
+    undefined,
+  );
+  const [feedBusy, setFeedBusy] = useState(false);
+  const [feedError, setFeedError] = useState("");
+  const [feedNeedsRefresh, setFeedNeedsRefresh] = useState(false);
+  const [visitNotice, setVisitNotice] = useState("");
+  const feedRequest = useRef(0),
+    feedLoading = useRef(false);
+  const currentOwner = useRef(me.id);
+  currentOwner.current = me.id;
+  const [visit, setVisit] = useState<{
+    owner: string;
+    check: HomeCheck | null;
+    available: boolean;
+  }>(() => {
+    const saved = mock
+      ? { check: null, available: false }
+      : readHomeCheck(me.id);
+    return { owner: me.id, ...saved };
+  });
+  useEffect(() => {
+    const saved = mock
+      ? { check: null, available: false }
+      : readHomeCheck(me.id);
+    const initial = saved.check || homeCheck(data);
+    let available = saved.available;
+    if (!mock && available && !saved.check)
+      try {
+        localStorage.setItem(
+          `shuttl:home-check:${me.id}`,
+          JSON.stringify(initial),
+        );
+      } catch {
+        available = false;
+      }
+    setVisit({ owner: me.id, check: available ? initial : null, available });
+    setOlder([]);
+    setOlderCursor(undefined);
+    setFeedError("");
+    setVisitNotice("");
+    setFeedNeedsRefresh(false);
+    setFeedBusy(false);
+    feedLoading.current = false;
+    return () => {
+      feedRequest.current++;
+    };
+  }, [me.id, mock]);
+  const check = visit.owner === me.id ? visit.check : null;
+  const returning = returnSummary(data, check);
+  const newActivity =
+    returning.newMatches + returning.updatedMatches + returning.comparisons;
+  function caughtUp() {
+    const next = homeCheck(data);
+    next.items = Object.fromEntries(
+      [
+        ...Object.entries(next.items),
+        ...Object.entries(check?.items || {}).filter(([id]) => !next.items[id]),
+      ].slice(0, 400),
+    );
+    next.notifications = [
+      ...new Set([...next.notifications, ...(check?.notifications || [])]),
+    ].slice(0, 1000);
+    try {
+      localStorage.setItem(`shuttl:home-check:${me.id}`, JSON.stringify(next));
+      setVisit({ owner: me.id, check: next, available: true });
+      setVisitNotice("Current activity marked as seen on this device.");
+    } catch {
+      setVisit({ owner: me.id, check: null, available: false });
+      setVisitNotice(
+        "This browser could not save your check. Current activity is still available.",
+      );
+    }
+    requestAnimationFrame(() =>
+      document
+        .getElementById("home-activity-title")
+        ?.focus({ preventScroll: true }),
+    );
+  }
+  async function loadOlder() {
+    const cursor = olderCursor === undefined ? data.feedNext : olderCursor;
+    if (!cursor || feedLoading.current) return;
+    const owner = me.id,
+      sequence = ++feedRequest.current;
+    feedLoading.current = true;
+    setFeedBusy(true);
+    setFeedError("");
+    try {
+      const page = await api(`/activity?before=${encodeURIComponent(cursor)}`);
+      if (owner !== currentOwner.current || sequence !== feedRequest.current)
+        return;
+      setOlder((entries) => [...entries, ...page.feed]);
+      setOlderCursor(page.next);
+      setFeedLimit((n) => n + 20);
+    } catch (e) {
+      if (owner === currentOwner.current && sequence === feedRequest.current) {
+        setFeedError(errorMessage(e));
+        setFeedNeedsRefresh(e instanceof ApiError && e.status === 404);
+      }
+    } finally {
+      if (owner === currentOwner.current && sequence === feedRequest.current) {
+        feedLoading.current = false;
+        setFeedBusy(false);
+      }
+    }
+  }
+  const liveUnits = new Set(data.feed.map((f: any) => f.unitId || f.id));
+  const acceptedIds = new Set(friends.map((p: any) => p.id));
+  const entries = [
+    ...data.feed,
+    ...older.filter(
+      (f) => !liveUnits.has(f.unitId || f.id) && acceptedIds.has(f.player.id),
+    ),
+  ];
   const groups = new Map<string, any[]>();
-  for (const f of [...data.feed].sort((a: any, b: any) =>
+  for (const f of entries.sort((a: any, b: any) =>
     b.playedAt.localeCompare(a.playedAt),
   )) {
     if (feedScope !== "all" && f.category !== category) continue;
@@ -393,6 +546,8 @@ export function Home({
   const openingGap = openingFriend
     ? openingFriend.rating.score - rating.score!
     : 0;
+  const movement =
+    !me.breakMode && comparisonMovement(check, rating, openingFriend, category);
   const firstVisit = me.ratings.every((r: PublicRating) => r.count === 0);
   return (
     <div className={`home-view experience-home home-focus concept-${variant}`}>
@@ -415,23 +570,58 @@ export function Home({
         </div>
         <button
           className="button record-button"
-          aria-label={draft ? "Continue your draft" : "Record a result"}
+          aria-label={draft ? "Continue your draft" : "Record a match"}
           onClick={record}
         >
           <span className="record-action-icon">
             <Plus size={19} />
           </span>
-          <span>{draft ? "Continue draft" : "Record result"}</span>
+          <span>{draft ? "Continue draft" : "Record a match"}</span>
           <ArrowUpRight size={18} />
         </button>
       </header>
       <CategoryTabs value={category} onChange={setCategory} />
+      {newActivity > 0 && !me.breakMode && (
+        <section className="home-return" aria-label="Since your last check">
+          <span className="home-return-mark">
+            <Activity size={18} />
+          </span>
+          <div>
+            <strong>Since your last check</strong>
+            <p>
+              {returning.newMatches > 0 &&
+                `${returning.newMatches} new ${returning.newMatches === 1 ? "match" : "matches"}`}
+              {returning.updatedMatches > 0 &&
+                `${returning.newMatches ? " · " : ""}${returning.updatedMatches} updated`}
+              {returning.milestones > 0 &&
+                ` · ${returning.milestones} earned ${returning.milestones === 1 ? "milestone" : "milestones"}`}
+              {returning.comparisons > 0 &&
+                `${returning.newMatches || returning.updatedMatches ? " · " : ""}${returning.comparisons} comparison ${returning.comparisons === 1 ? "update" : "updates"}`}
+            </p>
+            <small>Compared with your previous check on this device.</small>
+          </div>
+          <button className="text-button" onClick={caughtUp}>
+            Caught up <Check size={16} />
+          </button>
+        </section>
+      )}
+      {sync?.error && (
+        <section className="home-sync-error" role="status">
+          <div>
+            <strong>Showing your last loaded court.</strong>
+            <p>{sync.error}</p>
+          </div>
+          <button className="text-button" onClick={sync.retry}>
+            <RefreshCw size={16} /> Refresh court
+          </button>
+        </section>
+      )}
       {pending.length > 0 && (
         <button className="pending-banner" onClick={() => setPage("inbox")}>
           <Check size={19} />
           <span>
             <strong>
-              {pending.length} recent{" "}
+              {pending.length}{" "}
               {pending.length === 1 ? "result needs" : "results need"} your
               review
             </strong>
@@ -451,9 +641,10 @@ export function Home({
                 ? {
                     player: openingFriend,
                     detail:
-                      openingGap === 0
+                      movement ||
+                      (openingGap === 0
                         ? "Level with your estimate"
-                        : `${Math.abs(openingGap).toLocaleString("en")} points ${openingGap > 0 ? "ahead of" : "behind"} your estimate`,
+                        : `${Math.abs(openingGap).toLocaleString("en")} points ${openingGap > 0 ? "ahead of" : "behind"} your estimate`),
                     onSelect: () => compare(openingFriend.id),
                   }
                 : undefined
@@ -467,6 +658,11 @@ export function Home({
             >
               History <ArrowUpRight size={15} />
             </button>
+            {share && rating.score !== null && (
+              <button className="text-button" onClick={share}>
+                <Share2 size={15} /> Share passport
+              </button>
+            )}
           </div>
           {!me.breakMode && friends.length > 0 && (
             <section
@@ -506,8 +702,10 @@ export function Home({
                   <span>
                     <strong>{competition.title}</strong>
                     <small>
-                      {competition.detail} ·{" "}
-                      {dateLabel(competition.createdAt, me.timezone)}
+                      {competition.peerId
+                        ? `Current gap: ${supported.find((p: any) => p.id === competition.peerId)!.rating.score - rating.score!} points`
+                        : competition.detail}{" "}
+                      · {dateTimeLabel(competition.createdAt, me.timezone)}
                     </small>
                   </span>
                   <ChevronRight size={16} />
@@ -582,12 +780,20 @@ export function Home({
                     <div>
                       <strong>
                         {friends.length
-                          ? "Your shared picture is growing."
+                          ? rating.score === null
+                            ? "Reveal your rating to compare."
+                            : rating.status === "Pair-linked"
+                              ? "A partnership estimate, for now."
+                              : "Your playing groups aren’t connected yet."
                           : "Bring your court with you."}
                       </strong>
                       <p>
                         {friends.length
-                          ? "Follow your friends’ play below. Direct comparisons appear when the evidence supports them."
+                          ? rating.score === null
+                            ? `Five confirmed ${category.toLowerCase()} matches reveal your estimate. Direct comparisons appear when the evidence supports them.`
+                            : rating.status === "Pair-linked"
+                              ? "Playing with one regular partner makes each person’s contribution hard to separate. Different partners help build an individual estimate; you can still follow your friends’ progress."
+                              : "Matches linking your playing groups can support a comparison. Follow each player’s progress while those connections grow."
                           : "Add the people you play with. Their real progress belongs here."}
                       </p>
                       <button
@@ -638,7 +844,7 @@ export function Home({
             </section>
           )}
           {recentEarnedMoment && (
-            <button className="home-earned" onClick={() => open(latest.id)}>
+            <button className="home-earned" onClick={() => open(earned.id)}>
               <span className="home-earned-seal">
                 <Gem league={leagueFor(moment.change.after).name} size={36} />
               </span>
@@ -646,7 +852,7 @@ export function Home({
                 <small>ON COURT / EARNED</small>
                 <strong>{moment.title}</strong>
                 <span>
-                  {dateLabel(publishedPlayedAt(latest), me.timezone)} · View
+                  {dateLabel(publishedPlayedAt(earned), me.timezone)} · View
                   your confirmed result
                 </span>
               </span>
@@ -657,8 +863,8 @@ export function Home({
             <div className="home-start-note">
               <Check size={17} />
               <p>
-                Agree to rated play with everyone before your session, or get
-                everyone’s approval afterward.
+                Agree before playing, or confirm the exact result with everyone
+                afterward.
               </p>
               <button
                 className="text-button"
@@ -668,6 +874,51 @@ export function Home({
               </button>
             </div>
           )}
+          <div className="home-personal-links">
+            <button
+              className="text-button"
+              onClick={() => setPage("profile", "insights")}
+            >
+              <Activity size={16} />
+              Playing insights
+            </button>
+            <button className="text-button" onClick={() => setPage("rankings")}>
+              <MapPin size={16} />
+              Local players
+              {me.localOptIn && me.city
+                ? ` · ${me.district || me.city}`
+                : me.city
+                  ? " · explore"
+                  : " · choose your area"}
+            </button>
+            {sync?.at && !sync.error && (
+              <span className="home-last-sync">
+                Updated{" "}
+                {new Intl.DateTimeFormat("en", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  timeZone: me.timezone,
+                }).format(new Date(sync.at))}
+              </span>
+            )}
+            {!mock && !visit.available && (
+              <span className="home-last-sync">
+                This browser cannot remember your previous check. Current
+                activity is still available.
+              </span>
+            )}
+            <button
+              className="text-button"
+              onClick={() => setPage("profile", "goals")}
+            >
+              <Sparkles size={16} />
+              {goal === undefined
+                ? "Set rating goal"
+                : goalReached
+                  ? "Goal reached · next target"
+                  : `Your goal · ${goal}`}
+            </button>
+          </div>
         </div>
         <section
           className="home-social"
@@ -677,7 +928,9 @@ export function Home({
           <div className="home-section-title">
             <div>
               <span className="eyebrow">FROM YOUR COURT</span>
-              <h2 id="home-activity-title">Friends’ activity</h2>
+              <h2 id="home-activity-title" tabIndex={-1}>
+                Friends’ activity
+              </h2>
             </div>
             <button
               className="icon-button"
@@ -687,6 +940,11 @@ export function Home({
               <Plus size={19} />
             </button>
           </div>
+          {visitNotice && (
+            <p className="home-last-sync" role="status">
+              {visitNotice}
+            </p>
+          )}
           <div
             className="home-feed-tabs"
             role="group"
@@ -706,15 +964,54 @@ export function Home({
               {category}
             </button>
           </div>
+          {data.circles?.length > 0 && (
+            <div
+              className="home-group-links"
+              aria-label="Your badminton groups"
+            >
+              {data.circles.slice(0, 3).map((circle: any) => (
+                <button
+                  key={circle.id}
+                  onClick={() =>
+                    group ? group(circle.id) : setPage("friends")
+                  }
+                >
+                  <Crest kind={circle.crest || "shuttle"} />
+                  <span>
+                    {circle.name}
+                    <small>
+                      {circle.members} accepted{" "}
+                      {circle.members === 1 ? "member" : "members"}
+                    </small>
+                  </span>
+                  <ChevronRight size={15} />
+                </button>
+              ))}
+            </div>
+          )}
           {feed.length ? (
             <div className="home-feed-list">
               {feed.map((group: any[]) => {
                 const first = group[0],
                   shared = data.results.find((r: any) => r.id === first.unitId);
+                const isShared = !!shared || first.shared === true;
+                const highlight =
+                  group.find(
+                    (f) => f.score !== null && f.milestone === "promotion",
+                  ) ||
+                  group.find(
+                    (f) => f.score !== null && f.milestone === "reveal",
+                  ) ||
+                  group.find((f) => f.score !== null && f.milestone === "best");
+                const change = liveUnits.has(first.unitId || first.id)
+                  ? activityChange(group, check)
+                  : null;
                 return (
                   <article
                     className="home-feed-card"
                     key={first.unitId || first.id}
+                    data-new={change || undefined}
+                    data-moment={highlight?.milestone || "match"}
                   >
                     <div className="home-feed-people">
                       <div className="home-feed-avatars">
@@ -724,33 +1021,48 @@ export function Home({
                       </div>
                       <div>
                         <strong>
-                          {group.map((f) => f.player.name).join(" & ")}
+                          {first.category} ·{" "}
+                          {activityDateLabel(first.playedAt, me.timezone)}
                         </strong>
                         <span>
-                          {first.category} ·{" "}
-                          {dateLabel(first.playedAt, me.timezone)}
+                          {group.length > 1
+                            ? `${group.length} friends · same confirmed match`
+                            : "Player-confirmed match"}
                         </span>
                       </div>
+                      {change && (
+                        <span className="home-new-label">
+                          {change === "new" ? "New" : "Updated"}
+                        </span>
+                      )}
                     </div>
-                    <h3>
-                      {group.length > 1
-                        ? "A shared match. Real progress."
-                        : first.milestone === "reveal"
+                    {highlight && (
+                      <h3>
+                        <Gem
+                          league={
+                            highlight.league || leagueFor(highlight.score).name
+                          }
+                          size={22}
+                        />
+                        {highlight.milestone === "reveal"
                           ? "A starting rating, revealed."
-                          : first.milestone === "best"
+                          : highlight.milestone === "best"
                             ? "A new personal best."
-                            : first.won
-                              ? "A win on the board."
-                              : "Another match in the story."}
-                    </h3>
+                            : `${highlight.league || leagueFor(highlight.score).name} reached.`}
+                      </h3>
+                    )}
                     <div className="home-feed-facts">
                       {group.map((f) => (
                         <div key={f.id}>
-                          {group.length > 1 && (
-                            <span className="feed-player-label">
-                              {f.player.name}
-                            </span>
-                          )}
+                          <button
+                            className="feed-player-label"
+                            onClick={() => {
+                              compare(f.player.id, f.category);
+                            }}
+                            aria-label={`View ${f.player.name}'s ${f.category.toLowerCase()} progress`}
+                          >
+                            {f.player.name} <ArrowUpRight size={13} />
+                          </button>
                           <div>
                             <strong>
                               {f.score === null
@@ -776,14 +1088,16 @@ export function Home({
                           <span>
                             {f.score === null
                               ? "Building a starting rating"
-                              : "Rating after this result"}
+                              : `${f.won ? "Win" : "Loss"} · rating after this result`}
                           </span>
                           {f.milestone && f.score !== null && (
                             <span className="feed-earned">
                               <Sparkles size={12} />
                               {f.milestone === "reveal"
                                 ? "First rating"
-                                : "Personal best"}
+                                : f.milestone === "promotion"
+                                  ? `${f.league || leagueFor(f.score).name} reached`
+                                  : "Personal best"}
                             </span>
                           )}
                         </div>
@@ -792,16 +1106,24 @@ export function Home({
                     <button
                       className="text-button feed-open"
                       onClick={() => {
-                        if (shared) open(shared.id);
+                        if (isShared) open(first.unitId);
                         else {
-                          setCategory(first.category);
-                          compare(first.player.id);
+                          compare(first.player.id, first.category);
                         }
                       }}
                     >
-                      {shared ? "Open shared result" : "View player progress"}
+                      {isShared ? "Open shared result" : "View player progress"}
                       <ArrowUpRight size={16} />
                     </button>
+                    {isShared && (
+                      <button
+                        className="text-button home-respect"
+                        onClick={() => open(first.unitId)}
+                      >
+                        <Heart size={15} /> Acknowledge players{" "}
+                        <ArrowUpRight size={15} />
+                      </button>
+                    )}
                   </article>
                 );
               })}
@@ -836,37 +1158,47 @@ export function Home({
               Show more activity <ArrowRight size={16} />
             </button>
           )}
+          {allFeed.length <= feedLimit &&
+            (olderCursor === undefined ? data.feedNext : olderCursor) && (
+              <button
+                className="button secondary home-feed-more"
+                disabled={feedBusy}
+                onClick={loadOlder}
+              >
+                {feedBusy
+                  ? "Loading older matches…"
+                  : feedError
+                    ? "Retry older activity"
+                    : "Load older matches"}{" "}
+                <ArrowRight size={16} />
+              </button>
+            )}
+          {feedError && (
+            <p className="home-feed-error" role="alert">
+              {feedError}
+            </p>
+          )}
+          {feedNeedsRefresh && sync && (
+            <button
+              className="text-button"
+              onClick={() => {
+                setFeedError("");
+                setFeedNeedsRefresh(false);
+                setOlder([]);
+                setOlderCursor(undefined);
+                sync.retry();
+              }}
+            >
+              Refresh activity <RefreshCw size={16} />
+            </button>
+          )}
           {feed.length > 0 && (
             <p className="home-scope-note home-feed-footnote">
               Recent player-confirmed activity. This is a snapshot, not complete
-              match history.
+              match history. Only accepted friends are shown.
             </p>
           )}
         </section>
-        <div className="home-personal-links">
-          <button
-            className="text-button"
-            onClick={() => setPage("profile", "insights")}
-          >
-            <Activity size={16} />
-            Playing insights
-          </button>
-          <button className="text-button" onClick={() => setPage("rankings")}>
-            <Trophy size={16} />
-            Local players
-          </button>
-          <button
-            className="text-button"
-            onClick={() => setPage("profile", "goals")}
-          >
-            <Sparkles size={16} />
-            {goal === undefined
-              ? "Set rating goal"
-              : goalReached
-                ? "Goal reached · next target"
-                : `Your goal · ${goal}`}
-          </button>
-        </div>
       </div>
     </div>
   );

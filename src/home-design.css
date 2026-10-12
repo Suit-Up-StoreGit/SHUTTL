@@ -1002,6 +1002,302 @@ html[data-palette="dark"] .home-focus .record-button {
 html[data-palette="dark"] .home-focus .category-tabs button {
   background: transparent;
 }
+
+/* Personal context and actual earned stories use the same restrained materials. */
+.home-return,
+.home-sync-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 17px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--card);
+}
+.home-return > div,
+.home-sync-error > div {
+  flex: 1;
+  min-width: 0;
+}
+.home-return strong,
+.home-sync-error strong {
+  font-size: 0.875rem;
+}
+.home-return p,
+.home-sync-error p {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+}
+.home-return small {
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.home-return .text-button,
+.home-sync-error .text-button {
+  margin: 0;
+  min-height: 44px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.home-return-mark {
+  display: grid;
+  place-items: center;
+  height: 36px;
+  width: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.home-sync-error {
+  border-left: 3px solid #b27642;
+}
+.home-group-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0 0 14px;
+}
+.home-group-links > button {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 8px;
+  background: var(--card);
+  color: inherit;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 8px 10px;
+  min-height: 50px;
+  max-width: 100%;
+}
+.home-group-links .group-crest {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.home-group-links > button > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+.home-group-links small {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.home-group-links > button > svg {
+  flex-shrink: 0;
+}
+.home-focus .home-feed-card {
+  padding: 16px 18px;
+}
+.home-feed-card[data-moment="reveal"],
+.home-feed-card[data-moment="best"],
+.home-feed-card[data-moment="promotion"] {
+  border-inline-start: 3px solid #8d9d68;
+}
+.home-feed-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+.home-feed-card h3 .gem {
+  flex-shrink: 0;
+}
+.home-feed-people {
+  align-items: center;
+}
+.home-feed-people > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.home-new-label {
+  color: var(--forest);
+  font-size: 0.625rem;
+  font-weight: 750;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.home-focus .home-feed-facts {
+  display: block;
+  padding: 4px 0;
+  margin-top: 12px;
+}
+.home-feed-facts > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 12px;
+  padding: 6px 0;
+}
+.home-feed-facts > div + div {
+  border-top: 1px solid var(--line);
+}
+.home-feed-facts .feed-player-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.5;
+  min-height: 44px;
+  padding: 4px 0;
+  margin: 0;
+}
+.feed-player-label > svg {
+  flex-shrink: 0;
+}
+.home-feed-facts > div > div {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  justify-content: flex-end;
+  align-self: center;
+  gap: 6px;
+}
+.home-feed-facts > div > span:not(.feed-player-label):not(.feed-earned) {
+  grid-column: 1;
+  font-size: 0.6875rem;
+  margin-top: 0;
+  padding-bottom: 5px;
+}
+.home-feed-facts .feed-earned {
+  grid-column: 1;
+  margin-top: 3px;
+}
+.home-feed-facts strong {
+  font-size: 1.8rem;
+}
+.home-respect {
+  min-height: 44px;
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 4px 0;
+}
+.home-feed-error {
+  font-size: 0.8125rem;
+  color: var(--ink);
+  padding-top: 10px;
+  line-height: 1.6;
+}
+.home-last-sync {
+  align-self: center;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+@media (hover: hover) {
+  .home-group-links > button:hover,
+  .feed-player-label:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+@media (max-width: 700px) {
+  .home-return {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+  .home-return-mark {
+    display: none;
+  }
+  .home-return small {
+    font-size: 0.625rem;
+  }
+  .home-return p {
+    font-size: 0.75rem;
+  }
+  .home-return .text-button {
+    font-size: 0.6875rem;
+  }
+  .home-sync-error {
+    flex-wrap: wrap;
+  }
+  .home-focus .home-heading {
+    gap: 12px;
+  }
+  .home-focus .home-heading h1 {
+    font-size: 2rem;
+  }
+  .home-focus > .category-tabs {
+    margin-bottom: 13px;
+  }
+  .home-passport-tools {
+    padding-bottom: 3px;
+  }
+  .home-focus .home-grid {
+    gap: 20px;
+  }
+  .home-group-links > button {
+    width: 100%;
+  }
+}
+html[data-palette="dark"] .home-new-label,
+.concept-arena .home-new-label {
+  color: #d4e8ab;
+}
+html[data-text-size="large"]
+  :is(.home-return, .home-sync-error, .home-group-links > button) {
+  flex-wrap: wrap;
+}
+html[data-text-size="large"] .home-feed-facts > div {
+  grid-template-columns: minmax(0, 1fr);
+}
+html[data-text-size="large"] .home-feed-facts > div > div {
+  grid-column: 1;
+  grid-row: 2;
+  justify-content: flex-start;
+}
+html[data-text-size="large"] .home-feed-facts > div > span:not(.feed-earned) {
+  grid-row: 3;
+  margin-top: 6px;
+}
+html[data-text-size="large"] .home-feed-people {
+  flex-wrap: wrap;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-feed-card[data-new] {
+    animation: home-story-arrive 260ms ease-out both;
+  }
+}
+@keyframes home-story-arrive {
+  from {
+    opacity: 0.9;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-focus .number-settle {
+    animation: home-number-settle 220ms ease-out both;
+  }
+}
+@keyframes home-number-settle {
+  from {
+    opacity: 0.94;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 @media (hover: hover) {
   html[data-palette="dark"] .home-focus .record-button:hover {
     background: #f7bd82;

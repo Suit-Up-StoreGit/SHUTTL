@@ -1,17 +1,17 @@
 {
   "scope": "The 66 homepage criteria from the critical homepage review, in their original order. Payment integration is excluded.",
-  "requiredScore": 9.5,
-  "activeCriterion": 1,
-  "advanceRule": "Advance only after evidence establishes the active criterion at the required score. Implementation, synthetic personas and automated checks alone do not establish player-perception scores.",
+  "requiredScore": 9,
+  "activeCriterion": null,
+  "advanceRule": "Review all 66 criteria in original order using actual fictional-account journeys and an explicitly subjective expert persona appraisal. Latest user acceptance is either every score >=9.0 or the equal-weight mean of all 66 >=9.0; lower individual scores remain visible.",
   "baselineMeaning": "Earlier heuristic expert judgments of the reviewed homepage, not measured player outcomes and not current acceptance scores.",
-  "regressionRule": "Check affected journeys, rating integrity, privacy, responsive layouts, keyboard use, large text, reduced motion and contrast after each change. Passing engineering checks does not establish that every subjective score is preserved.",
+  "regressionRule": "Meaningful build, server, browser, rating-integrity, privacy, keyboard, responsive, enlarged-text, contrast and reduced-motion checks accompany the change. A pass supports the implementation finding, while subjective scores remain the reviewer's judgments.",
   "criteria": [
     {
       "id": 1,
       "name": "First impression",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": null,
-      "status": "implemented_engineering_verified_independent_validation_pending",
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
       "implementation": [
         "The opening passport shows a real accepted friend and a supported numerical comparison in the selected category.",
         "A valid chosen comparison takes precedence. Otherwise the nearest estimate above, or the highest at or below, is shown.",
@@ -28,11 +28,43 @@
         "Keyboard operation, focus visibility, 200 percent text, reduced motion and both appearance themes preserve usable actions.",
         "The shared public passport presentation, existing match journeys and privacy boundaries remain covered by regression checks."
       ],
-      "engineeringVerification": {
+      "independentAcceptance": {
+        "score": null,
+        "evidence": null,
+        "optionalFutureEvidence": "Independent ordinary-phone appraisal of the opening's visual quality, personal relevance and immediate comprehension. A synthetic persona run cannot measure those perceptions.",
+        "gatingThisExpertReview": false
+      },
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 1,
+      "finding": "The opening has a clear sporting identity, one prominent recording action and a genuine named comparison. The newcomer gets a purposeful five-match reveal instead of an empty dashboard.",
+      "remainingGap": "The opening is calm and confident rather than cinematic; the feed starts below the first phone screen.",
+      "personaPerspectives": [
+        "newcomer",
+        "recreational",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ],
+      "previousEngineeringVerification": {
         "buildAndTypeCheck": "passed",
-        "serverTests": { "passed": 55, "failed": 0 },
-        "browserTests": { "passed": 82, "failed": 0, "skipped": 0 },
-        "targetedOpeningTests": { "passed": 3, "failed": 0 },
+        "serverTests": {
+          "passed": 55,
+          "failed": 0
+        },
+        "browserTests": {
+          "passed": 82,
+          "failed": 0,
+          "skipped": 0
+        },
+        "targetedOpeningTests": {
+          "passed": 3,
+          "failed": 0
+        },
         "browserEvidence": "outputs/home-focus-2026-10-12/first-impression-browser-final.json",
         "failedFullRun": {
           "passed": 78,
@@ -48,467 +80,1473 @@
         "previewErrors": 0,
         "previewOverflow": false,
         "limitations": "Fictional local personas and Chrome viewport emulation. Does not measure physical-device, screen-reader or player-perception acceptance; no first-visit offline-boot guarantee."
-      },
-      "independentAcceptance": {
-        "score": null,
-        "evidence": null,
-        "remaining": "Independent ordinary-phone appraisal of the opening's visual quality, personal relevance and immediate comprehension. A synthetic persona run cannot measure those perceptions."
       }
     },
     {
       "id": 2,
       "name": "Wow effect",
       "baselineExpertJudgment": 8.2,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.8,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.8,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 2,
+      "finding": "The oversized rating, original seal, court geometry and controlled orange action make a strong focal composition. Earned stories now have distinct visual emphasis.",
+      "remainingGap": "There is still limited emotional spectacle or athlete imagery. A restrained number arrival is not a striking achievement animation.",
+      "personaPerspectives": [
+        "competitive",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 3,
       "name": "Premium feel",
       "baselineExpertJudgment": 8.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 3,
+      "finding": "Consistent materials, authored typography, compact secondary actions and explicit real-match context make the screen feel considered. Error and placement states retain the same finish.",
+      "remainingGap": "Some utility labels and initials-based portraits are less polished than the hero; a whole-product premium appraisal is outside this homepage score.",
+      "personaPerspectives": [
+        "recreational",
+        "privacy",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 4,
       "name": "Brand distinctiveness",
       "baselineExpertJudgment": 8.7,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 4,
+      "finding": "The forest/ivory passport, shuttle-bearing seals, court lines and sporting number typography form a recognizable visual system. Group crests extend it into social context.",
+      "remainingGap": "The white social-card convention is familiar and could carry a more distinctive SHUTTL detail.",
+      "personaPerspectives": [
+        "organiser",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 5,
       "name": "Badminton identity",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.9,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 5,
+      "finding": "Singles, doubles, mixed, court geometry, actual playing partners and confirmed-match language make the sport legible.",
+      "remainingGap": "The sport is communicated largely through graphics and text; there is no supplied athlete or on-court photography.",
+      "personaPerspectives": [
+        "newcomer",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 6,
       "name": "Rating-card visual quality",
       "baselineExpertJudgment": 9.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 6,
+      "finding": "One dominant real number, legible status, original league seal, honest peak, reveal progress and an attached comparison make the passport an excellent focal object.",
+      "remainingGap": "Long enlarged-text states occupy more height; the number still represents an estimate rather than certified skill.",
+      "personaPerspectives": [
+        "newcomer",
+        "recreational",
+        "fixedPartnership"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 7,
       "name": "Typography",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 7,
+      "finding": "Manrope and Barlow separate functional reading from sporting numbers. Feed numbers align with concise names and outcomes, and long names wrap safely.",
+      "remainingGap": "Tiny metadata is less effortless than the primary text; more languages would need a separate review.",
+      "personaPerspectives": [
+        "competitive",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 8,
       "name": "Colour system",
       "baselineExpertJudgment": 8.9,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 8,
+      "finding": "Orange identifies recording, forest anchors the passport, and restrained earned accents distinguish milestones without recoloring every match. Checked dark states preserve this meaning.",
+      "remainingGap": "Decorative gradients include contrast cases that automated tools cannot decide.",
+      "personaPerspectives": [
+        "privacy",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 9,
       "name": "Spacing",
       "baselineExpertJudgment": 8.4,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 9,
+      "finding": "Shorter rating-guide wording keeps ordinary-phone secondary actions on one row. Compact feed facts and moved personal tools reduce blank or repetitive space.",
+      "remainingGap": "Return notices and long group names legitimately add height; the first screen cannot show the entire social section.",
+      "personaPerspectives": [
+        "recreational",
+        "organiser",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 10,
       "name": "Alignment",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 10,
+      "finding": "Feed identity and numerical lanes align consistently, the hero retains one-line numbers, and enlarged text stacks those lanes deliberately.",
+      "remainingGap": "Very long names create differing row heights, a reasonable readability tradeoff.",
+      "personaPerspectives": [
+        "accessible",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 11,
       "name": "Depth and materials",
       "baselineExpertJudgment": 8.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 11,
+      "finding": "Subtle borders, forest gradients and seal glass provide separation and depth without heavy effects. Recovery notices use the same materials.",
+      "remainingGap": "Feed surfaces have less crafted depth than the passport and remain conventional.",
+      "personaPerspectives": [
+        "recreational",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 12,
       "name": "Icons and league badges",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 12,
+      "finding": "Original shuttle-bearing league marks distinguish tiers by form and label. Group crests, refresh and share actions are consistently small and purposeful.",
+      "remainingGap": "Small-size desirability and memorability remain reviewer judgments; there is no player customization in scope.",
+      "personaPerspectives": [
+        "organiser",
+        "fixedPartnership"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 13,
       "name": "Dark mode",
       "baselineExpertJudgment": 8.9,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 13,
+      "finding": "Checked light and dark flows keep the main rating, buttons, feed outcomes and secondary labels legible; dark recording hover now has explicit colors.",
+      "remainingGap": "Physical OLED behavior and every gradient contrast case have not been measured.",
+      "personaPerspectives": [
+        "privacy",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 14,
       "name": "Desktop composition",
       "baselineExpertJudgment": 8.4,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 14,
+      "finding": "Desktop retains a balanced passport/competition column and a compact social column. Personal tools stay with the passport and feed stories have stronger numeric structure.",
+      "remainingGap": "Column lengths still differ when one player has little activity or many review duties.",
+      "personaPerspectives": [
+        "organiser",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 15,
       "name": "Animation quality",
-      "baselineExpertJudgment": 8.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 8,
+      "acceptedScore": 8.8,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.8,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 15,
+      "finding": "Real changed numbers settle once for 220ms and unseen stories arrive subtly for 260ms. Controls preserve focus, and reduced motion gets a static presentation.",
+      "remainingGap": "Motion is restrained rather than exceptional; ordinary-device smoothness and a richer earned-moment sequence are not demonstrated.",
+      "personaPerspectives": [
+        "returning",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 16,
       "name": "Visual restraint",
-      "baselineExpertJudgment": 9.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 9,
+      "acceptedScore": 9.4,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.4,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 16,
+      "finding": "The screen privileges the rating, recording and real people. Routine wins no longer receive repetitive promotional headlines; achievements alone get extra emphasis.",
+      "remainingGap": "Several honest evidence labels remain because the rating is developing.",
+      "personaPerspectives": [
+        "recreational",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "src/pages/Home.tsx",
+        "src/home-design.css",
+        "tests/browser/home-focus.spec.ts",
+        "docs/mockups/render-results.json"
+      ]
     },
     {
       "id": 17,
       "name": "Purpose understanding",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 17,
+      "finding": "The newcomer opening says see your level and follow your friends; category, recording and the five-confirmed-match reveal make the core purpose explicit.",
+      "remainingGap": "A player must still open the rating guide to understand the full confirmation and comparison rules.",
+      "personaPerspectives": [
+        "newcomer"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 18,
       "name": "Information priority",
       "baselineExpertJudgment": 7.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 18,
+      "finding": "Rating and recording remain first; relevant comparison, review duties and earned moments precede utility links. The social feed is now factual and compact.",
+      "remainingGap": "A returning player with new activity and reviews has a longer opening.",
+      "personaPerspectives": [
+        "competitive",
+        "returning"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 19,
       "name": "Simplicity",
       "baselineExpertJudgment": 8.3,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 19,
+      "finding": "One record action, three independent categories, one collapsed circle and one social feed keep the primary structure understandable. Newcomers see one invitation path.",
+      "remainingGap": "The distinction between published ratings and supported comparisons still requires a short explanation.",
+      "personaPerspectives": [
+        "newcomer",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 20,
       "name": "Information density",
-      "baselineExpertJudgment": 8.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 8,
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 20,
+      "finding": "The default feed contains three whole-match stories, with a direct show-more path. Facts replace repeated headlines; phone circle detail remains optional.",
+      "remainingGap": "An all-play story with several accepted friends is denser than a single-person story.",
+      "personaPerspectives": [
+        "recreational",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 21,
       "name": "Mobile first screen",
       "baselineExpertJudgment": 7.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 21,
+      "finding": "At ordinary phone size the recording action, category, rating, milestone progress and named comparison fit in the opening view. The next actions follow immediately.",
+      "remainingGap": "The feed requires scrolling; at 320px with 200% text the opening is deliberately taller.",
+      "personaPerspectives": [
+        "recreational",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 22,
       "name": "Recording prominence",
       "baselineExpertJudgment": 9.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 22,
+      "finding": "The full-width orange Record a match action is conspicuous on phones and remains distinct on desktop, with a truthful Continue draft state.",
+      "remainingGap": "It is a single entry point; there is no persistent floating duplicate.",
+      "personaPerspectives": [
+        "newcomer",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 23,
       "name": "Recording wording",
       "baselineExpertJudgment": 8.4,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 23,
+      "finding": "Record a match uses ordinary player language consistently on the home action and its dialog. Continue draft clearly identifies saved work.",
+      "remainingGap": "Inside the flow, the rating unit and series-format rules require additional explanation.",
+      "personaPerspectives": [
+        "newcomer",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 24,
       "name": "Frequent-function access",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 24,
+      "finding": "Recording, rating guide, history, sharing, comparisons, insights, goals and local players are reachable from home with purposeful labels.",
+      "remainingGap": "Profile settings remain a separate destination, appropriate for an infrequent task.",
+      "personaPerspectives": [
+        "organiser",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 25,
       "name": "Rating-category switching",
       "baselineExpertJudgment": 8.7,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 25,
+      "finding": "Singles, doubles and mixed retain independent scores and placement. Opening another category from a friend story no longer changes the home selection.",
+      "remainingGap": "A three-way category choice remains an extra decision for newcomers.",
+      "personaPerspectives": [
+        "competitive",
+        "doubles",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 26,
       "name": "Feed-filter clarity",
       "baselineExpertJudgment": 7.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 26,
+      "finding": "All play and the selected-category activity filter have distinct selected states and clear accessible names. Category changes reset the visible story count.",
+      "remainingGap": "Only all play and the current rating category are offered; arbitrary multi-category feed selection is absent.",
+      "personaPerspectives": [
+        "competitive",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 27,
       "name": "Microcopy",
       "baselineExpertJudgment": 7.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 27,
+      "finding": "New copy distinguishes one-partner estimates, disconnected playing groups, honest reveal progress, stale data and device-scoped return checks.",
+      "remainingGap": "Some evidence language remains more technical than everyday badminton conversation.",
+      "personaPerspectives": [
+        "newcomer",
+        "fixedPartnership",
+        "returning"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 28,
       "name": "Reading effort",
       "baselineExpertJudgment": 7.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 28,
+      "finding": "Dates, category, result direction and post-result numbers are scannable without repeated generic headings. Current comparison movement is one plain sentence.",
+      "remainingGap": "Confirmation and comparison qualifications add necessary reading.",
+      "personaPerspectives": [
+        "recreational",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 29,
       "name": "Secondary-function discovery",
       "baselineExpertJudgment": 7.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 29,
+      "finding": "Share passport is next to history; insights, goals and local players are before the feed in the main column. Named groups link directly to their details.",
+      "remainingGap": "Secondary tools still sit below the core rating on phones.",
+      "personaPerspectives": [
+        "organiser",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 30,
       "name": "First-use understanding",
-      "baselineExpertJudgment": 7.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 7,
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 30,
+      "finding": "An actual zero-match account gets a purposeful reveal card, five visible steps, an immediate record action and a single route to find friends. No numbers are fabricated.",
+      "remainingGap": "Five results is a meaningful initial effort; the home alone does not teach every approval rule.",
+      "personaPerspectives": [
+        "newcomer"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "src/pages/Home.tsx"
+      ]
     },
     {
       "id": 31,
       "name": "Competitive immediacy",
       "baselineExpertJudgment": 7.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 31,
+      "finding": "A real comparable friend is attached to the opening rating, current lead updates are visible, and actual movement since the previous check adds urgency when warranted.",
+      "remainingGap": "Cold networks or fixed partnerships cannot provide honest numerical rivalry immediately.",
+      "personaPerspectives": [
+        "competitive",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 32,
       "name": "Friend-position clarity",
       "baselineExpertJudgment": 8.3,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 32,
+      "finding": "The circle shows ties accurately, a friends-only position and the population being compared. Unsupported players are excluded with a specific reason.",
+      "remainingGap": "It is an order of developing comparable estimates, not a certified ranking.",
+      "personaPerspectives": [
+        "competitive",
+        "fixedPartnership"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 33,
       "name": "Who is ahead on mobile",
       "baselineExpertJudgment": 6.7,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 33,
+      "finding": "The named friend, actual category and point gap are visible on the phone passport without expanding the circle. The chosen valid friend takes priority.",
+      "remainingGap": "The opening highlights one person rather than all possible rivals.",
+      "personaPerspectives": [
+        "recreational",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 34,
       "name": "Lead relevance and coverage",
-      "baselineExpertJudgment": 7.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 7,
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 34,
+      "finding": "New-match publication batches can generate a genuine crossing notice. Home filters obsolete crossings and displays the present gap and dated context.",
+      "remainingGap": "Late backfills and correction replays deliberately do not create fresh lead pressure.",
+      "personaPerspectives": [
+        "returning",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 35,
       "name": "Since-last-visit clarity",
-      "baselineExpertJudgment": 3.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 3,
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 35,
+      "finding": "A real new published match is counted once even when two friends appear in it. New versus updated stories and saved acknowledgement persist through reload.",
+      "remainingGap": "This context belongs to one account on one device and is limited to the loaded recent snapshot.",
+      "personaPerspectives": [
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 36,
       "name": "Defending a lead",
       "baselineExpertJudgment": 5.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 36,
+      "finding": "The opening can show a narrowing lead, a closed gap or a genuine crossing from prior supported estimates, giving a leading player relevant context.",
+      "remainingGap": "It does not predict how many wins will defend a lead or create an artificial challenge deadline.",
+      "personaPerspectives": [
+        "competitive",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 37,
       "name": "Next milestone",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 37,
+      "finding": "The next actual league threshold and remaining points are clear on the rating card, alongside the genuine personal best and optional personal goal.",
+      "remainingGap": "Points to a threshold are not a guaranteed number of games.",
+      "personaPerspectives": [
+        "recreational",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 38,
       "name": "Neighbourhood relevance",
       "baselineExpertJudgment": 4.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.1,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 38,
+      "finding": "Home now links directly to local players and names the opted-in declared area. Privacy-first players get an honest exploration or area-choice label.",
+      "remainingGap": "Qualified neighborhood titles remain unavailable while evidence gates are closed; local participation density is not demonstrated.",
+      "personaPerspectives": [
+        "organiser",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 39,
       "name": "Honest comparisons",
       "baselineExpertJudgment": 9.3,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 39,
+      "finding": "Same category and shared evidence are required, placement numbers are hidden, and real one-partner accounts have an explicit limit instead of a misleading rank.",
+      "remainingGap": "The shipped pilot model has not been calibrated against a real badminton dataset; this score concerns honest comparison presentation.",
+      "personaPerspectives": [
+        "fixedPartnership",
+        "regularPartner",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 40,
       "name": "Chosen-comparison control",
       "baselineExpertJudgment": 8.2,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 40,
+      "finding": "A saved accepted friend controls the opening comparison when supported, and remains identified with an explanation when direct comparison is unavailable.",
+      "remainingGap": "The preference is device-scoped and does not synchronize across phones.",
+      "personaPerspectives": [
+        "competitive",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 41,
       "name": "Reducing pressure",
-      "baselineExpertJudgment": 9.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 9,
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 41,
+      "finding": "Break mode removes competitive pressure while retaining the rating, real activity and ordinary actions. Missing evidence never gets a fake title or urgency countdown.",
+      "remainingGap": "Individual emotional responses vary; this is an appraisal of the implemented controls.",
+      "personaPerspectives": [
+        "privacy",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 42,
       "name": "Overall FOMO mechanisms",
       "baselineExpertJudgment": 6.4,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.8,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.8,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 42,
+      "finding": "Real friend movement, new activity, earned league progress and sharing create meaningful reasons to revisit. Return context is substantially stronger than the previous static home.",
+      "remainingGap": "The loop relies on real accepted friends playing; local crowns and additional reward systems are absent from V1.",
+      "personaPerspectives": [
+        "competitive",
+        "returning"
+      ],
+      "currentEvidence": [
+        "src/home-context.ts",
+        "tests/home-context.test.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/home-focus.spec.ts"
+      ]
     },
     {
       "id": 43,
       "name": "Real-people presence",
-      "baselineExpertJudgment": 8.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 8,
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 43,
+      "finding": "Actual accepted players appear with names, avatars and category-specific progress, and real named groups have their own crests and identities.",
+      "remainingGap": "Initials are common when players have not added portraits.",
+      "personaPerspectives": [
+        "organiser",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 44,
       "name": "Activity meaning",
-      "baselineExpertJudgment": 7.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 7,
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 44,
+      "finding": "Stories identify the category, local date, win or loss, published post-result score, visible delta and genuine milestone. Shared friends remain together as one match.",
+      "remainingGap": "Foreign match games and rosters are intentionally unavailable to the viewer.",
+      "personaPerspectives": [
+        "recreational",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 45,
       "name": "Feed scanability",
       "baselineExpertJudgment": 7.3,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 45,
+      "finding": "The number lane, plain outcome labels, compact local dates and achievement-only headings let a player scan several stories quickly.",
+      "remainingGap": "Four-friend shared matches remain taller, especially with large text.",
+      "personaPerspectives": [
+        "competitive",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 46,
       "name": "Feed variety",
       "baselineExpertJudgment": 6.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.9,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 46,
+      "finding": "The feed distinguishes reveal, promotion, personal best and routine results across categories, with pagination for older whole matches.",
+      "remainingGap": "It contains result-led progress rather than editorial posts or varied social media formats.",
+      "personaPerspectives": [
+        "returning",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 47,
       "name": "Belonging",
-      "baselineExpertJudgment": 6.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 6,
+      "acceptedScore": 9,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 47,
+      "finding": "Named badminton groups, actual crests, accepted member counts and direct group access make the home feel connected to a real playing circle.",
+      "remainingGap": "Belonging still depends on peers joining and using the app; group rituals beyond existing recaps are limited.",
+      "personaPerspectives": [
+        "organiser"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 48,
       "name": "Social-privacy presentation",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 48,
+      "finding": "Home explains its accepted-friend audience; blocked people are excluded, foreign result details stay private, and public sharing requires the existing explicit controls.",
+      "remainingGap": "Public snapshots remain captured records and must be revoked through the provided controls.",
+      "personaPerspectives": [
+        "privacy",
+        "organiser"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 49,
       "name": "Reciprocity",
       "baselineExpertJudgment": 5.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.5,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 49,
+      "finding": "Shared real matches now expose a direct Acknowledge players route to the existing private encouragement flow. It rewards actual opponents and partners without rating points.",
+      "remainingGap": "There are no reactions on foreign friend stories or a broader reciprocal conversation loop.",
+      "personaPerspectives": [
+        "doubles",
+        "recreational"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 50,
       "name": "Earned-reward credibility",
       "baselineExpertJudgment": 8.7,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 50,
+      "finding": "Rewards derive from confirmed published reveal, league crossing or genuine peak. A newer routine result no longer wipes a still-recent earned moment; pending corrections are not celebrated.",
+      "remainingGap": "League desirability is an expert appraisal rather than a measured willingness to play more.",
+      "personaPerspectives": [
+        "competitive",
+        "fixedPartnership"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 51,
       "name": "Milestone discovery",
       "baselineExpertJudgment": 7.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 51,
+      "finding": "Recent own achievements stay visible on home and friend milestones have distinct headlines, seals and factual labels in the feed.",
+      "remainingGap": "The dedicated recent own moment has a seven-day window and uses loaded history.",
+      "personaPerspectives": [
+        "competitive",
+        "returning"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 52,
       "name": "Sharing discovery",
       "baselineExpertJudgment": 6.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 52,
+      "finding": "A published player has Share passport alongside rating guide and history, opening the actual preview/privacy/export flow. Unrated accounts do not get a fake rating share.",
+      "remainingGap": "Some social destinations require download and posting outside the app.",
+      "personaPerspectives": [
+        "recreational",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 53,
       "name": "Loss support",
-      "baselineExpertJudgment": 7.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 7,
+      "acceptedScore": 8.6,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.6,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 53,
+      "finding": "Losses use neutral factual language, preserve an earlier earned peak and provide an accessible route into playing insights and personal goals.",
+      "remainingGap": "The home does not yet provide individualized training advice or a crafted loss-recovery interaction.",
+      "personaPerspectives": [
+        "recreational",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 54,
       "name": "Quiet-week value",
       "baselineExpertJudgment": 5.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 8.4,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 8.4,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 54,
+      "finding": "A quiet week still offers peers, genuine peak, personal goal, sharing, insights, local exploration and older activity without a streak penalty.",
+      "remainingGap": "Without new play from friends, there is limited fresh home value and no validated habitual return.",
+      "personaPerspectives": [
+        "returning",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 55,
       "name": "Visible premium-value differentiation",
-      "baselineExpertJudgment": 6.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 6,
+      "acceptedScore": 7.5,
+      "status": "below_individual_target_in_overall_average",
+      "expertPersonaScore": 7.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 55,
+      "finding": "The home makes credible rating context, comparisons, real group identity, earned progress, privacy and sharing more visible, which gives the product a stronger value story.",
+      "remainingGap": "A broad $20/month premium offer remains insufficiently differentiated from free activity/rating tools. Payments are excluded; price-value fit is not certified.",
+      "personaPerspectives": [
+        "recreational",
+        "organiser",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "server/service.ts",
+        "tests/home-activity.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/reward-context.spec.ts",
+        "tests/browser/public-share-persona.spec.ts"
+      ]
     },
     {
       "id": 56,
       "name": "Recording-entry reliability",
       "baselineExpertJudgment": 9.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 56,
+      "finding": "All persona accounts reach the actual recording dialog from home; category context, Escape and focus return are covered alongside existing submission/retry journeys.",
+      "remainingGap": "This score covers the entry and tested recovery states, not unlimited network/device reliability.",
+      "personaPerspectives": [
+        "newcomer",
+        "doubles",
+        "accessible"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 57,
       "name": "Draft continuation",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 57,
+      "finding": "A live account-bound draft becomes Continue draft; prior conflict, interrupted-submission and navigation tests protect its original identity and exact payload.",
+      "remainingGap": "Draft continuity depends on device storage and its explicit recovery handling.",
+      "personaPerspectives": [
+        "returning",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 58,
       "name": "Review-prompt correctness",
       "baselineExpertJudgment": 8.9,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.3,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.3,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 58,
+      "finding": "Home review prompts include active older results beyond the history page limit and exclude authors, already-approved players and covered teammates.",
+      "remainingGap": "The active-results query is not a production-volume benchmark.",
+      "personaPerspectives": [
+        "organiser",
+        "doubles"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 59,
       "name": "Account and private boundaries",
-      "baselineExpertJudgment": 9.0,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "baselineExpertJudgment": 9,
+      "acceptedScore": 9.4,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.4,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 59,
+      "finding": "Account/session epochs plus a latest-refresh sequence prevent older requests from restoring another identity or overwriting a newer home snapshot. Existing privacy regressions remain covered.",
+      "remainingGap": "The finite browser review is not a full security assessment.",
+      "personaPerspectives": [
+        "privacy",
+        "returning"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 60,
       "name": "Semantics and keyboard",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 60,
+      "finding": "New actions have semantic buttons, named category groups and explicit focus recovery after comparison, dialog closure and marking activity as seen.",
+      "remainingGap": "A physical screen-reader and switch-control review has not been performed.",
+      "personaPerspectives": [
+        "accessible",
+        "competitive"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 61,
       "name": "Large text",
       "baselineExpertJudgment": 8.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.1,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.1,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 61,
+      "finding": "The actual enlarged-text account uses 200% text at 320px without horizontal overflow. Names and feed number lanes stack, and recording remains reachable.",
+      "remainingGap": "The opening and navigation become substantially taller; larger type cannot preserve the ordinary one-screen composition.",
+      "personaPerspectives": [
+        "accessible"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 62,
       "name": "Checked contrast and legibility",
       "baselineExpertJudgment": 8.8,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 62,
+      "finding": "Checked light/dark states and every new persona home have no detected WCAG AA violations, with visible labels and restrained color-only meaning.",
+      "remainingGap": "Automated indeterminate gradient nodes are retained; this is not a complete WCAG conformance claim.",
+      "personaPerspectives": [
+        "accessible",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 63,
       "name": "Reduced motion",
       "baselineExpertJudgment": 9.1,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 63,
+      "finding": "The motion preference removes story and number arrival animation without hiding content. The actual persona contexts use reduced motion successfully.",
+      "remainingGap": "Motion sensitivity varies; a physical-device appraisal is outside this local review.",
+      "personaPerspectives": [
+        "accessible",
+        "privacy"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 64,
       "name": "Freshness and recovery visibility",
       "baselineExpertJudgment": 6.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 64,
+      "finding": "Home persistently labels a failed refresh, retains the loaded court, offers explicit retry and shows a successful update time. Warm-shell navigation stalls are bounded.",
+      "remainingGap": "Cold offline startup and hosted-network performance are not established.",
+      "personaPerspectives": [
+        "returning"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 65,
       "name": "Activity depth and continuity",
       "baselineExpertJudgment": 7.7,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.2,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.2,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 65,
+      "finding": "Whole-match pagination retains all accepted friends in a match, retries older-page failures and recovers changed cursors; recent shared results can open through real participation metadata.",
+      "remainingGap": "The initial feed is a recent snapshot, not complete history; older loaded pages require refresh for later corrections.",
+      "personaPerspectives": [
+        "returning",
+        "organiser"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     },
     {
       "id": 66,
       "name": "No fabricated provisional score",
       "baselineExpertJudgment": 9.5,
-      "acceptedScore": null,
-      "status": "awaiting_previous_criterion"
+      "acceptedScore": 9.5,
+      "status": "expert_criterion_target_met",
+      "expertPersonaScore": 9.5,
+      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "reviewOrder": 66,
+      "finding": "Actual zero-match, rated and five-match fixed-partnership accounts display the right independent-category states. No public number, league or delta appears before the required reveal.",
+      "remainingGap": "Five results reveals a developing estimate, not calibrated certainty about skill.",
+      "personaPerspectives": [
+        "newcomer",
+        "fixedPartnership",
+        "regularPartner"
+      ],
+      "currentEvidence": [
+        "tests/browser/home-personas.spec.ts",
+        "tests/browser/accessibility.spec.ts",
+        "tests/browser/account-boundary.spec.ts",
+        "tests/browser/draft-concurrency.spec.ts",
+        "tests/browser/home-focus.spec.ts",
+        "tests/home-activity.test.ts"
+      ]
     }
   ],
   "unmeasuredPlayerOutcomes": [
@@ -522,5 +1560,164 @@
     "Share-to-recipient activation",
     "Willingness to pay 20 dollars per month and recurring value",
     "Actual mobile performance, battery and assistive-technology experience"
-  ]
+  ],
+  "previousRequirement": {
+    "requiredScore": 9.5,
+    "method": "Independent player-perception acceptance",
+    "previousActiveCriterion": 1,
+    "supersededForThisHomepageReviewBy": "User explicitly authorizes simulated personas and either every criterion at 9.0 or the equal-weight average at 9.0. Actual outcome claims retain their evidence requirements."
+  },
+  "scoreMeaning": "One-decimal expert judgments of the implemented homepage through simulated player perspectives, not observations reported by real players or measured retention, willingness to pay or model calibration. Test pass counts do not mechanically determine these scores.",
+  "rubric": {
+    "10": "Exceptional execution with no material weakness observed in this defined scope. Not awarded in this review.",
+    "9_to_9_9": "Excellent execution of the criterion in checked states: strong personal relevance, craft or usable control, with only limited residual weaknesses.",
+    "8_to_8_9": "Strong but a meaningful limitation remains, such as limited emotional payoff, activity diversity or quiet-week pull.",
+    "7_to_7_9": "Useful and improved, but substantial differentiation or evidence still limits the proposition."
+  },
+  "reviewMethod": {
+    "reviewedOn": "2026-10-12",
+    "kind": "Simulated expert persona assessment",
+    "actualRegisteredFictionalAccounts": 10,
+    "corePersonas": 8,
+    "additionalPartnershipPersonas": 2,
+    "approvedFixtureMatches": 31,
+    "additionalRealPublishedReturnMatch": 1,
+    "ratingSource": "Actual local rating publisher and approved match APIs; persona ratings are not fabricated browser responses.",
+    "perceptionSource": "Expert inspection of rendered screens and journeys from each persona perspective; not interviews or participant-reported scores.",
+    "outputDirectory": "outputs/home-persona-review-2026-10-12",
+    "financialIntegration": "Excluded",
+    "scopeLimit": "Homepage criteria only. Original 150-criterion outcome register and measured D7/D30, model calibration and willingness-to-pay values are unchanged.",
+    "personaAppraisal": "docs/acceptance/homepage-persona-appraisal.json"
+  },
+  "summary": {
+    "criterionCount": 66,
+    "weighting": "Each criterion has equal weight; no low score omitted or reweighted.",
+    "exactMean": 9.116666666666669,
+    "displayMean": 9.12,
+    "individualTargetMet": 56,
+    "individualBelowTarget": [
+      {
+        "id": 2,
+        "name": "Wow effect",
+        "score": 8.8
+      },
+      {
+        "id": 5,
+        "name": "Badminton identity",
+        "score": 8.9
+      },
+      {
+        "id": 15,
+        "name": "Animation quality",
+        "score": 8.8
+      },
+      {
+        "id": 38,
+        "name": "Neighbourhood relevance",
+        "score": 8.1
+      },
+      {
+        "id": 42,
+        "name": "Overall FOMO mechanisms",
+        "score": 8.8
+      },
+      {
+        "id": 46,
+        "name": "Feed variety",
+        "score": 8.9
+      },
+      {
+        "id": 49,
+        "name": "Reciprocity",
+        "score": 8.5
+      },
+      {
+        "id": 53,
+        "name": "Loss support",
+        "score": 8.6
+      },
+      {
+        "id": 54,
+        "name": "Quiet-week value",
+        "score": 8.4
+      },
+      {
+        "id": 55,
+        "name": "Visible premium-value differentiation",
+        "score": 7.5
+      }
+    ],
+    "everyIndividualAtLeast9": false,
+    "averageAtLeast9": true,
+    "status": "expert_average_target_met",
+    "groupMeans": [
+      {
+        "name": "Visual craft",
+        "count": 16,
+        "mean": 9.11
+      },
+      {
+        "name": "Clarity and ease",
+        "count": 14,
+        "mean": 9.18
+      },
+      {
+        "name": "Competition and FOMO",
+        "count": 12,
+        "mean": 9.12
+      },
+      {
+        "name": "Social, rewards and value",
+        "count": 13,
+        "mean": 8.91
+      },
+      {
+        "name": "Interaction and safeguards",
+        "count": 11,
+        "mean": 9.29
+      }
+    ]
+  },
+  "currentEngineeringVerification": {
+    "status": "Local build/server checks and all 98 unique browser scenarios have passing coverage across documented runs. Final changed persona file passes all 14 cases; the last complete local 98-case run had 97 passes and one corrected fixture-navigation failure. Remote complete-suite verification is pending at commit time.",
+    "buildAndTypeCheck": "passed",
+    "serverTests": {
+      "passed": 62,
+      "failed": 0
+    },
+    "browserTests": {
+      "distinctCasesWithPassingCoverage": 98,
+      "lastFullRun": {
+        "passed": 97,
+        "failed": 1,
+        "skipped": 0,
+        "evidence": "outputs/home-persona-review-2026-10-12/browser-failed-98-navigation.json"
+      },
+      "finalAffectedRun": {
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "evidence": "outputs/home-persona-review-2026-10-12/personas-final.json"
+      },
+      "singleLocalFull98PassClaim": false
+    },
+    "actualAccounts": {
+      "count": 10,
+      "approvedSetupMatches": 31,
+      "observations": 15
+    },
+    "accessibility": {
+      "newPersonaStates": 10,
+      "detectedViolations": 0,
+      "indeterminateNodeInstances": 282
+    },
+    "fixtureCorrections": [
+      "The retained-milestone fixture now has all required participant fields and selects its category.",
+      "The cross-category walkthrough follows visible Show more controls until the actual Mixed story appears; it no longer assumes a fixed number of newer matches."
+    ],
+    "previewCaptureCount": 5,
+    "previewErrors": 0,
+    "previewOverflow": false,
+    "limitations": "Expert fictional-account review and Chromium viewport emulation. No direct real-player reports, physical-device/assistive-technology acceptance, measured retention, price-value fit or badminton calibration claim."
+  }
 }

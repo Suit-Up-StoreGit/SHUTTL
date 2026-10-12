@@ -574,55 +574,35 @@ export async function buildApp(
           ...service.player(p, actor),
           ratings: CATEGORIES.map((c) => service.rating(p, c)),
         }));
-      const feed: any[] = [];
-      for (const friend of friends) {
-        const rows = db.all(
-          "SELECT e.* FROM rating_events e JOIN unit_players p ON p.unit_id=e.unit_id WHERE p.player_id IN (SELECT id FROM users WHERE id=? OR claimed_by=?) ORDER BY e.played_at DESC LIMIT 8",
-          friend.id,
-          friend.id,
-        );
-        for (const row of rows) {
-          const change = JSON.parse(row.changes)[friend.id];
-          if (change)
-            feed.push({
-              id: row.unit_id + friend.id,
-              unitId: row.unit_id,
-              player: friend,
-              category: row.category,
-              playedAt: row.played_at,
-              score: change.count >= 5 ? change.after : null,
-              delta: change.count > 5 ? change.delta : null,
-              milestone:
-                change.count === 5
-                  ? "reveal"
-                  : change.peakBefore !== null &&
-                      change.peakBefore !== undefined &&
-                      change.after > change.peakBefore
-                    ? "best"
-                    : null,
-              won: change.won,
-            });
-        }
-      }
+      const activity = service.friendActivity(actor);
       return {
         demo:
           db.get("SELECT value FROM app_meta WHERE key='demo_seeded'")
             ?.value === "true",
         me: service.profile(actor),
         friends,
-        feed: feed
-          .sort((a, b) => b.playedAt.localeCompare(a.playedAt))
-          .slice(0, 20),
+        feed: activity.feed,
+        feedNext: activity.next,
+        generatedAt: now(),
         results: service.results(actor),
+        reviewResults: service.pendingResults(actor),
         circles: db.all(
-          "SELECT c.id,c.name,c.owner,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
+          "SELECT c.id,c.name,c.owner,i.crest,i.tagline,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c LEFT JOIN circle_identity i ON i.circle_id=c.id JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
           actor,
         ),
-        competitionUpdates: db.all(
-          "SELECT n.title,n.detail,n.created_at AS createdAt,u.category FROM notifications n JOIN units u ON u.id=n.unit_id WHERE n.user_id=? AND n.kind='comparison' AND n.created_at>? ORDER BY n.created_at DESC LIMIT 20",
-          actor,
-          new Date(Date.now() - 7 * 86400000).toISOString(),
-        ),
+        competitionUpdates: db
+          .all(
+            "SELECT n.id,n.title,n.detail,n.event_key AS eventKey,n.read_at AS readAt,n.created_at AS createdAt,u.category FROM notifications n JOIN units u ON u.id=n.unit_id WHERE n.user_id=? AND n.kind='comparison' AND n.created_at>? ORDER BY n.created_at DESC LIMIT 20",
+            actor,
+            new Date(Date.now() - 7 * 86400000).toISOString(),
+          )
+          .map(({ eventKey, ...update }) => ({
+            ...update,
+            peerId:
+              eventKey?.split(":").length === 4 && eventKey.startsWith("lead:")
+                ? eventKey.split(":")[3]
+                : null,
+          })),
         unread:
           db.get(
             "SELECT count(*) AS n FROM notifications WHERE user_id=? AND read_at IS NULL",
@@ -639,6 +619,15 @@ export async function buildApp(
       json,
     });
     return reply.type("application/json").send(json);
+  });
+  app.get("/api/activity", async (req) => {
+    const input = z
+      .object({ before: uuid.optional() })
+      .strict()
+      .parse(req.query);
+    return db.readSnapshot(() =>
+      service.friendActivity(req.actor.id, input.before),
+    );
   });
   app.get("/api/inbox", async (req) => service.inbox(req.actor.id));
   app.get("/api/history", async (req) => {

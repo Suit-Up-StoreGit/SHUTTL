@@ -497,7 +497,7 @@ test("public share personas inspect captured private and named snapshots, change
       .click();
     await expect(
       newcomer.getByRole("dialog", {
-        name: "Record a result",
+        name: "Record a match",
         exact: true,
       }),
     ).toBeVisible();

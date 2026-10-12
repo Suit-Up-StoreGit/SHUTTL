@@ -273,16 +273,16 @@ test("rookie and competitive personas use guides, categories, history chart, com
       .last()
       .click();
     await rookie.page
-      .getByRole("button", { name: "Record a result", exact: true })
+      .getByRole("button", { name: "Record a match", exact: true })
       .click();
     await expect(
-      rookie.page.getByRole("dialog", { name: "Record a result", exact: true }),
+      rookie.page.getByRole("dialog", { name: "Record a match", exact: true }),
     ).toBeVisible();
     await rookie.page
       .getByRole("button", { name: "Close dialog", exact: true })
       .click();
     await rookie.page
-      .getByRole("button", { name: "What this rating means", exact: true })
+      .getByRole("button", { name: "Rating guide", exact: true })
       .click();
     await rookie.page
       .getByText("The league collection", { exact: true })
@@ -369,7 +369,7 @@ test("rookie and competitive personas use guides, categories, history chart, com
         .click();
     await athlete.page
       .getByRole("dialog")
-      .getByRole("button", { name: "What this rating means", exact: true })
+      .getByRole("button", { name: "Rating guide", exact: true })
       .click();
     await athlete.page
       .getByRole("dialog", { name: "A clearer picture of your game" })

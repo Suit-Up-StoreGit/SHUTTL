@@ -361,6 +361,7 @@ function DesignReview() {
             record={sample}
             addFriend={sample}
             compare={sample}
+            share={sample}
             variant={concept}
             mock
           />
@@ -398,6 +399,13 @@ export function App() {
     [page, setCurrentPage] = useState<Page>(pageFromPath),
     [category, setCategoryState] = useState<Category>("Doubles");
   const [comparisonId, setComparisonId] = useState<string | null>(null);
+  const [comparisonCategory, setComparisonCategory] =
+    useState<Category>("Doubles");
+  const [homeSync, setHomeSync] = useState<{
+    at: number | null;
+    error: string;
+  }>({ at: null, error: "" });
+  const refreshSequence = useRef(0);
   const [shareRefresh, setShareRefresh] = useState(0);
   useEffect(() => {
     if (data && page === "home") recordResearch("home-view", data.me.id);
@@ -474,6 +482,8 @@ export function App() {
       } catch {}
     }
     accountEpoch.current += 1;
+    refreshSequence.current += 1;
+    setHomeSync({ at: null, error: "" });
     activeAccount.current = null;
     activeSession.current = null;
     inboxGeneration.current += 1;
@@ -513,9 +523,14 @@ export function App() {
   }
   async function refresh(reportFailure = false) {
     const epoch = accountEpoch.current;
+    const sequence = ++refreshSequence.current;
     try {
       const dashboard = await api("/dashboard");
-      if (epoch !== accountEpoch.current) return;
+      if (
+        epoch !== accountEpoch.current ||
+        sequence !== refreshSequence.current
+      )
+        return;
       const expectedAccount = activeAccount.current || data?.me.id;
       if (
         (expectedAccount && dashboard.me.id !== expectedAccount) ||
@@ -543,6 +558,7 @@ export function App() {
           activeSession.current = identity.csrf;
           setDisplayTimezone(dashboard.me.timezone);
           setData(dashboard);
+          setHomeSync({ at: Date.now(), error: "" });
         } catch (error) {
           if (transitionEpoch !== accountEpoch.current) return;
           if (!(error instanceof ApiError && error.status === 401))
@@ -558,19 +574,29 @@ export function App() {
         !dashboard.results.some((r: any) => r.id === resultId)
       )
         dashboard.results.unshift(await api("/results/" + resultId));
-      if (epoch !== accountEpoch.current) return;
+      if (
+        epoch !== accountEpoch.current ||
+        sequence !== refreshSequence.current
+      )
+        return;
       activeAccount.current = dashboard.me.id;
       if (dashboard.sessionCsrf) activeSession.current = dashboard.sessionCsrf;
       setDisplayTimezone(dashboard.me.timezone);
       setData(dashboard);
+      setHomeSync({ at: Date.now(), error: "" });
       if (["inbox", "agreements"].includes(page)) {
         await loadInbox();
       }
     } catch (e) {
-      if (epoch !== accountEpoch.current) return;
+      if (
+        epoch !== accountEpoch.current ||
+        sequence !== refreshSequence.current
+      )
+        return;
       if (e instanceof ApiError && e.status === 401) {
         forgetSession();
       } else {
+        setHomeSync((old) => ({ ...old, error: errorMessage(e) }));
         if (reportFailure) throw e;
         notify(errorMessage(e));
       }
@@ -923,8 +949,23 @@ export function App() {
                   record={() => setModal("record")}
                   addFriend={() => setModal("friend")}
                   share={() => setModal("share")}
+                  sync={{
+                    ...homeSync,
+                    retry: () => {
+                      void refresh();
+                    },
+                  }}
+                  group={(id) => {
+                    setPage("friends");
+                    history.replaceState(
+                      {},
+                      "",
+                      `/friends?circle=${encodeURIComponent(id)}`,
+                    );
+                  }}
                   open={open}
-                  compare={(id) => {
+                  compare={(id, selectedCategory) => {
+                    setComparisonCategory(selectedCategory || category);
                     setComparisonId(id);
                     recordResearch("comparison-view", data.me.id);
                   }}
@@ -939,6 +980,7 @@ export function App() {
                 add={() => setModal("friend")}
                 notify={notify}
                 compare={(id) => {
+                  setComparisonCategory(category);
                   setComparisonId(id);
                   recordResearch("comparison-view", data.me.id);
                 }}
@@ -1122,7 +1164,7 @@ export function App() {
           key={data.me.id + ":" + comparisonId}
           data={data}
           playerId={comparisonId}
-          category={category}
+          category={comparisonCategory}
           close={() => setComparisonId(null)}
           open={(id) => {
             setComparisonId(null);

@@ -174,7 +174,7 @@ test("signup, local draft offline retry, cross-account Singles approval and cate
   try {
     const opponent = await signup(other, "UI Opponent");
     await page.getByRole("button", { name: "Singles", exact: true }).click();
-    await page.getByRole("button", { name: /Record a result/ }).click();
+    await page.getByRole("button", { name: /Record a match/ }).click();
     await page
       .getByRole("button", { name: "Choose player", exact: true })
       .click();
@@ -253,13 +253,13 @@ test("profile preferences survive refresh and a draft survives navigation", asyn
   ).toHaveValue("Singles");
   await page.getByRole("button", { name: "Home", exact: true }).last().click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await page.getByLabel("Your side", { exact: true }).fill("21");
   await page.getByLabel("Other side", { exact: true }).fill("17");
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page
-    .getByRole("button", { name: /Record a result|Continue your draft/ })
+    .getByRole("button", { name: /Record a match|Continue your draft/ })
     .click();
   await expect(page.getByLabel("Other side", { exact: true })).toHaveValue(
     "17",
@@ -413,7 +413,7 @@ test("a live correction clears both exact-result and batch acknowledgements", as
   try {
     const username = await signup(other, "Revision Opponent");
     await page.getByRole("button", { name: "Singles", exact: true }).click();
-    await page.getByRole("button", { name: /Record a result/ }).click();
+    await page.getByRole("button", { name: /Record a match/ }).click();
     await page
       .getByRole("button", { name: "Choose player", exact: true })
       .click();

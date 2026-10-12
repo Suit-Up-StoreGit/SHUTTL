@@ -171,7 +171,7 @@ test("a doubles regular creates an exact recurring agreement, records a covered 
       clockFixture.close();
     }
     await self.page.goto("/home");
-    await self.page.getByRole("button", { name: "Record a result" }).click();
+    await self.page.getByRole("button", { name: "Record a match" }).click();
     await self.page
       .getByLabel("Category", { exact: true })
       .selectOption("Doubles");
@@ -276,7 +276,7 @@ test("a doubles regular creates an exact recurring agreement, records a covered 
       ).status,
     ).toBe("rated");
     await self.page.goto("/home");
-    await self.page.getByRole("button", { name: "Record a result" }).click();
+    await self.page.getByRole("button", { name: "Record a match" }).click();
     await self.page
       .getByLabel("Category", { exact: true })
       .selectOption("Mixed");
@@ -331,7 +331,7 @@ test("a competitive persona checks all formats, fixes an invalid score, proposes
   const [self, opponent, reviewer] = players;
   try {
     await self.page.goto("/home");
-    await self.page.getByRole("button", { name: "Record a result" }).click();
+    await self.page.getByRole("button", { name: "Record a match" }).click();
     await self.page
       .getByLabel("Category", { exact: true })
       .selectOption("Singles");

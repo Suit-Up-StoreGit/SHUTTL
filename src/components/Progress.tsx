@@ -18,7 +18,7 @@ export function RatingGuide({ category }: { category: Category }) {
   return (
     <>
       <button className="text-button rating-help" onClick={() => setOpen(true)}>
-        <Info size={16} /> What this rating means
+        <Info size={16} /> Rating guide
       </button>
       {open && (
         <Modal
