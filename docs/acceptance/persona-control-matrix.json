@@ -7897,7 +7897,18 @@
       "conformanceClaimed": false
     },
     "publicCi": {
-      "status": "pending_after_push"
+      "status": "completed",
+      "conclusion": "success",
+      "appSourceCommit": "b049861dc9b7b2dcffb70fe7f39d4a0211e890c2",
+      "runId": 38195200973,
+      "checkRunId": 114636205360,
+      "url": "https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38195200973",
+      "buildPassed": true,
+      "serverStepPassed": true,
+      "browserPassed": 75,
+      "browserSummary": "75 passed (3.6m)",
+      "platform": "GitHub ubuntu-latest, Node24.18, matching Playwright Chromium",
+      "verificationMethod": "Anonymous public workflow/job metadata and Playwright notice annotation; no credentials or private logs read."
     },
     "functionalScoreNotRescored": true,
     "globalAcceptanceScoresUnchanged": true

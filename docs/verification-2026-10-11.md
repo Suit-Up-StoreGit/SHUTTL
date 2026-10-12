@@ -6,9 +6,38 @@ These checks establish specific local behavior. They do not establish 9.5 produc
 
 The Player Passport direction now has an authored court surface, restrained earned-seal framing, purposeful finite motion, a focused player identity and scope-aware standings. Profile connection actions come before detailed category cards; secondary scores stay visible with expandable context. The standings put the player's actual position or explicitly unranked estimate first, with full named scope, shared positions and actual counts retained. No unsupported titles were enabled.
 
-The independent agent's final source/render critique and root inspection support the **9.5 local craft band for each of22 reviewed execution criteria**. The complete table, evidence and limits are in [the design audit](acceptance/design-opportunity-audit.json). This is a qualitative assessment of the reviewed implementation, not22 measured player outcomes;10 is not awarded. The global150 register remains unchanged.
+The independent agent's final source/render critique and root inspection support the **9.5 local craft band for each of 22 reviewed execution criteria**. The evidence and limits are in [the design audit](acceptance/design-opportunity-audit.json). This is a qualitative assessment of the reviewed implementation, not 22 measured player outcomes; 10 is not awarded. The global 150 register remains unchanged.
 
-The production build/type check passes. **54 server checks pass**, and a complete **75/75 local browser run** passed in271.2seconds before the final standings-priority/tablet-identity presentation refinements. The **final five affected visual cases pass** in20.9seconds against client `index-OL_4kYey` and CSS `index-BqADR-Kn`, with zero failures, skipped or flaky cases. Reports retain their distinct source scope and hashes; they are not presented as a full75 local run on the final bundle. GitHub verification of the final source is recorded after publishing.
+| Reviewed visual-craft criterion                | Local expert score |
+| ---------------------------------------------- | -----------------: |
+| Home rating hierarchy                          |                9.5 |
+| Earned league-seal treatment                   |                9.5 |
+| Sporting material and court detail             |                9.5 |
+| Typography and numerical hierarchy             |                9.5 |
+| Spacing, alignment and rhythm                  |                9.5 |
+| Color restraint and hierarchy                  |                9.5 |
+| Light/dark coherence                           |                9.5 |
+| Profile identity presentation                  |                9.5 |
+| Focused-category prominence                    |                9.5 |
+| Placement and secondary-category disclosure    |                9.5 |
+| Profile action hierarchy                       |                9.5 |
+| Avatar and initials integration                |                9.5 |
+| Named-pool scope presentation                  |                9.5 |
+| Leaderboard row alignment and readability      |                9.5 |
+| Personal-row recognition                       |                9.5 |
+| Shared-place and tie presentation              |                9.5 |
+| Qualified/unranked visual distinction          |                9.5 |
+| Mobile competitive-status priority             |                9.5 |
+| Narrow-phone and tablet adaptation             |                9.5 |
+| Long names and 200% text reflow                |                9.5 |
+| Earned rewards and purposeful motion           |                9.5 |
+| Feed/story sharing craft and scope readability |                9.5 |
+
+All 22 meet the same qualitative threshold band; averaging them does not create a calibrated measurement of player preference. A whole-product acceptance claim still requires the separate evidence defined in the global register.
+
+The production build/type check passes. **54 server checks pass**, and a complete **75/75 local browser run** passed in 271.2 seconds before the final standings-priority/tablet-identity presentation refinements. The **final five affected visual cases pass** in 20.9 seconds against client `index-OL_4kYey` and CSS `index-BqADR-Kn`, with zero failures, skipped or flaky cases. Reports retain their distinct source scope and hashes; they are not presented as a full 75 local run on the final bundle.
+
+GitHub verified the final app source at commit `b049861dc9b7b2dcffb70fe7f39d4a0211e890c2`: build and server steps passed, and the public Playwright summary reports **75 passed in 3.6 minutes**. [Workflow 38195200973](https://github.com/Suit-Up-StoreGit/SHUTTL/actions/runs/38195200973) completed successfully. Evidence came from anonymous public workflow/job metadata and the test-summary annotation. This record-only follow-up changes documentation; app and test source remain identical to that verified commit.
 
 Those five cases cover phone/tablet/desktop light and dark layouts,320px200% text, actual tie/own-row display, closed-gate estimates, live reduced-motion changes, cancellation when different results share identical numbers, and real canvas-export text bounds. The player's complete status ends at554–581px in the390×844px fixture, above navigation at779px. Exported eligibility units stay complete even when the long pool label shortens.
 
@@ -18,9 +47,9 @@ Initial checks found real desktop label/quote contrast defects and a transient s
 
 The five home directions were regenerated from the final bundle at430×1080px with both local fonts loaded, no page errors and no horizontal overflow. App source is frozen for publication; payment integration and public HTTPS deployment remain excluded. Actual-player appeal, recognition, reward desirability, FOMO, retention, physical-phone performance and willingness to pay remain unmeasured.
 
-## Current routine recap and verification follow-up
+## Historical routine recap and verification follow-up — 11 October 2026
 
-The current source is frozen at client `index-CfhXQuPg` and CSS `index-BGo4rtZj`. The build/type check, **54 server checks**, and a **single complete matching-Chromium run of 70/70 browser cases pass**, with zero failed, skipped or flaky cases in 219.4 seconds. The exact run starts at 18:35:56.970 UTC; its report and digest are retained in the matrix. Public CI verification is recorded separately below; neither run establishes global product acceptance.
+That source was frozen at client `index-CfhXQuPg` and CSS `index-BGo4rtZj`. The build/type check, **54 server checks**, and a **single complete matching-Chromium run of 70/70 browser cases passed**, with zero failed, skipped or flaky cases in 219.4 seconds. The exact run starts at 18:35:56.970 UTC; its report and digest are retained in the matrix. Public CI verification is recorded separately below; neither run establishes global product acceptance.
 
 The preceding complete run on `index-BxvnOY6z` passed 69/70 and found a genuine Arena contrast regression: the new routine Published rating label measured **1.85:1** against a **4.5:1** requirement. The specific color and replay wrapping were repaired without weakening the audit. Final accessibility checks detect zero violation nodes across 21 states; **222 indeterminate contrast-node instances remain**, so this is not WCAG certification. The failed run remains historical evidence, with its source fix and resolved run recorded.
 
