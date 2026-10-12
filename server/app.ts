@@ -618,14 +618,11 @@ export async function buildApp(
           "SELECT c.id,c.name,c.owner,(SELECT count(*) FROM circle_members WHERE circle_id=c.id AND status='accepted') AS members FROM circles c JOIN circle_members m ON m.circle_id=c.id WHERE m.user_id=? AND m.status='accepted' ORDER BY c.created_at",
           actor,
         ),
-        competitionUpdate: (() => {
-          const n = db.get(
-            "SELECT title,detail,created_at AS createdAt FROM notifications WHERE user_id=? AND kind='comparison' AND created_at>? ORDER BY created_at DESC LIMIT 1",
-            actor,
-            new Date(Date.now() - 7 * 86400000).toISOString(),
-          );
-          return n || null;
-        })(),
+        competitionUpdates: db.all(
+          "SELECT n.title,n.detail,n.created_at AS createdAt,u.category FROM notifications n JOIN units u ON u.id=n.unit_id WHERE n.user_id=? AND n.kind='comparison' AND n.created_at>? ORDER BY n.created_at DESC LIMIT 20",
+          actor,
+          new Date(Date.now() - 7 * 86400000).toISOString(),
+        ),
         unread:
           db.get(
             "SELECT count(*) AS n FROM notifications WHERE user_id=? AND read_at IS NULL",

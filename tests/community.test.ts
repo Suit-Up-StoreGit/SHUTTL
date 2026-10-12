@@ -678,6 +678,28 @@ test("dashboard cache follows account mutations and publication, and isolates id
     const after = (await f.request(a, "GET", "/api/dashboard")).data;
     assert.equal(after.results.length, 1);
     assert.equal(after.results[0].status, "rated");
+    const comparisonId = randomUUID();
+    f.db.run(
+      "INSERT INTO notifications(id,user_id,kind,title,detail,unit_id,event_key,created_at) VALUES(?,?,?,?,?,?,?,?)",
+      comparisonId,
+      a.id,
+      "comparison",
+      "Fixture singles lead change",
+      "Confirmed comparison",
+      after.results[0].id,
+      comparisonId,
+      new Date().toISOString(),
+    );
+    const homeUpdates = (await f.request(a, "GET", "/api/dashboard")).data
+      .competitionUpdates;
+    assert.equal(homeUpdates.length, 1);
+    assert.equal(homeUpdates[0].category, "Singles");
+    assert.equal(homeUpdates[0].title, "Fixture singles lead change");
+    assert.equal(
+      (await f.request(b, "GET", "/api/dashboard")).data.competitionUpdates
+        .length,
+      0,
+    );
     assert.equal(
       (await f.request(b, "GET", "/api/dashboard")).data.me.id,
       b.id,

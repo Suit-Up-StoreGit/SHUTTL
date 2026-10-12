@@ -1,5 +1,20 @@
 # SHUTTL implementation verification — updated 12 October 2026
 
+## Home focus redesign - 12 October 2026
+
+Home now prioritizes the player's rating and league progress, a warm-colour recording action, supported friends-only estimate context, and a proper social activity stream. The automatic closest-friend module, weekly recap, routine latest-result recap and progress chart have left the main Home layout. The chart is in Profile > History; period summaries remain in Profile > Insights. A compact earned-moment link appears only for the latest published reveal, promotion or personal best played within the last seven days; pending corrections and stale milestones do not trigger it.
+
+The feed groups accepted friends who played the same match, retains each player's actual post-result score/change, includes all categories by default, offers a selected-category filter and expands the loaded recent snapshot. It does not claim complete history. An explicit pinned comparison remains optional and can now be removed. Circle order excludes placement, pair-linked and disconnected estimates and preserves ties; it is not a neighbourhood title. Competition notifications now carry the result category so another category's lead change cannot occupy the selected circle summary. Home, Inbox and result review share the same approval-eligibility helper, excluding an already-covered teammate.
+
+Validation: build/type check passed; 55 server tests passed. The full 79-case local browser suite passed in 4.4 minutes after the journey and responsive corrections. The final dark-mode recording-colour adjustment was then checked with all seven affected browser cases (42.9 seconds) on the final build. Its Home-specific automated accessibility pass covered 320, 390, 768 and 1366px in light/dark plus 320px at 200% text: zero detected violations across nine states, with 185 indeterminate node instances requiring human assessment. This is not a conformance certificate. All eight league seals also fit at 320/390/430px. The five saved design captures loaded both fonts, with zero page errors and zero horizontal overflow.
+
+The checks caught and repaired a cramped league seal at 320px and a dark navigation-hover contrast defect. A raced reload in a synthetic Home fixture was corrected by binding its authenticated baseline before interception. Goals retain a secondary link after the feed, including when no goal exists. Result animation checks now operate through the full result dialog because routine recaps no longer occupy Home.
+
+Representative screens: [Passport Home](mockups/home-passport.jpg), [Court Home](mockups/home-court.jpg), [Circle Home](mockups/home-circle.jpg), [Arena Home](mockups/home-arena.jpg), [Editorial Home](mockups/home-editorial.jpg). These are fictional previews of implemented layouts.
+
+No new numerical user-perception, FOMO-effectiveness or retention score is awarded from these engineering checks. The original 150-criterion acceptance register, rating model, comparison/title evidence gate and excluded payment scope remain unchanged. No public HTTPS deployment occurred.
+
+
 These checks establish specific local behavior. They do not establish 9.5 product acceptance, real badminton calibration, physical-device delivery, retention, $20 monthly value or production capacity. All tests and visual review used fictional identities/results; no real players were contacted.
 
 ## Visual design pass — 12 October 2026

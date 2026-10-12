@@ -248,24 +248,32 @@ test("rookie and competitive personas use guides, categories, history chart, com
           })
         : route.continue(),
     );
-    await rookie.page.reload();
+    await rookie.page
+      .getByRole("button", { name: "Playing insights", exact: true })
+      .click();
+    await rookie.page.getByLabel("Your playing period").selectOption("7");
     await expect(
       rookie.page.getByRole("button", {
-        name: "Retry weekly recap",
+        name: "Retry playing insights",
         exact: true,
       }),
     ).toBeVisible();
-    await expect(rookie.page.locator(".weekly-retry")).toContainText(
-      "only the recent results loaded here",
+    await expect(rookie.page.getByRole("alert")).toContainText(
+      "Synthetic weekly interruption",
     );
     failWeek = false;
     await rookie.page
-      .getByRole("button", { name: "Retry weekly recap", exact: true })
+      .getByRole("button", { name: "Retry playing insights", exact: true })
       .click();
-    await expect(rookie.page.locator(".weekly-retry")).toHaveCount(0);
+    await expect(
+      rookie.page.getByRole("button", { name: "Retry playing insights" }),
+    ).toHaveCount(0);
     await rookie.page
-      .locator(".next-step")
-      .getByRole("button", { name: "Record a completed result", exact: true })
+      .getByRole("button", { name: "Home", exact: true })
+      .last()
+      .click();
+    await rookie.page
+      .getByRole("button", { name: "Record a result", exact: true })
       .click();
     await expect(
       rookie.page.getByRole("dialog", { name: "Record a result", exact: true }),
@@ -315,13 +323,20 @@ test("rookie and competitive personas use guides, categories, history chart, com
     await athlete.page
       .getByRole("button", { name: "Singles", exact: true })
       .click();
+    await athlete.page
+      .getByRole("button", { name: "History", exact: true })
+      .click();
     const chart = athlete.page.getByRole("group", {
       name: "Inspect rating history",
     });
     await chart.getByRole("button").first().click();
     await chart.getByRole("button").last().click();
+    await athlete.page.locator(".result-card").first().click();
     await athlete.page
       .getByRole("button", { name: "Replay the visible rating change" })
+      .click();
+    await athlete.page
+      .getByRole("button", { name: "Close dialog", exact: true })
       .click();
     await athlete.page
       .getByRole("button", { name: "Circle", exact: true })
@@ -379,8 +394,7 @@ test("rookie and competitive personas use guides, categories, history chart, com
       "YOUR CHOSEN COMPARISON",
     );
     await athlete.page
-      .locator(".next-step")
-      .getByRole("button", { name: "Manage your goals", exact: true })
+      .getByRole("button", { name: "Set rating goal", exact: true })
       .click();
     await expect(athlete.page.locator("#goal-Singles")).toBeFocused();
     const currentRating = (
@@ -401,11 +415,14 @@ test("rookie and competitive personas use guides, categories, history chart, com
       .getByRole("button", { name: "Home", exact: true })
       .last()
       .click();
-    await expect(athlete.page.locator(".next-step")).toContainText(
-      `Singles target ${currentRating} · current rating ${currentRating}`,
-    );
+    await expect(
+      athlete.page.getByRole("button", {
+        name: "Goal reached · next target",
+        exact: true,
+      }),
+    ).toBeVisible();
     await athlete.page
-      .getByRole("button", { name: "Choose your next target", exact: true })
+      .getByRole("button", { name: "Goal reached · next target", exact: true })
       .click();
     await expect(athlete.page.locator("#goal-Singles")).toBeFocused();
     await athlete.page
@@ -426,7 +443,7 @@ test("rookie and competitive personas use guides, categories, history chart, com
       .getByRole("button", { name: "Close dialog", exact: true })
       .click();
     await athlete.page
-      .getByRole("button", { name: "Choose a comparison", exact: true })
+      .getByRole("button", { name: "Compare friends", exact: true })
       .click();
     await athlete.page
       .getByRole("button", { name: "Compare", exact: false })

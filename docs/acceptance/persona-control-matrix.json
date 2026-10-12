@@ -481,7 +481,9 @@
       },
       {
         "id": "final-qualified-functional-current-chromium70",
-        "runIds": ["final-matching-full70-2026-10-11-1835"],
+        "runIds": [
+          "final-matching-full70-2026-10-11-1835"
+        ],
         "average": 9.5,
         "targetMet": true,
         "journeyAssessments": [
@@ -628,7 +630,9 @@
         ]
       }
     ],
-    "assessmentBasisRunIds": ["final-matching-full70-2026-10-11-1835"],
+    "assessmentBasisRunIds": [
+      "final-matching-full70-2026-10-11-1835"
+    ],
     "scope": "Finite local expert judgment across the enumerated V1 functional tasks and five equally weighted dimensions. Each previously identified material local clarity issue has concrete source changes and representative passing checks; no9.5 user-outcome or whole-platform certification follows.",
     "reassessmentReason": "The seven original clarity constraints remain resolved. Routine-only compact presentation and the genuine Arena contrast regression were checked against source and final frozen-build evidence. No score is raised merely from pass counts; prior9.43 and prior9.5 scopes remain historical.",
     "notClaimed": [
@@ -838,7 +842,9 @@
       ],
       "namedFixtureAccount": "Dev Regular Doubles",
       "namedFixtureUIScope": "This named account is setup-only in persona-review.spec.ts; the category is exercised through separately named fictional fixtures in its referenced browser cases.",
-      "categoryBrowserEvidenceRefs": ["consentPersona"],
+      "categoryBrowserEvidenceRefs": [
+        "consentPersona"
+      ],
       "runtimeScope": "Category coverage is finite and may include failures noted in runtimeEvidence. It does not assert that this named identity clicked every assigned control or that independent people completed the journey."
     },
     {
@@ -983,7 +989,9 @@
     {
       "id": "reviewer",
       "syntheticCircumstance": "Independent synthetic staff identity reviews another roster's dispute; ordinary player cannot access staff actions",
-      "journeys": ["corrections_disputes"],
+      "journeys": [
+        "corrections_disputes"
+      ],
       "runtimeOutcome": "representative_category_case_outcomes_recorded",
       "controls": [
         "shell.navigation",
@@ -995,7 +1003,10 @@
       ],
       "namedFixtureAccount": "Harper Independent Reviewer",
       "namedFixtureUIScope": "This named account is opened for finite UI actions in persona-review.spec.ts.",
-      "categoryBrowserEvidenceRefs": ["reviewPersona", "consentPersona"],
+      "categoryBrowserEvidenceRefs": [
+        "reviewPersona",
+        "consentPersona"
+      ],
       "runtimeScope": "Category coverage is finite and may include failures noted in runtimeEvidence. It does not assert that this named identity clicked every assigned control or that independent people completed the journey."
     }
   ],
@@ -1876,7 +1887,10 @@
         "returning",
         "reviewer"
       ],
-      "evidenceRefs": ["journey", "network"],
+      "evidenceRefs": [
+        "journey",
+        "network"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -1906,7 +1920,11 @@
         "returning",
         "reviewer"
       ],
-      "evidenceRefs": ["account", "journey", "accountBoundary"],
+      "evidenceRefs": [
+        "account",
+        "journey",
+        "accountBoundary"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -1927,8 +1945,15 @@
         "Return to sign in",
         "Sign in to check this account"
       ],
-      "personas": ["rookie", "returning", "privacy"],
-      "evidenceRefs": ["account", "accountBoundary"],
+      "personas": [
+        "rookie",
+        "returning",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "account",
+        "accountBoundary"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -1947,8 +1972,14 @@
         "18-or-older acknowledgment",
         "Create my player identity"
       ],
-      "personas": ["rookie"],
-      "evidenceRefs": ["journey", "account", "serverAccount"],
+      "personas": [
+        "rookie"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account",
+        "serverAccount"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -1962,9 +1993,19 @@
       "id": "auth.password_login",
       "journey": "registration_recovery",
       "screen": "Auth",
-      "controls": ["Username", "Password", "Sign in"],
-      "personas": ["returning"],
-      "evidenceRefs": ["serverAccount", "privacyPersona", "accountBoundary"],
+      "controls": [
+        "Username",
+        "Password",
+        "Sign in"
+      ],
+      "personas": [
+        "returning"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "privacyPersona",
+        "accountBoundary"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -1983,8 +2024,13 @@
         "New password",
         "Recover my account"
       ],
-      "personas": ["returning"],
-      "evidenceRefs": ["serverAccount", "privacyPersona"],
+      "personas": [
+        "returning"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "privacyPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -1998,9 +2044,17 @@
       "id": "auth.passkey_login",
       "journey": "registration_recovery",
       "screen": "Auth",
-      "controls": ["Sign in with a passkey"],
-      "personas": ["returning", "privacy"],
-      "evidenceRefs": ["community", "serverSocial"],
+      "controls": [
+        "Sign in with a passkey"
+      ],
+      "personas": [
+        "returning",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "community",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2020,8 +2074,14 @@
         "I have saved my recovery code privately",
         "Continue to my court"
       ],
-      "personas": ["rookie", "returning", "privacy"],
-      "evidenceRefs": ["account"],
+      "personas": [
+        "rookie",
+        "returning",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "account"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2040,8 +2100,14 @@
         "Current password",
         "Create new recovery code"
       ],
-      "personas": ["returning", "privacy"],
-      "evidenceRefs": ["serverAccount", "privacyPersona"],
+      "personas": [
+        "returning",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "privacyPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2062,8 +2128,15 @@
         "Add a passkey",
         "Remove"
       ],
-      "personas": ["returning", "privacy"],
-      "evidenceRefs": ["community", "availability", "serverSocial"],
+      "personas": [
+        "returning",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "community",
+        "availability",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2079,9 +2152,20 @@
       "id": "record.entry",
       "journey": "recording_drafts",
       "screen": "Home / RecordResult",
-      "controls": ["Record a result", "Continue your draft"],
-      "personas": ["rookie", "recreational", "competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "account"],
+      "controls": [
+        "Record a result",
+        "Continue your draft"
+      ],
+      "personas": [
+        "rookie",
+        "recreational",
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2093,9 +2177,19 @@
       "id": "record.category_format",
       "journey": "recording_drafts",
       "screen": "RecordResult",
-      "controls": ["Category: Singles/Doubles/Mixed", "Played format"],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "serverModel", "consentPersona"],
+      "controls": [
+        "Category: Singles/Doubles/Mixed",
+        "Played format"
+      ],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverModel",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2117,8 +2211,15 @@
         "Available players",
         "Player search"
       ],
-      "personas": ["recreational", "doubles_regular"],
-      "evidenceRefs": ["journey", "account", "serverSocial"],
+      "personas": [
+        "recreational",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2137,8 +2238,14 @@
         "Create a private invitation",
         "Use this player"
       ],
-      "personas": ["rookie", "recreational"],
-      "evidenceRefs": ["serverAccount", "guestPersona"],
+      "personas": [
+        "rookie",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "guestPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2152,9 +2259,18 @@
       "id": "record.guest_link",
       "journey": "recording_drafts",
       "screen": "PlayerLookup guest section",
-      "controls": ["Copy link", "Copied", "Private invitation link"],
-      "personas": ["recreational"],
-      "evidenceRefs": ["serverAccount", "guestPersona"],
+      "controls": [
+        "Copy link",
+        "Copied",
+        "Private invitation link"
+      ],
+      "personas": [
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "guestPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2170,9 +2286,23 @@
       "id": "record.scores",
       "journey": "recording_drafts",
       "screen": "RecordResult",
-      "controls": ["Your side", "Other side", "Side A", "Side B"],
-      "personas": ["rookie", "competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "account", "serverModel", "consentPersona"],
+      "controls": [
+        "Your side",
+        "Other side",
+        "Side A",
+        "Side B"
+      ],
+      "personas": [
+        "rookie",
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account",
+        "serverModel",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2186,9 +2316,18 @@
       "id": "record.third_game",
       "journey": "recording_drafts",
       "screen": "RecordResult",
-      "controls": ["Add the deciding third game", "Remove the third game"],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["serverModel", "consentPersona"],
+      "controls": [
+        "Add the deciding third game",
+        "Remove the third game"
+      ],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "serverModel",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2202,9 +2341,17 @@
       "id": "record.time",
       "journey": "recording_drafts",
       "screen": "RecordResult",
-      "controls": ["Started at"],
-      "personas": ["competitive", "returning"],
-      "evidenceRefs": ["journey", "serverModel"],
+      "controls": [
+        "Started at"
+      ],
+      "personas": [
+        "competitive",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverModel"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2222,8 +2369,14 @@
         "Earlier rated agreement",
         "No earlier agreement · everyone approves"
       ],
-      "personas": ["doubles_regular", "competitive"],
-      "evidenceRefs": ["serverConsent", "consentPersona"],
+      "personas": [
+        "doubles_regular",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2242,8 +2395,17 @@
         "Send for exact-score approval",
         "Saving your result…"
       ],
-      "personas": ["rookie", "recreational", "competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "account", "serverConsent"],
+      "personas": [
+        "rookie",
+        "recreational",
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account",
+        "serverConsent"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2255,9 +2417,18 @@
       "id": "record.recent",
       "journey": "recording_drafts",
       "screen": "RecordResult",
-      "controls": ["Use a recent lineup", "Recent lineup buttons"],
-      "personas": ["recreational", "doubles_regular"],
-      "evidenceRefs": ["serverExperience", "journey"],
+      "controls": [
+        "Use a recent lineup",
+        "Recent lineup buttons"
+      ],
+      "personas": [
+        "recreational",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "serverExperience",
+        "journey"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2276,8 +2447,13 @@
         "Keep draft",
         "Discard draft and start fresh"
       ],
-      "personas": ["rookie", "returning"],
-      "evidenceRefs": ["account"],
+      "personas": [
+        "rookie",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "account"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2296,7 +2472,10 @@
         "Keep local draft",
         "Remove local draft and close"
       ],
-      "personas": ["returning", "recreational"],
+      "personas": [
+        "returning",
+        "recreational"
+      ],
       "evidenceRefs": [
         "account",
         "serverNetwork",
@@ -2322,8 +2501,12 @@
         "Check original submission",
         "Close this paused tab"
       ],
-      "personas": ["returning"],
-      "evidenceRefs": ["draftConcurrency"],
+      "personas": [
+        "returning"
+      ],
+      "evidenceRefs": [
+        "draftConcurrency"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2347,8 +2530,15 @@
         "Create agreement and accept for myself",
         "Retry this same agreement"
       ],
-      "personas": ["doubles_regular", "competitive"],
-      "evidenceRefs": ["serverConsent", "consentPersona", "draftConcurrency"],
+      "personas": [
+        "doubles_regular",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona",
+        "draftConcurrency"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2362,9 +2552,18 @@
       "id": "consent.accept_revoke",
       "journey": "exact_consent",
       "screen": "Agreements",
-      "controls": ["I agree to this exact scope", "Stop future rated play"],
-      "personas": ["doubles_regular", "competitive"],
-      "evidenceRefs": ["serverConsent", "consentPersona"],
+      "controls": [
+        "I agree to this exact scope",
+        "Stop future rated play"
+      ],
+      "personas": [
+        "doubles_regular",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2378,9 +2577,20 @@
       "id": "consent.individual",
       "journey": "exact_consent",
       "screen": "ResultReview",
-      "controls": ["Exact-revision acknowledgment", "Confirm this exact score"],
-      "personas": ["rookie", "competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "serverConsent", "draftConcurrency"],
+      "controls": [
+        "Exact-revision acknowledgment",
+        "Confirm this exact score"
+      ],
+      "personas": [
+        "rookie",
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverConsent",
+        "draftConcurrency"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2397,8 +2607,15 @@
         "Batch exact-score acknowledgment",
         "Approve selected exact revisions"
       ],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "serverConsent", "socialActions"],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverConsent",
+        "socialActions"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2417,8 +2634,13 @@
         "Cleared acknowledgment",
         "Read exact result"
       ],
-      "personas": ["competitive"],
-      "evidenceRefs": ["journey", "serverConsent"],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverConsent"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2430,9 +2652,18 @@
       "id": "review.correction",
       "journey": "corrections_disputes",
       "screen": "ResultReview / RecordResult",
-      "controls": ["Correct the score", "Propose correction"],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["serverConsent", "consentPersona"],
+      "controls": [
+        "Correct the score",
+        "Propose correction"
+      ],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2451,8 +2682,14 @@
         "What needs reviewing?",
         "Submit private review request"
       ],
-      "personas": ["competitive", "privacy"],
-      "evidenceRefs": ["serverConsent", "consentPersona"],
+      "personas": [
+        "competitive",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2466,9 +2703,17 @@
       "id": "review.appeal",
       "journey": "corrections_disputes",
       "screen": "Void ResultReview",
-      "controls": ["Appeal this decision", "Submit private review request"],
-      "personas": ["competitive"],
-      "evidenceRefs": ["serverConsent", "consentPersona"],
+      "controls": [
+        "Appeal this decision",
+        "Submit private review request"
+      ],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "consentPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2482,9 +2727,16 @@
       "id": "reviewer.load",
       "journey": "corrections_disputes",
       "screen": "ReviewerPage",
-      "controls": ["Retry review desk"],
-      "personas": ["reviewer"],
-      "evidenceRefs": ["serverConsent", "reviewPersona"],
+      "controls": [
+        "Retry review desk"
+      ],
+      "personas": [
+        "reviewer"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2503,8 +2755,13 @@
         "Uphold existing valid approvals",
         "Mark this result unrated"
       ],
-      "personas": ["reviewer"],
-      "evidenceRefs": ["serverConsent", "reviewPersona"],
+      "personas": [
+        "reviewer"
+      ],
+      "evidenceRefs": [
+        "serverConsent",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2518,9 +2775,16 @@
       "id": "reviewer.jobs",
       "journey": "corrections_disputes",
       "screen": "ReviewerPage",
-      "controls": ["Retry delayed jobs"],
-      "personas": ["reviewer"],
-      "evidenceRefs": ["serverWorker", "reviewPersona"],
+      "controls": [
+        "Retry delayed jobs"
+      ],
+      "personas": [
+        "reviewer"
+      ],
+      "evidenceRefs": [
+        "serverWorker",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2540,8 +2804,15 @@
         "Find a player",
         "Choose available player"
       ],
-      "personas": ["rookie", "recreational"],
-      "evidenceRefs": ["journey", "connection", "serverSocial"],
+      "personas": [
+        "rookie",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2553,9 +2824,19 @@
       "id": "friends.qr",
       "journey": "friends_invitations",
       "screen": "PlayerCode",
-      "controls": ["Your player code", "Username QR", "Private invitation QR"],
-      "personas": ["recreational", "group_owner"],
-      "evidenceRefs": ["community", "connection"],
+      "controls": [
+        "Your player code",
+        "Username QR",
+        "Private invitation QR"
+      ],
+      "personas": [
+        "recreational",
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2569,9 +2850,18 @@
       "id": "friends.copy",
       "journey": "friends_invitations",
       "screen": "PlayerCode",
-      "controls": ["Copy link", "Connection link", "Select connection link"],
-      "personas": ["recreational", "group_owner"],
-      "evidenceRefs": ["connection"],
+      "controls": [
+        "Copy link",
+        "Connection link",
+        "Select connection link"
+      ],
+      "personas": [
+        "recreational",
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "connection"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2585,9 +2875,19 @@
       "id": "friends.private_create",
       "journey": "friends_invitations",
       "screen": "PlayerCode",
-      "controls": ["Create private invitation", "Retry private invitation"],
-      "personas": ["group_owner", "privacy"],
-      "evidenceRefs": ["connection", "serverLinks", "linkRetry"],
+      "controls": [
+        "Create private invitation",
+        "Retry private invitation"
+      ],
+      "personas": [
+        "group_owner",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverLinks",
+        "linkRetry"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2606,8 +2906,14 @@
         "Manage earlier invitations",
         "Revoke earlier invitation"
       ],
-      "personas": ["privacy", "group_owner"],
-      "evidenceRefs": ["connection", "serverLinks"],
+      "personas": [
+        "privacy",
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverLinks"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2628,8 +2934,15 @@
         "Go to my court",
         "Return to SHUTTL"
       ],
-      "personas": ["rookie", "recreational"],
-      "evidenceRefs": ["community", "connection", "serverSocial"],
+      "personas": [
+        "rookie",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2641,9 +2954,18 @@
       "id": "friends.cancel",
       "journey": "friends_invitations",
       "screen": "PlayerArrival",
-      "controls": ["Cancel pending request"],
-      "personas": ["privacy", "recreational"],
-      "evidenceRefs": ["connection", "serverSocial", "linkRetry"],
+      "controls": [
+        "Cancel pending request"
+      ],
+      "personas": [
+        "privacy",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverSocial",
+        "linkRetry"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2657,9 +2979,18 @@
       "id": "friends.inbox",
       "journey": "friends_invitations",
       "screen": "Inbox",
-      "controls": ["Accept", "Decline friend request"],
-      "personas": ["rookie", "privacy"],
-      "evidenceRefs": ["connection", "serverSocial"],
+      "controls": [
+        "Accept",
+        "Decline friend request"
+      ],
+      "personas": [
+        "rookie",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2671,9 +3002,17 @@
       "id": "friends.remove",
       "journey": "friends_invitations",
       "screen": "ComparisonDialog",
-      "controls": ["Manage this connection", "Remove connection"],
-      "personas": ["privacy"],
-      "evidenceRefs": ["serverHistory", "reviewPersona"],
+      "controls": [
+        "Manage this connection",
+        "Remove connection"
+      ],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "serverHistory",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2693,8 +3032,13 @@
         "This invitation is not for me",
         "Go to my inbox"
       ],
-      "personas": ["rookie"],
-      "evidenceRefs": ["serverAccount", "guestPersona"],
+      "personas": [
+        "rookie"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "guestPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2708,9 +3052,17 @@
       "id": "guest.verify",
       "journey": "friends_invitations",
       "screen": "Inbox identity claims",
-      "controls": ["Wrong person", "I know this player"],
-      "personas": ["recreational"],
-      "evidenceRefs": ["serverAccount", "guestPersona"],
+      "controls": [
+        "Wrong person",
+        "I know this player"
+      ],
+      "personas": [
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "serverAccount",
+        "guestPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2729,8 +3081,14 @@
         "Respect given",
         "Retry encouragement"
       ],
-      "personas": ["recreational", "doubles_regular"],
-      "evidenceRefs": ["serverSocial", "socialActions"],
+      "personas": [
+        "recreational",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "serverSocial",
+        "socialActions"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2749,8 +3107,14 @@
         "Circle name",
         "Create comparison circle"
       ],
-      "personas": ["group_owner"],
-      "evidenceRefs": ["community", "connection", "groupRetry"],
+      "personas": [
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection",
+        "groupRetry"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2762,9 +3126,18 @@
       "id": "groups.open",
       "journey": "groups_ownership",
       "screen": "Friends",
-      "controls": ["Group tile", "Back to friends", "Retry loading this group"],
-      "personas": ["group_owner", "doubles_regular"],
-      "evidenceRefs": ["connection"],
+      "controls": [
+        "Group tile",
+        "Back to friends",
+        "Retry loading this group"
+      ],
+      "personas": [
+        "group_owner",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "connection"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2776,9 +3149,17 @@
       "id": "groups.invite",
       "journey": "groups_ownership",
       "screen": "Group / PlayerLookup",
-      "controls": ["Invite a player", "Choose available player"],
-      "personas": ["group_owner"],
-      "evidenceRefs": ["community", "connection"],
+      "controls": [
+        "Invite a player",
+        "Choose available player"
+      ],
+      "personas": [
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2792,9 +3173,20 @@
       "id": "groups.membership",
       "journey": "groups_ownership",
       "screen": "Inbox / Group",
-      "controls": ["Join", "Decline group invitation", "Leave this circle"],
-      "personas": ["doubles_regular", "group_owner"],
-      "evidenceRefs": ["connection", "serverSocial", "socialActions"],
+      "controls": [
+        "Join",
+        "Decline group invitation",
+        "Leave this circle"
+      ],
+      "personas": [
+        "doubles_regular",
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverSocial",
+        "socialActions"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2813,8 +3205,13 @@
         "Review ownership transfer",
         "Confirm ownership transfer"
       ],
-      "personas": ["group_owner"],
-      "evidenceRefs": ["connection", "serverSocial"],
+      "personas": [
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2833,8 +3230,15 @@
         "Retry group recap",
         "Open own group result"
       ],
-      "personas": ["group_owner", "doubles_regular"],
-      "evidenceRefs": ["community", "connection", "serverSocial"],
+      "personas": [
+        "group_owner",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2855,8 +3259,14 @@
         "Your normal recap day",
         "Save group identity"
       ],
-      "personas": ["group_owner"],
-      "evidenceRefs": ["community", "connection", "serverSocial"],
+      "personas": [
+        "group_owner"
+      ],
+      "evidenceRefs": [
+        "community",
+        "connection",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2870,9 +3280,20 @@
       "id": "comparison.categories",
       "journey": "comparison_history",
       "screen": "All category controls",
-      "controls": ["Singles", "Doubles", "Mixed"],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["journey", "network", "serverExperience"],
+      "controls": [
+        "Singles",
+        "Doubles",
+        "Mixed"
+      ],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "network",
+        "serverExperience"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2889,8 +3310,15 @@
         "Friend comparison",
         "Category tabs"
       ],
-      "personas": ["competitive", "recreational"],
-      "evidenceRefs": ["serverHistory", "journey", "reviewPersona"],
+      "personas": [
+        "competitive",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "serverHistory",
+        "journey",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2904,9 +3332,16 @@
       "id": "comparison.pin",
       "journey": "comparison_history",
       "screen": "ComparisonDialog",
-      "controls": ["Keep this comparison on home"],
-      "personas": ["competitive"],
-      "evidenceRefs": ["serverExperience", "reviewPersona"],
+      "controls": [
+        "Keep this comparison on home"
+      ],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverExperience",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2920,9 +3355,15 @@
       "id": "comparison.retry",
       "journey": "comparison_history",
       "screen": "ComparisonDialog",
-      "controls": ["Retry player comparison"],
-      "personas": ["competitive"],
-      "evidenceRefs": ["reviewPersona"],
+      "controls": [
+        "Retry player comparison"
+      ],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2936,9 +3377,18 @@
       "id": "comparison.guide",
       "journey": "comparison_history",
       "screen": "RatingGuide",
-      "controls": ["What this rating means", "The league collection"],
-      "personas": ["rookie", "doubles_regular"],
-      "evidenceRefs": ["accessibility", "reviewPersona"],
+      "controls": [
+        "What this rating means",
+        "The league collection"
+      ],
+      "personas": [
+        "rookie",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "accessibility",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2957,8 +3407,13 @@
         "Dated result inspection buttons",
         "Replay the visible rating change"
       ],
-      "personas": ["competitive"],
-      "evidenceRefs": ["serverExperience", "reviewPersona"],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverExperience",
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -2972,9 +3427,18 @@
       "id": "history.entry",
       "journey": "comparison_history",
       "screen": "Home / Profile",
-      "controls": ["Full history", "Explore your match history", "History"],
-      "personas": ["returning", "competitive"],
-      "evidenceRefs": ["journey"],
+      "controls": [
+        "Full history",
+        "Explore your match history",
+        "History"
+      ],
+      "personas": [
+        "returning",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "journey"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -2991,8 +3455,14 @@
         "Result status",
         "Rating category"
       ],
-      "personas": ["competitive", "returning"],
-      "evidenceRefs": ["journey", "serverHistory"],
+      "personas": [
+        "competitive",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "serverHistory"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3006,9 +3476,19 @@
       "id": "history.pagination",
       "journey": "comparison_history",
       "screen": "CareerHistory",
-      "controls": ["Load older results", "Retry match history", "Open result"],
-      "personas": ["competitive", "returning"],
-      "evidenceRefs": ["network", "serverHistory"],
+      "controls": [
+        "Load older results",
+        "Retry match history",
+        "Open result"
+      ],
+      "personas": [
+        "competitive",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "network",
+        "serverHistory"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3020,8 +3500,15 @@
       "id": "rankings.pool",
       "journey": "comparison_history",
       "screen": "RankingsPage",
-      "controls": ["Rankings", "Comparison pool", "Category"],
-      "personas": ["competitive", "group_owner"],
+      "controls": [
+        "Rankings",
+        "Comparison pool",
+        "Category"
+      ],
+      "personas": [
+        "competitive",
+        "group_owner"
+      ],
       "evidenceRefs": [
         "serverSocial",
         "serverShare",
@@ -3041,9 +3528,15 @@
       "id": "rankings.retry",
       "journey": "comparison_history",
       "screen": "RankingsPage",
-      "controls": ["Retry comparison pool"],
-      "personas": ["competitive"],
-      "evidenceRefs": ["reviewPersona"],
+      "controls": [
+        "Retry comparison pool"
+      ],
+      "personas": [
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "reviewPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3063,8 +3556,13 @@
         "Category",
         "Retry playing insights"
       ],
-      "personas": ["competitive", "doubles_regular"],
-      "evidenceRefs": ["availability"],
+      "personas": [
+        "competitive",
+        "doubles_regular"
+      ],
+      "evidenceRefs": [
+        "availability"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3078,9 +3576,17 @@
       "id": "share.entry",
       "journey": "sharing_revocation",
       "screen": "Profile / result",
-      "controls": ["Share my progress", "Share your progress"],
-      "personas": ["competitive", "recreational"],
-      "evidenceRefs": ["journey"],
+      "controls": [
+        "Share my progress",
+        "Share your progress"
+      ],
+      "personas": [
+        "competitive",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "journey"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3101,7 +3607,10 @@
         "My latest league milestone",
         "Retry available stories"
       ],
-      "personas": ["competitive", "privacy"],
+      "personas": [
+        "competitive",
+        "privacy"
+      ],
       "evidenceRefs": [
         "account",
         "journey",
@@ -3127,7 +3636,10 @@
         "Create a shareable link",
         "Recover this snapshot link"
       ],
-      "personas": ["competitive", "privacy"],
+      "personas": [
+        "competitive",
+        "privacy"
+      ],
       "evidenceRefs": [
         "journey",
         "account",
@@ -3151,15 +3663,26 @@
       "id": "share.copy",
       "journey": "sharing_revocation",
       "screen": "SharePassport",
-      "controls": ["Copy public link", "Selectable public link"],
-      "personas": ["recreational", "privacy"],
-      "evidenceRefs": ["journey", "account"],
+      "controls": [
+        "Copy public link",
+        "Selectable public link"
+      ],
+      "personas": [
+        "recreational",
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "account"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
         "Manual copy fallback path must remain clear."
       ],
-      "physicalDeviceEvidenceRequired": ["Actual clipboard permission."],
+      "physicalDeviceEvidenceRequired": [
+        "Actual clipboard permission."
+      ],
       "runtimeAssertionScope": "Related completed case-file outcomes only. Refer to exact assertions for individual controls/states; representative mapping does not claim every label or possible state was clicked.",
       "currentSourceRerunRequired": false
     },
@@ -3173,8 +3696,15 @@
         "Record own result",
         "Dismiss share arrival"
       ],
-      "personas": ["rookie", "competitive"],
-      "evidenceRefs": ["serverShare", "publicSharePersona", "rewardContext"],
+      "personas": [
+        "rookie",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "serverShare",
+        "publicSharePersona",
+        "rewardContext"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3191,8 +3721,14 @@
       "controls": [
         "Revoke {template} {category} link {number}, {shared timestamp}"
       ],
-      "personas": ["privacy"],
-      "evidenceRefs": ["settings", "serverShare", "publicSharePersona"],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "settings",
+        "serverShare",
+        "publicSharePersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3213,8 +3749,15 @@
         "Settings",
         "Manage goals and settings"
       ],
-      "personas": ["privacy", "returning", "competitive"],
-      "evidenceRefs": ["journey", "availability"],
+      "personas": [
+        "privacy",
+        "returning",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "journey",
+        "availability"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3242,7 +3785,11 @@
         "Optional rating goals",
         "Save my preferences"
       ],
-      "personas": ["privacy", "group_owner", "competitive"],
+      "personas": [
+        "privacy",
+        "group_owner",
+        "competitive"
+      ],
       "evidenceRefs": [
         "journey",
         "settings",
@@ -3267,8 +3814,14 @@
         "Discard unsaved preferences",
         "Use latest saved preferences"
       ],
-      "personas": ["privacy", "returning"],
-      "evidenceRefs": ["reviewPersona", "accountBoundary"],
+      "personas": [
+        "privacy",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "reviewPersona",
+        "accountBoundary"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3296,7 +3849,11 @@
         "returning",
         "reviewer"
       ],
-      "evidenceRefs": ["accessibility", "community", "availability"],
+      "evidenceRefs": [
+        "accessibility",
+        "community",
+        "availability"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3312,9 +3869,19 @@
       "id": "profile.portrait",
       "journey": "privacy_account",
       "screen": "PortraitChoice",
-      "controls": ["Choose a portrait", "Remove portrait"],
-      "personas": ["privacy", "recreational"],
-      "evidenceRefs": ["community", "availability", "serverSocial"],
+      "controls": [
+        "Choose a portrait",
+        "Remove portrait"
+      ],
+      "personas": [
+        "privacy",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "community",
+        "availability",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3330,9 +3897,15 @@
       "id": "profile.private_retry",
       "journey": "privacy_account",
       "screen": "Profile settings",
-      "controls": ["Retry account controls"],
-      "personas": ["privacy"],
-      "evidenceRefs": ["settings"],
+      "controls": [
+        "Retry account controls"
+      ],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "settings"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3344,9 +3917,19 @@
       "id": "profile.block",
       "journey": "privacy_account",
       "screen": "Profile settings / PlayerLookup",
-      "controls": ["Block a player", "Choose player", "Unblock"],
-      "personas": ["privacy"],
-      "evidenceRefs": ["serverHistory", "privacyPersona", "settings"],
+      "controls": [
+        "Block a player",
+        "Choose player",
+        "Unblock"
+      ],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "serverHistory",
+        "privacyPersona",
+        "settings"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3360,9 +3943,16 @@
       "id": "profile.export",
       "journey": "privacy_account",
       "screen": "Profile settings",
-      "controls": ["Export my account data"],
-      "personas": ["privacy"],
-      "evidenceRefs": ["privacyPersona", "serverSocial"],
+      "controls": [
+        "Export my account data"
+      ],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "privacyPersona",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3384,8 +3974,12 @@
         "Type DELETE",
         "Delete my account permanently"
       ],
-      "personas": ["privacy"],
-      "evidenceRefs": ["privacyPersona"],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "privacyPersona"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3404,8 +3998,14 @@
         "Withdraw and delete my view events",
         "Retry research choice"
       ],
-      "personas": ["privacy"],
-      "evidenceRefs": ["community", "availability", "serverSocial"],
+      "personas": [
+        "privacy"
+      ],
+      "evidenceRefs": [
+        "community",
+        "availability",
+        "serverSocial"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3417,9 +4017,17 @@
       "id": "alerts.availability",
       "journey": "privacy_account",
       "screen": "DeviceNotifications",
-      "controls": ["Retry device alerts"],
-      "personas": ["privacy", "returning"],
-      "evidenceRefs": ["availability", "serverPush"],
+      "controls": [
+        "Retry device alerts"
+      ],
+      "personas": [
+        "privacy",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "availability",
+        "serverPush"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3438,8 +4046,14 @@
         "Quiet hours",
         "Save alert choices"
       ],
-      "personas": ["privacy", "competitive"],
-      "evidenceRefs": ["availability", "serverPush"],
+      "personas": [
+        "privacy",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "availability",
+        "serverPush"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3458,8 +4072,14 @@
         "Disable this device’s alerts",
         "Disable alerts added {full date and time}"
       ],
-      "personas": ["privacy", "returning"],
-      "evidenceRefs": ["serverPush", "availability"],
+      "personas": [
+        "privacy",
+        "returning"
+      ],
+      "evidenceRefs": [
+        "serverPush",
+        "availability"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3476,9 +4096,18 @@
       "id": "network.startup",
       "journey": "connection_recovery",
       "screen": "App startup",
-      "controls": ["Retry loading my court"],
-      "personas": ["returning", "rookie"],
-      "evidenceRefs": ["network", "serverNetwork", "accountBoundary"],
+      "controls": [
+        "Retry loading my court"
+      ],
+      "personas": [
+        "returning",
+        "rookie"
+      ],
+      "evidenceRefs": [
+        "network",
+        "serverNetwork",
+        "accountBoundary"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3490,9 +4119,17 @@
       "id": "network.requests",
       "journey": "connection_recovery",
       "screen": "Inbox / Agreements",
-      "controls": ["Retry loading requests"],
-      "personas": ["returning", "competitive"],
-      "evidenceRefs": ["network", "connection"],
+      "controls": [
+        "Retry loading requests"
+      ],
+      "personas": [
+        "returning",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "network",
+        "connection"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [],
@@ -3504,9 +4141,18 @@
       "id": "inbox.updates",
       "journey": "connection_recovery",
       "screen": "Inbox",
-      "controls": ["Mark updates read", "Open result"],
-      "personas": ["returning", "recreational"],
-      "evidenceRefs": ["connection", "socialActions"],
+      "controls": [
+        "Mark updates read",
+        "Open result"
+      ],
+      "personas": [
+        "returning",
+        "recreational"
+      ],
+      "evidenceRefs": [
+        "connection",
+        "socialActions"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -3565,9 +4211,18 @@
       "id": "home.weekly_recap",
       "journey": "connection_recovery",
       "screen": "Home / Your last seven days",
-      "controls": ["Retry weekly recap"],
-      "personas": ["returning", "recreational", "competitive"],
-      "evidenceRefs": ["reviewPersona", "serverExperience"],
+      "controls": [
+        "Retry weekly recap"
+      ],
+      "personas": [
+        "returning",
+        "recreational",
+        "competitive"
+      ],
+      "evidenceRefs": [
+        "reviewPersona",
+        "serverExperience"
+      ],
       "coverageKind": "representative_browser_mapping",
       "currentBatchOutcome": "related_browser_case_files_passed",
       "uncoveredRuntimeStates": [
@@ -6771,7 +7426,9 @@
     ],
     "testedCssIndex": "index-BGo4rtZj",
     "finalVerification": {
-      "basisRuns": ["final-matching-full70-2026-10-11-1835"],
+      "basisRuns": [
+        "final-matching-full70-2026-10-11-1835"
+      ],
       "uniqueScenarioCount": 70,
       "uniqueScenariosWithPassingFinalEvidence": 70,
       "singleCompleteRun": true,
@@ -7912,5 +8569,70 @@
     },
     "functionalScoreNotRescored": true,
     "globalAcceptanceScoresUnchanged": true
+  },
+  "homeFocusRegression20261012": {
+    "date": "2026-10-12",
+    "scope": "Implemented Home simplification, social feed and relevant competition context",
+    "build": {
+      "status": "passed",
+      "javascript": "index-CQ2zN10H.js",
+      "css": "index-CboVTvxW.css"
+    },
+    "serverTests": {
+      "passed": 55
+    },
+    "localBrowser": {
+      "fullPassed": 79,
+      "fullDuration": "4.4 minutes",
+      "finalAffectedPassed": 7,
+      "finalAffectedDuration": "42.9 seconds",
+      "finalAdjustment": "Dark recording colour and category-tab backgrounds"
+    },
+    "homeAccessibility": {
+      "states": 9,
+      "detectedViolations": 0,
+      "indeterminateNodeInstances": 185,
+      "conformanceClaimed": false
+    },
+    "responsiveWidths": [
+      320,
+      390,
+      768,
+      1366
+    ],
+    "largeText": "200% at 320px",
+    "leagueSealChecks": {
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "leagues": 8
+    },
+    "captures": {
+      "styles": 5,
+      "pageErrors": 0,
+      "horizontalOverflow": 0,
+      "fictional": true
+    },
+    "journeys": [
+      "Recording and draft continuation",
+      "Supported friend estimate order including ties",
+      "Placement / pair-linked / disconnected comparison suppression",
+      "Actual grouped feed, cross-category filter and loaded snapshot expansion",
+      "Correct eligible-review prompt",
+      "Recent earned milestone and stale/correction suppression",
+      "History / Insights / Goals destinations",
+      "Pinned comparison removal",
+      "Live reduced-motion result replay"
+    ],
+    "actualUserScores": {
+      "perceivedPremium": null,
+      "fomoEffectiveness": null,
+      "retention": null
+    },
+    "originalAcceptanceRegisterUnchanged": true,
+    "noHttpsDeployment": true,
+    "paymentExcluded": true
   }
 }

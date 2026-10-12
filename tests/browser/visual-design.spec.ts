@@ -316,44 +316,9 @@ test("qualified standings retain real tie positions and the closed crown gate ke
   });
 });
 
-test("live reduced-motion changes stop replay on the published number and category changes retain the correct identity", async ({
-  page,
-}) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/design?concept=passport");
-  const published = page.locator(".latest-result .rating-motion");
-  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
-  await expect(published.locator(".sr-only")).toHaveText(
-    "Published rating 1,628",
-  );
-  await published
-    .getByRole("button", { name: "Replay the visible rating change" })
-    .click();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(published).toHaveAttribute("data-motion", "reduced");
-  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
-  await expect(
-    published.getByRole("button", { name: "Replay the visible rating change" }),
-  ).toBeDisabled();
-  await page.getByRole("button", { name: "Singles", exact: true }).click();
-  const track = page.locator(".category-selection-track");
-  expect(
-    await track.evaluate((node) => getComputedStyle(node).transitionDuration),
-  ).toBe("0s");
-  await expect(page.locator(".passport-top")).toContainText("Singles rating");
-  await page.getByRole("button", { name: "Mixed", exact: true }).click();
-  await expect(page.locator(".rating-number")).toHaveText("—");
-  await expect(page.locator(".passport-seal")).toHaveCount(0);
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.getByRole("button", { name: "Doubles", exact: true }).click();
-  await expect(published).toHaveAttribute("data-motion", "still");
-  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
-});
-
-test("switching to a different result with identical rating numbers cancels the previous result's replay", async ({
-  page,
-}) => {
+async function replayFixture(page: Page) {
   const me = await account(page);
+  let fixtureResults: any[] = [];
   await page.route(/\/api\/dashboard(?:\?|$)/, async (route) => {
     const response = await route.fetch();
     const data = await response.json();
@@ -372,6 +337,8 @@ test("switching to a different result with identical rating numbers cancels the 
     data.results = ["Singles", "Doubles"].map((category) => ({
       id: `equal-pair-fixture-${category}`,
       category,
+      author: me,
+      authorParticipant: me.id,
       status: "rated",
       format: "ONE_21",
       playedAt: new Date(Date.now() - 3600000).toISOString(),
@@ -402,18 +369,69 @@ test("switching to a different result with identical rating numbers cancels the 
       },
       ownProgress: { count: 12, won: true },
     }));
+    fixtureResults = data.results;
     await route.fulfill({ response, json: data });
   });
+  await page.route(
+    /\/api\/results\/equal-pair-fixture-(Singles|Doubles)(?:\?|$)/,
+    (route) =>
+      route.fulfill({
+        json: fixtureResults.find((r) => route.request().url().includes(r.id)),
+      }),
+  );
+}
+
+test("live reduced-motion changes stop result replay on the published number and Home retains the correct category", async ({
+  page,
+}) => {
+  await replayFixture(page);
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/home");
-  await page.getByRole("button", { name: "Doubles", exact: true }).click();
-  const replay = page.locator(".latest-result .rating-motion");
+  await page.goto("/home?result=equal-pair-fixture-Doubles");
+  const published = page.getByRole("dialog").locator(".rating-motion");
+  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
+  await expect(published.locator(".sr-only")).toHaveText(
+    "Published rating 1,628",
+  );
+  await published
+    .getByRole("button", { name: "Replay the visible rating change" })
+    .click();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(published).toHaveAttribute("data-motion", "reduced");
+  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
+  await expect(
+    published.getByRole("button", { name: "Replay the visible rating change" }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
+  await page.getByRole("button", { name: "Singles", exact: true }).click();
+  const track = page.locator(".category-selection-track");
+  expect(
+    await track.evaluate((node) => getComputedStyle(node).transitionDuration),
+  ).toBe("0s");
+  await expect(page.locator(".passport-top")).toContainText("Singles rating");
+  await page.getByRole("button", { name: "Mixed", exact: true }).click();
+  await expect(page.locator(".rating-number")).toHaveText("—");
+  await expect(page.locator(".passport-seal")).toHaveCount(0);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/home?result=equal-pair-fixture-Doubles");
+  await expect(published).toHaveAttribute("data-motion", "still");
+  await expect(published.locator("[aria-hidden=true]")).toHaveText("1,628");
+});
+
+test("closing an active replay and opening a different category with identical numbers retains the result identity", async ({
+  page,
+}) => {
+  await replayFixture(page);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/home?result=equal-pair-fixture-Doubles");
+  const replay = page.getByRole("dialog").locator(".rating-motion");
   await replay
     .getByRole("button", { name: "Replay the visible rating change" })
     .click();
   await expect(replay).toHaveAttribute("data-motion", "replaying");
-  await page.getByRole("button", { name: "Singles", exact: true }).click();
-  await expect(page.locator(".passport-top")).toContainText("Singles rating");
+  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goto("/home?result=equal-pair-fixture-Singles");
+  await expect(page.getByRole("dialog")).toContainText("Singles");
   await expect(replay).toHaveAttribute("data-motion", "still");
   await expect(replay.locator("[aria-hidden=true]")).toHaveText("1,628");
   await expect(

@@ -21,6 +21,11 @@ html[data-palette="dark"] .sidebar-label {
 html[data-palette="dark"] .sidebar-quote {
   color: #c0cfc1;
 }
+html[data-palette="dark"] .sidebar nav button:not([aria-current="page"]):hover,
+html[data-palette="dark"] .side-link:hover {
+  background: #293c31;
+  color: #dfebd0;
+}
 .account-chip > span:not(.avatar) {
   min-width: 0;
 }

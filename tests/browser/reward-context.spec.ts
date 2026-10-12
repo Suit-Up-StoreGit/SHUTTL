@@ -105,7 +105,8 @@ test("published milestone recaps and promotion exports preserve a pending first-
     expect(revealed.before).not.toBe(revealed.after);
     await page.goto("/home");
     await page.getByRole("button", { name: "Singles", exact: true }).click();
-    const reveal = page.locator(".latest-result .reward-reveal");
+    await page.locator(".home-earned").click();
+    const reveal = page.getByRole("dialog").locator(".reward-reveal");
     await expect(
       reveal.getByRole("heading", { name: "Your starting rating is here" }),
     ).toBeVisible();
@@ -187,6 +188,7 @@ test("published milestone recaps and promotion exports preserve a pending first-
     const sixth = changeFor(published[5], owner);
     await page.goto("/home");
     await page.getByRole("button", { name: "Singles", exact: true }).click();
+    await page.getByRole("button", { name: "History", exact: true }).click();
     const chart = page.getByRole("group", { name: "Inspect rating history" });
     await expect(chart.getByRole("button")).toHaveCount(2);
     const firstPoint = chart.getByRole("button").first();
@@ -201,6 +203,8 @@ test("published milestone recaps and promotion exports preserve a pending first-
     await expect(page.locator(".chart-inspection")).toContainText(
       "Starting rating",
     );
+    await page.getByRole("button", { name: "Insights", exact: true }).click();
+    await page.getByLabel("Your playing period").selectOption("7");
     await expect(
       page.locator(".weekly-facts > div").nth(0).locator("strong"),
     ).toHaveText("6");
@@ -296,7 +300,8 @@ test("published milestone recaps and promotion exports preserve a pending first-
     expect(currentBest.after).toBeGreaterThan(promotion.score);
     await page.goto("/home");
     await page.getByRole("button", { name: "Singles", exact: true }).click();
-    const bestRecap = page.locator(".latest-result .reward-best");
+    await page.locator(".home-earned").click();
+    const bestRecap = page.getByRole("dialog").locator(".reward-best");
     await expect(
       bestRecap.getByRole("heading", {
         name: "A new personal best",

@@ -7,8 +7,46 @@ import {
   publishedPlayedAt,
   recentRosters,
   resultMoment,
+  canReviewResult,
 } from "../src/experience.ts";
 import type { PublicRating } from "../src/domain.ts";
+test("review prompts exclude a covered teammate, author, approved participant and incomplete identity", () => {
+  const r = {
+    status: "pending",
+    players: ["a", "b", "c", "d"].map((id) => ({ id })),
+    authorParticipant: "a",
+    approvals: ["a"],
+    ownParticipant: "b",
+    retrospective: false,
+  };
+  assert.equal(canReviewResult(r), false);
+  assert.equal(canReviewResult({ ...r, ownParticipant: "c" }), true);
+  assert.equal(canReviewResult({ ...r, retrospective: true }), true);
+  assert.equal(
+    canReviewResult({ ...r, ownParticipant: "a", retrospective: true }),
+    false,
+  );
+  assert.equal(
+    canReviewResult({ ...r, ownParticipant: "c", approvals: ["a", "c"] }),
+    false,
+  );
+  assert.equal(
+    canReviewResult({ ...r, ownParticipant: "missing", retrospective: true }),
+    false,
+  );
+  assert.equal(
+    canReviewResult({
+      ...r,
+      authorParticipant: "missing",
+      retrospective: true,
+    }),
+    false,
+  );
+  assert.equal(
+    canReviewResult({ ...r, status: "rated", ownParticipant: "c" }),
+    false,
+  );
+});
 const rating = (
   score: number | null,
   comparisonClass: string | null = "a",

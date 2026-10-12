@@ -1,5 +1,22 @@
 import { leagueFor, type Category, type PublicRating } from "./domain.ts";
 
+export function canReviewResult(result: any) {
+  const own = result.players.findIndex(
+    (p: any) => p.id === result.ownParticipant,
+  );
+  const author = result.players.findIndex(
+    (p: any) => p.id === (result.authorParticipant || result.author?.id),
+  );
+  const size = result.players.length / 2;
+  return (
+    ["pending", "correction_pending"].includes(result.status) &&
+    own >= 0 &&
+    author >= 0 &&
+    !result.approvals.includes(result.ownParticipant) &&
+    (result.retrospective || own < size !== author < size)
+  );
+}
+
 export function comparable(a: PublicRating, b: PublicRating) {
   return (
     a.category === b.category &&

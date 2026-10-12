@@ -15,7 +15,7 @@ import {
   dateLabel,
   dateTimeLabel,
 } from "../api.ts";
-import { recentRosters } from "../experience.ts";
+import { recentRosters, canReviewResult } from "../experience.ts";
 import { ResultReward } from "./Progress.tsx";
 import { Encouragement } from "./Community.tsx";
 import { startAuthentication } from "@simplewebauthn/browser";
@@ -2348,16 +2348,12 @@ export function ResultReview({
   const approved = result.approvals.includes(result.ownParticipant),
     size = result.players.length / 2;
   const ownIndex = result.players.findIndex(
-      (p: Player) => p.id === result.ownParticipant,
-    ),
-    authorIndex = result.players.findIndex(
-      (p: Player) => p.id === (result.authorParticipant || result.author.id),
-    ),
-    opposite = ownIndex < size !== authorIndex < size;
-  const canApprove =
-    ["pending", "correction_pending"].includes(result.status) &&
-    !approved &&
-    (result.retrospective || opposite);
+    (p: Player) => p.id === result.ownParticipant,
+  );
+  const authorIndex = result.players.findIndex(
+    (p: Player) => p.id === (result.authorParticipant || result.author.id),
+  );
+  const canApprove = canReviewResult(result);
   const awaiting = result.players.filter(
     (p: Player, i: number) =>
       !result.approvals.includes(p.id) &&

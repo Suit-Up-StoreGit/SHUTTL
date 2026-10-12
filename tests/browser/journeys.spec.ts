@@ -338,12 +338,16 @@ test("a five-result reveal has a robust compact share and exports a verified sto
     await expect(page.locator(".rating-number")).not.toHaveText("—", {
       timeout: 15000,
     });
-    await expect(page.locator(".latest-result .result-reward")).toContainText(
+    await expect(page.locator(".home-earned")).toContainText(
       "Your starting rating is here",
     );
+    await page.locator(".home-earned").click();
     await expect(
-      page.locator(".latest-result .result-reward .reward-score > span"),
+      page.getByRole("dialog").locator(".reward-score > span"),
     ).toHaveCount(0);
+    await page
+      .getByRole("button", { name: "Close dialog", exact: true })
+      .click();
     await page
       .getByRole("button", { name: "Profile", exact: true })
       .last()

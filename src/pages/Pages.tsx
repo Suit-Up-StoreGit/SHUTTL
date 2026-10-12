@@ -51,12 +51,17 @@ import {
 } from "../components/UI.tsx";
 import { PlayerLookup, RecoveryCode } from "../components/Flows.tsx";
 import { RatingCard } from "./Home.tsx";
-import { RatingGuide, ResultReward } from "../components/Progress.tsx";
+import {
+  RatingGuide,
+  ResultReward,
+  ProgressChart,
+} from "../components/Progress.tsx";
 import {
   comparable,
   comparisonCopy,
   ownChange,
   sharedHistory,
+  canReviewResult,
 } from "../experience.ts";
 import { ratingImage } from "../share-image.ts";
 import { PlayingInsights } from "../components/Insights.tsx";
@@ -331,10 +336,14 @@ function CareerHistory({
   category,
   setCategory,
   open,
+  rating,
+  timezone,
 }: {
   category: Category;
   setCategory: (c: Category) => void;
   open: (id: string) => void;
+  rating: PublicRating;
+  timezone: string;
 }) {
   const [rows, setRows] = useState<any[]>([]),
     [next, setNext] = useState<string | null>(null),
@@ -380,6 +389,18 @@ function CareerHistory({
   return (
     <>
       <CategoryTabs value={category} onChange={setCategory} />
+      {!busy && !error && (
+        <section className="panel progress-panel">
+          <SectionHeading title="Your progress" />
+          <ProgressChart results={rows} timezone={timezone} rating={rating} />
+          {next && (
+            <p className="form-help">
+              Based on the results loaded below. Load older results to include
+              earlier history.
+            </p>
+          )}
+        </section>
+      )}
       <div className="history-filters">
         <div className="field">
           <label htmlFor="history-search">
@@ -1152,20 +1173,7 @@ export function InboxPage({
     }
   }
   if (!inbox) return <Spinner />;
-  const eligible = inbox.pending
-    .filter((r: any) => {
-      const size = r.players.length / 2,
-        own = r.players.findIndex((p: Player) => p.id === r.ownParticipant),
-        author = r.players.findIndex(
-          (p: Player) => p.id === (r.authorParticipant || r.author.id),
-        );
-      return (
-        ["pending", "correction_pending"].includes(r.status) &&
-        !r.approvals.includes(r.ownParticipant) &&
-        (r.retrospective || own < size !== author < size)
-      );
-    })
-    .slice(0, 20);
+  const eligible = inbox.pending.filter(canReviewResult).slice(0, 20);
   const revisionKey = (r: any) => r.id + ":" + r.revisionId;
   const chosen = eligible.filter((r: any) => selected.includes(revisionKey(r)));
   const batchKey = chosen.map(revisionKey).sort().join("|");
@@ -1824,6 +1832,10 @@ export function ProfilePage({
                 category={category}
                 setCategory={setCategory}
                 open={open}
+                rating={data.me.ratings.find(
+                  (r: PublicRating) => r.category === category,
+                )}
+                timezone={data.me.timezone}
               />
             </section>
           )}

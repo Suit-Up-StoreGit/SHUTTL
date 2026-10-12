@@ -2,14 +2,11 @@ import { useEffect, useState, type CSSProperties } from "react";
 import {
   comparable,
   comparisonCopy,
-  periodSummary,
+  canReviewResult,
+  resultMoment,
   publishedPlayedAt,
 } from "../experience.ts";
-import {
-  RatingGuide,
-  ProgressChart,
-  ResultReward,
-} from "../components/Progress.tsx";
+import { RatingGuide } from "../components/Progress.tsx";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -18,19 +15,13 @@ import {
   MoveUpRight,
   Check,
   UsersRound,
-  Target,
+  Trophy,
+  X,
   Activity,
   ChevronRight,
 } from "lucide-react";
-import {
-  CategoryTabs,
-  Gem,
-  Evidence,
-  Avatar,
-  SectionHeading,
-  Empty,
-} from "../components/UI.tsx";
-import { api, dateLabel, errorMessage, type Page } from "../api.ts";
+import { CategoryTabs, Gem, Evidence, Avatar } from "../components/UI.tsx";
+import { dateLabel, type Page } from "../api.ts";
 import {
   CATEGORIES,
   leagueFor,
@@ -255,68 +246,81 @@ export function Home({
     ...p,
     rating: p.ratings.find((r: PublicRating) => r.category === category),
   }));
-  const supported = friends
-    .filter((p: any) => comparable(rating, p.rating))
-    .sort(
-      (a: any, b: any) =>
-        Math.abs(a.rating.score - rating.score!) -
-        Math.abs(b.rating.score - rating.score!),
-    );
-  const [pinned, setPinned] = useState<string | null>(null);
-  const chosen = friends.find((p: any) => p.id === pinned);
-  const rival = chosen || supported[0];
+  // A friends-only estimate order never awards a local title or includes
+  // disconnected / pair-linked estimates in a direct comparison.
+  const supported = friends.filter(
+    (p: any) =>
+      p.rating &&
+      comparable(rating, p.rating) &&
+      rating.status !== "Pair-linked" &&
+      p.rating.status !== "Pair-linked",
+  );
+  const circle = supported.length
+    ? [...supported, { ...me, rating }].sort(
+        (a: any, b: any) =>
+          b.rating.score - a.rating.score || a.id.localeCompare(b.id),
+      )
+    : [];
+  const place =
+    1 + supported.filter((p: any) => p.rating.score > rating.score!).length;
+  const ownIndex = circle.findIndex((p: any) => p.id === me.id);
+  const circleStart = Math.max(0, Math.min(ownIndex - 1, circle.length - 3));
+  const circlePreview = circle.slice(circleStart, circleStart + 3);
+  const [pinned, setPinned] = useState<{
+    owner: string;
+    category: Category;
+    id: string | null;
+  } | null>(null);
   useEffect(() => {
     try {
-      setPinned(localStorage.getItem(`shuttl:rival:${me.id}:${category}`));
-    } catch {}
+      setPinned({
+        owner: me.id,
+        category,
+        id: localStorage.getItem(`shuttl:rival:${me.id}:${category}`),
+      });
+    } catch {
+      setPinned(null);
+    }
   }, [me.id, category]);
+  const chosen =
+    pinned && pinned.owner === me.id && pinned.category === category
+      ? friends.find((p: any) => p.id === pinned.id)
+      : null;
+  const pending = data.results.filter(canReviewResult);
   const results = data.results.filter((r: any) => r.category === category);
   const latest = [...results]
     .filter((r: any) => r.publishedRevisionId)
     .sort((a, b) =>
       publishedPlayedAt(b).localeCompare(publishedPlayedAt(a)),
     )[0];
-  const pending = data.results.filter(
-    (r: any) =>
-      ["pending", "correction_pending"].includes(r.status) &&
-      !r.approvals.includes(r.ownParticipant),
-  );
-  const waitingPlacement = results.find(
-    (r: any) =>
-      !r.publishedRevisionId && ["pending", "confirmed"].includes(r.status),
-  );
+  const moment = latest && resultMoment(latest);
+  const recentEarnedMoment =
+    moment &&
+    ["reveal", "promotion", "best"].includes(moment.kind) &&
+    Date.parse(publishedPlayedAt(latest)) >= Date.now() - 7 * 86400000 &&
+    Date.parse(publishedPlayedAt(latest)) <= Date.now();
+  const competition =
+    data.competitionUpdates?.find(
+      (update: any) => update.category === category,
+    ) ||
+    (data.competitionUpdate?.category === category
+      ? data.competitionUpdate
+      : null);
+  const [feedScope, setFeedScope] = useState("all");
+  const [feedLimit, setFeedLimit] = useState(3);
   const groups = new Map<string, any[]>();
-  for (const f of data.feed.filter((f: any) => f.category === category)) {
+  for (const f of [...data.feed].sort((a: any, b: any) =>
+    b.playedAt.localeCompare(a.playedAt),
+  )) {
+    if (feedScope !== "all" && f.category !== category) continue;
     const key = f.unitId || f.id;
     groups.set(key, [...(groups.get(key) || []), f]);
   }
-  const feed = [...groups.values()].slice(0, 3);
-  const [week, setWeek] = useState<any>(null);
-  const [weekError, setWeekError] = useState("");
-  const [weekAttempt, setWeekAttempt] = useState(0);
+  const allFeed = [...groups.values()];
+  const feed = allFeed.slice(0, feedLimit);
   useEffect(() => {
-    if (mock) return;
-    let active = true;
-    setWeek(null);
-    setWeekError("");
-    api(`/insights?category=${category}&period=7`)
-      .then((v) => {
-        if (active) setWeek(v);
-      })
-      .catch((error) => {
-        if (active) setWeekError(errorMessage(error));
-      });
-    return () => {
-      active = false;
-    };
-  }, [me.id, category, rating.count, rating.score, mock, weekAttempt]);
-  const summary =
-    week?.category === category ? week : periodSummary(data.results, category);
-  const goal = me.goals?.[category],
-    goalGap =
-      rating.score !== null && goal !== undefined
-        ? Math.max(0, goal - rating.score)
-        : null;
+    setFeedLimit(3);
+  }, [me.id, category, feedScope]);
   const draft = (() => {
     try {
       const d = JSON.parse(
@@ -329,120 +333,13 @@ export function Home({
       return false;
     }
   })();
-  const rivalry = !me.breakMode && (
-    <section className="rival-strip" aria-label="Your friend comparison">
-      {rival ? (
-        <>
-          <div className="rival-kicker">
-            <span className="eyebrow">
-              {chosen ? "YOUR CHOSEN COMPARISON" : "CLOSEST COMPARABLE FRIEND"}
-            </span>
-            <span className="pill">{category}</span>
-          </div>
-          <button className="rival-content" onClick={() => compare(rival.id)}>
-            <Avatar player={rival} />
-            <div>
-              <strong>{rival.name}</strong>
-              <p>{comparisonCopy(rating, rival.rating)}</p>
-            </div>
-            <b>
-              {rival.rating.score === null
-                ? "—"
-                : rival.rating.score.toLocaleString("en")}
-            </b>
-            <ChevronRight size={18} />
-          </button>
-          <p className="rival-note">
-            {comparable(rating, rival.rating)
-              ? chosen
-                ? "Chosen by you · a supported comparison in this category."
-                : "The nearest supported estimate among your accepted friends."
-              : "Your chosen friend stays here while the evidence develops."}
-          </p>
-          <button
-            className="text-button rival-choice"
-            onClick={() => setPage("friends")}
-          >
-            Choose a comparison <ArrowUpRight size={16} />
-          </button>
-        </>
-      ) : (
-        <>
-          <span className="eyebrow">GOOD RIVALS START WITH REAL PLAY</span>
-          <h2>
-            {friends.length
-              ? "Build a shared playing picture."
-              : "Bring your court with you."}
-          </h2>
-          <p>
-            {friends.length
-              ? "Your circle’s estimates are visible. A precise lead needs supported shared evidence."
-              : "Add the people you already play with. Compare progress as your results build."}
-          </p>
-          <button
-            className="text-button"
-            onClick={friends.length ? () => setPage("friends") : addFriend}
-          >
-            {friends.length ? "See your circle" : "Find a player"}
-            <ArrowUpRight size={16} />
-          </button>
-        </>
-      )}
-    </section>
-  );
-  const weeklyRecap = (
-    <section className="panel weekly-panel">
-      <SectionHeading title="Your last seven days" />
-      <div className="weekly-facts">
-        <div>
-          <strong>{summary.count}</strong>
-          <span>confirmed results</span>
-        </div>
-        <div>
-          <strong>{summary.count ? summary.wins : "—"}</strong>
-          <span>recorded wins</span>
-        </div>
-        <div>
-          <strong>
-            {summary.delta === null
-              ? "—"
-              : `${summary.delta >= 0 ? "+" : ""}${summary.delta}`}
-          </strong>
-          <span>visible rating change</span>
-        </div>
-      </div>
-      <p className="form-help">
-        {summary.count
-          ? week
-            ? week.limited
-              ? "Based on your latest 2,000 published results in this period."
-              : "Based on your published history for this period."
-            : "Every result adds context. This recap covers the recent history loaded here."
-          : "A quiet week is okay. Your rating does not decay for taking time away."}
-      </p>
-      {weekError && (
-        <div className="weekly-retry" role="status">
-          <p className="form-help">
-            The full recap could not load. These facts cover only the recent
-            results loaded here. {weekError}
-          </p>
-          <button
-            className="text-button"
-            onClick={() => setWeekAttempt((value) => value + 1)}
-          >
-            Retry weekly recap <ArrowUpRight size={16} />
-          </button>
-        </div>
-      )}
-    </section>
-  );
+  const goal = me.goals?.[category];
+  const goalReached =
+    rating.score !== null && goal !== undefined && rating.score >= goal;
   return (
-    <div className={`home-view experience-home concept-${variant}`}>
+    <div className={`home-view experience-home home-focus concept-${variant}`}>
       <header className="home-heading">
         <div>
-          <span className="eyebrow">
-            {me.breakMode ? "AT YOUR PACE" : "YOUR COURT / YOUR PROGRESS"}
-          </span>
           <h1>
             {variant === "editorial"
               ? "Every match matters."
@@ -461,316 +358,420 @@ export function Home({
           aria-label={draft ? "Continue your draft" : "Record a result"}
           onClick={record}
         >
-          <Plus size={18} />
-          {draft ? "Continue draft" : "Record result"}
-          <ArrowUpRight size={17} />
+          <span className="record-action-icon">
+            <Plus size={19} />
+          </span>
+          <span>{draft ? "Continue draft" : "Record result"}</span>
+          <ArrowUpRight size={18} />
         </button>
       </header>
       <CategoryTabs value={category} onChange={setCategory} />
       {pending.length > 0 && (
         <button className="pending-banner" onClick={() => setPage("inbox")}>
-          <Check size={20} />
+          <Check size={19} />
           <span>
             <strong>
-              {pending.length}{" "}
+              {pending.length} recent{" "}
               {pending.length === 1 ? "result needs" : "results need"} your
               review
             </strong>
-            <small>Read the score. Confirm, correct or ask for review.</small>
+            <small>Check the score before it counts.</small>
           </span>
           <ArrowRight size={18} />
         </button>
       )}
       <div className="home-grid">
         <div className="home-main">
-          {variant === "circle" && rivalry}
-          {variant === "court" && weeklyRecap}
           <RatingCard rating={rating} category={category} />
-          <RatingGuide category={category} />
-          {latest && (
-            <section className="latest-result">
-              <SectionHeading
-                title="Your latest result"
-                action="Open result"
-                onClick={() => open(latest.id)}
-              />
-              <ResultReward result={latest} small share={share} />
-              <p className="form-help">
-                {dateLabel(publishedPlayedAt(latest), me.timezone)} ·{" "}
-                {(latest.publishedResult?.games || latest.games)
-                  .map((g: number[]) => g.join("–"))
-                  .join(" / ")}{" "}
-                ·{" "}
-                {latest.status === "rated"
-                  ? "Published"
-                  : "Published history has a pending change"}
-              </p>
+          <div className="home-passport-tools">
+            <RatingGuide category={category} />
+            <button
+              className="text-button"
+              onClick={() => setPage("profile", "history")}
+            >
+              History <ArrowUpRight size={15} />
+            </button>
+          </div>
+          {!me.breakMode && (
+            <section
+              className="home-competition"
+              aria-label="Your circle estimates"
+            >
+              <div className="home-section-title">
+                <h2>Your circle</h2>
+                <button
+                  className="text-button"
+                  onClick={() => setPage("friends")}
+                >
+                  Compare friends <ArrowUpRight size={16} />
+                </button>
+              </div>
+              {competition && (
+                <button
+                  className="lead-update"
+                  onClick={() => setPage("friends")}
+                >
+                  <MoveUpRight size={19} />
+                  <span>
+                    <strong>{competition.title}</strong>
+                    <small>
+                      {competition.detail} ·{" "}
+                      {dateLabel(competition.createdAt, me.timezone)}
+                    </small>
+                  </span>
+                  <ChevronRight size={16} />
+                </button>
+              )}
+              {circle.length ? (
+                <>
+                  <div className="circle-position">
+                    <strong>
+                      {circle.filter(
+                        (p: any) => p.rating.score === rating.score,
+                      ).length > 1
+                        ? "Tied "
+                        : ""}
+                      #{place}
+                      <span> / {circle.length}</span>
+                    </strong>
+                    <p>
+                      You + {supported.length} comparable{" "}
+                      {supported.length === 1 ? "friend" : "friends"}
+                      <span>
+                        {category} estimates · shared playing evidence
+                      </span>
+                    </p>
+                  </div>
+                  <ol
+                    className="home-circle-list"
+                    aria-label="Friends-only estimate snapshot"
+                  >
+                    {circlePreview.map((p: any) => (
+                      <li key={p.id} data-own={p.id === me.id}>
+                        <span className="circle-order">
+                          {1 +
+                            circle.filter(
+                              (other: any) =>
+                                other.rating.score > p.rating.score,
+                            ).length}
+                        </span>
+                        <button
+                          onClick={
+                            p.id === me.id
+                              ? () => setPage("profile")
+                              : () => compare(p.id)
+                          }
+                          aria-label={
+                            p.id === me.id
+                              ? "Open your player passport"
+                              : `Compare with ${p.name}`
+                          }
+                        >
+                          <Avatar player={p} small />
+                          <span className="circle-player-name">
+                            {p.id === me.id ? "You" : p.name}
+                          </span>
+                          <strong>{p.rating.score.toLocaleString("en")}</strong>
+                          <ChevronRight size={15} />
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="home-scope-note">
+                    Accepted friends with comparable estimates. A developing
+                    comparison, not a local title.
+                  </p>
+                </>
+              ) : (
+                <div className="home-circle-empty">
+                  <UsersRound size={23} />
+                  <div>
+                    <strong>
+                      {friends.length
+                        ? "Your shared picture is growing."
+                        : "Bring your court with you."}
+                    </strong>
+                    <p>
+                      {friends.length
+                        ? "Follow your friends’ play below. Direct comparisons appear when the evidence supports them."
+                        : "Add the people you play with. Their real progress belongs here."}
+                    </p>
+                    <button
+                      className="text-button"
+                      onClick={
+                        friends.length ? () => setPage("friends") : addFriend
+                      }
+                    >
+                      {friends.length ? "See your friends" : "Add a friend"}{" "}
+                      <ArrowUpRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+              {chosen && (
+                <div className="rival-strip home-pinned">
+                  <span className="eyebrow">YOUR CHOSEN COMPARISON</span>
+                  <div>
+                    <button
+                      className="home-pinned-player"
+                      onClick={() => compare(chosen.id)}
+                    >
+                      <Avatar player={chosen} small />
+                      <span>
+                        <strong>{chosen.name}</strong>
+                        <small>{comparisonCopy(rating, chosen.rating)}</small>
+                      </span>
+                      <ChevronRight size={16} />
+                    </button>
+                    <button
+                      className="icon-button"
+                      aria-label="Unpin home comparison"
+                      onClick={() => {
+                        try {
+                          localStorage.removeItem(
+                            `shuttl:rival:${me.id}:${category}`,
+                          );
+                        } catch {}
+                        setPinned(null);
+                      }}
+                    >
+                      <X size={17} />
+                    </button>
+                  </div>
+                </div>
+              )}
             </section>
           )}
-          {!me.breakMode && data.competitionUpdate && (
-            <button className="lead-update" onClick={() => setPage("friends")}>
-              <MoveUpRight size={20} />
-              <span>
-                <strong>{data.competitionUpdate.title}</strong>
-                <small>
-                  {data.competitionUpdate.detail} ·{" "}
-                  {dateLabel(data.competitionUpdate.createdAt, me.timezone)}
-                </small>
+          {recentEarnedMoment && (
+            <button className="home-earned" onClick={() => open(latest.id)}>
+              <span className="home-earned-seal">
+                <Gem league={leagueFor(moment.change.after).name} size={36} />
               </span>
-              <ChevronRight size={16} />
+              <span>
+                <small>ON COURT / EARNED</small>
+                <strong>{moment.title}</strong>
+                <span>
+                  {dateLabel(publishedPlayedAt(latest), me.timezone)} · View
+                  your confirmed result
+                </span>
+              </span>
+              <ArrowUpRight size={18} />
             </button>
           )}
-          {variant !== "circle" && rivalry}
-          {!me.breakMode && feed.length > 0 && (
-            <a className="activity-peek" href="#court-activity">
-              <Activity size={20} />
-              <span>
-                <strong>
-                  {feed[0].map((f: any) => f.player.name).join(" & ")} added a
-                  confirmed result
-                </strong>
-                <small>
-                  {category} · {dateLabel(feed[0][0].playedAt, me.timezone)} ·
-                  See shared activity
-                </small>
-              </span>
-              <ChevronRight size={17} />
-            </a>
-          )}
           {rating.count === 0 && (
-            <section className="first-court">
-              <span className="eyebrow">THREE STEPS TO A CLEARER PICTURE</span>
-              <ol>
-                <li>
-                  <b>Find your regular players</b>
-                  <span>
-                    Add friends or create a private nickname invitation when
-                    recording.
-                  </span>
-                </li>
-                <li>
-                  <b>Make rated play a choice</b>
-                  <span>
-                    Agree before your session, or have everyone approve
-                    afterward.
-                  </span>
-                </li>
-                <li>
-                  <b>Record a completed match</b>
-                  <span>
-                    Your fifth confirmed result reveals a starting estimate.
-                  </span>
-                </li>
-              </ol>
+            <div className="home-start-note">
+              <Check size={17} />
+              <p>
+                Agree to rated play with everyone before your session, or get
+                everyone’s approval afterward.
+              </p>
               <button
                 className="text-button"
                 onClick={() => setPage("agreements")}
               >
-                Set up your rated session <ArrowUpRight size={16} />
+                Rated agreements <ArrowUpRight size={15} />
               </button>
-            </section>
+            </div>
           )}
-          {variant !== "court" && weeklyRecap}
-          <section className="panel progress-panel">
-            <SectionHeading
-              title="Your progress"
-              action="Full history"
-              onClick={() => setPage("profile", "history")}
-            />
-            <ProgressChart
-              results={results}
-              timezone={me.timezone}
-              rating={rating}
-            />
-            {mock && results.length === 0 && rating.score !== null && (
-              <p className="form-help">
-                Design sample: no invented history line.
-              </p>
-            )}
-          </section>
         </div>
-        <aside className="home-aside">
-          <section className="panel circle-panel">
-            <SectionHeading
-              title="Your friends"
-              action="View all"
-              onClick={() => setPage("friends")}
-            />
-            {friends.length ? (
-              friends.slice(0, 3).map((p: any) => (
-                <button
-                  className="friend-line friend-open"
-                  key={p.id}
-                  onClick={() => compare(p.id)}
-                >
-                  <Avatar player={p} />
-                  <div className="friend-text">
-                    <strong>{p.name}</strong>
-                    <span>{comparisonCopy(rating, p.rating)}</span>
-                  </div>
-                  <div className="friend-score">
-                    <strong>{p.rating.score ?? "—"}</strong>
-                    <small>{p.rating.status}</small>
-                  </div>
-                </button>
-              ))
-            ) : (
-              <Empty
-                title="Find your people"
-                action="Add a friend"
-                onClick={addFriend}
-              >
-                Start with someone you already share a court with.
-              </Empty>
-            )}
-            <button className="invite-link" onClick={addFriend}>
-              <Plus size={16} /> Add a player <ArrowUpRight size={16} />
+        <section
+          className="home-social"
+          id="court-activity"
+          aria-labelledby="home-activity-title"
+        >
+          <div className="home-section-title">
+            <div>
+              <span className="eyebrow">FROM YOUR COURT</span>
+              <h2 id="home-activity-title">Friends’ activity</h2>
+            </div>
+            <button
+              className="icon-button"
+              aria-label="Add a player"
+              onClick={addFriend}
+            >
+              <Plus size={19} />
             </button>
-          </section>
-          <section
-            className="panel activity-panel"
-            id="court-activity"
-            tabIndex={-1}
+          </div>
+          <div
+            className="home-feed-tabs"
+            role="group"
+            aria-label="Activity categories"
           >
-            <SectionHeading title="Friends’ recent play" />
-            {feed.length ? (
-              feed.map((group: any[]) => (
-                <div
-                  className="activity-row"
-                  key={group[0].unitId || group[0].id}
-                >
-                  <span className="activity-dot">
-                    <Activity size={16} />
-                  </span>
-                  <div>
-                    <p>
-                      <strong>
-                        {group.map((f) => f.player.name).join(" & ")}
-                      </strong>{" "}
-                      {group.length > 1
-                        ? "played the same match"
-                        : group[0].milestone === "reveal"
-                          ? "revealed a starting rating"
-                          : group[0].milestone === "best"
-                            ? "reached a personal best"
-                            : group[0].won
-                              ? "won a match"
-                              : "added a confirmed result"}
-                    </p>
-                    <span>
-                      {category} · {dateLabel(group[0].playedAt, me.timezone)}
-                    </span>
-                    <div className="feed-changes">
-                      {group.map(
-                        (f) =>
-                          f.delta !== null && (
-                            <span key={f.id}>
-                              {group.length > 1 ? f.player.name + ": " : ""}
-                              {f.delta >= 0 ? "+" : ""}
-                              {f.delta} points
-                            </span>
-                          ),
-                      )}
+            <button
+              aria-pressed={feedScope === "all"}
+              onClick={() => setFeedScope("all")}
+            >
+              All play
+            </button>
+            <button
+              aria-label={`${category} activity`}
+              aria-pressed={feedScope !== "all"}
+              onClick={() => setFeedScope("category")}
+            >
+              {category}
+            </button>
+          </div>
+          {feed.length ? (
+            <div className="home-feed-list">
+              {feed.map((group: any[]) => {
+                const first = group[0],
+                  shared = data.results.find((r: any) => r.id === first.unitId);
+                return (
+                  <article
+                    className="home-feed-card"
+                    key={first.unitId || first.id}
+                  >
+                    <div className="home-feed-people">
+                      <div className="home-feed-avatars">
+                        {group.slice(0, 3).map((f) => (
+                          <Avatar key={f.id} player={f.player} small />
+                        ))}
+                      </div>
+                      <div>
+                        <strong>
+                          {group.map((f) => f.player.name).join(" & ")}
+                        </strong>
+                        <span>
+                          {first.category} ·{" "}
+                          {dateLabel(first.playedAt, me.timezone)}
+                        </span>
+                      </div>
                     </div>
-                    {group.some((f) => f.milestone && f.score !== null) && (
-                      <div className="feed-milestones">
-                        {group
-                          .filter((f) => f.milestone && f.score !== null)
-                          .map((f) => (
-                            <span key={f.id}>
-                              {f.player.name} ·{" "}
+                    <h3>
+                      {group.length > 1
+                        ? "A shared match. Real progress."
+                        : first.milestone === "reveal"
+                          ? "A starting rating, revealed."
+                          : first.milestone === "best"
+                            ? "A new personal best."
+                            : first.won
+                              ? "A win on the board."
+                              : "Another match in the story."}
+                    </h3>
+                    <div className="home-feed-facts">
+                      {group.map((f) => (
+                        <div key={f.id}>
+                          {group.length > 1 && (
+                            <span className="feed-player-label">
+                              {f.player.name}
+                            </span>
+                          )}
+                          <div>
+                            <strong>
+                              {f.score === null
+                                ? "—"
+                                : f.score.toLocaleString("en")}
+                            </strong>
+                            {f.delta !== null && (
+                              <span
+                                className={
+                                  f.delta > 0
+                                    ? "feed-gain"
+                                    : f.delta < 0
+                                      ? "feed-loss"
+                                      : "feed-level"
+                                }
+                              >
+                                {f.delta > 0 ? "+" : ""}
+                                {f.delta}
+                                <span className="sr-only"> rating points</span>
+                              </span>
+                            )}
+                          </div>
+                          <span>
+                            {f.score === null
+                              ? "Building a starting rating"
+                              : "Rating after this result"}
+                          </span>
+                          {f.milestone && f.score !== null && (
+                            <span className="feed-earned">
+                              <Sparkles size={12} />
                               {f.milestone === "reveal"
                                 ? "First rating"
-                                : "Personal best"}{" "}
-                              {f.score}
+                                : "Personal best"}
                             </span>
-                          ))}
-                      </div>
-                    )}
+                          )}
+                        </div>
+                      ))}
+                    </div>
                     <button
                       className="text-button feed-open"
                       onClick={() => {
-                        const ownResult = results.find(
-                          (r: any) => r.id === group[0].unitId,
-                        );
-                        if (ownResult) open(ownResult.id);
-                        else compare(group[0].player.id);
+                        if (shared) open(shared.id);
+                        else {
+                          setCategory(first.category);
+                          compare(first.player.id);
+                        }
                       }}
                     >
-                      {results.some((r: any) => r.id === group[0].unitId)
-                        ? "Open shared result"
-                        : "View player progress"}{" "}
-                      <ArrowUpRight size={14} />
+                      {shared ? "Open shared result" : "View player progress"}
+                      <ArrowUpRight size={16} />
                     </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="quiet-state">
-                <Sparkles size={20} />
-                <strong>You are up to date.</strong>
-                <p>
-                  Real changes appear here after your friends’ confirmed
-                  results.
-                </p>
-              </div>
-            )}
-          </section>
-          <section className="next-step">
-            <span className="eyebrow">YOUR NEXT MILESTONE</span>
-            <h3>
-              {goalGap === null
-                ? rating.score === null
-                  ? `${Math.max(0, 5 - rating.count)} confirmed ${5 - rating.count === 1 ? "result" : "results"} to your reveal.`
-                  : "Set a goal that matters to you."
-                : goalGap === 0
-                  ? "Your goal is reached."
-                  : `${goalGap} points to your goal.`}
-            </h3>
-            <p>
-              {rating.score === null
-                ? `${rating.count} of 5 confirmed ${category.toLowerCase()} results. ${waitingPlacement ? (waitingPlacement.status === "confirmed" ? "A confirmed result is processing." : "A recorded result is waiting for approval.") : "Record a completed match with the people you played."}`
-                : goalGap === 0
-                  ? `${category} target ${goal} · current rating ${rating.score}. Choose your next target when you are ready.`
-                  : rating.status === "Pair-linked"
-                    ? "Your doubles estimate is linked to your partnership. Naturally varied partners add useful evidence."
-                    : "Progress at your pace. A target is an aspiration, not a promised number of wins."}
-            </p>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="home-feed-empty">
+              <Activity size={27} />
+              <h3>
+                {friends.length
+                  ? "The next match starts the story."
+                  : "Your court, connected."}
+              </h3>
+              <p>
+                {friends.length
+                  ? `No recent ${feedScope === "all" ? "confirmed play" : category.toLowerCase() + " activity"} is loaded. Your friends’ results will appear here once confirmed.`
+                  : "Find your friends. Follow their matches, rating changes and earned milestones."}
+              </p>
+              <button
+                className="button secondary"
+                onClick={friends.length ? () => setPage("friends") : addFriend}
+              >
+                {friends.length ? "See your circle" : "Find a player"}
+                <ArrowUpRight size={16} />
+              </button>
+            </div>
+          )}
+          {allFeed.length > feedLimit && (
             <button
-              className="text-button"
-              onClick={
-                rating.score === null
-                  ? waitingPlacement
-                    ? () => open(waitingPlacement.id)
-                    : record
-                  : rating.status === "Pair-linked" && goalGap !== 0
-                    ? () => setPage("profile", "insights")
-                    : () => setPage("profile", "goals")
-              }
+              className="button secondary home-feed-more"
+              onClick={() => setFeedLimit((n) => n + 3)}
             >
-              {rating.score === null
-                ? waitingPlacement
-                  ? "View awaiting result"
-                  : draft
-                    ? "Open saved draft"
-                    : "Record a completed result"
-                : rating.status === "Pair-linked" && goalGap !== 0
-                  ? "View playing insights"
-                  : goalGap === 0
-                    ? "Choose your next target"
-                    : "Manage your goals"}{" "}
-              <ArrowUpRight size={16} />
+              Show more activity <ArrowRight size={16} />
             </button>
-          </section>
-          <div className="court-footnote">
-            <span className="tiny-shuttle">S.</span>
-            <p>
-              Built for the players who keep coming back to court.
-              <br />
-              Founded by Featherballer.
+          )}
+          {feed.length > 0 && (
+            <p className="home-scope-note home-feed-footnote">
+              Recent player-confirmed activity. This is a snapshot, not complete
+              match history.
             </p>
-          </div>
-        </aside>
+          )}
+        </section>
+        <div className="home-personal-links">
+          <button
+            className="text-button"
+            onClick={() => setPage("profile", "insights")}
+          >
+            <Activity size={16} />
+            Playing insights
+          </button>
+          <button className="text-button" onClick={() => setPage("rankings")}>
+            <Trophy size={16} />
+            Local players
+          </button>
+          <button
+            className="text-button"
+            onClick={() => setPage("profile", "goals")}
+          >
+            <Sparkles size={16} />
+            {goal === undefined
+              ? "Set rating goal"
+              : goalReached
+                ? "Goal reached · next target"
+                : `Your goal · ${goal}`}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -782,7 +783,12 @@ export function mockDashboard(doublesScore = 1628) {
       category,
       score: category === "Mixed" ? null : category === "Singles" ? s : d,
       count: category === "Mixed" ? 0 : 38,
-      peak: category === "Mixed" ? null : category === "Singles" ? 1532 : 1664,
+      peak:
+        category === "Mixed"
+          ? null
+          : category === "Singles"
+            ? Math.max(1532, s)
+            : Math.max(1664, d),
       status: category === "Mixed" ? "Unrated" : "Developing",
       league:
         category === "Mixed"
@@ -881,15 +887,48 @@ export function mockDashboard(doublesScore = 1628) {
     results: samples,
     circles: [],
     unread: 2,
-    feed: friends.slice(0, 2).map((p, i) => ({
-      id: p.id,
-      unitId: "sample-circle-match",
-      player: p,
-      category: "Doubles",
-      playedAt: new Date(Date.now() - i * 86400000).toISOString(),
-      score: 1642,
-      delta: i ? -6 : 12,
-      won: !i,
-    })),
+    feed: [
+      {
+        id: "sample-priya-doubles",
+        unitId: "sample-circle-match",
+        player: friends[0],
+        category: "Doubles",
+        playedAt: new Date(Date.now() - 3600000).toISOString(),
+        score: 1642,
+        delta: 12,
+        won: true,
+      },
+      {
+        id: "sample-chloe-doubles",
+        unitId: "sample-circle-match",
+        player: friends[1],
+        category: "Doubles",
+        playedAt: new Date(Date.now() - 3600000).toISOString(),
+        score: 1620,
+        delta: -6,
+        won: false,
+      },
+      {
+        id: "sample-kai-singles",
+        unitId: "sample-kai-match",
+        player: friends[2],
+        category: "Singles",
+        playedAt: new Date(Date.now() - 10800000).toISOString(),
+        score: 1570,
+        delta: 12,
+        milestone: "best",
+        won: true,
+      },
+      {
+        id: "sample-chloe-previous",
+        unitId: "sample-chloe-match",
+        player: friends[1],
+        category: "Doubles",
+        playedAt: new Date(Date.now() - 86400000).toISOString(),
+        score: 1626,
+        delta: 8,
+        won: true,
+      },
+    ],
   };
 }
