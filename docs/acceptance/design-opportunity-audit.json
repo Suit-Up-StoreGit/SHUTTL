@@ -2717,8 +2717,8 @@
     "scope": "Implemented Home simplification, social feed and relevant competition context",
     "build": {
       "status": "passed",
-      "javascript": "index-CQ2zN10H.js",
-      "css": "index-CboVTvxW.css"
+      "javascript": "index-Caj-eby9.js",
+      "css": "index-BZbZdJ1R.css"
     },
     "serverTests": {
       "passed": 55
@@ -2775,6 +2775,18 @@
     },
     "originalAcceptanceRegisterUnchanged": true,
     "noHttpsDeployment": true,
-    "paymentExcluded": true
+    "paymentExcluded": true,
+    "postCiRepair": {
+      "reason": "Public GitHub run caught intermediate theme colour contrast on the player-code action",
+      "originalCommit": "efbcbefcd4f5dc0d88c45580f79d01bddb34e072",
+      "originalRunId": 38231449684,
+      "originalSummary": "78 passed, 1 profile colour-contrast failure",
+      "change": "Player-code action swaps theme colours atomically, retaining transform and shadow motion",
+      "frameSamples": 40,
+      "minimumContrast": 9.292112721217007,
+      "localAffectedPassed": 6,
+      "localAffectedDuration": "40.3 seconds",
+      "scoreNotRescored": true
+    }
   }
 }

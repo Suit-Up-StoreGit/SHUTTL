@@ -144,6 +144,10 @@
   background: #183d2f;
   border-color: #183d2f;
   color: #f3f6ed;
+  /* Swap theme colours together so the label stays readable on every frame. */
+  transition:
+    transform var(--visual-fast) var(--visual-ease),
+    box-shadow var(--visual-fast) ease;
 }
 .player-passport-actions .profile-actions .text-button {
   min-height: 44px;

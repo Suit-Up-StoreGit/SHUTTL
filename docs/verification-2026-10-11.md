@@ -10,6 +10,8 @@ Validation: build/type check passed; 55 server tests passed. The full 79-case lo
 
 The checks caught and repaired a cramped league seal at 320px and a dark navigation-hover contrast defect. A raced reload in a synthetic Home fixture was corrected by binding its authenticated baseline before interception. Goals retain a secondary link after the feed, including when no goal exists. Result animation checks now operate through the full result dialog because routine recaps no longer occupy Home.
 
+The first public GitHub run on the Home commit reported 78 browser passes and a profile-action contrast failure during a theme transition. The player-code button now swaps background/text colours together while retaining press/shadow motion. The added regression samples 40 rendered frames through four theme switches: its minimum contrast was 9.29:1. All six affected local visual/accessibility cases passed after this repair (40.3 seconds). The failed run is retained as evidence, not relabelled as successful.
+
 Representative screens: [Passport Home](mockups/home-passport.jpg), [Court Home](mockups/home-court.jpg), [Circle Home](mockups/home-circle.jpg), [Arena Home](mockups/home-arena.jpg), [Editorial Home](mockups/home-editorial.jpg). These are fictional previews of implemented layouts.
 
 No new numerical user-perception, FOMO-effectiveness or retention score is awarded from these engineering checks. The original 150-criterion acceptance register, rating model, comparison/title evidence gate and excluded payment scope remain unchanged. No public HTTPS deployment occurred.

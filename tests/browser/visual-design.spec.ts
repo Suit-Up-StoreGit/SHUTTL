@@ -137,6 +137,46 @@ test("profile puts the chosen category and connection action first while preserv
     `${output}/profile-accessibility.json`,
     JSON.stringify(audit, null, 2),
   );
+  const themeFrames = await code.evaluate(async (button) => {
+    const luminance = (color: string) => {
+      const rgb = color
+        .match(/[\d.]+/g)!
+        .slice(0, 3)
+        .map(Number)
+        .map((v) => {
+          const channel = v / 255;
+          return channel <= 0.04045
+            ? channel / 12.92
+            : ((channel + 0.055) / 1.055) ** 2.4;
+        });
+      return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+    };
+    const frames: number[] = [];
+    for (const palette of ["light", "dark", "light", "dark"]) {
+      document.documentElement.dataset.palette = palette;
+      for (let frame = 0; frame < 10; frame++) {
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => resolve()),
+        );
+        const style = getComputedStyle(button);
+        const foreground = luminance(style.color),
+          background = luminance(style.backgroundColor);
+        frames.push(
+          (Math.max(foreground, background) + 0.05) /
+            (Math.min(foreground, background) + 0.05),
+        );
+      }
+    }
+    return frames;
+  });
+  expect(
+    Math.min(...themeFrames),
+    "Player-code label remains readable throughout theme changes",
+  ).toBeGreaterThanOrEqual(4.5);
+  writeFileSync(
+    `${output}/profile-theme-frame-contrast.json`,
+    JSON.stringify(themeFrames),
+  );
   await page.evaluate(() => {
     document.documentElement.dataset.textSize = "normal";
   });
