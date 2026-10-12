@@ -4,6 +4,8 @@ The required minimum remains **9.5 for every in-scope criterion**. No revised cr
 
 Use the [pilot protocol](../pilot-protocol.md) and [machine-readable register](metrics.json). The 40 original outcome measures remain unmeasured.
 
+The subsequent homepage review has a separate [ordered register of all 66 criteria](homepage-sequential-review.json). First impression is the active criterion. Local implementation and regression checks do not award a player-perception score or establish acceptance of the later criteria.
+
 ## Visual identity
 
 ### 1. Brand cohesion

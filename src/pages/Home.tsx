@@ -19,6 +19,7 @@ import {
   X,
   Activity,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { CategoryTabs, Gem, Evidence, Avatar } from "../components/UI.tsx";
 import { dateLabel, type Page } from "../api.ts";
@@ -60,11 +61,15 @@ export function RatingCard({
   category,
   compact = false,
   showHistoryContext = true,
+  opening = false,
+  comparison,
 }: {
   rating: PublicRating;
   category: Category;
   compact?: boolean;
   showHistoryContext?: boolean;
+  opening?: boolean;
+  comparison?: { player: any; detail: string; onSelect: () => void };
 }) {
   const league = rating.score === null ? null : leagueFor(rating.score),
     gap =
@@ -84,7 +89,11 @@ export function RatingCard({
       : null;
   return (
     <section
-      key={`${category}:${rating.score ?? "placement"}:${rating.count}`}
+      key={
+        opening
+          ? category
+          : `${category}:${rating.score ?? "placement"}:${rating.count}`
+      }
       className={
         "rating-passport passport-settle " + (compact ? "compact" : "")
       }
@@ -126,27 +135,44 @@ export function RatingCard({
           {category === "Singles" ? "01" : category === "Doubles" ? "02" : "03"}
         </span>
       </div>
-      <div className="passport-number-row">
-        <strong className="rating-number">
-          {rating.score === null ? "—" : rating.score.toLocaleString("en-SG")}
-        </strong>
-        {rating.score !== null && (
-          <div className="passport-seal">
-            <div className="passport-seal-mark">
-              <Gem league={rating.league} size={58} />
+      {opening && rating.score === null ? (
+        <div className="passport-placement-intro">
+          <strong>
+            {rating.count === 0
+              ? "Your first rating."
+              : rating.count === 4
+                ? "One result to go."
+                : rating.count >= 5
+                  ? "Five results confirmed."
+                  : "You’re on your way."}
+          </strong>
+          <span>Earned on court. Built from real matches.</span>
+        </div>
+      ) : (
+        <div className="passport-number-row">
+          <strong className="rating-number">
+            {rating.score === null ? "—" : rating.score.toLocaleString("en-SG")}
+          </strong>
+          {rating.score !== null && (
+            <div className="passport-seal">
+              <div className="passport-seal-mark">
+                <Gem league={rating.league} size={58} />
+              </div>
+              <span>{rating.league}</span>
             </div>
-            <span>{rating.league}</span>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
       <div className="passport-status">
         <span>
           <span className="status-dot" />
-          {rating.status === "Unrated"
-            ? "Your next chapter starts here"
-            : rating.status === "Placement"
-              ? "Finding your starting point"
-              : "Player-confirmed estimate"}
+          {opening && rating.score === null
+            ? "Player-confirmed results"
+            : rating.status === "Unrated"
+              ? "Your next chapter starts here"
+              : rating.status === "Placement"
+                ? "Finding your starting point"
+                : "Player-confirmed estimate"}
         </span>
         <Evidence rating={rating} />
       </div>
@@ -164,9 +190,11 @@ export function RatingCard({
             ))}
           </div>
           <p>
-            {rating.count === 0
-              ? "Five confirmed results reveal your rating."
-              : `${5 - rating.count} more confirmed ${category.toLowerCase()} ${5 - rating.count === 1 ? "result" : "results"} to reveal your estimate.`}
+            {rating.count >= 5
+              ? "Your estimate is being prepared."
+              : rating.count === 0
+                ? "Five confirmed results reveal your rating."
+                : `${5 - rating.count} more confirmed ${category.toLowerCase()} ${5 - rating.count === 1 ? "result" : "results"} to reveal your estimate.`}
           </p>
         </div>
       ) : (
@@ -206,6 +234,17 @@ export function RatingCard({
             </p>
           )}
         </div>
+      )}
+      {comparison && rating.score !== null && (
+        <button className="passport-comparison" onClick={comparison.onSelect}>
+          <Avatar player={comparison.player} small />
+          <span>
+            <small>IN YOUR CIRCLE · {category.toUpperCase()}</small>
+            <strong>{comparison.player.name}</strong>
+            <span>{comparison.detail}</span>
+          </span>
+          <ArrowUpRight size={18} />
+        </button>
       )}
     </section>
   );
@@ -307,6 +346,7 @@ export function Home({
       ? data.competitionUpdate
       : null);
   const [feedScope, setFeedScope] = useState("all");
+  const [circleExpanded, setCircleExpanded] = useState(false);
   const [feedLimit, setFeedLimit] = useState(3);
   const groups = new Map<string, any[]>();
   for (const f of [...data.feed].sort((a: any, b: any) =>
@@ -321,6 +361,9 @@ export function Home({
   useEffect(() => {
     setFeedLimit(3);
   }, [me.id, category, feedScope]);
+  useEffect(() => {
+    setCircleExpanded(false);
+  }, [me.id, category]);
   const draft = (() => {
     try {
       const d = JSON.parse(
@@ -336,6 +379,21 @@ export function Home({
   const goal = me.goals?.[category];
   const goalReached =
     rating.score !== null && goal !== undefined && rating.score >= goal;
+  const nextAbove = supported
+    .filter((p: any) => p.rating.score > rating.score!)
+    .sort((a: any, b: any) => a.rating.score - b.rating.score)[0];
+  const nextAtOrBelow = supported
+    .filter((p: any) => p.rating.score <= rating.score!)
+    .sort((a: any, b: any) => b.rating.score - a.rating.score)[0];
+  const openingFriend = !me.breakMode
+    ? chosen && supported.some((p: any) => p.id === chosen.id)
+      ? chosen
+      : nextAbove || nextAtOrBelow
+    : null;
+  const openingGap = openingFriend
+    ? openingFriend.rating.score - rating.score!
+    : 0;
+  const firstVisit = me.ratings.every((r: PublicRating) => r.count === 0);
   return (
     <div className={`home-view experience-home home-focus concept-${variant}`}>
       <header className="home-heading">
@@ -350,7 +408,9 @@ export function Home({
           <p>
             {me.breakMode
               ? "Your rating stays here while you take time away."
-              : `Welcome back, ${me.name.split(" ")[0]}.`}
+              : firstVisit
+                ? "See your level. Follow your friends."
+                : `Welcome back, ${me.name.split(" ")[0]}.`}
           </p>
         </div>
         <button
@@ -382,7 +442,23 @@ export function Home({
       )}
       <div className="home-grid">
         <div className="home-main">
-          <RatingCard rating={rating} category={category} />
+          <RatingCard
+            rating={rating}
+            category={category}
+            opening
+            comparison={
+              openingFriend
+                ? {
+                    player: openingFriend,
+                    detail:
+                      openingGap === 0
+                        ? "Level with your estimate"
+                        : `${Math.abs(openingGap).toLocaleString("en")} points ${openingGap > 0 ? "ahead of" : "behind"} your estimate`,
+                    onSelect: () => compare(openingFriend.id),
+                  }
+                : undefined
+            }
+          />
           <div className="home-passport-tools">
             <RatingGuide category={category} />
             <button
@@ -392,10 +468,11 @@ export function Home({
               History <ArrowUpRight size={15} />
             </button>
           </div>
-          {!me.breakMode && (
+          {!me.breakMode && friends.length > 0 && (
             <section
               className="home-competition"
               aria-label="Your circle estimates"
+              data-expanded={circleExpanded}
             >
               <div className="home-section-title">
                 <h2>Your circle</h2>
@@ -406,6 +483,20 @@ export function Home({
                   Compare friends <ArrowUpRight size={16} />
                 </button>
               </div>
+              <button
+                className="home-circle-toggle"
+                aria-expanded={circleExpanded}
+                aria-controls="home-circle-detail"
+                onClick={() => setCircleExpanded((expanded) => !expanded)}
+              >
+                <span>Your circle</span>
+                <span>
+                  {circle.length
+                    ? `${circle.filter((p: any) => p.rating.score === rating.score).length > 1 ? "Tied " : ""}#${place} / ${circle.length}`
+                    : "View friends"}
+                </span>
+                <ChevronDown size={18} />
+              </button>
               {competition && (
                 <button
                   className="lead-update"
@@ -422,124 +513,128 @@ export function Home({
                   <ChevronRight size={16} />
                 </button>
               )}
-              {circle.length ? (
-                <>
-                  <div className="circle-position">
-                    <strong>
-                      {circle.filter(
-                        (p: any) => p.rating.score === rating.score,
-                      ).length > 1
-                        ? "Tied "
-                        : ""}
-                      #{place}
-                      <span> / {circle.length}</span>
-                    </strong>
-                    <p>
-                      You + {supported.length} comparable{" "}
-                      {supported.length === 1 ? "friend" : "friends"}
-                      <span>
-                        {category} estimates · shared playing evidence
-                      </span>
-                    </p>
-                  </div>
-                  <ol
-                    className="home-circle-list"
-                    aria-label="Friends-only estimate snapshot"
-                  >
-                    {circlePreview.map((p: any) => (
-                      <li key={p.id} data-own={p.id === me.id}>
-                        <span className="circle-order">
-                          {1 +
-                            circle.filter(
-                              (other: any) =>
-                                other.rating.score > p.rating.score,
-                            ).length}
+              <div id="home-circle-detail" className="home-circle-detail">
+                {circle.length ? (
+                  <>
+                    <div className="circle-position">
+                      <strong>
+                        {circle.filter(
+                          (p: any) => p.rating.score === rating.score,
+                        ).length > 1
+                          ? "Tied "
+                          : ""}
+                        #{place}
+                        <span> / {circle.length}</span>
+                      </strong>
+                      <p>
+                        You + {supported.length} comparable{" "}
+                        {supported.length === 1 ? "friend" : "friends"}
+                        <span>
+                          {category} estimates · shared playing evidence
                         </span>
-                        <button
-                          onClick={
-                            p.id === me.id
-                              ? () => setPage("profile")
-                              : () => compare(p.id)
-                          }
-                          aria-label={
-                            p.id === me.id
-                              ? "Open your player passport"
-                              : `Compare with ${p.name}`
-                          }
-                        >
-                          <Avatar player={p} small />
-                          <span className="circle-player-name">
-                            {p.id === me.id ? "You" : p.name}
+                      </p>
+                    </div>
+                    <ol
+                      className="home-circle-list"
+                      aria-label="Friends-only estimate snapshot"
+                    >
+                      {circlePreview.map((p: any) => (
+                        <li key={p.id} data-own={p.id === me.id}>
+                          <span className="circle-order">
+                            {1 +
+                              circle.filter(
+                                (other: any) =>
+                                  other.rating.score > p.rating.score,
+                              ).length}
                           </span>
-                          <strong>{p.rating.score.toLocaleString("en")}</strong>
-                          <ChevronRight size={15} />
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
-                  <p className="home-scope-note">
-                    Accepted friends with comparable estimates. A developing
-                    comparison, not a local title.
-                  </p>
-                </>
-              ) : (
-                <div className="home-circle-empty">
-                  <UsersRound size={23} />
-                  <div>
-                    <strong>
-                      {friends.length
-                        ? "Your shared picture is growing."
-                        : "Bring your court with you."}
-                    </strong>
-                    <p>
-                      {friends.length
-                        ? "Follow your friends’ play below. Direct comparisons appear when the evidence supports them."
-                        : "Add the people you play with. Their real progress belongs here."}
+                          <button
+                            onClick={
+                              p.id === me.id
+                                ? () => setPage("profile")
+                                : () => compare(p.id)
+                            }
+                            aria-label={
+                              p.id === me.id
+                                ? "Open your player passport"
+                                : `Compare with ${p.name}`
+                            }
+                          >
+                            <Avatar player={p} small />
+                            <span className="circle-player-name">
+                              {p.id === me.id ? "You" : p.name}
+                            </span>
+                            <strong>
+                              {p.rating.score.toLocaleString("en")}
+                            </strong>
+                            <ChevronRight size={15} />
+                          </button>
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="home-scope-note">
+                      Accepted friends with comparable estimates. A developing
+                      comparison, not a local title.
                     </p>
-                    <button
-                      className="text-button"
-                      onClick={
-                        friends.length ? () => setPage("friends") : addFriend
-                      }
-                    >
-                      {friends.length ? "See your friends" : "Add a friend"}{" "}
-                      <ArrowUpRight size={16} />
-                    </button>
+                  </>
+                ) : (
+                  <div className="home-circle-empty">
+                    <UsersRound size={23} />
+                    <div>
+                      <strong>
+                        {friends.length
+                          ? "Your shared picture is growing."
+                          : "Bring your court with you."}
+                      </strong>
+                      <p>
+                        {friends.length
+                          ? "Follow your friends’ play below. Direct comparisons appear when the evidence supports them."
+                          : "Add the people you play with. Their real progress belongs here."}
+                      </p>
+                      <button
+                        className="text-button"
+                        onClick={
+                          friends.length ? () => setPage("friends") : addFriend
+                        }
+                      >
+                        {friends.length ? "See your friends" : "Add a friend"}{" "}
+                        <ArrowUpRight size={16} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
-              {chosen && (
-                <div className="rival-strip home-pinned">
-                  <span className="eyebrow">YOUR CHOSEN COMPARISON</span>
-                  <div>
-                    <button
-                      className="home-pinned-player"
-                      onClick={() => compare(chosen.id)}
-                    >
-                      <Avatar player={chosen} small />
-                      <span>
-                        <strong>{chosen.name}</strong>
-                        <small>{comparisonCopy(rating, chosen.rating)}</small>
-                      </span>
-                      <ChevronRight size={16} />
-                    </button>
-                    <button
-                      className="icon-button"
-                      aria-label="Unpin home comparison"
-                      onClick={() => {
-                        try {
-                          localStorage.removeItem(
-                            `shuttl:rival:${me.id}:${category}`,
-                          );
-                        } catch {}
-                        setPinned(null);
-                      }}
-                    >
-                      <X size={17} />
-                    </button>
+                )}
+                {chosen && (
+                  <div className="rival-strip home-pinned">
+                    <span className="eyebrow">YOUR CHOSEN COMPARISON</span>
+                    <div>
+                      <button
+                        className="home-pinned-player"
+                        onClick={() => compare(chosen.id)}
+                      >
+                        <Avatar player={chosen} small />
+                        <span>
+                          <strong>{chosen.name}</strong>
+                          <small>{comparisonCopy(rating, chosen.rating)}</small>
+                        </span>
+                        <ChevronRight size={16} />
+                      </button>
+                      <button
+                        className="icon-button"
+                        aria-label="Unpin home comparison"
+                        onClick={() => {
+                          try {
+                            localStorage.removeItem(
+                              `shuttl:rival:${me.id}:${category}`,
+                            );
+                          } catch {}
+                          setPinned(null);
+                        }}
+                      >
+                        <X size={17} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </section>
           )}
           {recentEarnedMoment && (

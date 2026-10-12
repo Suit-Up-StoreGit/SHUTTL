@@ -1,0 +1,526 @@
+{
+  "scope": "The 66 homepage criteria from the critical homepage review, in their original order. Payment integration is excluded.",
+  "requiredScore": 9.5,
+  "activeCriterion": 1,
+  "advanceRule": "Advance only after evidence establishes the active criterion at the required score. Implementation, synthetic personas and automated checks alone do not establish player-perception scores.",
+  "baselineMeaning": "Earlier heuristic expert judgments of the reviewed homepage, not measured player outcomes and not current acceptance scores.",
+  "regressionRule": "Check affected journeys, rating integrity, privacy, responsive layouts, keyboard use, large text, reduced motion and contrast after each change. Passing engineering checks does not establish that every subjective score is preserved.",
+  "criteria": [
+    {
+      "id": 1,
+      "name": "First impression",
+      "baselineExpertJudgment": 8.6,
+      "acceptedScore": null,
+      "status": "implemented_engineering_verified_independent_validation_pending",
+      "implementation": [
+        "The opening passport shows a real accepted friend and a supported numerical comparison in the selected category.",
+        "A valid chosen comparison takes precedence. Otherwise the nearest estimate above, or the highest at or below, is shown.",
+        "Disconnected, provisional and pair-linked estimates are never used for an opening numerical comparison. Break mode removes comparison pressure.",
+        "Home placement states have a purposeful heading and actual five-result progress, with no provisional score or league.",
+        "The full circle is an accessible mobile disclosure. Lead updates remain visible outside the disclosure. Desktop retains the existing circle snapshot.",
+        "A friendless homepage uses one social invitation state rather than two repeated invitation cards."
+      ],
+      "engineeringGates": [
+        "The primary recording action and relevant opening state render without horizontal overflow at 320, 390, 430, 768 and 1366 CSS pixels.",
+        "On a normal 390 by 844 phone viewport the named comparison fits above the persistent navigation.",
+        "Category changes, ties, chosen comparisons, unsupported evidence and breaks produce the correct context.",
+        "Placement states at zero, one, four and five confirmed results render actual progress without invented numbers.",
+        "Keyboard operation, focus visibility, 200 percent text, reduced motion and both appearance themes preserve usable actions.",
+        "The shared public passport presentation, existing match journeys and privacy boundaries remain covered by regression checks."
+      ],
+      "engineeringVerification": {
+        "buildAndTypeCheck": "passed",
+        "serverTests": { "passed": 55, "failed": 0 },
+        "browserTests": { "passed": 82, "failed": 0, "skipped": 0 },
+        "targetedOpeningTests": { "passed": 3, "failed": 0 },
+        "browserEvidence": "outputs/home-focus-2026-10-12/first-impression-browser-final.json",
+        "failedFullRun": {
+          "passed": 78,
+          "failed": 3,
+          "evidence": "outputs/home-focus-2026-10-12/first-impression-browser-failed-1.json"
+        },
+        "layoutEvidence": "outputs/home-focus-2026-10-12/first-impression-layout.json",
+        "newAutomatedAccessibilityStates": 7,
+        "detectedViolationsInNewStates": 0,
+        "indeterminateNodeInstancesInNewStates": 133,
+        "targetedWarmShellRecoveryMs": 5512,
+        "previewCaptureCount": 5,
+        "previewErrors": 0,
+        "previewOverflow": false,
+        "limitations": "Fictional local personas and Chrome viewport emulation. Does not measure physical-device, screen-reader or player-perception acceptance; no first-visit offline-boot guarantee."
+      },
+      "independentAcceptance": {
+        "score": null,
+        "evidence": null,
+        "remaining": "Independent ordinary-phone appraisal of the opening's visual quality, personal relevance and immediate comprehension. A synthetic persona run cannot measure those perceptions."
+      }
+    },
+    {
+      "id": 2,
+      "name": "Wow effect",
+      "baselineExpertJudgment": 8.2,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 3,
+      "name": "Premium feel",
+      "baselineExpertJudgment": 8.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 4,
+      "name": "Brand distinctiveness",
+      "baselineExpertJudgment": 8.7,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 5,
+      "name": "Badminton identity",
+      "baselineExpertJudgment": 8.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 6,
+      "name": "Rating-card visual quality",
+      "baselineExpertJudgment": 9.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 7,
+      "name": "Typography",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 8,
+      "name": "Colour system",
+      "baselineExpertJudgment": 8.9,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 9,
+      "name": "Spacing",
+      "baselineExpertJudgment": 8.4,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 10,
+      "name": "Alignment",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 11,
+      "name": "Depth and materials",
+      "baselineExpertJudgment": 8.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 12,
+      "name": "Icons and league badges",
+      "baselineExpertJudgment": 8.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 13,
+      "name": "Dark mode",
+      "baselineExpertJudgment": 8.9,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 14,
+      "name": "Desktop composition",
+      "baselineExpertJudgment": 8.4,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 15,
+      "name": "Animation quality",
+      "baselineExpertJudgment": 8.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 16,
+      "name": "Visual restraint",
+      "baselineExpertJudgment": 9.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 17,
+      "name": "Purpose understanding",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 18,
+      "name": "Information priority",
+      "baselineExpertJudgment": 7.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 19,
+      "name": "Simplicity",
+      "baselineExpertJudgment": 8.3,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 20,
+      "name": "Information density",
+      "baselineExpertJudgment": 8.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 21,
+      "name": "Mobile first screen",
+      "baselineExpertJudgment": 7.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 22,
+      "name": "Recording prominence",
+      "baselineExpertJudgment": 9.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 23,
+      "name": "Recording wording",
+      "baselineExpertJudgment": 8.4,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 24,
+      "name": "Frequent-function access",
+      "baselineExpertJudgment": 8.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 25,
+      "name": "Rating-category switching",
+      "baselineExpertJudgment": 8.7,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 26,
+      "name": "Feed-filter clarity",
+      "baselineExpertJudgment": 7.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 27,
+      "name": "Microcopy",
+      "baselineExpertJudgment": 7.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 28,
+      "name": "Reading effort",
+      "baselineExpertJudgment": 7.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 29,
+      "name": "Secondary-function discovery",
+      "baselineExpertJudgment": 7.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 30,
+      "name": "First-use understanding",
+      "baselineExpertJudgment": 7.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 31,
+      "name": "Competitive immediacy",
+      "baselineExpertJudgment": 7.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 32,
+      "name": "Friend-position clarity",
+      "baselineExpertJudgment": 8.3,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 33,
+      "name": "Who is ahead on mobile",
+      "baselineExpertJudgment": 6.7,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 34,
+      "name": "Lead relevance and coverage",
+      "baselineExpertJudgment": 7.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 35,
+      "name": "Since-last-visit clarity",
+      "baselineExpertJudgment": 3.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 36,
+      "name": "Defending a lead",
+      "baselineExpertJudgment": 5.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 37,
+      "name": "Next milestone",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 38,
+      "name": "Neighbourhood relevance",
+      "baselineExpertJudgment": 4.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 39,
+      "name": "Honest comparisons",
+      "baselineExpertJudgment": 9.3,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 40,
+      "name": "Chosen-comparison control",
+      "baselineExpertJudgment": 8.2,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 41,
+      "name": "Reducing pressure",
+      "baselineExpertJudgment": 9.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 42,
+      "name": "Overall FOMO mechanisms",
+      "baselineExpertJudgment": 6.4,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 43,
+      "name": "Real-people presence",
+      "baselineExpertJudgment": 8.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 44,
+      "name": "Activity meaning",
+      "baselineExpertJudgment": 7.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 45,
+      "name": "Feed scanability",
+      "baselineExpertJudgment": 7.3,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 46,
+      "name": "Feed variety",
+      "baselineExpertJudgment": 6.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 47,
+      "name": "Belonging",
+      "baselineExpertJudgment": 6.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 48,
+      "name": "Social-privacy presentation",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 49,
+      "name": "Reciprocity",
+      "baselineExpertJudgment": 5.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 50,
+      "name": "Earned-reward credibility",
+      "baselineExpertJudgment": 8.7,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 51,
+      "name": "Milestone discovery",
+      "baselineExpertJudgment": 7.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 52,
+      "name": "Sharing discovery",
+      "baselineExpertJudgment": 6.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 53,
+      "name": "Loss support",
+      "baselineExpertJudgment": 7.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 54,
+      "name": "Quiet-week value",
+      "baselineExpertJudgment": 5.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 55,
+      "name": "Visible premium-value differentiation",
+      "baselineExpertJudgment": 6.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 56,
+      "name": "Recording-entry reliability",
+      "baselineExpertJudgment": 9.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 57,
+      "name": "Draft continuation",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 58,
+      "name": "Review-prompt correctness",
+      "baselineExpertJudgment": 8.9,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 59,
+      "name": "Account and private boundaries",
+      "baselineExpertJudgment": 9.0,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 60,
+      "name": "Semantics and keyboard",
+      "baselineExpertJudgment": 8.6,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 61,
+      "name": "Large text",
+      "baselineExpertJudgment": 8.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 62,
+      "name": "Checked contrast and legibility",
+      "baselineExpertJudgment": 8.8,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 63,
+      "name": "Reduced motion",
+      "baselineExpertJudgment": 9.1,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 64,
+      "name": "Freshness and recovery visibility",
+      "baselineExpertJudgment": 6.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 65,
+      "name": "Activity depth and continuity",
+      "baselineExpertJudgment": 7.7,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    },
+    {
+      "id": 66,
+      "name": "No fabricated provisional score",
+      "baselineExpertJudgment": 9.5,
+      "acceptedScore": null,
+      "status": "awaiting_previous_criterion"
+    }
+  ],
+  "unmeasuredPlayerOutcomes": [
+    "Perceived premium quality",
+    "Perceived wow effect",
+    "Felt FOMO and desire to play",
+    "Unassisted first-match completion, time, errors and abandonment",
+    "Five-match completion",
+    "Mature Day-7 and Day-30 retention",
+    "Actual social comparison, encouragement and group participation",
+    "Share-to-recipient activation",
+    "Willingness to pay 20 dollars per month and recurring value",
+    "Actual mobile performance, battery and assistive-technology experience"
+  ]
+}

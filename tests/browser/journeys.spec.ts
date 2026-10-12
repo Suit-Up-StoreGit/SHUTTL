@@ -43,7 +43,10 @@ test("five distinct home concepts fit phone and desktop, with separate Mixed sta
         ),
       ).toBe(true);
       await page.getByRole("button", { name: "Mixed", exact: true }).click();
-      await expect(page.locator(".rating-number")).toHaveText("—");
+      await expect(page.locator(".rating-number")).toHaveCount(0);
+      await expect(page.locator(".passport-placement-intro")).toContainText(
+        "Your first rating.",
+      );
       await expect(page.locator("svg[role=img]")).toHaveCount(0);
     }
   expect(errors).toEqual([]);

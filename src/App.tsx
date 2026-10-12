@@ -360,6 +360,7 @@ function DesignReview() {
             setPage={sample}
             record={sample}
             addFriend={sample}
+            compare={sample}
             variant={concept}
             mock
           />

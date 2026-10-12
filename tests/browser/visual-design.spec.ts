@@ -449,7 +449,10 @@ test("live reduced-motion changes stop result replay on the published number and
   ).toBe("0s");
   await expect(page.locator(".passport-top")).toContainText("Singles rating");
   await page.getByRole("button", { name: "Mixed", exact: true }).click();
-  await expect(page.locator(".rating-number")).toHaveText("—");
+  await expect(page.locator(".rating-number")).toHaveCount(0);
+  await expect(page.locator(".passport-placement-intro")).toContainText(
+    "Your first rating.",
+  );
   await expect(page.locator(".passport-seal")).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/home?result=equal-pair-fixture-Doubles");

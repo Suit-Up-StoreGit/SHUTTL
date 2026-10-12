@@ -808,6 +808,73 @@ html[data-text-size="large"] .home-focus .home-pinned-player {
   white-space: normal;
   overflow: visible;
 }
+.passport-placement-intro {
+  padding: 22px 0 20px;
+}
+.passport-placement-intro > strong {
+  display: block;
+  max-width: 12ch;
+  font-size: clamp(1.9rem, 4vw, 2.65rem);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+.passport-placement-intro > span {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.passport-comparison {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 68px;
+  margin-top: 16px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--passport-rim);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.passport-comparison > span:not(.avatar) {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.passport-comparison small {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+.passport-comparison strong {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin-top: 3px;
+}
+.passport-comparison > span > span {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  margin-top: 2px;
+}
+.passport-comparison > svg {
+  flex-shrink: 0;
+}
+.home-circle-toggle {
+  display: none;
+}
+@media (hover: hover) {
+  .passport-comparison:hover strong {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
 @media (max-width: 700px) {
   .home-focus .home-heading .record-button {
     width: 100%;
@@ -820,6 +887,57 @@ html[data-text-size="large"] .home-focus .home-pinned-player {
   .home-focus .home-competition .home-section-title h2 {
     font-size: 1.0625rem;
   }
+  .home-focus .home-competition {
+    padding: 6px 16px;
+    position: relative;
+  }
+  .home-competition > .home-section-title {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+  }
+  .home-competition > .home-section-title h2 {
+    display: none;
+  }
+  .home-circle-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc(100% - 110px);
+    min-height: 48px;
+    padding: 6px 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+  .home-circle-toggle > span:first-child {
+    flex: 1;
+    font-weight: 700;
+  }
+  .home-circle-toggle > svg {
+    flex-shrink: 0;
+    transition: transform 180ms ease-out;
+  }
+  .home-circle-toggle[aria-expanded="true"] > svg {
+    transform: rotate(180deg);
+  }
+  .home-competition[data-expanded="false"] .home-circle-detail {
+    display: none;
+  }
+  .home-competition[data-expanded="true"] .home-circle-detail {
+    padding: 8px 0 12px;
+    border-top: 1px solid var(--line);
+  }
+  .home-focus .home-circle-list {
+    display: block;
+  }
+  .home-focus .passport-comparison {
+    margin-top: 12px;
+  }
+  .home-focus .passport-placement-intro {
+    padding: 20px 0;
+  }
 }
 html[data-text-size="large"] .home-focus .home-heading .record-button {
   white-space: normal;
@@ -829,6 +947,24 @@ html[data-text-size="large"] .home-focus .home-heading .record-button {
 html[data-text-size="large"] .home-focus .circle-position > strong {
   white-space: normal;
   font-size: 2rem;
+}
+html[data-text-size="large"] .passport-comparison {
+  flex-wrap: wrap;
+}
+html[data-text-size="large"] .passport-comparison > span:not(.avatar) {
+  flex-basis: calc(100% - 44px);
+}
+html[data-text-size="large"] .home-circle-toggle {
+  flex-wrap: wrap;
+  width: 100%;
+}
+html[data-text-size="large"] .home-competition > .home-section-title {
+  position: static;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-circle-toggle > svg {
+    transition: none;
+  }
 }
 .home-personal-links {
   grid-column: 1 / -1;

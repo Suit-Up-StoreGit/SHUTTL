@@ -1,5 +1,21 @@
 # SHUTTL implementation verification — updated 12 October 2026
 
+## Sequential homepage review — first impression
+
+The [ordered homepage register](acceptance/homepage-sequential-review.json) preserves all 66 criteria from the subsequent critical homepage review. Its required score is 9.5 per criterion; first impression is the active criterion. The broader review's 7.9 homepage judgment supersedes the earlier blanket Home craft signoff below. No revised player-perception score is accepted from implementation or synthetic tests.
+
+The opening passport now gives rated players a named, accepted friend and the supported estimate gap in the selected category. A supported chosen comparison takes precedence; otherwise the next estimate above, or the highest at or below, appears. Disconnected, provisional and pair-linked comparisons remain excluded. Break mode removes the comparison. Opening the player comparison preserves the selected category, and closing it restores focus; live score refreshes preserve that focus too.
+
+Home's unrated and placement states use purposeful headings and actual progress through five confirmed results. No starting prior or league is exposed. A five-result state awaiting publication says the estimate is being prepared. Shared/public passports retain their existing presentation. Friendless Home has one social invitation state. The mobile circle expands to show names and estimates; Compare friends remains directly available, and category-correct lead updates stay outside the disclosure.
+
+An observed navigation hang exposed an unbounded network wait in the offline worker. Navigation now falls back to the public shell after a five-second deadline, or returns a clear unavailable response if that shell is missing. The actual-worker regression deliberately holds the worker-owned navigation request: the warm shell recovered in 5,512ms and no authenticated API URLs appeared in its cache. This does not establish first-visit offline boot or production loading performance. The bounded fallback follows the principle in [Chrome's navigation-timeout guidance](https://developer.chrome.com/docs/workbox/forcing-a-network-timeout).
+
+The three targeted opening/focus/layout/navigation tests pass. Layout evidence covers 10 rated viewport/theme combinations, six placement combinations and 320px at 200% text with a long comparison name: zero detected accessibility violations in the seven newly audited states, with 133 indeterminate node instances retained. Both 390px captures place the comparison's bottom at 678.75px, above navigation at 779px. These dimensions are synthetic phone emulation, not physical-device acceptance.
+
+The earlier affected run had 17 passes and one test that omitted the new disclosure step before unpinning. The first complete run had 78 passes and three failures: a navigation timeout, invalid per-player timestamps within a shared synthetic match, and a genuine hidden Compare friends regression. The latter was repaired in the UI, not bypassed in the journey test. Failed evidence is retained. The final complete local run passed all 82 browser checks in 5.5 minutes, with zero failures or skipped cases. The final build/type check and all 55 server tests passed. All five refreshed previews loaded both authored fonts with zero page errors or horizontal overflow. Final bundles are `index-DlgTpRM0.js` and `index-C8xa_0fu.css`; the existing bundle-size warning remains.
+
+First impression has no accepted 9.5 score. Independent appraisal of visual quality, immediate comprehension and personal relevance is still missing. Following the requested sequential gate, criterion two has not been accepted or advanced. The original 150-criterion register, rating engine, neighbourhood-title gate and excluded payment scope remain unchanged.
+
 ## Home focus redesign - 12 October 2026
 
 Home now prioritizes the player's rating and league progress, a warm-colour recording action, supported friends-only estimate context, and a proper social activity stream. The automatic closest-friend module, weekly recap, routine latest-result recap and progress chart have left the main Home layout. The chart is in Profile > History; period summaries remain in Profile > Insights. A compact earned-moment link appears only for the latest published reveal, promotion or personal best played within the last seven days; pending corrections and stale milestones do not trigger it.
@@ -19,7 +35,9 @@ No new numerical user-perception, FOMO-effectiveness or retention score is award
 
 These checks establish specific local behavior. They do not establish 9.5 product acceptance, real badminton calibration, physical-device delivery, retention, $20 monthly value or production capacity. All tests and visual review used fictional identities/results; no real players were contacted.
 
-## Visual design pass — 12 October 2026
+## Historical visual design pass — 12 October 2026
+
+The Home craft bands in this earlier review are superseded for homepage acceptance by the broader critical review and sequential register above. They are retained as historical judgments, not current acceptance scores.
 
 The Player Passport direction now has an authored court surface, restrained earned-seal framing, purposeful finite motion, a focused player identity and scope-aware standings. Profile connection actions come before detailed category cards; secondary scores stay visible with expandable context. The standings put the player's actual position or explicitly unranked estimate first, with full named scope, shared positions and actual counts retained. No unsupported titles were enabled.
 
