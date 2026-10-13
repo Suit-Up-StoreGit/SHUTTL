@@ -40,9 +40,11 @@ export function Brand({ small = false }: { small?: boolean }) {
 export function CategoryTabs({
   value,
   onChange,
+  disabled = false,
 }: {
   value: Category;
   onChange: (value: Category) => void;
+  disabled?: boolean;
 }) {
   return (
     <div
@@ -53,7 +55,12 @@ export function CategoryTabs({
     >
       <span className="category-selection-track" aria-hidden="true" />
       {CATEGORIES.map((c) => (
-        <button key={c} aria-pressed={c === value} onClick={() => onChange(c)}>
+        <button
+          key={c}
+          disabled={disabled}
+          aria-pressed={c === value}
+          onClick={() => onChange(c)}
+        >
           {c}
         </button>
       ))}

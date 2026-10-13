@@ -28,11 +28,13 @@ function EstimateTable({
   me,
   category,
   qualified = false,
+  player: playerSelect,
 }: {
   players: any[];
   me: string;
   category: Category;
   qualified?: boolean;
+  player?: (p: any) => void;
 }) {
   const positions = new Map<number, number>();
   if (qualified)
@@ -85,7 +87,18 @@ function EstimateTable({
               <Avatar player={player} />
               <div className="ranking-person">
                 <div className="rankings-name-line">
-                  <strong>{player.name}</strong>
+                  {playerSelect && player.canConnect !== false ? (
+                    <button
+                      className="ranking-player-link"
+                      onClick={() => playerSelect(player)}
+                      aria-label={`View ${player.name}`}
+                    >
+                      <strong>{player.name}</strong>
+                      <ArrowUpRight size={13} />
+                    </button>
+                  ) : (
+                    <strong>{player.name}</strong>
+                  )}
                   {own && <span className="rankings-you-label">You</span>}
                 </div>
                 <small className="rankings-player-status">
@@ -124,10 +137,12 @@ export function RankingsPage({
   data,
   category,
   setCategory,
+  player,
 }: {
   data: any;
   category: Category;
   setCategory: (category: Category) => void;
+  player?: (p: any) => void;
 }) {
   const [circle, setCircle] = useState(""),
     [ranking, setRanking] = useState<any>(null),
@@ -185,6 +200,7 @@ export function RankingsPage({
           players={developing}
           me={data.me.id}
           category={category}
+          player={player}
         />
       ) : (
         <div className="rankings-estimates-empty">
@@ -342,6 +358,7 @@ export function RankingsPage({
                     me={data.me.id}
                     category={category}
                     qualified
+                    player={player}
                   />
                 </>
               ) : (

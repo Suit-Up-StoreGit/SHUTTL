@@ -25,6 +25,7 @@ import {
 import { comparisonClasses } from "./evidence.ts";
 import { enqueuePush } from "./push.ts";
 import { localityLabel } from "../src/location.ts";
+import { milestoneFor } from "../src/home-growth.ts";
 const derive = promisify(scrypt);
 export const now = () => new Date().toISOString();
 export const hash = (value: string) =>
@@ -930,9 +931,20 @@ export class Service {
       404,
     );
     const rows = this.db.all(
-      `SELECT e.* FROM rating_events e WHERE ${visible} ${cursor ? "AND (e.played_at<? OR (e.played_at=? AND e.unit_id<?))" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 21`,
+      `SELECT e.*,u.status AS unit_status FROM rating_events e JOIN units u ON u.id=e.unit_id WHERE ${visible} ${cursor ? "AND (e.played_at<? OR (e.played_at=? AND e.unit_id<?))" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 21`,
       ...aliases,
       ...(cursor ? [cursor.played_at, cursor.played_at, cursor.unit_id] : []),
+    );
+    const given = new Map(
+      rows.length
+        ? this.db
+            .all(
+              `SELECT unit_id,revision_id,recipient,milestone,score FROM court_congratulations WHERE sender=? AND unit_id IN (${rows.map(() => "?").join(",")})`,
+              actor,
+              ...rows.map((r) => r.unit_id),
+            )
+            .map((r) => [`${r.unit_id}:${r.revision_id}:${r.recipient}`, r])
+        : [],
     );
     return {
       feed: rows.slice(0, 20).flatMap((row) => {
@@ -942,26 +954,27 @@ export class Service {
           if (!change) return [];
           const score = change.count >= 5 ? change.after : null;
           const delta = change.count > 5 ? change.delta : null;
+          const milestone = milestoneFor(change),
+            congratulation = given.get(
+              `${row.unit_id}:${row.revision_id}:${friend.id}`,
+            );
           return [
             {
               id: `${row.unit_id}:${row.revision_id}:${friend.id}:${score ?? "placement"}:${delta ?? "hidden"}:${Number(change.won)}`,
               unitId: row.unit_id,
+              revisionId: row.revision_id,
               player: friend,
               category: row.category,
               playedAt: row.played_at,
               score,
               delta,
-              milestone:
-                change.count === 5
-                  ? "reveal"
-                  : change.count > 5 &&
-                      leagueFor(change.after).floor >
-                        leagueFor(change.before).floor
-                    ? "promotion"
-                    : change.peakBefore != null &&
-                        change.after > change.peakBefore
-                      ? "best"
-                      : null,
+              milestone,
+              canCongratulate: row.unit_status === "rated" && !!milestone,
+              congratulated:
+                row.unit_status === "rated" &&
+                !!congratulation &&
+                congratulation.milestone === milestone &&
+                congratulation.score === score,
               league: change.count >= 5 ? leagueFor(change.after).name : null,
               won: change.won,
               shared: !!changes[actor],

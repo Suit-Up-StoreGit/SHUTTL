@@ -145,5 +145,46 @@
         "group"
       ]
     }
-  ]
+  ],
+  "focusedReview": {
+    "date": "2026-10-13",
+    "accountEvidence": "outputs/home-growth-2026-10-13/accounts.json",
+    "walkthroughEvidence": "outputs/home-growth-2026-10-13/walkthroughs.json",
+    "registeredAccounts": 11,
+    "approvedMatches": 43,
+    "method": "Actual fictional-account journeys plus separate AI critique; no real participant quotes.",
+    "perspectives": [
+      {
+        "id": "recreational",
+        "appraisal": "Actual milestones look different from routine play. A known opted-in local friend can be compared directly. Private recognition adds a real response loop.",
+        "remaining": "The feed still depends heavily on recurring ratings and familiar participants."
+      },
+      {
+        "id": "competitive",
+        "appraisal": "The brief preserves category, shows actual period results and connections, and opens the real match behind a reveal, promotion, best or latest estimate. Export is anonymous by default.",
+        "remaining": "Developing estimates are uncertain; the visible premium proposition remains weaker than a broad $20 monthly offer."
+      },
+      {
+        "id": "returning",
+        "appraisal": "Old confirmed history remains available without streak pressure. A single reveal gets a starting-point card; a later lone estimate is correctly described as one point in a period.",
+        "remaining": "A quiet account with little history has limited material to review."
+      },
+      {
+        "id": "privacy",
+        "appraisal": "Congratulations require accepted friendship and valid current milestone evidence. Received recognition stays private; blocks, deletion and export are tested. Downloaded progress contains own totals, not other player names.",
+        "remaining": "Downloaded files become the owner’s responsibility when shared outside SHUTTL."
+      },
+      {
+        "id": "accessible",
+        "appraisal": "The brief is usable at320px with200%text and through keyboard controls, with zero detected axe violations in the recorded audit.",
+        "remaining": "Enlarged text requires considerable vertical scrolling."
+      },
+      {
+        "id": "localExplorer",
+        "name": "Leo Local Explorer",
+        "appraisal": "The actual local area module leads to a known-player comparison or an explicit request to a discoverable newcomer; pending requests cannot be duplicated.",
+        "remaining": "A small opted-in network provides limited local choice."
+      }
+    ]
+  }
 }

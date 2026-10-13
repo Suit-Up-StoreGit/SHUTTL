@@ -1,6 +1,32 @@
-# SHUTTL implementation verification — updated 12 October 2026
+# SHUTTL implementation verification — updated 13 October 2026
+## Current focused homepage update — 13 October 2026
 
-## Current homepage review — ten fictional player accounts
+The ten previously weaker criteria have been implemented further and reappraised by a separate AI reviewer, who inspected code and actual fictional-account renders before reading draft grades. The optimistic draft 9.19 was discarded. The final ten grades below are used unchanged; the prior 56 grades are retained. The exact 66-criterion mean is **9.001515**, displayed as **9.00/10**, a borderline pass for the user-authorized average option. This does not establish individual 9.0 acceptance or 9.5 quality.
+
+| Criterion | Final critical expert grade |
+| --- | ---: |
+| Wow effect | 8.3 |
+| Badminton identity | 8.8 |
+| Animation quality | 7.6 |
+| Neighbourhood relevance | 8.2 |
+| Overall FOMO mechanisms | 7.6 |
+| Feed variety | 7.1 |
+| Reciprocity | 7.9 |
+| Loss support | 8.3 |
+| Quiet-week value | 8.1 |
+| Visible premium-value differentiation | 5.8 |
+
+Home retains its opening rating, supported friend context and recording action. New original shuttle art and finite earned motion extend the brand; milestones have a stronger composition than routine match rows. A named local area card shows actual opt-in presence, category publication and recent play without manufacturing standings; an accepted nearby friend can be compared directly. Local rankings preserve explicit newcomer requests, pending continuity and discovery permissions. Friends can congratulate an actual published reveal, promotion or personal best once; named incoming recognition is private and does not change ratings or send device alerts.
+
+The progress brief is account-bound, selected-category and selected-period aware. It includes actual published trajectory, counts, next marker, most recorded partner/opponent and your-side win counts. Its journal opens actual owned results behind a recent estimate or earned milestone. A first publication gets a starting-point card; a later lone period estimate gets neutral wording. Chart scaling has a minimum 150-point range and an explicit scale to avoid magnifying small losses. Anonymous-by-default 1080×1440 export contains only own aggregate progress, clearly marks demo data and creates no public link. Quiet-week and latest-loss context offer history rather than streak pressure or invented coaching.
+
+A separate code review found a genuine replay edge case: correcting an upstream result may change a later milestone’s score without changing its revision. Sender state now invalidates old recognition, and an explicit renewed congratulations replaces stale evidence while unchanged retries remain idempotent. The regression verifies receiver visibility, sender renewal and one stored row.
+
+Final build/type check and **68 server checks pass**. The final affected browser run passes **35/35** in 2.5 minutes: 19 actual-account journeys, six accessibility cases, reward-context and nine availability cases. Across documented runs all 108 distinct scenarios have passing coverage. The last complete local run had 105 passes and three interruptions; it is not called 108/108. During that run I rebuilt dist, causing a public share document 404 exactly at the rebuild timestamp. The same URL returned 200 afterward. A passkey trace then paused 317seconds after successful committed creation/deletion; the following signup saw navigator.onLine=false and sent no request. Runtime/network interruption is the supported inference. All three pass against the unchanged final build. Raw reports, earlier failed fixture runs and audit-budget timeout evidence remain under outputs/home-growth-2026-10-13/. GitHub’s complete pushed-source run is pending at documentation time.
+
+The final persona file creates 11 fictional accounts and 43 explicitly approved matches and records 22 observations. Recorded persona audits detect zero violations and retain 521 indeterminate node instances. All five refreshed preview renders have zero page exceptions or horizontal overflow and load both authored fonts. These checks establish finite local behavior and support simulated expert appraisal; they do not measure retention, paid conversion, actual-player perceptions or badminton calibration. The large-text brief remains usable but requires substantial scrolling. A broad $20/month proposition is still weak. The original 150 outcome register, rating math, qualified neighborhood-title gate and excluded payment integration remain unchanged. No HTTPS deployment occurred.
+
+## Historical homepage review — 12 October, ten fictional player accounts
 
 The user has replaced the earlier first-impression gate with a simulated-persona appraisal and a minimum of either 9.0 for every criterion or 9.0 for the average. All 66 homepage criteria have now been reviewed in their original order. The **equal-weight expert average is 9.12/10**: 56 individual scores meet 9.0 and ten remain below it. This meets the average option, not a claim that every metric is 9.0 or 9.5. The scores describe the implemented homepage through expert player perspectives. They are not human participant responses or measured retention, willingness to pay or model calibration.
 

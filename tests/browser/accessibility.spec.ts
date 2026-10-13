@@ -195,30 +195,6 @@ test("core journeys have no detected WCAG AA violations in light and dark; large
   }
   await page.getByLabel("Text size", { exact: true }).selectOption("normal");
   await page.getByLabel("Appearance", { exact: true }).selectOption("light");
-  for (const concept of ["passport", "court", "circle", "arena", "editorial"]) {
-    await page.goto("/design?concept=" + concept);
-    await page.locator(".rating-number").waitFor();
-    await check("design " + concept);
-    await page.evaluate(() => {
-      document.documentElement.dataset.palette = "dark";
-    });
-    await check("dark developed design " + concept);
-    await page.evaluate(() => {
-      document.documentElement.dataset.palette = "light";
-    });
-    await page.evaluate(() => {
-      document.documentElement.dataset.textSize = "large";
-    });
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-      "developed preview 200% text " + concept,
-    ).toBe(true);
-    await page.evaluate(() => {
-      document.documentElement.dataset.textSize = "normal";
-    });
-  }
   mkdirSync("outputs/validation-2026-10-11", { recursive: true });
   writeFileSync(
     "outputs/validation-2026-10-11/accessibility.json",
@@ -242,3 +218,62 @@ test("core journeys have no detected WCAG AA violations in light and dark; large
     ),
   ).toEqual([]);
 });
+
+// Keep each concept's light, dark and enlarged-text checks independent, so a
+// long multi-surface audit cannot consume the last concept's test budget.
+for (const concept of ["passport", "court", "circle", "arena", "editorial"])
+  test(`${concept} home preview preserves light/dark accessibility and enlarged text`, async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
+    const reports: any[] = [];
+    await page.goto(`/design?concept=${concept}`);
+    await page.locator(".rating-number").waitFor();
+    for (const palette of ["light", "dark"]) {
+      await page.evaluate((p) => {
+        document.documentElement.dataset.palette = p;
+      }, palette);
+      await page.evaluate(() => document.fonts.ready);
+      await page.evaluate(async () => {
+        await Promise.all(
+          document
+            .getAnimations()
+            .filter((a) =>
+              Number.isFinite(a.effect?.getComputedTiming().iterations),
+            )
+            .map((a) => a.finished.catch(() => {})),
+        );
+      });
+      const audit = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+        .analyze();
+      reports.push({
+        palette,
+        violations: audit.violations,
+        incomplete: audit.incomplete,
+      });
+      expect(audit.violations).toEqual([]);
+    }
+    await page.evaluate(() => {
+      document.documentElement.dataset.palette = "light";
+      document.documentElement.dataset.textSize = "large";
+    });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    mkdirSync("outputs/home-growth-2026-10-13", { recursive: true });
+    writeFileSync(
+      `outputs/home-growth-2026-10-13/design-accessibility-${concept}.json`,
+      JSON.stringify(
+        {
+          scope:
+            "Rendered fictional preview; automated checks are not complete conformance proof",
+          reports,
+        },
+        null,
+        2,
+      ),
+    );
+  });

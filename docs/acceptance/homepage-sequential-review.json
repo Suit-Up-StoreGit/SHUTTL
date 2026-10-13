@@ -86,23 +86,26 @@
       "id": 2,
       "name": "Wow effect",
       "baselineExpertJudgment": 8.2,
-      "acceptedScore": 8.8,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.8,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 8.3,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 8.3,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 2,
-      "finding": "The oversized rating, original seal, court geometry and controlled orange action make a strong focal composition. Earned stories now have distinct visual emphasis.",
-      "remainingGap": "There is still limited emotional spectacle or athlete imagery. A restrained number arrival is not a striking achievement animation.",
+      "finding": "The passport now carries original shuttle artwork and earned seals land with a brief light sweep. The opening preserves its strong numeric focus; a crafted personal progress card extends that identity beyond the screen.",
+      "remainingGap": "The opening passport and earned moments are polished, but the lower-page composition remains conventional.",
       "personaPerspectives": [
         "competitive",
         "doubles"
       ],
       "currentEvidence": [
-        "src/pages/Home.tsx",
+        "src/components/HomeGrowth.tsx",
         "src/home-design.css",
-        "tests/browser/home-focus.spec.ts",
-        "docs/mockups/render-results.json"
-      ]
+        "tests/browser/home-personas.spec.ts",
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.8,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 3,
@@ -153,23 +156,27 @@
       "id": 5,
       "name": "Badminton identity",
       "baselineExpertJudgment": 8.6,
-      "acceptedScore": 8.9,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.9,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 8.8,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 8.8,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 5,
-      "finding": "Singles, doubles, mixed, court geometry, actual playing partners and confirmed-match language make the sport legible.",
-      "remainingGap": "The sport is communicated largely through graphics and text; there is no supplied athlete or on-court photography.",
+      "finding": "A recognizable original shuttle illustration now lives in the hero and next-step surface, with real badminton categories, partnerships, local playing context and a coherent sporting progress report.",
+      "remainingGap": "Badminton identity extends into the brief and export; the statistics presentation remains fairly general.",
       "personaPerspectives": [
         "newcomer",
         "doubles"
       ],
       "currentEvidence": [
-        "src/pages/Home.tsx",
-        "src/home-design.css",
-        "tests/browser/home-focus.spec.ts",
-        "docs/mockups/render-results.json"
-      ]
+        "src/components/HomeGrowth.tsx",
+        "src/personal-progress-card.ts",
+        "docs/mockups/home-passport.jpg",
+        "tests/home-growth.test.ts",
+        "tests/browser/home-personas.spec.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.9,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 6,
@@ -375,23 +382,26 @@
       "id": 15,
       "name": "Animation quality",
       "baselineExpertJudgment": 8,
-      "acceptedScore": 8.8,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.8,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 7.6,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 7.6,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 15,
-      "finding": "Real changed numbers settle once for 220ms and unseen stories arrive subtly for 260ms. Controls preserve focus, and reduced motion gets a static presentation.",
-      "remainingGap": "Motion is restrained rather than exceptional; ordinary-device smoothness and a richer earned-moment sequence are not demonstrated.",
+      "finding": "Earned seals have a finite 650ms landing and 850ms light sweep, with bounded once-per-document milestone recognition. The original shuttle settles gently; live reduced motion removes these effects while leaving the actual number unchanged.",
+      "remainingGap": "Purposeful finite motion and reduced-motion support remain good; no material new motion vocabulary was added in the final refinement.",
       "personaPerspectives": [
         "returning",
         "accessible"
       ],
       "currentEvidence": [
-        "src/pages/Home.tsx",
+        "src/components/HomeGrowth.tsx",
         "src/home-design.css",
-        "tests/browser/home-focus.spec.ts",
-        "docs/mockups/render-results.json"
-      ]
+        "tests/browser/home-personas.spec.ts",
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.8,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 16,
@@ -873,24 +883,27 @@
       "id": 38,
       "name": "Neighbourhood relevance",
       "baselineExpertJudgment": 4.5,
-      "acceptedScore": 8.1,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.1,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 8.2,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 8.2,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 38,
-      "finding": "Home now links directly to local players and names the opted-in declared area. Privacy-first players get an honest exploration or area-choice label.",
-      "remainingGap": "Qualified neighborhood titles remain unavailable while evidence gates are closed; local participation density is not demonstrated.",
+      "finding": "The home shows actual opted-in local presence, declared area, recorded recent play and published estimates without inventing a rank. Local names can open an accepted friend comparison or an explicit, privacy-respecting connection request with pending-state continuity.",
+      "remainingGap": "A named accepted local connection and direct comparison make the area actionable; selection is basic rather than tailored to playing context.",
       "personaPerspectives": [
         "organiser",
         "privacy"
       ],
       "currentEvidence": [
-        "src/home-context.ts",
-        "tests/home-context.test.ts",
-        "tests/home-activity.test.ts",
+        "server/home-growth.ts",
+        "src/components/HomeGrowth.tsx",
+        "src/pages/Rankings.tsx",
+        "tests/home-growth.test.ts",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/home-focus.spec.ts"
-      ]
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.1,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 39,
@@ -966,24 +979,27 @@
       "id": 42,
       "name": "Overall FOMO mechanisms",
       "baselineExpertJudgment": 6.4,
-      "acceptedScore": 8.8,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.8,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 7.6,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 7.6,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 42,
-      "finding": "Real friend movement, new activity, earned league progress and sharing create meaningful reasons to revisit. Return context is substantially stronger than the previous static home.",
-      "remainingGap": "The loop relies on real accepted friends playing; local crowns and additional reward systems are absent from V1.",
+      "finding": "Actual friend movement and new activity now have an active recognition loop: a friend can congratulate a genuine reveal, league crossing or peak and the recipient sees it privately. Local connection paths and a personal next marker make the competitive context actionable.",
+      "remainingGap": "Genuine milestones and peer movement provide return motives; newcomer pull remains limited without connections and fresh confirmed play.",
       "personaPerspectives": [
         "competitive",
         "returning"
       ],
       "currentEvidence": [
-        "src/home-context.ts",
-        "tests/home-context.test.ts",
-        "tests/home-activity.test.ts",
+        "src/pages/Home.tsx",
+        "src/components/HomeGrowth.tsx",
+        "server/home-growth.ts",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/home-focus.spec.ts"
-      ]
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.8,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 43,
@@ -1058,24 +1074,26 @@
       "id": 46,
       "name": "Feed variety",
       "baselineExpertJudgment": 6.6,
-      "acceptedScore": 8.9,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.9,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 7.1,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 7.1,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 46,
-      "finding": "The feed distinguishes reveal, promotion, personal best and routine results across categories, with pagination for older whole matches.",
-      "remainingGap": "It contains result-led progress rather than editorial posts or varied social media formats.",
+      "finding": "The feed now offers an all-category milestone view and distinct private incoming recognition in addition to routine and shared match stories. Whole-match grouping, factual dates and older pagination remain intact.",
+      "remainingGap": "Milestones and routine results look different, but much of the content still repeats participant/rating rows.",
       "personaPerspectives": [
         "returning",
         "recreational"
       ],
       "currentEvidence": [
-        "server/service.ts",
-        "tests/home-activity.test.ts",
+        "src/pages/Home.tsx",
+        "src/components/HomeGrowth.tsx",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/reward-context.spec.ts",
-        "tests/browser/public-share-persona.spec.ts"
-      ]
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.9,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 47,
@@ -1126,24 +1144,27 @@
       "id": 49,
       "name": "Reciprocity",
       "baselineExpertJudgment": 5.5,
-      "acceptedScore": 8.5,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.5,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 7.9,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 7.9,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 49,
-      "finding": "Shared real matches now expose a direct Acknowledge players route to the existing private encouragement flow. It rewards actual opponents and partners without rating points.",
-      "remainingGap": "There are no reactions on foreign friend stories or a broader reciprocal conversation loop.",
+      "finding": "Accepted friends can congratulate an actually published milestone even when they did not play in that match. The recipient can revisit their own result from private recognition. Exact-request retry, revision checks, blocks, export and deletion protect the loop; there are no rating points or public counters.",
+      "remainingGap": "Private recognition closes an actual loop; ordinary acknowledgement is less immediate than comparison.",
       "personaPerspectives": [
         "doubles",
         "recreational"
       ],
       "currentEvidence": [
-        "server/service.ts",
-        "tests/home-activity.test.ts",
+        "server/home-growth.ts",
+        "server/database.ts",
+        "src/components/HomeGrowth.tsx",
+        "tests/home-growth.test.ts",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/reward-context.spec.ts",
-        "tests/browser/public-share-persona.spec.ts"
-      ]
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.5,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 50,
@@ -1218,71 +1239,79 @@
       "id": 53,
       "name": "Loss support",
       "baselineExpertJudgment": 7,
-      "acceptedScore": 8.6,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.6,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 8.3,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 8.3,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 53,
-      "finding": "Losses use neutral factual language, preserve an earlier earned peak and provide an accessible route into playing insights and personal goals.",
-      "remainingGap": "The home does not yet provide individualized training advice or a crafted loss-recovery interaction.",
+      "finding": "A recent loss gets a calm next-step surface linking that exact match to the wider personal brief. The brief shows actual trajectory, current status, period outcomes and a personal marker, and explains developing estimates rather than implying a loss diagnoses technique.",
+      "remainingGap": "Honest chart scale and actual-result links improve context; guidance remains general rather than an individualized next action.",
       "personaPerspectives": [
         "recreational",
         "competitive"
       ],
       "currentEvidence": [
-        "server/service.ts",
-        "tests/home-activity.test.ts",
+        "src/components/HomeGrowth.tsx",
+        "src/components/ProgressBrief.tsx",
+        "src/personal-progress-card.ts",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/reward-context.spec.ts",
-        "tests/browser/public-share-persona.spec.ts"
-      ]
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.6,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 54,
       "name": "Quiet-week value",
       "baselineExpertJudgment": 5.5,
-      "acceptedScore": 8.4,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 8.4,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 8.1,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 8.1,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 54,
-      "finding": "A quiet week still offers peers, genuine peak, personal goal, sharing, insights, local exploration and older activity without a streak penalty.",
-      "remainingGap": "Without new play from friends, there is limited fresh home value and no validated habitual return.",
+      "finding": "An actual player with five older published matches gets an honest quiet-week next step. They can switch from an empty seven-day window to their real career trace, revisit goals and playing relationships, or keep a private progress card without a required streak.",
+      "remainingGap": "Connections, result journal, career history and export add substantive quiet-week review; depth depends on recorded history and selected discipline.",
       "personaPerspectives": [
         "returning",
         "privacy"
       ],
       "currentEvidence": [
-        "server/service.ts",
-        "tests/home-activity.test.ts",
+        "src/components/HomeGrowth.tsx",
+        "src/components/ProgressBrief.tsx",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/reward-context.spec.ts",
-        "tests/browser/public-share-persona.spec.ts"
-      ]
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 8.4,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 55,
       "name": "Visible premium-value differentiation",
       "baselineExpertJudgment": 6,
-      "acceptedScore": 7.5,
-      "status": "below_individual_target_in_overall_average",
-      "expertPersonaScore": 7.5,
-      "acceptanceBasis": "Latest user-authorized expert persona average; not independent player validation",
+      "acceptedScore": 5.8,
+      "status": "expert_below_individual_target",
+      "expertPersonaScore": 5.8,
+      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 55,
-      "finding": "The home makes credible rating context, comparisons, real group identity, earned progress, privacy and sharing more visible, which gives the product a stronger value story.",
-      "remainingGap": "A broad $20/month premium offer remains insufficiently differentiated from free activity/rating tools. Payments are excluded; price-value fit is not certified.",
+      "finding": "Visible value now extends beyond a score and feed: the player gets an actor-bound progress brief, real trajectory and period context, goal and relationship exploration, a crafted anonymous or named progress card, local connection continuity and private recognition.",
+      "remainingGap": "The brief is more useful, but the visible recurring advantage still falls short of a compelling broad $20 monthly proposition.",
       "personaPerspectives": [
         "recreational",
         "organiser",
         "privacy"
       ],
       "currentEvidence": [
-        "server/service.ts",
-        "tests/home-activity.test.ts",
+        "src/components/ProgressBrief.tsx",
+        "src/personal-progress-card.ts",
+        "server/home-growth.ts",
         "tests/browser/home-personas.spec.ts",
-        "tests/browser/reward-context.spec.ts",
-        "tests/browser/public-share-persona.spec.ts"
-      ]
+        "tests/home-growth.test.ts",
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+      ],
+      "previousExpertPersonaScore": 7.5,
+      "focusedReviewDate": "2026-10-13"
     },
     {
       "id": 56,
@@ -1575,86 +1604,88 @@
     "7_to_7_9": "Useful and improved, but substantial differentiation or evidence still limits the proposition."
   },
   "reviewMethod": {
-    "reviewedOn": "2026-10-12",
-    "kind": "Simulated expert persona assessment",
-    "actualRegisteredFictionalAccounts": 10,
+    "reviewedOn": "2026-10-13",
+    "kind": "Separate blind AI expert critique plus implemented fictional-persona journeys",
+    "actualRegisteredFictionalAccounts": 11,
     "corePersonas": 8,
     "additionalPartnershipPersonas": 2,
     "approvedFixtureMatches": 31,
     "additionalRealPublishedReturnMatch": 1,
     "ratingSource": "Actual local rating publisher and approved match APIs; persona ratings are not fabricated browser responses.",
-    "perceptionSource": "Expert inspection of rendered screens and journeys from each persona perspective; not interviews or participant-reported scores.",
-    "outputDirectory": "outputs/home-persona-review-2026-10-12",
+    "perceptionSource": "A separate AI reviewer inspected source and rendered screens before reading the draft grades. The final ten grades are used without raising them to a target. The earlier 56 are retained, so the aggregate combines the original appraisal with this stricter targeted review.",
+    "outputDirectory": "outputs/home-growth-2026-10-13",
     "financialIntegration": "Excluded",
     "scopeLimit": "Homepage criteria only. Original 150-criterion outcome register and measured D7/D30, model calibration and willingness-to-pay values are unchanged.",
-    "personaAppraisal": "docs/acceptance/homepage-persona-appraisal.json"
+    "personaAppraisal": "docs/acceptance/homepage-persona-appraisal.json",
+    "additionalLocalExplorer": 1,
+    "additionalRealPublishedMatches": 12
   },
   "summary": {
     "criterionCount": 66,
-    "weighting": "Each criterion has equal weight; no low score omitted or reweighted.",
-    "exactMean": 9.116666666666669,
-    "displayMean": 9.12,
+    "weighting": "Equal weight for all 66, including every low grade. Prior 56 grades retained; ten reappraised by a separate reviewer.",
+    "exactMean": 9.001515151515155,
+    "displayMean": 9,
     "individualTargetMet": 56,
     "individualBelowTarget": [
       {
         "id": 2,
         "name": "Wow effect",
-        "score": 8.8
+        "score": 8.3
       },
       {
         "id": 5,
         "name": "Badminton identity",
-        "score": 8.9
+        "score": 8.8
       },
       {
         "id": 15,
         "name": "Animation quality",
-        "score": 8.8
+        "score": 7.6
       },
       {
         "id": 38,
         "name": "Neighbourhood relevance",
-        "score": 8.1
+        "score": 8.2
       },
       {
         "id": 42,
         "name": "Overall FOMO mechanisms",
-        "score": 8.8
+        "score": 7.6
       },
       {
         "id": 46,
         "name": "Feed variety",
-        "score": 8.9
+        "score": 7.1
       },
       {
         "id": 49,
         "name": "Reciprocity",
-        "score": 8.5
+        "score": 7.9
       },
       {
         "id": 53,
         "name": "Loss support",
-        "score": 8.6
+        "score": 8.3
       },
       {
         "id": 54,
         "name": "Quiet-week value",
-        "score": 8.4
+        "score": 8.1
       },
       {
         "id": 55,
         "name": "Visible premium-value differentiation",
-        "score": 7.5
+        "score": 5.8
       }
     ],
     "everyIndividualAtLeast9": false,
     "averageAtLeast9": true,
-    "status": "expert_average_target_met",
+    "status": "expert_average_target_met_borderline",
     "groupMeans": [
       {
         "name": "Visual craft",
         "count": 16,
-        "mean": 9.11
+        "mean": 8.99
       },
       {
         "name": "Clarity and ease",
@@ -1664,60 +1695,320 @@
       {
         "name": "Competition and FOMO",
         "count": 12,
-        "mean": 9.12
+        "mean": 9.03
       },
       {
         "name": "Social, rewards and value",
         "count": 13,
-        "mean": 8.91
+        "mean": 8.55
       },
       {
         "name": "Interaction and safeguards",
         "count": 11,
         "mean": 9.29
       }
-    ]
+    ],
+    "interpretation": "The 9.0015 mean barely meets the average option as a point estimate. It is not a clear individual-criterion signoff, a 9.5 assessment, or a robust perception guarantee. Ten individually below-9 grades remain explicit."
   },
   "currentEngineeringVerification": {
-    "status": "Local build/server checks and all 98 unique browser scenarios have passing coverage across documented runs. Final changed persona file passes all 14 cases; the last complete local 98-case run had 97 passes and one corrected fixture-navigation failure. Remote complete-suite verification is pending at commit time.",
+    "status": "Final build/type check and 68 server checks pass. All 108 unique browser scenarios have passing coverage across documented local runs; final affected run passes35/35. A single clean final-source complete run remains for GitHub at commit time.",
     "buildAndTypeCheck": "passed",
     "serverTests": {
-      "passed": 62,
+      "passed": 68,
       "failed": 0
     },
     "browserTests": {
-      "distinctCasesWithPassingCoverage": 98,
+      "distinctCasesWithPassingCoverage": 108,
       "lastFullRun": {
-        "passed": 97,
-        "failed": 1,
+        "passed": 105,
+        "failed": 3,
         "skipped": 0,
-        "evidence": "outputs/home-persona-review-2026-10-12/browser-failed-98-navigation.json"
+        "evidence": "outputs/home-growth-2026-10-13/browser-refined-final.json",
+        "context": "Intermediate build was changed during the run; a later runtime/network interruption is recorded. These failures are not relabeled as passes."
       },
       "finalAffectedRun": {
-        "passed": 14,
+        "passed": 35,
         "failed": 0,
         "skipped": 0,
-        "evidence": "outputs/home-persona-review-2026-10-12/personas-final.json"
+        "evidence": "outputs/home-growth-2026-10-13/final-affected-journeys.json"
       },
-      "singleLocalFull98PassClaim": false
+      "singleLocalFull108PassClaim": false
     },
     "actualAccounts": {
-      "count": 10,
+      "count": 11,
       "approvedSetupMatches": 31,
-      "observations": 15
+      "approvedMatchesInFinalPersonaFile": 43,
+      "observations": 22
     },
     "accessibility": {
-      "newPersonaStates": 10,
-      "detectedViolations": 0,
-      "indeterminateNodeInstances": 282
+      "detectedViolationsInRecordedPersonaAudits": 0,
+      "indeterminateNodeInstancesInPersonaObservations": 521,
+      "limitations": "Automated audits leave indeterminate items and do not establish assistive-technology conformance."
     },
-    "fixtureCorrections": [
-      "The retained-milestone fixture now has all required participant fields and selects its category.",
-      "The cross-category walkthrough follows visible Show more controls until the actual Mixed story appears; it no longer assumes a fixed number of newer matches."
-    ],
     "previewCaptureCount": 5,
     "previewErrors": 0,
     "previewOverflow": false,
-    "limitations": "Expert fictional-account review and Chromium viewport emulation. No direct real-player reports, physical-device/assistive-technology acceptance, measured retention, price-value fit or badminton calibration claim."
-  }
+    "implementationCorrections": [
+      "Upstream result replay can invalidate a congratulations receipt without changing its revision; sender state now clears and renewal replaces stale evidence idempotently.",
+      "A one-point period can contain a later publication: labels/export now distinguish it from the actual fifth-match reveal.",
+      "No prior rating is exposed before five confirmations; journal links only actual published own results."
+    ],
+    "runLimitations": [
+      "A mid-run dist rebuild caused a share document404 at the rebuild timestamp; same URL returned200 afterward.",
+      "A passkey trace paused317seconds after committed creation/deletion; the next signup saw navigator.onLine=false and sent no POST. Host/runtime interruption is the supported inference.",
+      "The affected three scenarios pass against the unchanged final build."
+    ],
+    "remoteCompleteSuite": "Pending on the pushed commit at documentation time.",
+    "limitations": "Fictional accounts, simulated expert perspectives and Chromium viewport emulation. No measured retention, paid conversion, real-player perception or badminton calibration claim. No HTTPS deployment."
+  },
+  "focusedReviews": [
+    {
+      "date": "2026-10-13",
+      "baseCommit": "2428f28d7e5f63a2d50dfb26abbb6ac2a91c9508",
+      "scope": "The ten previously below-9 homepage criteria; original 56 scores retained.",
+      "previousScores": [
+        {
+          "id": 2,
+          "name": "Wow effect",
+          "score": 8.8
+        },
+        {
+          "id": 5,
+          "name": "Badminton identity",
+          "score": 8.9
+        },
+        {
+          "id": 15,
+          "name": "Animation quality",
+          "score": 8.8
+        },
+        {
+          "id": 38,
+          "name": "Neighbourhood relevance",
+          "score": 8.1
+        },
+        {
+          "id": 42,
+          "name": "Overall FOMO mechanisms",
+          "score": 8.8
+        },
+        {
+          "id": 46,
+          "name": "Feed variety",
+          "score": 8.9
+        },
+        {
+          "id": 49,
+          "name": "Reciprocity",
+          "score": 8.5
+        },
+        {
+          "id": 53,
+          "name": "Loss support",
+          "score": 8.6
+        },
+        {
+          "id": 54,
+          "name": "Quiet-week value",
+          "score": 8.4
+        },
+        {
+          "id": 55,
+          "name": "Visible premium-value differentiation",
+          "score": 7.5
+        }
+      ],
+      "method": "Eleven actual local fictional accounts,31 approved setup matches and12 more across the final persona file; separate blind AI critique, followed by implemented revisions and refreshed rendered evidence. Prior56 grades retained.",
+      "evidenceDirectory": "outputs/home-growth-2026-10-13",
+      "engineeringStatus": "Final build/type check and 68 server checks pass. All 108 unique browser scenarios have passing coverage across documented local runs; final affected run passes35/35. A single clean final-source complete run remains for GitHub at commit time.",
+      "finalScores": [
+        {
+          "id": 2,
+          "score": 8.3
+        },
+        {
+          "id": 5,
+          "score": 8.8
+        },
+        {
+          "id": 15,
+          "score": 7.6
+        },
+        {
+          "id": 38,
+          "score": 8.2
+        },
+        {
+          "id": 42,
+          "score": 7.6
+        },
+        {
+          "id": 46,
+          "score": 7.1
+        },
+        {
+          "id": 49,
+          "score": 7.9
+        },
+        {
+          "id": 53,
+          "score": 8.3
+        },
+        {
+          "id": 54,
+          "score": 8.1
+        },
+        {
+          "id": 55,
+          "score": 5.8
+        }
+      ],
+      "separateReviewerFirstScores": [
+        {
+          "id": 2,
+          "score": 8
+        },
+        {
+          "id": 5,
+          "score": 8.6
+        },
+        {
+          "id": 15,
+          "score": 7.6
+        },
+        {
+          "id": 38,
+          "score": 7
+        },
+        {
+          "id": 42,
+          "score": 7.3
+        },
+        {
+          "id": 46,
+          "score": 6.5
+        },
+        {
+          "id": 49,
+          "score": 7.9
+        },
+        {
+          "id": 53,
+          "score": 7.8
+        },
+        {
+          "id": 54,
+          "score": 7
+        },
+        {
+          "id": 55,
+          "score": 4.4
+        }
+      ],
+      "discardedRootDraftScores": [
+        {
+          "id": 2,
+          "score": 9.1
+        },
+        {
+          "id": 5,
+          "score": 9.2
+        },
+        {
+          "id": 15,
+          "score": 9
+        },
+        {
+          "id": 38,
+          "score": 9
+        },
+        {
+          "id": 42,
+          "score": 9
+        },
+        {
+          "id": 46,
+          "score": 9.1
+        },
+        {
+          "id": 49,
+          "score": 9.2
+        },
+        {
+          "id": 53,
+          "score": 9.1
+        },
+        {
+          "id": 54,
+          "score": 9
+        },
+        {
+          "id": 55,
+          "score": 8.7
+        }
+      ],
+      "discardReason": "The separate critique did not substantiate the optimistic root draft. Scores were lowered rather than forcing individual acceptance."
+    }
+  ],
+  "historicalReviewMethods": [
+    {
+      "reviewedOn": "2026-10-12",
+      "kind": "Simulated expert persona assessment",
+      "actualRegisteredFictionalAccounts": 10,
+      "corePersonas": 8,
+      "additionalPartnershipPersonas": 2,
+      "approvedFixtureMatches": 31,
+      "additionalRealPublishedReturnMatch": 1,
+      "ratingSource": "Actual local rating publisher and approved match APIs; persona ratings are not fabricated browser responses.",
+      "perceptionSource": "Expert inspection of rendered screens and journeys from each persona perspective; not interviews or participant-reported scores.",
+      "outputDirectory": "outputs/home-persona-review-2026-10-12",
+      "financialIntegration": "Excluded",
+      "scopeLimit": "Homepage criteria only. Original 150-criterion outcome register and measured D7/D30, model calibration and willingness-to-pay values are unchanged.",
+      "personaAppraisal": "docs/acceptance/homepage-persona-appraisal.json"
+    }
+  ],
+  "previousEngineeringVerifications": [
+    {
+      "status": "Local build/server checks and all 98 unique browser scenarios have passing coverage across documented runs. Final changed persona file passes all 14 cases; the last complete local 98-case run had 97 passes and one corrected fixture-navigation failure. Remote complete-suite verification is pending at commit time.",
+      "buildAndTypeCheck": "passed",
+      "serverTests": {
+        "passed": 62,
+        "failed": 0
+      },
+      "browserTests": {
+        "distinctCasesWithPassingCoverage": 98,
+        "lastFullRun": {
+          "passed": 97,
+          "failed": 1,
+          "skipped": 0,
+          "evidence": "outputs/home-persona-review-2026-10-12/browser-failed-98-navigation.json"
+        },
+        "finalAffectedRun": {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "evidence": "outputs/home-persona-review-2026-10-12/personas-final.json"
+        },
+        "singleLocalFull98PassClaim": false
+      },
+      "actualAccounts": {
+        "count": 10,
+        "approvedSetupMatches": 31,
+        "observations": 15
+      },
+      "accessibility": {
+        "newPersonaStates": 10,
+        "detectedViolations": 0,
+        "indeterminateNodeInstances": 282
+      },
+      "fixtureCorrections": [
+        "The retained-milestone fixture now has all required participant fields and selects its category.",
+        "The cross-category walkthrough follows visible Show more controls until the actual Mixed story appears; it no longer assumes a fixed number of newer matches."
+      ],
+      "previewCaptureCount": 5,
+      "previewErrors": 0,
+      "previewOverflow": false,
+      "limitations": "Expert fictional-account review and Chromium viewport emulation. No direct real-player reports, physical-device/assistive-technology acceptance, measured retention, price-value fit or badminton calibration claim."
+    }
+  ]
 }

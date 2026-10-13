@@ -24,8 +24,14 @@ import {
   now,
 } from "./service.ts";
 import { CATEGORIES, FORMATS, type Category } from "../src/domain.ts";
+import { milestoneFor } from "../src/home-growth.ts";
 import { localityKey, localityLabel, validCountry } from "../src/location.ts";
 import { registerCommunity } from "./community.ts";
+import {
+  localCourt,
+  receivedRespect,
+  registerHomeGrowth,
+} from "./home-growth.ts";
 import { registerPasskeys } from "./passkeys.ts";
 import { preferenceSnapshot } from "../src/preference-draft.ts";
 import { RatingRunner } from "./rating-runner.ts";
@@ -584,6 +590,8 @@ export async function buildApp(
         feed: activity.feed,
         feedNext: activity.next,
         generatedAt: now(),
+        localCourt: localCourt(service, actor),
+        receivedRespect: receivedRespect(service, actor),
         results: service.results(actor),
         reviewResults: service.pendingResults(actor),
         circles: db.all(
@@ -751,9 +759,37 @@ export async function buildApp(
       baseline = first?.count === 5 ? first.after : first?.before;
     const ordered = (map: Map<string, any>) =>
       [...map.values()].sort((a, b) => b.count - a.count);
+    const publishedResults = events.flatMap((e) => {
+      const change = JSON.parse(e.changes)[actor];
+      return change?.count >= 5
+        ? [
+            {
+              unitId: e.unit_id,
+              playedAt: e.played_at,
+              score: change.after,
+              count: change.count,
+              delta: change.count === 5 ? null : change.delta,
+              won: change.won,
+              milestone: milestoneFor(change),
+            },
+          ]
+        : [];
+    });
+    const candidates = [
+      publishedResults.at(-1),
+      ...[...publishedResults].reverse().filter((r) => r.milestone),
+    ].filter(Boolean);
+    const moments = [
+      ...new Map(candidates.map((r) => [r!.unitId, r!])).values(),
+    ].slice(0, 3);
     return {
       category: input.category,
       period: input.period,
+      owner: actor,
+      asOf: now(),
+      demo:
+        db.get("SELECT value FROM app_meta WHERE key='demo_seeded'")?.value ===
+        "true",
       count: events.length,
       wins,
       delta: last && baseline !== undefined ? last.after - baseline : null,
@@ -762,7 +798,20 @@ export async function buildApp(
       partners: ordered(partners),
       opponents: ordered(opponents),
       formats: [...formats.values()],
+      moments,
       limited: rows.length > 2000,
+      trajectory: events.flatMap((e) => {
+        const change = JSON.parse(e.changes)[actor];
+        return change?.count >= 5
+          ? [
+              {
+                score: change.after,
+                playedAt: e.played_at,
+                count: change.count,
+              },
+            ]
+          : [];
+      }),
     };
   });
   app.post("/api/notifications/read", async (req) => {
@@ -1433,6 +1482,8 @@ export async function buildApp(
     const own = service.rating(actor, input.category),
       scores = players.map((p) => ({
         ...service.player(p.id, actor),
+        canConnect:
+          !!p.discoverable || p.id === actor || service.friends(actor, p.id),
         rating: service.rating(p.id, input.category),
       }));
     const qualified = scores
@@ -1619,6 +1670,11 @@ export async function buildApp(
           "SELECT id,expires,revoked FROM player_invites WHERE owner=? ORDER BY created_at",
           req.actor.id,
         ),
+        congratulations: db.all(
+          "SELECT unit_id AS unitId,revision_id AS revisionId,sender,recipient,milestone,score,created_at AS createdAt FROM court_congratulations WHERE sender=? OR recipient=? ORDER BY created_at",
+          req.actor.id,
+          req.actor.id,
+        ),
         model: "gaussian-participant-0.1",
       };
     },
@@ -1683,6 +1739,11 @@ export async function buildApp(
         actor,
       );
       db.run("DELETE FROM connections WHERE a=? OR b=?", actor, actor);
+      db.run(
+        "DELETE FROM court_congratulations WHERE sender=? OR recipient=?",
+        actor,
+        actor,
+      );
       db.run("DELETE FROM notifications WHERE user_id=?", actor);
       db.run(
         "DELETE FROM circle_members WHERE circle_id IN(SELECT id FROM circles WHERE owner=?)",
@@ -1756,6 +1817,7 @@ export async function buildApp(
     return { ok: true };
   });
   registerCommunity(app, db, service);
+  registerHomeGrowth(app, service);
   registerPasskeys(app, db, service, origin, authenticate);
   if (existsSync(resolve("dist/index.html"))) {
     await app.register(staticFiles, { root: resolve("dist"), prefix: "/" });

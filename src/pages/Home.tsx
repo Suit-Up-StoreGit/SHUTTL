@@ -10,6 +10,15 @@ import {
 } from "../home-context.ts";
 import { Crest } from "../components/Community.tsx";
 import {
+  ShuttleMark,
+  HomeEarnedMoment,
+  CongratulateFriend,
+  ReceivedRespect,
+  LocalCourtLink,
+  HomeNextStep,
+} from "../components/HomeGrowth.tsx";
+import ProgressBrief from "../components/ProgressBrief.tsx";
+import {
   comparable,
   comparisonCopy,
   canReviewResult,
@@ -149,6 +158,7 @@ export function RatingCard({
           vectorEffect="non-scaling-stroke"
         />
       </svg>
+      {opening && <ShuttleMark className="passport-shuttle-mark" />}
       <div className="passport-top">
         <span className="eyebrow">{category} rating</span>
         <span className="passport-code">
@@ -384,6 +394,7 @@ export function Home({
       ? data.competitionUpdate
       : null);
   const [feedScope, setFeedScope] = useState("all");
+  const [briefOwner, setBriefOwner] = useState<string | null>(null);
   const [circleExpanded, setCircleExpanded] = useState(false);
   const [feedLimit, setFeedLimit] = useState(3);
   const [older, setOlder] = useState<any[]>([]);
@@ -505,11 +516,15 @@ export function Home({
   for (const f of entries.sort((a: any, b: any) =>
     b.playedAt.localeCompare(a.playedAt),
   )) {
-    if (feedScope !== "all" && f.category !== category) continue;
+    if (feedScope === "category" && f.category !== category) continue;
     const key = f.unitId || f.id;
     groups.set(key, [...(groups.get(key) || []), f]);
   }
-  const allFeed = [...groups.values()];
+  const allFeed = [...groups.values()].filter(
+    (group) =>
+      feedScope !== "milestones" ||
+      group.some((f) => f.score !== null && f.milestone),
+  );
   const feed = allFeed.slice(0, feedLimit);
   useEffect(() => {
     setFeedLimit(3);
@@ -844,20 +859,12 @@ export function Home({
             </section>
           )}
           {recentEarnedMoment && (
-            <button className="home-earned" onClick={() => open(earned.id)}>
-              <span className="home-earned-seal">
-                <Gem league={leagueFor(moment.change.after).name} size={36} />
-              </span>
-              <span>
-                <small>ON COURT / EARNED</small>
-                <strong>{moment.title}</strong>
-                <span>
-                  {dateLabel(publishedPlayedAt(earned), me.timezone)} · View
-                  your confirmed result
-                </span>
-              </span>
-              <ArrowUpRight size={18} />
-            </button>
+            <HomeEarnedMoment
+              earned={earned}
+              moment={moment}
+              timezone={me.timezone}
+              open={() => open(earned.id)}
+            />
           )}
           {rating.count === 0 && (
             <div className="home-start-note">
@@ -882,15 +889,14 @@ export function Home({
               <Activity size={16} />
               Playing insights
             </button>
-            <button className="text-button" onClick={() => setPage("rankings")}>
-              <MapPin size={16} />
-              Local players
-              {me.localOptIn && me.city
-                ? ` · ${me.district || me.city}`
-                : me.city
-                  ? " · explore"
-                  : " · choose your area"}
-            </button>
+            <LocalCourtLink
+              me={me}
+              friends={friends}
+              compare={(id) => compare(id, category)}
+              court={data.localCourt}
+              category={category}
+              open={() => setPage("rankings")}
+            />
             {sync?.at && !sync.error && (
               <span className="home-last-sync">
                 Updated{" "}
@@ -919,6 +925,13 @@ export function Home({
                   : `Your goal · ${goal}`}
             </button>
           </div>
+          <HomeNextStep
+            results={results}
+            rating={rating}
+            category={category}
+            brief={() => setBriefOwner(me.id)}
+            open={open}
+          />
         </div>
         <section
           className="home-social"
@@ -958,10 +971,17 @@ export function Home({
             </button>
             <button
               aria-label={`${category} activity`}
-              aria-pressed={feedScope !== "all"}
+              aria-pressed={feedScope === "category"}
               onClick={() => setFeedScope("category")}
             >
               {category}
+            </button>
+            <button
+              aria-pressed={feedScope === "milestones"}
+              aria-label="Milestone activity, all categories"
+              onClick={() => setFeedScope("milestones")}
+            >
+              Milestones
             </button>
           </div>
           {data.circles?.length > 0 && (
@@ -989,6 +1009,7 @@ export function Home({
               ))}
             </div>
           )}
+          <ReceivedRespect items={data.receivedRespect || []} open={open} />
           {feed.length ? (
             <div className="home-feed-list">
               {feed.map((group: any[]) => {
@@ -1063,7 +1084,7 @@ export function Home({
                           >
                             {f.player.name} <ArrowUpRight size={13} />
                           </button>
-                          <div>
+                          <div className="feed-numbers">
                             <strong>
                               {f.score === null
                                 ? "—"
@@ -1100,6 +1121,12 @@ export function Home({
                                   : "Personal best"}
                             </span>
                           )}
+                          <CongratulateFriend
+                            key={`${me.id}:${f.unitId}:${f.revisionId}:${f.player.id}:${f.milestone}:${f.score}`}
+                            entry={f}
+                            mock={mock}
+                            refresh={sync?.retry}
+                          />
                         </div>
                       ))}
                     </div>
@@ -1138,7 +1165,9 @@ export function Home({
               </h3>
               <p>
                 {friends.length
-                  ? `No recent ${feedScope === "all" ? "confirmed play" : category.toLowerCase() + " activity"} is loaded. Your friends’ results will appear here once confirmed.`
+                  ? feedScope === "milestones"
+                    ? "No earned milestones in the loaded activity yet. Keep following your friends’ genuine progress, or explore older matches."
+                    : `No recent ${feedScope === "all" ? "confirmed play" : category.toLowerCase() + " activity"} is loaded. Your friends’ results will appear here once confirmed.`
                   : "Find your friends. Follow their matches, rating changes and earned milestones."}
               </p>
               <button
@@ -1200,6 +1229,28 @@ export function Home({
           )}
         </section>
       </div>
+      {briefOwner === me.id && (
+        <ProgressBrief
+          key={me.id}
+          me={me}
+          category={category}
+          results={data.results}
+          mock={mock}
+          close={() => setBriefOwner(null)}
+          goals={() => {
+            setBriefOwner(null);
+            setPage("profile", "goals");
+          }}
+          insights={() => {
+            setBriefOwner(null);
+            setPage("profile", "insights");
+          }}
+          openResult={(id) => {
+            setBriefOwner(null);
+            open(id);
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -1306,6 +1357,9 @@ export function mockDashboard(doublesScore = 1628) {
       name: "Simon",
       username: "featherballer",
       district: "Tampines",
+      country: "SG",
+      city: "Singapore",
+      localOptIn: true,
       timezone: "Asia/Singapore",
       goals: { Doubles: 1700 },
       ratings: ratings(doublesScore),
@@ -1314,6 +1368,15 @@ export function mockDashboard(doublesScore = 1628) {
     results: samples,
     circles: [],
     unread: 2,
+    localCourt: {
+      label: "Tampines · Singapore",
+      count: 4,
+      sampled: false,
+      active: 4,
+      published: { Singles: 4, Doubles: 4, Mixed: 0 },
+      people: friends,
+    },
+    receivedRespect: [],
     feed: [
       {
         id: "sample-priya-doubles",
@@ -1344,6 +1407,8 @@ export function mockDashboard(doublesScore = 1628) {
         score: 1570,
         delta: 12,
         milestone: "best",
+        canCongratulate: true,
+        revisionId: "sample-kai-published",
         won: true,
       },
       {

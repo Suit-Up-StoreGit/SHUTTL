@@ -84,6 +84,8 @@ export class Database {
       CREATE TABLE IF NOT EXISTS circle_identity(circle_id TEXT PRIMARY KEY REFERENCES circles(id) ON DELETE CASCADE,crest TEXT NOT NULL DEFAULT 'shuttle',tagline TEXT NOT NULL DEFAULT '',recap_day INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS portraits(owner TEXT PRIMARY KEY REFERENCES users(id),image BLOB NOT NULL,updated_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS encouragement(unit_id TEXT NOT NULL REFERENCES units(id),sender TEXT NOT NULL REFERENCES users(id),recipient TEXT NOT NULL REFERENCES users(id),kind TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(unit_id,sender,recipient));
+      CREATE TABLE IF NOT EXISTS court_congratulations(id TEXT PRIMARY KEY,unit_id TEXT NOT NULL REFERENCES units(id),revision_id TEXT NOT NULL REFERENCES revisions(id),sender TEXT NOT NULL REFERENCES users(id),recipient TEXT NOT NULL REFERENCES users(id),milestone TEXT NOT NULL,score INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(unit_id,revision_id,sender,recipient));
+      CREATE INDEX IF NOT EXISTS court_congratulations_recipient ON court_congratulations(recipient,created_at);
       CREATE TABLE IF NOT EXISTS research_consent(owner TEXT PRIMARY KEY REFERENCES users(id),enabled INTEGER NOT NULL,version TEXT NOT NULL,updated_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS research_events(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),kind TEXT NOT NULL,created_at TEXT NOT NULL);
       CREATE INDEX IF NOT EXISTS research_event_time ON research_events(owner,created_at);

@@ -994,6 +994,13 @@ export function App() {
                 data={data}
                 category={category}
                 setCategory={setCategory}
+                player={(p) => {
+                  if (p.id === data.me.id) setPage("profile");
+                  else if (data.friends.some((f: Player) => f.id === p.id)) {
+                    setComparisonCategory(category);
+                    setComparisonId(p.id);
+                  } else setArrivalPlayer(p.username);
+                }}
               />
             )}
             {page === "profile" && (
@@ -1061,6 +1068,7 @@ export function App() {
       {content}
       {data && arrivalPlayer && (
         <PlayerArrival
+          key={data.me.id + ":" + arrivalPlayer}
           username={arrivalPlayer}
           close={() => {
             setArrivalPlayer(null);

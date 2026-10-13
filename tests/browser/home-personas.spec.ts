@@ -6,8 +6,8 @@ import {
 } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { randomUUID } from "node:crypto";
-import { mkdirSync, writeFileSync } from "node:fs";
-const output = "outputs/home-persona-review-2026-10-12";
+import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
+const output = "outputs/home-growth-2026-10-13";
 mkdirSync(output, { recursive: true });
 const names = {
   newcomer: "Asha First-Time Player",
@@ -20,6 +20,7 @@ const names = {
   accessible: "Harper Enlarged Text",
   fixedPartnership: "Iris Fixed Partnership",
   regularPartner: "Jae Regular Partner",
+  localExplorer: "Leo Local Explorer",
 };
 type Persona = {
   id: string;
@@ -37,35 +38,60 @@ const headers = (p: Persona) => ({
   "x-csrf-token": p.csrf,
   "idempotency-key": randomUUID(),
 });
-async function publish(roster: Persona[], category: string, win = true) {
+let busyRetries = 0;
+async function retryBusy<T extends { status(): number }>(
+  send: () => Promise<T>,
+) {
+  for (let attempt = 0; ; attempt++) {
+    const response = await send();
+    if (response.status() !== 503 || attempt >= 3) return response;
+    busyRetries++;
+    await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+  }
+}
+async function publish(
+  roster: Persona[],
+  category: string,
+  win = true,
+  at?: string,
+) {
   const actor = roster[0];
-  const response = await actor.client.post("/api/results", {
-    headers: headers(actor),
-    data: {
-      unitId: randomUUID(),
-      category,
-      format: "ONE_21",
-      roster: roster.map((p) => p.id),
-      games: [win ? [21, 17] : [17, 21]],
-      playedAt: new Date(
-        Date.now() - 7200000 + matchIndex++ * 60000,
-      ).toISOString(),
-      scopeId: null,
-      agree: true,
-    },
-  });
+  const requestHeaders = headers(actor);
+  const recordedAt =
+    at || new Date(Date.now() - 7200000 + matchIndex * 60000).toISOString();
+  matchIndex++;
+  const payload = {
+    unitId: randomUUID(),
+    category,
+    format: "ONE_21",
+    roster: roster.map((p) => p.id),
+    games: [win ? [21, 17] : [17, 21]],
+    playedAt: recordedAt,
+    scopeId: null,
+    agree: true,
+  };
+  const response = await retryBusy(() =>
+    actor.client.post("/api/results", {
+      headers: requestHeaders,
+      data: payload,
+    }),
+  );
   expect(response.status()).toBe(200);
   const id = (await response.json()).id;
   const unit = await (await actor.client.get(`/api/results/${id}`)).json();
-  for (const p of roster.slice(1))
+  for (const p of roster.slice(1)) {
+    const approvalHeaders = headers(p);
     expect(
       (
-        await p.client.post(`/api/results/${id}/approve`, {
-          headers: headers(p),
-          data: { revisionId: unit.revisionId, agree: true },
-        })
+        await retryBusy(() =>
+          p.client.post(`/api/results/${id}/approve`, {
+            headers: approvalHeaders,
+            data: { revisionId: unit.revisionId, agree: true },
+          }),
+        )
       ).status(),
     ).toBe(200);
+  }
   return id;
 }
 async function view(browser: Browser, key: keyof typeof names) {
@@ -134,6 +160,9 @@ test.beforeAll(async ({ playwright }) => {
             district: "Mitte",
             timezone: "Europe/Berlin",
             localOptIn: !["privacy", "newcomer", "accessible"].includes(key),
+            ...(key === "localExplorer"
+              ? { discoverable: true, publicName: true }
+              : {}),
           },
         })
       ).status(),
@@ -193,7 +222,7 @@ test.beforeAll(async ({ playwright }) => {
     )
     .toBe(5);
   const keys = Object.keys(names).filter(
-    (key) => key !== "newcomer",
+    (key) => !["newcomer", "localExplorer"].includes(key),
   ) as (keyof typeof names)[];
   for (let i = 0; i < keys.length; i++)
     for (let j = i + 1; j < keys.length; j++) {
@@ -278,6 +307,8 @@ test.afterAll(async () => {
     JSON.stringify(
       {
         kind: "Simulated persona walkthroughs by an expert reviewer; not real-player research",
+        busyRetriesWithFrozenRequest: busyRetries,
+        approvedMatchesCreatedByThisFile: matchIndex,
         observations,
       },
       null,
@@ -286,7 +317,9 @@ test.afterAll(async () => {
   );
   for (const p of Object.values(players)) await p.client.dispose();
 });
-for (const key of Object.keys(names) as (keyof typeof names)[])
+for (const key of Object.keys(names).filter(
+  (k) => k !== "localExplorer",
+) as (keyof typeof names)[])
   test(`${key} persona uses the actual account, ratings, home actions and personal context`, async ({
     browser,
   }) => {
@@ -473,6 +506,500 @@ test("returning persona sees a real newly published match, acknowledges it, and 
         "one whole-match count for two friend rows",
         "device-scoped acknowledgement",
         "reload continuity",
+      ],
+    });
+  } finally {
+    await context.close();
+  }
+});
+
+test("a real friend congratulates a revealed partnership from the milestone feed, with retry and private recipient recognition", async ({
+  browser,
+}) => {
+  const { page, context } = await view(browser, "competitive");
+  let recipientView: Awaited<ReturnType<typeof view>> | undefined;
+  try {
+    await page
+      .getByRole("button", {
+        name: "Milestone activity, all categories",
+        exact: true,
+      })
+      .click();
+    const dashboard = await (
+      await players.competitive.client.get("/api/dashboard")
+    ).json();
+    const entry = dashboard.feed.find(
+      (f: any) =>
+        f.player.id === players.fixedPartnership.id && f.milestone === "reveal",
+    );
+    expect(entry).toBeTruthy();
+    const unchanged = (
+      await (await players.fixedPartnership.client.get("/api/me")).json()
+    ).ratings;
+    let fail = true;
+    await page.route(`**/api/activity/${entry.unitId}/congratulate`, (route) =>
+      fail
+        ? route.fulfill({
+            status: 503,
+            json: { error: "Temporary congratulations interruption" },
+          })
+        : route.continue(),
+    );
+    const send = page.getByRole("button", {
+      name: "Congratulate Iris Fixed Partnership",
+      exact: true,
+    });
+    await send.click();
+    await expect(page.getByRole("alert")).toContainText(
+      "Temporary congratulations interruption",
+    );
+    fail = false;
+    await send.click();
+    await expect(
+      page.getByRole("button", {
+        name: "Congratulated Iris Fixed Partnership",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    expect(
+      (await (await players.fixedPartnership.client.get("/api/me")).json())
+        .ratings,
+    ).toEqual(unchanged);
+    expect(
+      (
+        await players.competitive.client.get(`/api/results/${entry.unitId}`)
+      ).status(),
+    ).toBe(403);
+    recipientView = await view(browser, "fixedPartnership");
+    const recognition = recipientView.page.getByRole("region", {
+      name: "Private recognition",
+      exact: true,
+    });
+    await expect(recognition).toContainText("Chloe Singles Competitor");
+    await expect(recognition).toContainText("rating reveal");
+    await expect(recognition).toContainText("Only you see this");
+    await recognition.screenshot({ path: `${output}/private-recognition.png` });
+    await recipientView.page.evaluate(() => {
+      document.documentElement.dataset.palette = "dark";
+    });
+    const darkHome = await new AxeBuilder({ page: recipientView.page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(darkHome.violations).toEqual([]);
+    await recipientView.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const darkBrief = recipientView.page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await expect(darkBrief.locator(".brief-facts")).toBeVisible();
+    const darkBriefAudit = await new AxeBuilder({ page: recipientView.page })
+      .include("dialog[open]")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(darkBriefAudit.violations).toEqual([]);
+    await darkBrief.screenshot({ path: `${output}/dark-progress-brief.png` });
+    await recipientView.page.keyboard.press("Escape");
+    await recognition.getByRole("button").click();
+    await expect(
+      recipientView.page.getByRole("dialog", {
+        name: "Your confirmed result",
+        exact: true,
+      }),
+    ).toBeVisible();
+    observations.push({
+      persona: "competitive",
+      checked: [
+        "actual revealed friend milestone",
+        "retry",
+        "private recognition",
+        "foreign match details withheld",
+        "no rating change",
+      ],
+    });
+  } finally {
+    await recipientView?.context.close();
+    await context.close();
+  }
+});
+
+test("a competitive player reads an actor-bound progress brief, preserves home category and downloads an anonymous factual card", async ({
+  browser,
+}) => {
+  const { page, context } = await view(browser, "competitive");
+  try {
+    await page
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Singles", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await expect(
+      brief.getByRole("region", { name: "Published rating trajectory" }),
+    ).toContainText("Your trajectory");
+    await brief
+      .getByLabel("Your playing period", { exact: true })
+      .selectOption("all");
+    const actualCount = (
+      await (await players.competitive.client.get("/api/me")).json()
+    ).ratings.find((r: any) => r.category === "Singles").count;
+    await expect(brief.locator(".brief-facts > div").first()).toContainText(
+      String(actualCount),
+    );
+    const actualInsights = await (
+      await players.competitive.client.get(
+        "/api/insights?category=Singles&period=all",
+      )
+    ).json();
+    const connections = brief.getByRole("region", {
+      name: "Your playing connections",
+    });
+    await expect(connections).toContainText(
+      actualInsights.opponents[0].player.name,
+    );
+    await expect(connections).toContainText(
+      `${actualInsights.opponents[0].count} confirmed matches against them · your side won ${actualInsights.opponents[0].wins}`,
+    );
+    await expect(
+      brief.getByLabel("Include my name on the downloaded card"),
+    ).not.toBeChecked();
+    await brief.screenshot({ path: `${output}/progress-brief.png` });
+    const downloadPromise = page.waitForEvent("download");
+    await brief
+      .getByRole("button", { name: "Download progress card", exact: true })
+      .click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toBe("shuttl-singles-progress.png");
+    await download.saveAs(`${output}/private-progress-card.png`);
+    const png = readFileSync(`${output}/private-progress-card.png`);
+    expect(png.subarray(1, 4).toString()).toBe("PNG");
+    expect(png.readUInt32BE(16)).toBe(1080);
+    expect(png.readUInt32BE(20)).toBe(1440);
+    expect(png.length).toBeGreaterThan(20000);
+    await expect(brief.getByRole("status")).toContainText(
+      "No public link was created",
+    );
+    const journal = brief.getByRole("region", {
+      name: "Results behind your progress",
+    });
+    await expect(journal.getByRole("button").first()).toBeVisible();
+    await journal.getByRole("button").first().click();
+    await expect(
+      page.getByRole("dialog", { name: "Your confirmed result", exact: true }),
+    ).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    await brief
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Mixed", exact: true })
+      .click();
+    await expect(
+      brief.getByRole("region", { name: "Current rating context" }),
+    ).toContainText("Building your rating");
+    await expect(brief.locator(".brief-trajectory svg")).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await expect(
+      page
+        .getByRole("group", { name: "Rating category" })
+        .getByRole("button", { name: "Singles", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    observations.push({
+      persona: "competitive",
+      checked: [
+        "actor-bound full-history brief",
+        "visible trajectory and real result turning points",
+        "private anonymous 1080x1440 PNG",
+        "no fake Mixed rating",
+        "home category preserved",
+      ],
+    });
+  } finally {
+    await context.close();
+  }
+});
+
+test("a quiet-week player revisits real old progress, and a narrow enlarged-text player can use the same brief", async ({
+  browser,
+}) => {
+  test.setTimeout(90000);
+  for (let i = 0; i < 5; i++)
+    await publish(
+      [players.returning, players.accessible],
+      "Singles",
+      i % 2 === 0,
+      new Date(Date.now() - 8 * 86400000 + i * 60000).toISOString(),
+    );
+  await expect
+    .poll(
+      async () =>
+        (
+          await (await players.returning.client.get("/api/me")).json()
+        ).ratings.find((r: any) => r.category === "Singles").count,
+      { timeout: 30000 },
+    )
+    .toBe(5);
+  for (const key of ["returning", "accessible"] as const) {
+    const { page, context } = await view(browser, key);
+    try {
+      if (key === "accessible") {
+        await page
+          .getByRole("button", { name: "Profile", exact: true })
+          .last()
+          .click();
+        await page
+          .getByRole("button", { name: "Settings", exact: true })
+          .click();
+        await page
+          .getByLabel("Text size", { exact: true })
+          .selectOption("large");
+        await page
+          .getByRole("button", { name: "Home", exact: true })
+          .last()
+          .click();
+        await page.setViewportSize({ width: 320, height: 844 });
+      }
+      await page
+        .getByRole("group", { name: "Rating category" })
+        .getByRole("button", { name: "Singles", exact: true })
+        .click();
+      await expect(
+        page.getByRole("region", { name: "Your next step" }),
+      ).toContainText("Your progress is still here.");
+      await expect(page.locator(".home-earned")).toHaveCount(0);
+      await page
+        .getByRole("button", { name: "Your progress brief", exact: true })
+        .click();
+      const brief = page.getByRole("dialog", {
+        name: "Your progress brief",
+        exact: true,
+      });
+      await brief
+        .getByLabel("Your playing period", { exact: true })
+        .selectOption("7");
+      await expect(brief.locator(".brief-facts > div").first()).toContainText(
+        "0",
+      );
+      await brief
+        .getByLabel("Your playing period", { exact: true })
+        .selectOption("all");
+      await expect(brief.locator(".brief-facts > div").first()).toContainText(
+        "5",
+      );
+      await expect(
+        brief.getByRole("region", { name: "Published rating trajectory" }),
+      ).toContainText("Your starting point");
+      await expect(brief.locator(".brief-trajectory svg")).toHaveCount(0);
+      expect(await brief.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(
+        true,
+      );
+      const audit = await new AxeBuilder({ page })
+        .include("dialog[open]")
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+        .analyze();
+      expect(audit.violations).toEqual([]);
+      await page.screenshot({
+        path: `${output}/${key}-brief-viewport.png`,
+        animations: "disabled",
+      });
+      observations.push({
+        persona: key,
+        checked: [
+          "actual five old published matches",
+          "quiet-week next step",
+          "empty seven-day view versus real career trace",
+          "accessible brief",
+        ],
+        detectedAccessibilityViolations: audit.violations.length,
+        indeterminateNodes: audit.incomplete.reduce(
+          (n, item) => n + item.nodes.length,
+          0,
+        ),
+      });
+    } finally {
+      await context.close();
+    }
+  }
+  await publish(
+    [players.returning, players.accessible],
+    "Singles",
+    false,
+    new Date(Date.now() - 60000).toISOString(),
+  );
+  await expect
+    .poll(
+      async () =>
+        (
+          await (await players.returning.client.get("/api/me")).json()
+        ).ratings.find((r: any) => r.category === "Singles").count,
+      { timeout: 30000 },
+    )
+    .toBe(6);
+  const later = await view(browser, "returning");
+  try {
+    await later.page
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Singles", exact: true })
+      .click();
+    await later.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = later.page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await brief
+      .getByLabel("Your playing period", { exact: true })
+      .selectOption("7");
+    await expect(brief.locator(".brief-facts > div").first()).toContainText(
+      "1",
+    );
+    await expect(
+      brief.getByRole("region", { name: "Published rating trajectory" }),
+    ).toContainText("One point in this period");
+    await expect(
+      brief.getByRole("region", { name: "Published rating trajectory" }),
+    ).not.toContainText("First published estimate");
+    await brief.screenshot({ path: `${output}/later-period-single-point.png` });
+    observations.push({
+      persona: "returning",
+      checked: [
+        "sixth actual result is the sole published point in the selected seven-day period",
+        "later estimate never presented as five-match reveal",
+        "real latest loss remains contextualized",
+      ],
+    });
+  } finally {
+    await later.context.close();
+  }
+});
+
+test("local context leads to a comparison or an explicit friend request, and an already pending request cannot be duplicated", async ({
+  browser,
+}) => {
+  test.setTimeout(90000);
+  for (let i = 0; i < 5; i++)
+    await publish(
+      [players.localExplorer, players.competitive],
+      "Singles",
+      i % 2 === 0,
+    );
+  await expect
+    .poll(
+      async () =>
+        (
+          await (await players.localExplorer.client.get("/api/me")).json()
+        ).ratings.find((r: any) => r.category === "Singles").count,
+      { timeout: 30000 },
+    )
+    .toBe(5);
+  const { page, context } = await view(browser, "recreational");
+  try {
+    await expect(page.locator(".home-local-court")).toContainText(
+      "opted-in players",
+    );
+    await expect(page.locator(".home-local-court")).toContainText("Mitte");
+    await page
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Singles", exact: true })
+      .click();
+    await expect(page.locator(".home-local-connection")).toContainText(
+      "Accepted local connection",
+    );
+    await page.locator(".home-local-connection-compare").click();
+    await expect(
+      page
+        .getByRole("dialog")
+        .getByRole("group", { name: "Rating category" })
+        .getByRole("button", { name: "Singles", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await page.keyboard.press("Escape");
+    await page
+      .getByRole("button", { name: "Local players · Mitte", exact: true })
+      .click();
+    await page
+      .getByRole("button", {
+        name: "View Chloe Singles Competitor",
+        exact: true,
+      })
+      .click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page
+      .locator(`[data-player-id="${players.localExplorer.id}"]`)
+      .getByRole("button", { name: "View Leo Local Explorer", exact: true })
+      .click();
+    const invite = page.getByRole("dialog", {
+      name: "Your next playing connection",
+      exact: true,
+    });
+    await expect(invite).toContainText("Leo Local Explorer");
+    await invite
+      .getByRole("button", { name: "Ask to connect", exact: true })
+      .click();
+    await expect(invite).toHaveCount(0);
+    await page
+      .locator(`[data-player-id="${players.localExplorer.id}"]`)
+      .getByRole("button", { name: "View Leo Local Explorer", exact: true })
+      .click();
+    await expect(
+      invite.getByRole("button", { name: "Request pending", exact: true }),
+    ).toBeDisabled();
+    await expect(invite).toContainText("They choose whether to accept");
+    observations.push({
+      persona: "localExplorer",
+      checked: [
+        "opt-in local population",
+        "direct accepted friend comparison",
+        "explicit first request",
+        "pending request continuity",
+      ],
+    });
+  } finally {
+    await context.close();
+  }
+});
+
+test("earned badminton motion is finite, honors live reduced motion, and never changes the revealed number", async ({
+  browser,
+}) => {
+  const { page, context } = await view(browser, "regularPartner");
+  try {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    const published = await page.locator(".rating-number").textContent();
+    await expect(page.locator(".passport-shuttle-mark")).toBeVisible();
+    const motion = await page.locator(".home-earned-seal").evaluate((e) => ({
+      duration: getComputedStyle(e).animationDuration,
+      iterations: getComputedStyle(e).animationIterationCount,
+    }));
+    expect(motion.iterations).toBe("1");
+    expect(parseFloat(motion.duration)).toBeLessThanOrEqual(1);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    expect(
+      await page
+        .locator(".home-earned-seal")
+        .evaluate((e) => getComputedStyle(e).animationName),
+    ).toBe("none");
+    expect(
+      await page
+        .locator(".passport-shuttle-mark")
+        .evaluate((e) => getComputedStyle(e).animationName),
+    ).toBe("none");
+    await expect(page.locator(".rating-number")).toHaveText(published!);
+    observations.push({
+      persona: "regularPartner",
+      checked: [
+        "original badminton illustration",
+        "finite earned arrival",
+        "live reduced-motion preference",
+        "published number stays fixed",
       ],
     });
   } finally {
