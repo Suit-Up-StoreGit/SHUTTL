@@ -18,6 +18,8 @@ import {
   HomeNextStep,
 } from "../components/HomeGrowth.tsx";
 import ProgressBrief from "../components/ProgressBrief.tsx";
+import { CourtCharacter } from "../components/Character.tsx";
+import Podiums from "../components/Podiums.tsx";
 import {
   comparable,
   comparisonCopy,
@@ -679,6 +681,17 @@ export function Home({
               </button>
             )}
           </div>
+          {!mock && <Podiums me={me} category={category} compact />}
+          <button
+            className="text-button character-mini"
+            onClick={() => setPage("profile")}
+          >
+            <CourtCharacter look={me.character} size={52} />
+            <span>
+              Your court character <ArrowUpRight size={14} />
+              <small>Make your look yours.</small>
+            </span>
+          </button>
           {!me.breakMode && friends.length > 0 && (
             <section
               className="home-competition"

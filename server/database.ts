@@ -93,6 +93,11 @@ export class Database {
       CREATE TABLE IF NOT EXISTS passkeys(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),public_key BLOB NOT NULL,counter INTEGER NOT NULL,transports TEXT NOT NULL,label TEXT NOT NULL,created_at TEXT NOT NULL,last_used TEXT);
       CREATE TABLE IF NOT EXISTS passkey_challenges(id TEXT PRIMARY KEY,owner TEXT,session_hash TEXT,kind TEXT NOT NULL,challenge TEXT NOT NULL,expires TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS player_invites(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),expires TEXT NOT NULL,revoked INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS playbooks(owner TEXT NOT NULL REFERENCES users(id),category TEXT NOT NULL,focus TEXT NOT NULL,intention TEXT NOT NULL,reflection TEXT NOT NULL,version INTEGER NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(owner,category));
+      CREATE TABLE IF NOT EXISTS playbook_entries(id TEXT PRIMARY KEY,owner TEXT NOT NULL REFERENCES users(id),category TEXT NOT NULL,focus TEXT NOT NULL,intention TEXT NOT NULL,reflection TEXT NOT NULL,created_at TEXT NOT NULL);
+      CREATE INDEX IF NOT EXISTS playbook_history ON playbook_entries(owner,category,created_at);
+      CREATE TABLE IF NOT EXISTS characters(owner TEXT PRIMARY KEY REFERENCES users(id),look TEXT NOT NULL,updated_at TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS arena_places(owner TEXT PRIMARY KEY REFERENCES users(id),region TEXT NOT NULL,region_key TEXT NOT NULL,neighborhood TEXT NOT NULL,neighborhood_key TEXT NOT NULL);
     `);
   }
   get(sql: string, ...params: any[]): Row | undefined {

@@ -1,0 +1,68 @@
+.podiums-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.podiums-panel h3 {
+  margin: 8px 0 16px;
+  font-size: 1.125rem;
+}
+.podium-entry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+}
+.podium-entry > div {
+  min-width: 0;
+}
+.podium-entry p,
+.podium-context,
+.podium-area p {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 6px 0;
+}
+.podium-badge {
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 5px #14372c18);
+}
+.podium-placeholder {
+  min-width: 64px;
+  font-size: 1.75rem;
+  text-align: center;
+  font-family: Barlow, sans-serif;
+  color: var(--muted);
+}
+.podiums-compact .podium-badge {
+  width: 60px;
+  height: 69px;
+}
+.podium-area {
+  margin-top: 15px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.podium-area summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+}
+.podium-area label {
+  display: block;
+  font-size: 0.8125rem;
+  margin: 12px 0 6px;
+}
+.podium-area input {
+  width: 100%;
+  margin-bottom: 12px;
+}
+@media (max-width: 360px) {
+  .podium-entry {
+    flex-wrap: wrap;
+  }
+}

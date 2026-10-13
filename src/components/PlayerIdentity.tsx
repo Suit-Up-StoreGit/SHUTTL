@@ -11,6 +11,7 @@ import {
 } from "../domain.ts";
 import { localityLabel } from "../location.ts";
 import { Avatar, Gem } from "./UI.tsx";
+import { CourtCharacter } from "./Character.tsx";
 
 type IdentityPlayer = Player & {
   ratings: PublicRating[];
@@ -252,7 +253,11 @@ export function PlayerIdentity({
         </div>
         <div className="profile-identity">
           <div className="player-portrait-frame">
-            <Avatar player={me} />
+            {me.portrait ? (
+              <Avatar player={me} />
+            ) : (
+              <CourtCharacter look={me.character} size={96} />
+            )}
           </div>
           <div className="player-identity-copy">
             <h2>{me.name}</h2>

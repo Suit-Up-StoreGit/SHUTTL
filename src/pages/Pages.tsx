@@ -68,6 +68,8 @@ import { PlayingInsights } from "../components/Insights.tsx";
 import ProgressBrief from "../components/ProgressBrief.tsx";
 import { DeviceNotifications } from "../components/Notifications.tsx";
 import { PlayerIdentity } from "../components/PlayerIdentity.tsx";
+import { CharacterWardrobe } from "../components/Character.tsx";
+import Podiums from "../components/Podiums.tsx";
 import { GroupRecap, PlayerCode } from "../components/Community.tsx";
 import {
   AppearanceChoices,
@@ -1839,6 +1841,8 @@ export function ProfilePage({
                 }
               />
               <RatingGuide category={preferredCategory} />
+              <Podiums me={data.me} category={preferredCategory} />
+              <CharacterWardrobe owner={data.me.id} refresh={refresh} />
             </>
           )}
           {tab === "history" && (

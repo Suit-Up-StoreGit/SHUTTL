@@ -7,6 +7,7 @@ import {
 } from "node:crypto";
 import { promisify } from "node:util";
 import { Database, type Row } from "./database.ts";
+import { characterFor } from "./character.ts";
 import {
   CATEGORIES,
   FORMATS,
@@ -137,6 +138,7 @@ export class Service {
       name:
         allowed || (u.guest && u.invited_by === viewer) ? u.name : u.username,
       guest: !!u.guest,
+      character: characterFor(this, u.id),
       ...(portrait
         ? {
             portrait:
@@ -323,6 +325,7 @@ export class Service {
     );
     return {
       id: u.id,
+      character: characterFor(this, u.id),
       username: u.username,
       name: u.name,
       district: u.district,

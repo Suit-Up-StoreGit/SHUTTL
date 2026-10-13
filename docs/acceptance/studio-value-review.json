@@ -3,20 +3,23 @@
   "scope": "Implemented progress-studio, gamification and visual update; payment integration remains excluded.",
   "method": "Root AI expert appraisal of implemented functions and actual fictional-account mobile renders. The earlier separate review's 5.8 price-value grade is preserved as history. This is a subjective product assessment, not measured purchase behaviour or real-player testimony.",
   "premiumValue": {
-    "previousExpertScore": 5.8,
-    "currentExpertScore": 7.2,
-    "userMinimum": 7,
-    "minimumMetAsExpertJudgment": true,
+    "previousExpertScore": 7.2,
+    "currentExpertScore": 8.0,
+    "userMinimum": 9,
+    "minimumMetAsExpertJudgment": false,
     "primaryUseCase": "Regular club/recreational and competitive players who record confirmed matches and have an active playing circle.",
     "whyItImproved": [
       "Equal-length rolling period comparisons show confirmed match counts, wins/losses and visible rating change without inventing a pre-reveal baseline.",
       "The matchup explorer lets players choose each recorded partner or opponent, preserve the choice across period changes and open the underlying owned results.",
       "An earned career collection links reveals, genuinely crossed league thresholds and a personal high to published evidence. A loss preserves previous earned highs; approved corrections can revise them.",
       "Personal next markers and an optional rivalry lens connect the deeper report to real actions and accepted friends, while preserving unsupported-comparison and break-mode boundaries.",
-      "The membership preview explains concrete proposed $20/month benefits, makes full-preview availability explicit and takes no payment."
+      "The membership preview explains concrete proposed $20/month benefits, makes full-preview availability explicit and takes no payment.",
+      "New score patterns link close games and actual third-game deciders to supporting confirmed results. Own oriented score-history CSVs exclude other players' names and private notes.",
+      "The private playbook supports preparation without match history, saved reflections, a lasting session journal and private downloads, with competing-window edits protected."
     ],
     "remainingWeaknesses": [
       "Occasional players or players with little recorded history would still have a weaker monthly value case.",
+      "The core FOMO, character and podium loop belongs to the playing foundation. Attractive free features do not by themselves establish a 9/10 case for a separate $20/month Studio subscription.",
       "No technique diagnosis, video analysis or coaching is implied by score/outcome statistics.",
       "Recurring usefulness depends on continued confirmed play and circle adoption. Actual paid conversion and retention remain unmeasured.",
       "Reports are bounded to the latest 2,000 available career results, with at most 20 recent results shown per chosen matchup. Limitations are labelled."
@@ -30,7 +33,7 @@
       "Source-derived rewards add no rating credit, daily streak points, volume rewards or paid rating boosts.",
       "Collection access is available from Home and Profile; each earned seal opens its actual owned result."
     ],
-    "remaining": "The reward collection is deliberately modest and grounded in ratings; deeper social rituals, broader badge identities and cosmetic systems are future work."
+    "remaining": "Superseded for current character and podium scope by docs/acceptance/fomo-character-review.json. The earlier league collection remains intact."
   },
   "visual": {
     "implementation": [
@@ -44,14 +47,14 @@
   },
   "verification": {
     "buildAndTypeCheck": "passed",
-    "serverTests": {"passed": 73, "failed": 0},
+    "serverTests": {"passed": 78, "failed": 0},
     "affectedBrowserRun": {"passed": 52, "failed": 0, "evidence": "outputs/home-growth-2026-10-13/studio-regression-final.json"},
     "finalLayoutRun": {"passed": 3, "failed": 0, "evidence": "outputs/home-growth-2026-10-13/studio-final-layout.json"},
     "newStudioAccessibilityStates": 7,
     "detectedViolationsInNewStates": 0,
     "responsiveCheck": "320 CSS pixels with200percent text: no horizontal dialog overflow.",
     "previewRenders": {"count": 5, "pageErrors": 0, "horizontalOverflow": false},
-    "remoteCompleteSuite": "111 cases expected; verification pending on the pushed source at documentation time.",
+    "remoteCompleteSuite": "Previous HEAD598c5e8 passed111/111. Current116-case exact-head GitHub verification is pending at documentation time; see current fomo-character-review.json for local results.",
     "failedRunsPreserved": ["outputs/home-growth-2026-10-13/studio-focused.json", "outputs/home-growth-2026-10-13/studio-focused-final.json"],
     "repairs": ["Chosen partner/rival state is held across refetches; missing selections are not silently replaced with another person.", "Dark selected-tab and accent-surface contrast was corrected.", "Large-text collection typography/wrapping was corrected.", "Category-specific goals and insight navigation preserve Home's category.", "A mismatched owner/category/period snapshot cannot render during a context change."],
     "limitations": "Fictional accounts and Chromium emulation. Test passes do not mechanically generate the value grade or prove physical-device, assistive-technology or real-market outcomes."
@@ -59,5 +62,7 @@
   "benchmarks": [
     {"source": "Strava subscription features", "url": "https://support.strava.com/en-us/articles/15402044-what-features-are-included-in-a-strava-subscription", "relevance": "Goals and deeper longitudinal analysis are useful reference points for recurring utility; their published features do not establish SHUTTL's price fit."},
     {"source": "Chess.com Insights", "url": "https://support.chess.com/en/articles/8708925-what-is-insights-on-chess-com", "relevance": "A premium analysis suite offers a reference for exploring patterns beyond a current rating. SHUTTL does not claim chess-engine or technique-analysis capabilities."}
-  ]
+  ],
+  "scoreHistory": [{"score":5.8,"method":"Earlier separate AI critique"},{"score":7.2,"method":"Initial Studio root expert appraisal"},{"score":8.0,"method":"Current root expert appraisal; regular-player offer has more recurring utility, but the9/10 target is not met"}],
+  "currentIterationReport": "docs/acceptance/fomo-character-review.json"
 }

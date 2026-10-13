@@ -1342,7 +1342,7 @@ test("profile studio targets the chosen category's goal and all studio views rem
         name: "Your progress brief",
         exact: true,
       });
-      for (const tab of ["Overview", "Matchups", "Collection"]) {
+      for (const tab of ["Overview", "Matchups", "Playbook", "Collection"]) {
         await brief.getByRole("tab", { name: tab, exact: true }).click();
         const audit = await new AxeBuilder({ page })
           .include("dialog[open]")
@@ -1389,12 +1389,28 @@ test("profile studio targets the chosen category's goal and all studio views rem
       path: `${output}/studio-large-collection.png`,
       animations: "disabled",
     });
+    await brief.getByRole("tab", { name: "Playbook", exact: true }).click();
+    expect(await brief.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(
+      true,
+    );
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include("dialog[open]")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await page.screenshot({
+      path: `${output}/studio-large-playbook.png`,
+      animations: "disabled",
+    });
     observations.push({
       persona: "accessible",
       checked: [
         "profile studio entry",
         "selected Singles goal receives focus without changing Home category",
-        "light/dark all three studio views",
+        "light/dark all four studio views",
         "320px at200percenttext collection",
       ],
       detectedAccessibilityViolations: audit.violations.length,
@@ -1403,6 +1419,334 @@ test("profile studio targets the chosen category's goal and all studio views rem
         0,
       ),
     });
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("playbook gives a newcomer private recurring value, preserves edits on close, archives reflections and recovers a competing-window edit", async ({
+  browser,
+}) => {
+  test.setTimeout(90000);
+  const active = await view(browser, "newcomer");
+  try {
+    const page = active.page;
+    const open = async () => {
+      await page
+        .getByRole("button", { name: "Your progress brief", exact: true })
+        .click();
+      const dialog = page.getByRole("dialog", {
+        name: "Your progress brief",
+        exact: true,
+      });
+      await dialog.getByRole("tab", { name: "Playbook", exact: true }).click();
+      await expect(
+        dialog.getByLabel("Session focus", { exact: true }),
+      ).toBeVisible();
+      return dialog;
+    };
+    let brief = await open();
+    const intention = "Notice my recovery after each shot";
+    await brief
+      .getByLabel("Session focus", { exact: true })
+      .selectOption("recovery");
+    await brief
+      .getByLabel("My next-session intention", { exact: true })
+      .fill(intention);
+    await brief
+      .getByLabel("What I learned from my last session", { exact: true })
+      .fill("A private fictional reflection");
+    await expect(
+      brief
+        .getByRole("group", { name: "Rating category" })
+        .getByRole("button", { name: "Singles", exact: true }),
+    ).toBeDisabled();
+    await page.keyboard.press("Escape");
+    await expect(brief).toBeVisible();
+    await expect(
+      brief.getByLabel("My next-session intention", { exact: true }),
+    ).toHaveValue(intention);
+    await brief
+      .getByRole("button", { name: "Save private playbook", exact: true })
+      .click();
+    await expect(brief).toContainText("Saved to your private playbook");
+    await page.keyboard.press("Escape");
+    await expect(brief).toHaveCount(0);
+    brief = await open();
+    await expect(
+      brief.getByLabel("My next-session intention", { exact: true }),
+    ).toHaveValue(intention);
+    await brief
+      .getByRole("button", { name: "Add reflection to journal", exact: true })
+      .click();
+    await expect(brief).toContainText(
+      "Reflection added to your private journal",
+    );
+    await brief.locator(".playbook-journal summary").click();
+    await expect(brief.locator(".playbook-journal article")).toContainText(
+      "A private fictional reflection",
+    );
+    const downloadEvent = page.waitForEvent("download");
+    await brief
+      .getByRole("button", {
+        name: "Download my private playbook",
+        exact: true,
+      })
+      .click();
+    const download = await downloadEvent;
+    const file = await download.path();
+    expect(readFileSync(file!, "utf8")).toContain(
+      "A private fictional reflection",
+    );
+    const actor = players.newcomer;
+    const stored = await (
+      await actor.client.get("/api/playbook?category=Doubles")
+    ).json();
+    expect(
+      (
+        await actor.client.put("/api/playbook", {
+          headers: headers(actor),
+          data: {
+            category: "Doubles",
+            focus: stored.focus,
+            intention: "Saved in another window",
+            reflection: "",
+            version: stored.version,
+          },
+        })
+      ).status(),
+    ).toBe(200);
+    await brief
+      .getByLabel("My next-session intention", { exact: true })
+      .fill("My unsaved local intention");
+    await brief
+      .getByRole("button", { name: "Save private playbook", exact: true })
+      .click();
+    await expect(brief).toContainText("changed in another window");
+    await expect(
+      brief.getByLabel("My next-session intention", { exact: true }),
+    ).toHaveValue("My unsaved local intention");
+    await brief
+      .getByRole("button", { name: "Discard edits and reload", exact: true })
+      .click();
+    await expect(
+      brief.getByLabel("My next-session intention", { exact: true }),
+    ).toHaveValue("Saved in another window");
+    await brief.screenshot({ path: `${output}/studio-playbook-journal.png` });
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include("dialog[open]")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("studio score history downloads the actual owner's selected-period records and score patterns stay factual", async ({
+  browser,
+}) => {
+  const active = await view(browser, "doubles");
+  try {
+    const page = active.page;
+    await page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    const actual = await (
+      await players.doubles.client.get(
+        "/api/insights?category=Doubles&period=30",
+      )
+    ).json();
+    await expect(
+      brief.getByRole("region", { name: "Score patterns", exact: true }),
+    ).toContainText(`${actual.patterns.close.count} recorded`);
+    const event = page.waitForEvent("download");
+    await brief
+      .getByRole("button", { name: "Download my score history", exact: true })
+      .click();
+    const file = await (await event).path();
+    const csv = readFileSync(file!, "utf8");
+    expect(csv.split("\r\n")).toHaveLength(actual.scoreMatches.length + 1);
+    for (const row of actual.scoreMatches) expect(csv).toContain(row.unitId);
+    for (const name of Object.values(names)) expect(csv).not.toContain(name);
+    await brief
+      .getByLabel("Your playing period", { exact: true })
+      .selectOption("all");
+    await expect(
+      brief.getByRole("button", {
+        name: "Download my score history",
+        exact: true,
+      }),
+    ).toBeEnabled();
+    await brief
+      .getByRole("region", { name: "Score patterns", exact: true })
+      .screenshot({ path: `${output}/studio-score-patterns.png` });
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("court character wardrobe persists earned accessories, protects locked items and stays accessible", async ({
+  browser,
+}) => {
+  const active = await view(browser, "competitive");
+  try {
+    const page = active.page;
+    await page
+      .getByRole("button", { name: "Profile", exact: true })
+      .last()
+      .click();
+    const wardrobe = page.getByRole("region", {
+      name: "Your court character",
+      exact: true,
+    });
+    await expect(
+      wardrobe.getByRole("button", { name: /Volt Visor/ }),
+    ).toBeEnabled();
+    await expect(
+      wardrobe.getByRole("button", { name: /Orbit Halo/ }),
+    ).toBeDisabled();
+    await wardrobe.getByRole("button", { name: /Volt Visor/ }).click();
+    await wardrobe
+      .getByRole("button", { name: "Save my court look", exact: true })
+      .click();
+    await expect(wardrobe).toContainText("Your court look is saved");
+    expect(
+      (await (await players.competitive.client.get("/api/character")).json())
+        .look.accessory,
+    ).toBe("visor");
+    await expect(wardrobe.locator(".character-stage svg")).toHaveAttribute(
+      "data-accessory",
+      "visor",
+    );
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".character-wardrobe")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await wardrobe.screenshot({ path: `${output}/character-wardrobe.png` });
+    await page.getByRole("button", { name: "Settings", exact: true }).click();
+    await page.getByLabel("Appearance", { exact: true }).selectOption("dark");
+    await page.getByRole("button", { name: "Passport", exact: true }).click();
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".character-wardrobe")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("court characters celebrate both actual sides of a confirmed match with supportive win and loss states", async ({
+  browser,
+}) => {
+  const unitId = await publish(
+    [players.competitive, players.recreational],
+    "Singles",
+    true,
+  );
+  await expect
+    .poll(
+      async () =>
+        (
+          await (
+            await players.competitive.client.get(`/api/results/${unitId}`)
+          ).json()
+        ).status,
+    )
+    .toBe("rated");
+  for (const key of ["competitive", "recreational"] as const) {
+    const active = await view(browser, key);
+    try {
+      const page = active.page;
+      await page.goto(`/home?result=${unitId}`);
+      const dialog = page.getByRole("dialog", {
+        name: "Your confirmed result",
+        exact: true,
+      });
+      await expect(
+        dialog.locator(
+          key === "competitive"
+            ? ".character-result.is-win"
+            : ".character-result.is-loss",
+        ),
+      ).toBeVisible();
+      await expect(
+        dialog.locator(".character-result-cast .court-character"),
+      ).toHaveCount(2);
+      const owned = await (
+        await players[key].client.get(`/api/results/${unitId}`)
+      ).json();
+      const change = Object.values(owned.ratingChanges)[0] as any;
+      await expect(
+        dialog.getByRole("group", { name: "Published rating impact" }),
+      ).toContainText(change.after.toLocaleString("en"));
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include(".character-result")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await dialog.screenshot({
+        path: `${output}/character-${key === "competitive" ? "win" : "loss"}.png`,
+      });
+    } finally {
+      await active.context.close();
+    }
+  }
+});
+
+test("friend podium badges reflect API standings and export a labelled private snapshot", async ({
+  browser,
+}) => {
+  const active = await view(browser, "recreational");
+  try {
+    const page = active.page;
+    const actual = await (
+      await players.recreational.client.get("/api/podiums?category=Doubles")
+    ).json();
+    expect(actual.boards[0].ready).toBe(true);
+    const panel = page.getByRole("region", {
+      name: "Your competitive podiums",
+      exact: true,
+    });
+    await expect(panel).toContainText(
+      `#${actual.boards[0].position} of ${actual.boards[0].comparable}`,
+    );
+    if (actual.boards[0].podium) {
+      const download = page.waitForEvent("download");
+      await panel
+        .getByRole("button", { name: "Download my podium card", exact: true })
+        .first()
+        .click();
+      const file = await (await download).path();
+      expect(readFileSync(file!).subarray(1, 4).toString()).toBe("PNG");
+    }
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .include(".podiums-panel")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await panel.screenshot({ path: `${output}/friend-podium.png` });
   } finally {
     await active.context.close();
   }

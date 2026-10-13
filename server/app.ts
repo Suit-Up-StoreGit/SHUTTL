@@ -26,6 +26,10 @@ import {
 import { CATEGORIES, FORMATS, type Category } from "../src/domain.ts";
 import { milestoneFor } from "../src/home-growth.ts";
 import { studioSummary } from "../src/progress-studio.ts";
+import { scorePatterns, type ScoreMatch } from "../src/playbook.ts";
+import { registerPlaybook } from "./playbook.ts";
+import { registerCharacters } from "./character.ts";
+import { registerPodiums } from "./podiums.ts";
 import { localityKey, localityLabel, validCountry } from "../src/location.ts";
 import { registerCommunity } from "./community.ts";
 import {
@@ -720,6 +724,7 @@ export async function buildApp(
       opponents = new Map<string, any>(),
       formats = new Map<string, any>();
     const visible: any[] = [];
+    const scoreMatches: ScoreMatch[] = [];
     let wins = 0;
     for (const event of events) {
       const change = JSON.parse(event.changes)[actor];
@@ -727,7 +732,7 @@ export async function buildApp(
       wins += Number(change.won);
       if (change.count >= 5) visible.push(change);
       const revision = db.get(
-        "SELECT roster,format FROM revisions WHERE id=?",
+        "SELECT roster,format,games FROM revisions WHERE id=?",
         event.revision_id,
       )!;
       const roster = JSON.parse(revision.roster).map((p: string) =>
@@ -735,6 +740,17 @@ export async function buildApp(
         ),
         size = roster.length / 2,
         index = roster.indexOf(actor);
+      if (index >= 0)
+        scoreMatches.push({
+          unitId: event.unit_id,
+          playedAt: event.played_at,
+          format: revision.format,
+          games: JSON.parse(revision.games),
+          ownSide: index < size ? 0 : 1,
+          won: change.won,
+          score: change.count >= 5 ? change.after : null,
+          delta: change.count > 5 ? change.delta : null,
+        });
       const collect = (map: Map<string, any>, p: string) => {
         const v = map.get(p) || {
           player: service.player(p, actor),
@@ -844,6 +860,8 @@ export async function buildApp(
       formats: [...formats.values()],
       moments,
       studio,
+      scoreMatches,
+      patterns: scorePatterns(scoreMatches),
       limited: rows.length > 2000,
       trajectory: events.flatMap((e) => {
         const change = JSON.parse(e.changes)[actor];
@@ -1720,6 +1738,22 @@ export async function buildApp(
           req.actor.id,
           req.actor.id,
         ),
+        playbooks: db.all(
+          "SELECT category,focus,intention,reflection,version,updated_at AS updatedAt FROM playbooks WHERE owner=?",
+          req.actor.id,
+        ),
+        playbookJournal: db.all(
+          "SELECT category,focus,intention,reflection,created_at AS createdAt FROM playbook_entries WHERE owner=? ORDER BY created_at",
+          req.actor.id,
+        ),
+        character: db.get(
+          "SELECT look,updated_at AS updatedAt FROM characters WHERE owner=?",
+          req.actor.id,
+        ),
+        competitionArea: db.get(
+          "SELECT region,neighborhood FROM arena_places WHERE owner=?",
+          req.actor.id,
+        ),
         model: "gaussian-participant-0.1",
       };
     },
@@ -1775,6 +1809,10 @@ export async function buildApp(
         "research_events",
         "research_consent",
         "player_invites",
+        "playbooks",
+        "playbook_entries",
+        "characters",
+        "arena_places",
       ])
         db.run(`DELETE FROM ${table} WHERE owner=?`, actor);
       db.run("DELETE FROM passkey_challenges WHERE owner=?", actor);
@@ -1863,6 +1901,9 @@ export async function buildApp(
   });
   registerCommunity(app, db, service);
   registerHomeGrowth(app, service);
+  registerPlaybook(app);
+  registerCharacters(app);
+  registerPodiums(app);
   registerPasskeys(app, db, service, origin, authenticate);
   if (existsSync(resolve("dist/index.html"))) {
     await app.register(staticFiles, { root: resolve("dist"), prefix: "/" });

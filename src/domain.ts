@@ -183,6 +183,7 @@ export interface Player {
   guest?: boolean;
   canonicalId?: string;
   portrait?: string;
+  character?: { body: string; accessory: string; dance: string };
 }
 export interface PublicRating {
   category: Category;

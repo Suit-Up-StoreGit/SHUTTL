@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { buildApp } from "../server/app.ts";
 import { Database } from "../server/database.ts";
 import { progressTrace } from "../src/home-growth.ts";
+import { characterProgress } from "../server/character.ts";
 
 async function fixture() {
   const db = new Database(":memory:"),
@@ -84,6 +85,321 @@ async function fixture() {
   };
   return { db, app, players, request, match, connect };
 }
+
+test("characters unlock only from published play, reject forged cosmetics, persist across a loss and fall back after corrections", async () => {
+  const f = await fixture();
+  try {
+    const [a, b] = f.players;
+    const look = { body: "original", accessory: "visor", dance: "shuffle" };
+    assert.equal(
+      (await f.request(a, "PUT", "/api/character", look)).status,
+      400,
+    );
+    const units: any[] = [];
+    for (let n = 0; n < 5; n++) units.push(await f.match());
+    const before = f.app.service.rating(a.id, "Singles");
+    let r = await f.request(a, "GET", "/api/character");
+    assert.deepEqual(r.data.progress, { matches: 5, wins: 5, streak: 3 });
+    assert.equal(
+      (await f.request(a, "PUT", "/api/character", look)).status,
+      200,
+    );
+    assert.equal(
+      (f.app.service.player(a.id, b.id) as any).character.accessory,
+      "visor",
+    );
+    assert.deepEqual(f.app.service.rating(a.id, "Singles"), before);
+    await f.match(false);
+    assert.equal(characterProgress(f.app.service, a.id).streak, 3);
+    assert.equal(
+      (await f.request(b, "GET", "/api/character")).data.look.accessory,
+      "none",
+    );
+    assert.equal(
+      (
+        await f.request(a, "PUT", "/api/character", {
+          ...look,
+          accessory: "halo",
+        })
+      ).status,
+      400,
+    );
+    const corrected = await f.request(
+      a,
+      "POST",
+      `/api/results/${units[2].id}/correct`,
+      {
+        revisionId: units[2].revisionId,
+        format: "ONE_21",
+        games: [[17, 21]],
+        agree: true,
+      },
+    );
+    assert.equal(corrected.status, 200);
+    const current = (await f.request(a, "GET", `/api/results/${units[2].id}`))
+      .data;
+    assert.equal(
+      (
+        await f.request(b, "POST", `/api/results/${current.id}/approve`, {
+          revisionId: current.revisionId,
+          agree: true,
+        })
+      ).status,
+      200,
+    );
+    f.app.service.work();
+    assert.equal(characterProgress(f.app.service, a.id).wins, 4);
+    assert.equal(
+      (f.app.service.player(a.id, b.id) as any).character.dance,
+      "bounce",
+    );
+    assert.equal(
+      (f.app.service.player(a.id, b.id) as any).character.accessory,
+      "visor",
+    );
+    assert.equal(
+      (
+        await f.request(a, "DELETE", "/api/account", {
+          password: "Growth-fixture-2026!",
+          confirmation: "DELETE",
+        })
+      ).status,
+      200,
+    );
+    assert.equal(
+      f.db.get("SELECT count(*) AS n FROM characters WHERE owner=?", a.id)?.n,
+      0,
+    );
+  } finally {
+    await f.app.close();
+  }
+});
+
+test("friend podiums use actual shared ratings, handle ties and blocks and geography never awards an unvalidated title", async () => {
+  const f = await fixture();
+  try {
+    const [a, b, c, d] = f.players;
+    await f.connect(a, b);
+    await f.connect(a, c);
+    for (let n = 0; n < 5; n++) await f.match();
+    for (let n = 0; n < 5; n++) {
+      const created = await f.request(a, "POST", "/api/results", {
+        unitId: randomUUID(),
+        category: "Singles",
+        format: "ONE_21",
+        roster: [a.id, c.id],
+        games: [[21, 17]],
+        playedAt: new Date(Date.now() - 1200000 + n * 60000).toISOString(),
+        scopeId: null,
+        agree: true,
+      });
+      const unit = (
+        await f.request(a, "GET", `/api/results/${created.data.id}`)
+      ).data;
+      assert.equal(
+        (
+          await f.request(c, "POST", `/api/results/${unit.id}/approve`, {
+            revisionId: unit.revisionId,
+            agree: true,
+          })
+        ).status,
+        200,
+      );
+      f.app.service.work();
+    }
+    let r = (await f.request(a, "GET", "/api/podiums?category=Singles")).data;
+    assert.equal(r.boards[0].ready, true);
+    assert.equal(r.boards[0].position, 1);
+    assert.equal(r.boards[0].comparable, 3);
+    assert.equal(
+      (await f.request(d, "GET", "/api/podiums?category=Singles")).data
+        .boards[0].podium,
+      false,
+    );
+    assert.equal(
+      (await f.request(a, "GET", "/api/podiums?category=Doubles")).data
+        .boards[0].ready,
+      false,
+    );
+    f.db.run("UPDATE ratings SET mu=1500 WHERE category='Singles'");
+    r = (await f.request(a, "GET", "/api/podiums?category=Singles")).data;
+    assert.equal(r.boards[0].position, 1);
+    assert.equal(r.boards[0].shared, true);
+    f.db.run("INSERT INTO blocks VALUES(?,?)", a.id, c.id);
+    assert.equal(
+      (await f.request(a, "GET", "/api/podiums?category=Singles")).data
+        .boards[0].ready,
+      false,
+    );
+    assert.equal(
+      (
+        await f.request(a, "PUT", "/api/arena-place", {
+          region: " Baden-Württemberg ",
+          neighborhood: "Weststadt",
+        })
+      ).status,
+      200,
+    );
+    assert.equal(
+      (await f.request(d, "GET", "/api/arena-place")).data.region,
+      "",
+    );
+    f.db.run(
+      "UPDATE users SET country='DE',city='Karlsruhe',district='West',locality_key='de|karlsruhe|west',local_opt_in=1 WHERE id=?",
+      a.id,
+    );
+    r = (await f.request(a, "GET", "/api/podiums?category=Singles")).data;
+    assert.deepEqual(
+      r.boards.filter((b: any) => b.geographic).map((b: any) => b.id),
+      ["country", "city", "district", "region", "neighborhood"],
+    );
+    assert.equal(
+      r.boards.some((b: any) => b.geographic && b.podium),
+      false,
+    );
+    assert.equal(
+      (await f.request(a, "GET", "/api/account/export")).data.competitionArea
+        .region,
+      "Baden-Württemberg",
+    );
+  } finally {
+    await f.app.close();
+  }
+});
+
+test("private playbook persists without match history, guards competing edits and journal replay, exports and erases only its owner's notes", async () => {
+  const f = await fixture();
+  try {
+    const [a, b] = f.players;
+    const path = "/api/playbook?category=Singles";
+    assert.equal((await f.request(null, "GET", path)).status, 401);
+    assert.equal((await f.request(a, "GET", path)).data.version, 0);
+    const body = {
+      category: "Singles",
+      focus: "closing",
+      intention: "Reset before the next point",
+      reflection: "My private reminder",
+      version: 0,
+    };
+    let r = await f.request(a, "PUT", "/api/playbook", body);
+    assert.equal(r.status, 200);
+    assert.equal(r.data.version, 1);
+    assert.equal(
+      (await f.request(a, "PUT", "/api/playbook", body)).status,
+      409,
+    );
+    assert.equal((await f.request(b, "GET", path)).data.reflection, "");
+    assert.equal(
+      (await f.request(a, "GET", "/api/playbook?category=Doubles")).data
+        .intention,
+      "",
+    );
+    r = await f.request(a, "POST", "/api/playbook/archive", {
+      category: "Singles",
+      version: 1,
+    });
+    assert.equal(r.status, 200);
+    assert.equal(r.data.entries.length, 1);
+    assert.equal(r.data.reflection, "");
+    assert.equal(r.data.intention, body.intention);
+    assert.equal(
+      (
+        await f.request(a, "POST", "/api/playbook/archive", {
+          category: "Singles",
+          version: 1,
+        })
+      ).status,
+      409,
+    );
+    const entry = r.data.entries[0];
+    assert.equal(
+      (await f.request(b, "DELETE", `/api/playbook/entries/${entry.id}`, {}))
+        .status,
+      404,
+    );
+    let exported = await f.request(a, "GET", "/api/account/export");
+    assert.equal(exported.data.playbookJournal[0].reflection, body.reflection);
+    assert.equal(
+      (await f.request(b, "GET", "/api/account/export")).data.playbookJournal
+        .length,
+      0,
+    );
+    assert.equal(
+      (await f.request(a, "DELETE", `/api/playbook/entries/${entry.id}`, {}))
+        .data.entries.length,
+      0,
+    );
+    r = await f.request(a, "DELETE", "/api/playbook", {
+      category: "Singles",
+      version: 2,
+    });
+    assert.equal(r.data.version, 3);
+    assert.equal(r.data.intention, "");
+    assert.equal(
+      (
+        await f.request(a, "PUT", "/api/playbook", {
+          ...body,
+          version: 3,
+          intention: "x".repeat(501),
+        })
+      ).status,
+      400,
+    );
+    assert.equal(
+      (await f.request(a, "PUT", "/api/playbook", { ...body, version: 3 }))
+        .status,
+      200,
+    );
+    assert.equal(
+      (
+        await f.request(a, "DELETE", "/api/account", {
+          password: "Growth-fixture-2026!",
+          confirmation: "DELETE",
+        })
+      ).status,
+      200,
+    );
+    assert.equal(
+      f.db.get("SELECT count(*) AS n FROM playbooks WHERE owner=?", a.id)?.n,
+      0,
+    );
+    assert.equal(
+      f.db.get("SELECT count(*) AS n FROM playbook_entries WHERE owner=?", a.id)
+        ?.n,
+      0,
+    );
+    assert.equal(f.app.service.rating(b.id, "Singles").count, 0);
+  } finally {
+    await f.app.close();
+  }
+});
+
+test("score-analysis API uses published revision scores oriented to the owner and excludes another player's results", async () => {
+  const f = await fixture();
+  try {
+    const [a, b, c] = f.players;
+    await f.match();
+    const first = (
+      await f.request(a, "GET", "/api/insights?category=Singles&period=30")
+    ).data;
+    const second = (
+      await f.request(b, "GET", "/api/insights?category=Singles&period=30")
+    ).data;
+    assert.equal(first.patterns.pointsFor, 21);
+    assert.equal(second.patterns.pointsFor, 17);
+    assert.equal(first.scoreMatches[0].score, null);
+    assert.equal(first.scoreMatches[0].delta, null);
+    assert.equal(second.scoreMatches[0].ownSide, 1);
+    assert.equal(first.patterns.deciders.count, 0);
+    assert.equal(
+      (await f.request(c, "GET", "/api/insights?category=Singles&period=30"))
+        .data.scoreMatches.length,
+      0,
+    );
+  } finally {
+    await f.app.close();
+  }
+});
 
 test("local home context respects opt-in, country/city, blocks and private names without manufacturing standings", async () => {
   const f = await fixture();

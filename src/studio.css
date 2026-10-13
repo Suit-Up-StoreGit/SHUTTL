@@ -11,6 +11,110 @@
   background: var(--card);
   gap: 4px;
 }
+.studio-playbook,
+.studio-patterns {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  min-width: 0;
+}
+.studio-playbook h3,
+.studio-patterns h3 {
+  margin: 6px 0 10px;
+  font-size: 1.1rem;
+}
+.studio-playbook p,
+.studio-patterns p {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+.studio-playbook label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+.studio-playbook textarea,
+.studio-playbook select {
+  width: 100%;
+  min-width: 0;
+}
+.playbook-cue {
+  border-left: 3px solid var(--lime);
+  padding: 12px 16px;
+  margin-top: 18px;
+  background: var(--bg);
+}
+.playbook-cue strong {
+  font-size: 0.8125rem;
+}
+.playbook-cue p {
+  margin: 6px 0 12px;
+}
+.playbook-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.playbook-journal {
+  margin: 24px 0;
+}
+.playbook-journal summary {
+  min-height: 44px;
+  cursor: pointer;
+  padding: 12px 0;
+}
+.playbook-journal article {
+  border-top: 1px solid var(--line);
+  padding: 18px 0;
+}
+.playbook-journal small {
+  display: block;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.playbook-journal p {
+  white-space: pre-wrap;
+}
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.pattern-grid > div {
+  padding: 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: grid;
+  gap: 10px;
+}
+.pattern-grid strong {
+  font-size: 2rem;
+  font-family: Barlow, sans-serif;
+}
+.pattern-grid small {
+  color: var(--muted);
+}
+.studio-patterns summary {
+  min-height: 44px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+@media (max-width: 420px) {
+  .studio-tabs {
+    flex-wrap: wrap;
+  }
+  .studio-tabs button {
+    flex-basis: calc(50% - 4px);
+  }
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .studio-tabs button {
   flex: 1;
   min-width: 0;

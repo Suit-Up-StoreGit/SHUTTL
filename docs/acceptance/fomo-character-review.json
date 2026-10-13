@@ -1,0 +1,36 @@
+{
+  "reviewedOn": "2026-10-13",
+  "scope": "User-directed friend/group competition, participating geographic pools, shareable top-three badges, player characters, accessories and confirmed win/loss recaps; includes the previously started Studio value improvements.",
+  "implemented": {
+    "podiums": "Category-specific friend-circle and accepted-group standings require three revealed comparable estimates. Top-three enamel badges appear on Home and Profile. Ties share a place; next-estimate gaps and labelled1080x1350 private PNG exports use the actual snapshot.",
+    "geography": "Opt-in, declared neighbourhood/district/city/region/country pools are wired. Geographic podiums preserve the existing validated-model, Established shared-comparison-class and minimum20-player gates. A sampled pool above5000 cannot award a badge. These are participating SHUTTL pools, not complete rankings of every player in a location.",
+    "characters": "Original native-vector Feather One starter, three body styles, four accessory choices and three celebrations. The same starter is available to everyone. Wardrobe selection persists; selected players show characters in recording, own identity and Home. Character appearance is a public cosmetic, not private journal data.",
+    "unlocks": "Server-derived counts of unique published physical match units, wins and an earned three-win run determine availability. A later ordinary loss does not erase a previously earned run; approved corrections can revise supporting history and equipped items fall back safely. Pending, duplicate or forged client counts cannot unlock an item. No rating bonuses or daily attendance penalty.",
+    "recaps": "Confirmed wins use green and winning choreography; losses use a warm red surface, a bowed own character and celebrating opponents with their equipped looks. Own published estimate/change is shown in the same recap; pre-five numbers and first-reveal deltas remain hidden. Motion is finite and respects reduced-motion settings. Unconfirmed submissions cannot present published rating impacts.",
+    "studio": "Private preparation/reflection playbook, session journal, conflict recovery, downloads, real close-game/third-game score patterns and an own score-history CSV. Account export includes private data; account deletion removes it."
+  },
+  "criticalAppraisal": {
+    "method": "Root AI judgment after reviewing real fictional-player mobile renders and actual journeys. Test counts do not determine grades. No measured willingness to pay, retention or human testimony is claimed.",
+    "proposedIndividual20DollarMonthlyValue": 8.0,
+    "requiredValue": 9.0,
+    "targetMet": false,
+    "whyNotNine": [
+      "The Studio now helps a regular player prepare, review and retain their playing history, but statistical analysis and self-authored notes are not equivalent to personalized coaching.",
+      "Friend density is central to social value. Cosmetic art and medals cannot create an active real-world playing circle by themselves.",
+      "Occasional-player willingness to purchase remains a materially weaker case. Core ratings, recording and competitive identity should remain broadly accessible.",
+      "Geographic podiums are intentionally forming in the current uncalibrated pilot; live geographic dominance is not an available demonstrated benefit yet."
+    ],
+    "visualLimits": "The character is an original polished2D starting collection. It is not a claim of a final premium3D character system, a vast accessory library or universally9.5-rated artistic quality.",
+    "remainingProductWork": ["Further character art direction and a larger coherent unlock collection", "Qualification and population evidence for live geographic podiums", "Source-derived geographic podium-change alerts beyond existing friend-passing updates", "Retention and monetization assessment of the core social loop", "Scale testing beyond bounded local pools"]
+  },
+  "verification": {
+    "buildAndTypeCheck": "passed",
+    "serverTests": {"passed":78,"failed":0},
+    "firstCompleteBrowserRun": {"passed":115,"failed":1,"evidence":"outputs/home-growth-2026-10-13/fomo-full.json","failure":"A new test incorrectly assumed the latest competitive-persona result was a win. Earlier actual play had recorded a loss and the app correctly displayed the loss recap."},
+    "repairedAffectedRun": {"passed":41,"failed":0,"evidence":"outputs/home-growth-2026-10-13/fomo-final-affected.json"},
+    "finalCharacterRun": {"passed":2,"failed":0,"evidence":"outputs/home-growth-2026-10-13/fomo-final-characters.json"},
+    "exactHeadCompleteGithubRun": "Pending at documentation time; expected116 browser cases.",
+    "accessibility": "Automated checks cover four Studio views in both themes plus narrow enlarged-text Playbook, saved wardrobe in both themes, both result states and podium cards. No detected violations in these recorded states. This is not full assistive-technology certification.",
+    "limitations": "Fictional users and Chromium viewport emulation; no HTTPS deployment, payment integration or empirical launch-readiness claim."
+  }
+}

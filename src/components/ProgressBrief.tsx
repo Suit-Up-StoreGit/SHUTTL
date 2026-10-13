@@ -6,6 +6,9 @@ import { ownChange, publishedPlayedAt } from "../experience.ts";
 import { milestoneFor, progressTrace } from "../home-growth.ts";
 import { ShuttleMark } from "./HomeGrowth.tsx";
 import { studioSummary } from "../progress-studio.ts";
+import { progressCsv, scorePatterns } from "../playbook.ts";
+import Playbook from "./Playbook.tsx";
+import ScorePatterns from "./ScorePatterns.tsx";
 import {
   EarnedCollection,
   GoalRoadmap,
@@ -61,6 +64,8 @@ function previewInsights(me: any, results: any[], category: Category) {
     lastPlayed: rows.at(-1)?.playedAt,
     ...previewConnections(rows, me.id),
     studio,
+    scoreMatches: [],
+    patterns: scorePatterns([]),
     limited: true,
     moments: [...rows]
       .reverse()
@@ -160,6 +165,9 @@ export default function ProgressBrief({
     [notice, setNotice] = useState("");
   const [tab, setTab] = useState("overview"),
     studioId = useId();
+  const [playbookDirty, setPlaybookDirty] = useState(false);
+  const locked = busy || playbookDirty;
+  const views = ["overview", "matchups", "playbook", "collection"];
   const [matchupMode, setMatchupMode] = useState("opponents"),
     [matchupPlayer, setMatchupPlayer] = useState(""),
     [rivalPlayer, setRivalPlayer] = useState("");
@@ -184,6 +192,7 @@ export default function ProgressBrief({
   }, []);
   useEffect(() => {
     let active = true;
+    if (playbookDirty) return;
     setData(null);
     setError("");
     setNotice("");
@@ -240,19 +249,37 @@ export default function ProgressBrief({
               ? "Your estimate is still developing. Early results can move it sharply; both sides’ ratings and their uncertainty shape the change. Read the trajectory alongside who you played."
               : "Explore your recorded partnerships and opponents. These are match outcomes, rather than a diagnosis of technique or a partner’s contribution.";
   return (
-    <Modal title="Your progress brief" close={close} wide>
+    <Modal
+      title="Your progress brief"
+      close={() => {
+        if (playbookDirty) {
+          setTab("playbook");
+          setNotice("Save your playbook or discard edits before closing.");
+        } else close();
+      }}
+      wide
+    >
       <p className="brief-intro">
         <span className="eyebrow">SHUTTL / PROGRESS STUDIO</span>Your game, with
         more perspective.
       </p>
-      <CategoryTabs value={category} onChange={setCategory} disabled={busy} />
+      <CategoryTabs
+        value={category}
+        onChange={setCategory}
+        disabled={busy || playbookDirty}
+      />
+      {playbookDirty && (
+        <p role="status">
+          Save or discard your playbook edits before changing category.
+        </p>
+      )}
       <div className="field">
         <label htmlFor="brief-period">Period</label>
         <select
           id="brief-period"
           aria-label="Your playing period"
           value={period}
-          disabled={busy || mock}
+          disabled={locked || mock}
           onChange={(e) => setPeriod(e.target.value)}
         >
           <option value="7">Last seven days</option>
@@ -281,6 +308,7 @@ export default function ProgressBrief({
             {[
               { id: "overview", label: "Overview" },
               { id: "matchups", label: "Matchups" },
+              { id: "playbook", label: "Playbook" },
               { id: "collection", label: "Collection" },
             ].map((t, index) => (
               <button
@@ -290,17 +318,19 @@ export default function ProgressBrief({
                 aria-controls={`${studioId}-${t.id}`}
                 aria-selected={tab === t.id}
                 tabIndex={tab === t.id ? 0 : -1}
-                disabled={busy}
+                disabled={locked}
                 onClick={() => setTab(t.id)}
                 onKeyDown={(event) => {
                   let next = index;
-                  if (event.key === "ArrowRight") next = (index + 1) % 3;
-                  else if (event.key === "ArrowLeft") next = (index + 2) % 3;
+                  if (event.key === "ArrowRight")
+                    next = (index + 1) % views.length;
+                  else if (event.key === "ArrowLeft")
+                    next = (index + views.length - 1) % views.length;
                   else if (event.key === "Home") next = 0;
-                  else if (event.key === "End") next = 2;
+                  else if (event.key === "End") next = views.length - 1;
                   else return;
                   event.preventDefault();
-                  setTab(["overview", "matchups", "collection"][next]);
+                  setTab(views[next]);
                   (
                     event.currentTarget.parentElement?.querySelectorAll(
                       "button",
@@ -317,7 +347,7 @@ export default function ProgressBrief({
             {!mock && (
               <button
                 className="text-button"
-                disabled={busy}
+                disabled={locked}
                 onClick={() => setAttempt((n) => n + 1)}
               >
                 Refresh brief
@@ -446,7 +476,7 @@ export default function ProgressBrief({
                 {data.moments.map((moment: any, index: number) => (
                   <button
                     key={moment.unitId}
-                    disabled={busy}
+                    disabled={locked}
                     onClick={() => openResult(moment.unitId)}
                   >
                     <Gem league={leagueFor(moment.score).name} size={28} />
@@ -500,6 +530,7 @@ export default function ProgressBrief({
               </div>
             </div>
             <PeriodComparison studio={data.studio} />
+            <ScorePatterns data={data} open={openResult} disabled={locked} />
             <section
               className="brief-connections"
               aria-label="Your playing connections"
@@ -539,14 +570,14 @@ export default function ProgressBrief({
             <GoalRoadmap
               rating={rating}
               goal={goal}
-              disabled={busy}
+              disabled={locked}
               goals={() => goals(category)}
             />
             <RivalryLens
               me={me}
               friends={friends}
               category={category}
-              disabled={busy}
+              disabled={locked}
               player={rivalPlayer}
               setPlayer={setRivalPlayer}
               compare={(id) => compare(id, category)}
@@ -564,12 +595,28 @@ export default function ProgressBrief({
               data={data}
               category={category}
               timezone={me.timezone}
-              disabled={busy}
+              disabled={locked}
               mode={matchupMode}
               setMode={setMatchupMode}
               player={matchupPlayer}
               setPlayer={setMatchupPlayer}
               open={openResult}
+            />
+          </div>
+          <div
+            role="tabpanel"
+            id={`${studioId}-playbook`}
+            aria-labelledby={`${studioId}-playbook-tab`}
+            hidden={tab !== "playbook"}
+            className="studio-panel"
+          >
+            <Playbook
+              key={`${me.id}:${category}`}
+              owner={me.id}
+              category={category}
+              timezone={me.timezone}
+              mock={mock}
+              onDirty={setPlaybookDirty}
             />
           </div>
           <div
@@ -583,7 +630,7 @@ export default function ProgressBrief({
               studio={data.studio}
               rating={rating}
               timezone={me.timezone}
-              disabled={busy}
+              disabled={locked}
               open={openResult}
             />
           </div>
@@ -600,7 +647,7 @@ export default function ProgressBrief({
               </p>
               <button
                 className="text-button"
-                disabled={busy}
+                disabled={locked}
                 onClick={() => insights(category)}
               >
                 Explore partnerships and opponents <ArrowUpRight size={15} />
@@ -614,7 +661,9 @@ export default function ProgressBrief({
             <p>
               Go beyond your current rating: compare playing periods, explore
               every recorded matchup, revisit earned league seals and choose a
-              personal next marker. New confirmed results refresh your playing
+              personal next marker. Prepare your next session with a private
+              playbook, examine close-game and decider scores, and take your own
+              score history with you. New confirmed results refresh your playing
               picture.
             </p>
             <div>
@@ -622,7 +671,8 @@ export default function ProgressBrief({
                 <strong>Your playing foundation</strong>
                 <p>
                   Recording, confirmation, your three ratings and
-                  familiar-player comparisons.
+                  familiar-player comparisons, participating-pool podiums and
+                  your earned court character.
                 </p>
               </section>
               <section>
@@ -630,7 +680,8 @@ export default function ProgressBrief({
                 <p>
                   Equal-period analysis, individual matchup histories, career
                   collection, a personal rivalry lens and factual progress
-                  exports.
+                  exports, score-pattern evidence and a private practice
+                  playbook.
                 </p>
               </section>
             </div>
@@ -640,6 +691,34 @@ export default function ProgressBrief({
             </p>
           </details>
           <div className="brief-download">
+            <button
+              className="button secondary"
+              disabled={busy || !data.scoreMatches?.length}
+              onClick={() => {
+                const url = URL.createObjectURL(
+                  new Blob([progressCsv(data.scoreMatches)], {
+                    type: "text/csv;charset=utf-8",
+                  }),
+                );
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `shuttl-${category.toLowerCase()}-${period}-results.csv`;
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(url), 30000);
+                setNotice(
+                  "Your selected-period score history was downloaded. No names or private notes are included.",
+                );
+              }}
+            >
+              <Download size={16} />
+              Download my score history
+            </button>
+            <p>
+              CSV includes your selected-period results, scores and visible
+              rating changes.{" "}
+              {data.limited ? "Latest 2,000 results only. " : ""}No player names
+              or private playbook notes.
+            </p>
             <label className="check-row">
               <input
                 type="checkbox"

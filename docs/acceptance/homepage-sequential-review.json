@@ -1290,13 +1290,13 @@
       "id": 55,
       "name": "Visible premium-value differentiation",
       "baselineExpertJudgment": 6,
-      "acceptedScore": 7.2,
+      "acceptedScore": 8.0,
       "status": "expert_below_individual_target",
-      "expertPersonaScore": 7.2,
-      "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
+      "expertPersonaScore": 8.0,
+      "acceptanceBasis": "Current root AI appraisal of implemented Studio and fictional-account renders; earlier separate critique and other grades retained as history. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 55,
-      "finding": "The visible proposition now includes a period-comparison toolkit, chosen-player matchup histories, an evidence-linked league collection, personal next markers, optional accepted-friend rivalry and factual exports. The proposed membership distinguishes this depth from the current-rating foundation.",
-      "remainingGap": "Price fit remains weaker for occasional players, sparse histories and inactive circles. Actual willingness to pay and retention remain unmeasured.",
+      "finding": "The Studio now adds a private preparation/reflection playbook and session journal, actual close-game/decider patterns and portable oriented score history to the previous period comparisons, matchup histories, league collection and progress cards. Core character and podium features are part of the broadly accessible playing foundation.",
+      "remainingGap": "The latest9.0 price-value target remains unmet. Occasional play, sparse history and inactive circles weaken a20-dollar monthly offer; source-based notes and outcomes are not personalized coaching. The current pilot cannot yet award geographic podiums.",
       "personaPerspectives": [
         "recreational",
         "organiser",
@@ -1624,8 +1624,8 @@
   "summary": {
     "criterionCount": 66,
     "weighting": "Equal weight for all 66, including every low grade. Prior 56 grades retained; ten reappraised by a separate reviewer.",
-    "exactMean": 9.022727272727277,
-    "displayMean": 9.02,
+    "exactMean": 9.03484848484849,
+    "displayMean": 9.03,
     "individualTargetMet": 56,
     "individualBelowTarget": [
       {
@@ -2031,8 +2031,8 @@
     "date": "2026-10-13",
     "report": "docs/acceptance/studio-value-review.json",
     "previousPriceValue": 5.8,
-    "currentPriceValue": 7.2,
-    "userPriceValueMinimum": 7,
-    "method": "Root expert appraisal of actual implemented studio and fictional-account renders; not measured purchase behaviour. Earlier separate-review scores remain historical."
+    "currentPriceValue": 8.0,
+    "userPriceValueMinimum": 9,
+    "method": "Root expert appraisal of actual implemented studio and fictional-account renders; not measured purchase behaviour. Earlier separate-review scores remain historical. Other65 grades are carried forward, not a fresh complete appraisal of the character/podium iteration; the new9.0 price target is unmet."
   }
 }

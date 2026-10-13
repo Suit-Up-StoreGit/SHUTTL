@@ -17,6 +17,7 @@ import {
 } from "../api.ts";
 import { recentRosters, canReviewResult } from "../experience.ts";
 import { ResultReward } from "./Progress.tsx";
+import { CourtCharacter, CharacterResult } from "./Character.tsx";
 import { Encouragement } from "./Community.tsx";
 import { startAuthentication } from "@simplewebauthn/browser";
 import { passkeysSupported } from "./Preferences.tsx";
@@ -871,7 +872,7 @@ function RosterEditor({
           )}
           {p ? (
             <div className="picked-player">
-              <Avatar player={p} small />
+              <CourtCharacter look={p.character} size={48} />
               <span>
                 {p.name}
                 <small>
@@ -2493,6 +2494,7 @@ export function ResultReview({
                       : "The author’s approval is recorded. One eligible opponent confirms this exact score; rated play was agreed earlier."}
           </p>
         </div>
+        <CharacterResult result={result} />
         <ResultReward result={result} share={share} />
         <Encouragement result={result} />
         {["pending", "correction_pending"].includes(result.status) &&
