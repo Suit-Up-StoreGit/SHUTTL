@@ -1290,13 +1290,13 @@
       "id": 55,
       "name": "Visible premium-value differentiation",
       "baselineExpertJudgment": 6,
-      "acceptedScore": 5.8,
+      "acceptedScore": 7.2,
       "status": "expert_below_individual_target",
-      "expertPersonaScore": 5.8,
+      "expertPersonaScore": 7.2,
       "acceptanceBasis": "Separate blind AI expert appraisal of actual fictional-account screens and implementation; prior 56 grades retained. Subjective judgment, not player-reported outcomes.",
       "reviewOrder": 55,
-      "finding": "Visible value now extends beyond a score and feed: the player gets an actor-bound progress brief, real trajectory and period context, goal and relationship exploration, a crafted anonymous or named progress card, local connection continuity and private recognition.",
-      "remainingGap": "The brief is more useful, but the visible recurring advantage still falls short of a compelling broad $20 monthly proposition.",
+      "finding": "The visible proposition now includes a period-comparison toolkit, chosen-player matchup histories, an evidence-linked league collection, personal next markers, optional accepted-friend rivalry and factual exports. The proposed membership distinguishes this depth from the current-rating foundation.",
+      "remainingGap": "Price fit remains weaker for occasional players, sparse histories and inactive circles. Actual willingness to pay and retention remain unmeasured.",
       "personaPerspectives": [
         "recreational",
         "organiser",
@@ -1308,7 +1308,8 @@
         "server/home-growth.ts",
         "tests/browser/home-personas.spec.ts",
         "tests/home-growth.test.ts",
-        "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+        "outputs/home-growth-2026-10-13/final-affected-journeys.json",
+        "docs/acceptance/studio-value-review.json"
       ],
       "previousExpertPersonaScore": 7.5,
       "focusedReviewDate": "2026-10-13"
@@ -1623,8 +1624,8 @@
   "summary": {
     "criterionCount": 66,
     "weighting": "Equal weight for all 66, including every low grade. Prior 56 grades retained; ten reappraised by a separate reviewer.",
-    "exactMean": 9.001515151515155,
-    "displayMean": 9,
+    "exactMean": 9.022727272727277,
+    "displayMean": 9.02,
     "individualTargetMet": 56,
     "individualBelowTarget": [
       {
@@ -1675,7 +1676,7 @@
       {
         "id": 55,
         "name": "Visible premium-value differentiation",
-        "score": 5.8
+        "score": 7.2
       }
     ],
     "everyIndividualAtLeast9": false,
@@ -1700,7 +1701,7 @@
       {
         "name": "Social, rewards and value",
         "count": 13,
-        "mean": 8.55
+        "mean": 8.65
       },
       {
         "name": "Interaction and safeguards",
@@ -1708,58 +1709,22 @@
         "mean": 9.29
       }
     ],
-    "interpretation": "The 9.0015 mean barely meets the average option as a point estimate. It is not a clear individual-criterion signoff, a 9.5 assessment, or a robust perception guarantee. Ten individually below-9 grades remain explicit."
+    "interpretation": "The average option remains met as a subjective point estimate; this is not individual9.0/9.5 acceptance. The Studio price-value target7.0 has a separate expert score7.2."
   },
   "currentEngineeringVerification": {
-    "status": "Final build/type check and 68 server checks pass. All 108 unique browser scenarios have passing coverage across documented local runs; final affected run passes35/35. A single clean final-source complete run remains for GitHub at commit time.",
-    "buildAndTypeCheck": "passed",
+    "status": "Build,73 server checks,52 affected browser cases and3 final-layout cases pass. Complete111-case GitHub verification is pending at documentation time.",
+    "report": "docs/acceptance/studio-value-review.json",
     "serverTests": {
-      "passed": 68,
+      "passed": 73,
       "failed": 0
     },
     "browserTests": {
-      "distinctCasesWithPassingCoverage": 108,
-      "lastFullRun": {
-        "passed": 105,
-        "failed": 3,
-        "skipped": 0,
-        "evidence": "outputs/home-growth-2026-10-13/browser-refined-final.json",
-        "context": "Intermediate build was changed during the run; a later runtime/network interruption is recorded. These failures are not relabeled as passes."
-      },
-      "finalAffectedRun": {
-        "passed": 35,
-        "failed": 0,
-        "skipped": 0,
-        "evidence": "outputs/home-growth-2026-10-13/final-affected-journeys.json"
-      },
-      "singleLocalFull108PassClaim": false
+      "affectedPassed": 52,
+      "finalLayoutPassed": 3,
+      "failed": 0,
+      "remoteExpected": 111
     },
-    "actualAccounts": {
-      "count": 11,
-      "approvedSetupMatches": 31,
-      "approvedMatchesInFinalPersonaFile": 43,
-      "observations": 22
-    },
-    "accessibility": {
-      "detectedViolationsInRecordedPersonaAudits": 0,
-      "indeterminateNodeInstancesInPersonaObservations": 521,
-      "limitations": "Automated audits leave indeterminate items and do not establish assistive-technology conformance."
-    },
-    "previewCaptureCount": 5,
-    "previewErrors": 0,
-    "previewOverflow": false,
-    "implementationCorrections": [
-      "Upstream result replay can invalidate a congratulations receipt without changing its revision; sender state now clears and renewal replaces stale evidence idempotently.",
-      "A one-point period can contain a later publication: labels/export now distinguish it from the actual fifth-match reveal.",
-      "No prior rating is exposed before five confirmations; journal links only actual published own results."
-    ],
-    "runLimitations": [
-      "A mid-run dist rebuild caused a share document404 at the rebuild timestamp; same URL returned200 afterward.",
-      "A passkey trace paused317seconds after committed creation/deletion; the next signup saw navigator.onLine=false and sent no POST. Host/runtime interruption is the supported inference.",
-      "The affected three scenarios pass against the unchanged final build."
-    ],
-    "remoteCompleteSuite": "Pending on the pushed commit at documentation time.",
-    "limitations": "Fictional accounts, simulated expert perspectives and Chromium viewport emulation. No measured retention, paid conversion, real-player perception or badminton calibration claim. No HTTPS deployment."
+    "limitations": "Actual fictional accounts and expert appraisal; no paid conversion or human-reported score."
   },
   "focusedReviews": [
     {
@@ -2009,6 +1974,65 @@
       "previewErrors": 0,
       "previewOverflow": false,
       "limitations": "Expert fictional-account review and Chromium viewport emulation. No direct real-player reports, physical-device/assistive-technology acceptance, measured retention, price-value fit or badminton calibration claim."
+    },
+    {
+      "status": "Final build/type check and 68 server checks pass. All 108 unique browser scenarios have passing coverage across documented local runs; final affected run passes35/35. A single clean final-source complete run remains for GitHub at commit time.",
+      "buildAndTypeCheck": "passed",
+      "serverTests": {
+        "passed": 68,
+        "failed": 0
+      },
+      "browserTests": {
+        "distinctCasesWithPassingCoverage": 108,
+        "lastFullRun": {
+          "passed": 105,
+          "failed": 3,
+          "skipped": 0,
+          "evidence": "outputs/home-growth-2026-10-13/browser-refined-final.json",
+          "context": "Intermediate build was changed during the run; a later runtime/network interruption is recorded. These failures are not relabeled as passes."
+        },
+        "finalAffectedRun": {
+          "passed": 35,
+          "failed": 0,
+          "skipped": 0,
+          "evidence": "outputs/home-growth-2026-10-13/final-affected-journeys.json"
+        },
+        "singleLocalFull108PassClaim": false
+      },
+      "actualAccounts": {
+        "count": 11,
+        "approvedSetupMatches": 31,
+        "approvedMatchesInFinalPersonaFile": 43,
+        "observations": 22
+      },
+      "accessibility": {
+        "detectedViolationsInRecordedPersonaAudits": 0,
+        "indeterminateNodeInstancesInPersonaObservations": 521,
+        "limitations": "Automated audits leave indeterminate items and do not establish assistive-technology conformance."
+      },
+      "previewCaptureCount": 5,
+      "previewErrors": 0,
+      "previewOverflow": false,
+      "implementationCorrections": [
+        "Upstream result replay can invalidate a congratulations receipt without changing its revision; sender state now clears and renewal replaces stale evidence idempotently.",
+        "A one-point period can contain a later publication: labels/export now distinguish it from the actual fifth-match reveal.",
+        "No prior rating is exposed before five confirmations; journal links only actual published own results."
+      ],
+      "runLimitations": [
+        "A mid-run dist rebuild caused a share document404 at the rebuild timestamp; same URL returned200 afterward.",
+        "A passkey trace paused317seconds after committed creation/deletion; the next signup saw navigator.onLine=false and sent no POST. Host/runtime interruption is the supported inference.",
+        "The affected three scenarios pass against the unchanged final build."
+      ],
+      "remoteCompleteSuite": "Pending on the pushed commit at documentation time.",
+      "limitations": "Fictional accounts, simulated expert perspectives and Chromium viewport emulation. No measured retention, paid conversion, real-player perception or badminton calibration claim. No HTTPS deployment."
     }
-  ]
+  ],
+  "studioIteration": {
+    "date": "2026-10-13",
+    "report": "docs/acceptance/studio-value-review.json",
+    "previousPriceValue": 5.8,
+    "currentPriceValue": 7.2,
+    "userPriceValueMinimum": 7,
+    "method": "Root expert appraisal of actual implemented studio and fictional-account renders; not measured purchase behaviour. Earlier separate-review scores remain historical."
+  }
 }

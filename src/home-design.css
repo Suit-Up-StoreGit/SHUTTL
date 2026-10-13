@@ -260,7 +260,7 @@
   min-width: 0;
 }
 .brief-starting-point strong {
-  font-family: var(--display);
+  font-family: "Barlow", sans-serif;
   font-size: 2.5rem;
   line-height: 1;
   color: var(--ink);

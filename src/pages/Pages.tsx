@@ -65,6 +65,7 @@ import {
 } from "../experience.ts";
 import { ratingImage } from "../share-image.ts";
 import { PlayingInsights } from "../components/Insights.tsx";
+import ProgressBrief from "../components/ProgressBrief.tsx";
 import { DeviceNotifications } from "../components/Notifications.tsx";
 import { PlayerIdentity } from "../components/PlayerIdentity.tsx";
 import { GroupRecap, PlayerCode } from "../components/Community.tsx";
@@ -1507,6 +1508,7 @@ export function ProfilePage({
   preferredCategory,
   setPreferredCategory,
   shareRefresh = 0,
+  compare,
 }: {
   data: any;
   refresh: () => void;
@@ -1518,7 +1520,9 @@ export function ProfilePage({
   preferredCategory: Category;
   setPreferredCategory: (c: Category) => void;
   shareRefresh?: number;
+  compare?: (id: string, category: Category) => void;
 }) {
+  const [studioOpen, setStudioOpen] = useState(false);
   const [tab, setTabState] = useState(() => {
     const value = new URLSearchParams(location.search).get("tab");
     return ["overview", "history", "insights", "settings"].includes(value || "")
@@ -1543,7 +1547,12 @@ export function ProfilePage({
     [blocking, setBlocking] = useState(false),
     [blocks, setBlocks] = useState<Player[]>([]),
     [shares, setShares] = useState<any[]>([]),
-    [category, setCategory] = useState<Category>(preferredCategory),
+    [category, setCategory] = useState<Category>(() => {
+      const selected = new URLSearchParams(location.search).get("category");
+      return CATEGORIES.includes(selected as Category)
+        ? (selected as Category)
+        : preferredCategory;
+    }),
     [reliability, setReliability] = useState<any>(null),
     [recoveryModal, setRecoveryModal] = useState(false),
     [recoveryPassword, setRecoveryPassword] = useState(""),
@@ -1807,6 +1816,13 @@ export function ProfilePage({
                 actions={
                   <div className="profile-actions">
                     <PlayerCode me={data.me} notify={notify} />
+                    <button
+                      className="text-button profile-studio-entry"
+                      onClick={() => setStudioOpen(true)}
+                    >
+                      <Trophy size={16} />
+                      Your progress studio <ArrowUpRight size={15} />
+                    </button>
                     <button
                       className="text-button"
                       onClick={() => setTab("history")}
@@ -2399,6 +2415,35 @@ export function ProfilePage({
                 notify("Player blocked. Valid historical results remain.");
               },
             );
+          }}
+        />
+      )}
+      {studioOpen && (
+        <ProgressBrief
+          key={data.me.id}
+          me={data.me}
+          category={preferredCategory}
+          results={data.results}
+          mock={false}
+          close={() => setStudioOpen(false)}
+          goals={(selected = preferredCategory) => {
+            setStudioOpen(false);
+            setTab("settings");
+            location.hash = `goal-${selected}`;
+          }}
+          insights={(selected = preferredCategory) => {
+            setStudioOpen(false);
+            setCategory(selected);
+            setTab("insights");
+          }}
+          openResult={(id) => {
+            setStudioOpen(false);
+            open(id);
+          }}
+          friends={compare ? data.friends : []}
+          compare={(id, c) => {
+            setStudioOpen(false);
+            compare?.(id, c);
           }}
         />
       )}

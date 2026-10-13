@@ -330,7 +330,6 @@ export function HomeNextStep({
     recent &&
     latest.status === "rated" &&
     (change || latest.ownProgress)?.won === false;
-  if (!rating.count && !latest) return null;
   return (
     <section
       className={`home-next-step ${loss ? "after-loss" : ""}`}
@@ -340,21 +339,30 @@ export function HomeNextStep({
         <ShuttleMark />
       </span>
       <div>
-        <span className="eyebrow">YOUR NEXT CHAPTER</span>
+        <span className="eyebrow">SHUTTL / PROGRESS STUDIO</span>
         <h3>
-          {loss
-            ? "One result. A bigger picture."
-            : !recent
-              ? "Your progress is still here."
-              : "Make your progress yours."}
+          {!rating.count && !latest
+            ? "Your league journey starts here."
+            : loss
+              ? "One result. A bigger picture."
+              : !recent
+                ? "Your progress is still here."
+                : "Make your progress yours."}
         </h3>
         <p>
-          {loss
-            ? `Your side lost the latest confirmed ${category.toLowerCase()} match. Put it in context with your playing connections and result turning points.`
-            : !recent
-              ? "Revisit your playing connections, result turning points and next marker. No streak to protect."
-              : "Your playing connections, result turning points and a progress card to keep. Built from your confirmed matches."}
+          {!rating.count && !latest
+            ? "Five real results reveal your rating. Explore the seals ahead, then build your own playing story."
+            : loss
+              ? `Your side lost the latest confirmed ${category.toLowerCase()} match. Put it in context with your playing connections and result turning points.`
+              : !recent
+                ? "Revisit your playing connections, result turning points and next marker. No streak to protect."
+                : "Your playing connections, result turning points and a progress card to keep. Built from your confirmed matches."}
         </p>
+        <div className="home-studio-tools" aria-label="Progress studio tools">
+          <span>Period comparisons</span>
+          <span>Matchup explorer</span>
+          <span>Earned collection</span>
+        </div>
         <div>
           <button className="text-button" onClick={brief}>
             <Sparkles size={15} />

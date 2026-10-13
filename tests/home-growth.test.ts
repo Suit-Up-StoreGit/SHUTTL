@@ -499,3 +499,50 @@ test("trajectory rendering handles a single reveal and equal-time publications w
   assert.equal(gentle.scaleHigh - gentle.scaleLow, 150);
   assert.ok(Math.abs(gentle.points[1].y - gentle.points[0].y) < 2);
 });
+
+test("studio collections and matchup histories are actor/category bound and withhold hidden placement ratings", async () => {
+  const f = await fixture();
+  try {
+    const [a, b, c] = f.players;
+    for (let i = 0; i < 4; i++) await f.match();
+    let data = (
+      await f.request(a, "GET", "/api/insights?category=Singles&period=30")
+    ).data;
+    assert.deepEqual(data.studio.collection, []);
+    assert.equal(data.studio.peak, null);
+    assert.ok(
+      data.opponents[0].matches.every(
+        (m: any) => m.score === null && m.delta === null,
+      ),
+    );
+    const revealed = await f.match();
+    data = (
+      await f.request(a, "GET", "/api/insights?category=Singles&period=30")
+    ).data;
+    assert.equal(data.studio.reveal.unitId, revealed.id);
+    assert.equal(data.studio.collection.length, 1);
+    assert.equal(data.studio.comparison.current.count, 5);
+    assert.equal(data.studio.comparison.previous.count, 0);
+    assert.equal(data.opponents[0].matches.at(-1).unitId, revealed.id);
+    assert.equal(data.opponents[0].matches.at(-1).delta, null);
+    const foreign = (
+      await f.request(c, "GET", "/api/insights?category=Singles&period=30")
+    ).data;
+    assert.deepEqual(foreign.studio.collection, []);
+    assert.deepEqual(foreign.opponents, []);
+    const separate = (
+      await f.request(a, "GET", "/api/insights?category=Doubles&period=30")
+    ).data;
+    assert.deepEqual(separate.studio.collection, []);
+    const opponent = (
+      await f.request(b, "GET", "/api/insights?category=Singles&period=all")
+    ).data;
+    assert.equal(
+      opponent.studio.peak.score,
+      f.app.service.rating(b.id, "Singles").score,
+    );
+    assert.notEqual(opponent.studio.peak.score, data.studio.peak.score);
+  } finally {
+    await f.app.close();
+  }
+});

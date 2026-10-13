@@ -25,6 +25,7 @@ import {
 } from "./service.ts";
 import { CATEGORIES, FORMATS, type Category } from "../src/domain.ts";
 import { milestoneFor } from "../src/home-growth.ts";
+import { studioSummary } from "../src/progress-studio.ts";
 import { localityKey, localityLabel, validCountry } from "../src/location.ts";
 import { registerCommunity } from "./community.ts";
 import {
@@ -699,15 +700,19 @@ export async function buildApp(
       .strict()
       .parse(req.query);
     const actor = req.actor.id,
-      aliases = service.actorIds(actor);
+      aliases = service.actorIds(actor),
+      snapshotAt = now();
     const cutoff =
       input.period === "all"
         ? null
-        : new Date(Date.now() - Number(input.period) * 86400000).toISOString();
+        : new Date(
+            Date.parse(snapshotAt) - Number(input.period) * 86400000,
+          ).toISOString();
     const rows = db.all(
-      `SELECT e.* FROM rating_events e WHERE e.category=? AND e.unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")})) ${cutoff ? "AND e.played_at>=?" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 2001`,
+      `SELECT e.* FROM rating_events e WHERE e.category=? AND e.unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")})) AND e.played_at<=? ${cutoff ? "AND e.played_at>=?" : ""} ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 2001`,
       input.category,
       ...aliases,
+      snapshotAt,
       ...(cutoff ? [cutoff] : []),
     );
     const events = rows.slice(0, 2000).reverse();
@@ -735,9 +740,18 @@ export async function buildApp(
           player: service.player(p, actor),
           count: 0,
           wins: 0,
+          matches: [],
         };
         v.count++;
         v.wins += Number(change.won);
+        v.matches.push({
+          unitId: event.unit_id,
+          playedAt: event.played_at,
+          won: change.won,
+          score: change.count >= 5 ? change.after : null,
+          delta: change.count > 5 ? change.delta : null,
+        });
+        if (v.matches.length > 20) v.matches.shift();
         map.set(p, v);
       };
       if (size === 2 && index >= 0)
@@ -782,11 +796,41 @@ export async function buildApp(
     const moments = [
       ...new Map(candidates.map((r) => [r!.unitId, r!])).values(),
     ].slice(0, 3);
+    const career =
+      input.period === "all"
+        ? rows
+        : db.all(
+            `SELECT e.* FROM rating_events e WHERE e.category=? AND e.unit_id IN (SELECT unit_id FROM unit_players WHERE player_id IN (${aliases.map(() => "?").join(",")})) AND e.played_at<=? ORDER BY e.played_at DESC,e.unit_id DESC LIMIT 2001`,
+            input.category,
+            ...aliases,
+            snapshotAt,
+          );
+    const studio = studioSummary(
+      career.slice(0, 2000).flatMap((e) => {
+        const change = JSON.parse(e.changes)[actor];
+        return change
+          ? [
+              {
+                unitId: e.unit_id,
+                playedAt: e.played_at,
+                count: change.count,
+                won: change.won,
+                score: change.count >= 5 ? change.after : null,
+                before: change.count > 5 ? change.before : null,
+                delta: change.count > 5 ? change.delta : null,
+              },
+            ]
+          : [];
+      }),
+      input.period,
+      Date.parse(snapshotAt),
+      career.length > 2000,
+    );
     return {
       category: input.category,
       period: input.period,
       owner: actor,
-      asOf: now(),
+      asOf: snapshotAt,
       demo:
         db.get("SELECT value FROM app_meta WHERE key='demo_seeded'")?.value ===
         "true",
@@ -799,6 +843,7 @@ export async function buildApp(
       opponents: ordered(opponents),
       formats: [...formats.values()],
       moments,
+      studio,
       limited: rows.length > 2000,
       trajectory: events.flatMap((e) => {
         const change = JSON.parse(e.changes)[actor];

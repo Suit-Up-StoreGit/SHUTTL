@@ -1015,6 +1015,10 @@ export function App() {
                 signOut={logout}
                 preferredCategory={category}
                 setPreferredCategory={setCategory}
+                compare={(id, c) => {
+                  setComparisonCategory(c);
+                  setComparisonId(id);
+                }}
                 deleted={() => {
                   if (renderedEpoch !== accountEpoch.current) return;
                   forgetSession(true);

@@ -1237,17 +1237,28 @@ export function Home({
           results={data.results}
           mock={mock}
           close={() => setBriefOwner(null)}
-          goals={() => {
+          goals={(selectedCategory = category) => {
             setBriefOwner(null);
             setPage("profile", "goals");
+            const url = new URL(location.href);
+            url.hash = `goal-${selectedCategory}`;
+            history.replaceState({}, "", url.pathname + url.search + url.hash);
           }}
-          insights={() => {
+          insights={(selectedCategory = category) => {
             setBriefOwner(null);
             setPage("profile", "insights");
+            const url = new URL(location.href);
+            url.searchParams.set("category", selectedCategory);
+            history.replaceState({}, "", url.pathname + url.search + url.hash);
           }}
           openResult={(id) => {
             setBriefOwner(null);
             open(id);
+          }}
+          friends={data.friends}
+          compare={(id, selectedCategory) => {
+            setBriefOwner(null);
+            compare(id, selectedCategory);
           }}
         />
       )}

@@ -1,5 +1,15 @@
 # SHUTTL implementation verification — updated 13 October 2026
-## Current focused homepage update — 13 October 2026
+## Current studio, gamification and visual update — 13 October 2026
+
+The implemented [Studio review](acceptance/studio-value-review.json) gives the visible proposed $20/month offer a **7.2/10 expert value appraisal**, up from the earlier separate review's 5.8. This meets the latest minimum 7 as a subjective product judgment for regular club/recreational and competitive players. It does not measure paid conversion. Occasional players, sparse histories and inactive circles remain weaker value cases. The original 150 outcome register remains unchanged.
+
+The progress brief now offers Overview, Matchups and Collection views. It compares equal rolling periods, exposes chosen-player histories and real result links, preserves partner/rival choices across refetches, and routes category-specific goals without changing Home's category. The career collection includes the actual reveal, each genuinely crossed threshold and a published high. Losses preserve earned highs; approved corrections can revise them. Levels below the initial tier are distinguished from future levels. Placement does not invent a score or reward. A clearly proposed membership explains the toolkit and takes no payment. Home and Profile both expose the studio.
+
+The forest/ivory identity now extends through the seal album, next-marker card, compact exploration context and restrained panel motion. Dark accent contrast and narrow large-text wrapping are repaired. All 73 server checks pass, as do 52 affected browser cases and the final 3 layout/collection cases. Seven new light/dark/large-text studio audits detect zero violations. All five refreshed design previews have zero page errors or horizontal overflow. The complete 111-case GitHub run is pending at documentation time; failed local iterations remain documented in the review. No HTTPS deployment occurred.
+
+The reference direction uses deeper progress analysis and goals as recurring utility, informed by official [Strava subscription features](https://support.strava.com/en-us/articles/15402044-what-features-are-included-in-a-strava-subscription) and [Chess.com Insights](https://support.chess.com/en/articles/8708925-what-is-insights-on-chess-com). Those examples inform the product judgment; they do not prove SHUTTL's price fit.
+
+## Historical focused homepage update — earlier 13 October 2026
 
 The ten previously weaker criteria have been implemented further and reappraised by a separate AI reviewer, who inspected code and actual fictional-account renders before reading draft grades. The optimistic draft 9.19 was discarded. The final ten grades below are used unchanged; the prior 56 grades are retained. The exact 66-criterion mean is **9.001515**, displayed as **9.00/10**, a borderline pass for the user-authorized average option. This does not establish individual 9.0 acceptance or 9.5 quality.
 

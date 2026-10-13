@@ -1,0 +1,63 @@
+{
+  "reviewedOn": "2026-10-13",
+  "scope": "Implemented progress-studio, gamification and visual update; payment integration remains excluded.",
+  "method": "Root AI expert appraisal of implemented functions and actual fictional-account mobile renders. The earlier separate review's 5.8 price-value grade is preserved as history. This is a subjective product assessment, not measured purchase behaviour or real-player testimony.",
+  "premiumValue": {
+    "previousExpertScore": 5.8,
+    "currentExpertScore": 7.2,
+    "userMinimum": 7,
+    "minimumMetAsExpertJudgment": true,
+    "primaryUseCase": "Regular club/recreational and competitive players who record confirmed matches and have an active playing circle.",
+    "whyItImproved": [
+      "Equal-length rolling period comparisons show confirmed match counts, wins/losses and visible rating change without inventing a pre-reveal baseline.",
+      "The matchup explorer lets players choose each recorded partner or opponent, preserve the choice across period changes and open the underlying owned results.",
+      "An earned career collection links reveals, genuinely crossed league thresholds and a personal high to published evidence. A loss preserves previous earned highs; approved corrections can revise them.",
+      "Personal next markers and an optional rivalry lens connect the deeper report to real actions and accepted friends, while preserving unsupported-comparison and break-mode boundaries.",
+      "The membership preview explains concrete proposed $20/month benefits, makes full-preview availability explicit and takes no payment."
+    ],
+    "remainingWeaknesses": [
+      "Occasional players or players with little recorded history would still have a weaker monthly value case.",
+      "No technique diagnosis, video analysis or coaching is implied by score/outcome statistics.",
+      "Recurring usefulness depends on continued confirmed play and circle adoption. Actual paid conversion and retention remain unmeasured.",
+      "Reports are bounded to the latest 2,000 available career results, with at most 20 recent results shown per chosen matchup. Limitations are labelled."
+    ]
+  },
+  "gamification": {
+    "implementation": [
+      "Newcomers can explore the league journey before their five-result reveal without receiving a made-up score or earned seal.",
+      "The collection distinguishes levels below a player's starting tier from future levels, so an advanced reveal does not look like failed lower goals.",
+      "A published leap credits every genuinely crossed threshold using its real supporting result.",
+      "Source-derived rewards add no rating credit, daily streak points, volume rewards or paid rating boosts.",
+      "Collection access is available from Home and Profile; each earned seal opens its actual owned result."
+    ],
+    "remaining": "The reward collection is deliberately modest and grounded in ratings; deeper social rituals, broader badge identities and cosmetic systems are future work."
+  },
+  "visual": {
+    "implementation": [
+      "Three clear studio views reduce the need to present every tool in one long undifferentiated report.",
+      "An earned seal album, quiet locked states, compact context on exploration views and a distinct next-marker card extend the existing forest/ivory brand.",
+      "Short finite panel motion preserves contrast and follows reduced-motion preferences.",
+      "Dark accent surfaces use explicit readable colours; enlarged text wraps instead of scrolling sideways.",
+      "The opening home rating, orange recording action and social focus retain their tested layout."
+    ],
+    "remaining": "Enlarged text still requires vertical scrolling. The current craft is stronger, but no blanket 9.5 or10 visual claim is made."
+  },
+  "verification": {
+    "buildAndTypeCheck": "passed",
+    "serverTests": {"passed": 73, "failed": 0},
+    "affectedBrowserRun": {"passed": 52, "failed": 0, "evidence": "outputs/home-growth-2026-10-13/studio-regression-final.json"},
+    "finalLayoutRun": {"passed": 3, "failed": 0, "evidence": "outputs/home-growth-2026-10-13/studio-final-layout.json"},
+    "newStudioAccessibilityStates": 7,
+    "detectedViolationsInNewStates": 0,
+    "responsiveCheck": "320 CSS pixels with200percent text: no horizontal dialog overflow.",
+    "previewRenders": {"count": 5, "pageErrors": 0, "horizontalOverflow": false},
+    "remoteCompleteSuite": "111 cases expected; verification pending on the pushed source at documentation time.",
+    "failedRunsPreserved": ["outputs/home-growth-2026-10-13/studio-focused.json", "outputs/home-growth-2026-10-13/studio-focused-final.json"],
+    "repairs": ["Chosen partner/rival state is held across refetches; missing selections are not silently replaced with another person.", "Dark selected-tab and accent-surface contrast was corrected.", "Large-text collection typography/wrapping was corrected.", "Category-specific goals and insight navigation preserve Home's category.", "A mismatched owner/category/period snapshot cannot render during a context change."],
+    "limitations": "Fictional accounts and Chromium emulation. Test passes do not mechanically generate the value grade or prove physical-device, assistive-technology or real-market outcomes."
+  },
+  "benchmarks": [
+    {"source": "Strava subscription features", "url": "https://support.strava.com/en-us/articles/15402044-what-features-are-included-in-a-strava-subscription", "relevance": "Goals and deeper longitudinal analysis are useful reference points for recurring utility; their published features do not establish SHUTTL's price fit."},
+    {"source": "Chess.com Insights", "url": "https://support.chess.com/en/articles/8708925-what-is-insights-on-chess-com", "relevance": "A premium analysis suite offers a reference for exploring patterns beyond a current rating. SHUTTL does not claim chess-engine or technique-analysis capabilities."}
+  ]
+}

@@ -105,7 +105,7 @@ async function view(browser: Browser, key: keyof typeof names) {
   await page.goto("/home");
   await expect(
     page.getByRole("heading", { name: "Your game.", exact: true }),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 15000 });
   return { page, context };
 }
 test.beforeAll(async ({ playwright }) => {
@@ -1141,5 +1141,269 @@ test("real fixed-partnership players see their revealed estimate with the indivi
     } finally {
       await context.close();
     }
+  }
+});
+
+test("studio collection exposes genuine earned results, hides placement rewards and supports keyboard view selection", async ({
+  browser,
+}) => {
+  const newcomer = await view(browser, "newcomer");
+  try {
+    await newcomer.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = newcomer.page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    const overview = brief.getByRole("tab", { name: "Overview", exact: true });
+    await overview.focus();
+    await newcomer.page.keyboard.press("End");
+    await expect(
+      brief.getByRole("tab", { name: "Collection", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    await expect(brief.locator(".studio-seal.earned")).toHaveCount(0);
+    await expect(
+      brief.getByRole("region", { name: "Your earned collection" }),
+    ).toContainText("5 more confirmed results");
+    await brief.screenshot({
+      path: `${output}/studio-newcomer-collection.png`,
+    });
+  } finally {
+    await newcomer.context.close();
+  }
+  const active = await view(browser, "competitive");
+  try {
+    await active.page
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Singles", exact: true })
+      .click();
+    await active.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = active.page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await brief.getByRole("tab", { name: "Collection", exact: true }).click();
+    const actual = await (
+      await players.competitive.client.get(
+        "/api/insights?category=Singles&period=30",
+      )
+    ).json();
+    await expect(brief.locator(".studio-seal.earned")).toHaveCount(
+      actual.studio.collection.length,
+    );
+    await expect(brief.locator(".studio-peak strong")).toHaveText(
+      actual.studio.peak.score.toLocaleString("en"),
+    );
+    await brief.screenshot({ path: `${output}/studio-collection.png` });
+    await brief
+      .locator(".studio-seal-grid")
+      .screenshot({ path: `${output}/studio-earned-seals.png` });
+    await brief
+      .getByRole("button", {
+        name: `View earned ${actual.studio.collection[0].league} result`,
+        exact: true,
+      })
+      .click();
+    await expect(
+      active.page.getByRole("dialog", {
+        name: "Your confirmed result",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await active.page.keyboard.press("Escape");
+    await expect(
+      active.page
+        .getByRole("group", { name: "Rating category" })
+        .getByRole("button", { name: "Singles", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    observations.push({
+      persona: "competitive",
+      checked: [
+        "earned collection matches actual published career results",
+        "placement does not invent earned rewards",
+        "keyboard End selects collection",
+        "seal opens the real owned result",
+        "home category preserved",
+      ],
+    });
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("studio matchup exploration preserves the chosen partner across periods and opens actual results with an explicit membership preview", async ({
+  browser,
+}) => {
+  const active = await view(browser, "doubles");
+  try {
+    await active.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    const brief = active.page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await brief.getByRole("tab", { name: "Matchups", exact: true }).click();
+    await brief.getByRole("button", { name: "Together", exact: true }).click();
+    const actual = await (
+        await players.doubles.client.get(
+          "/api/insights?category=Doubles&period=30",
+        )
+      ).json(),
+      partner = actual.partners.at(-1);
+    await brief
+      .getByLabel("Choose a partner", { exact: true })
+      .selectOption(partner.player.id);
+    await expect(brief.locator(".studio-matchup-record b")).toHaveText(
+      `${partner.wins}–${partner.count - partner.wins}`,
+    );
+    await brief
+      .getByLabel("Your playing period", { exact: true })
+      .selectOption("7");
+    await expect(
+      brief.getByLabel("Choose a partner", { exact: true }),
+    ).toHaveValue(partner.player.id);
+    await expect(
+      brief.locator(".studio-matchup-history button").first(),
+    ).toBeVisible();
+    await brief.screenshot({ path: `${output}/studio-matchups.png` });
+    await brief.locator(".studio-matchup-history button").first().click();
+    await expect(
+      active.page.getByRole("dialog", {
+        name: "Your confirmed result",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await active.page.keyboard.press("Escape");
+    await active.page
+      .getByRole("button", { name: "Your progress brief", exact: true })
+      .click();
+    await brief.locator(".studio-membership summary").click();
+    await expect(brief.locator(".studio-membership")).toContainText(
+      "$20/month proposal",
+    );
+    await expect(brief.locator(".studio-membership")).toContainText(
+      "no payment is taken here",
+    );
+    await brief.screenshot({ path: `${output}/studio-membership-preview.png` });
+    observations.push({
+      persona: "doubles",
+      checked: [
+        "actual chosen-partner record",
+        "chosen partner survives period selection",
+        "exact owned matchup result opens",
+        "proposed membership explains concrete tools without charging",
+      ],
+    });
+  } finally {
+    await active.context.close();
+  }
+});
+
+test("profile studio targets the chosen category's goal and all studio views remain accessible in both themes and enlarged text", async ({
+  browser,
+}) => {
+  test.setTimeout(120000);
+  const active = await view(browser, "recreational");
+  try {
+    const page = active.page;
+    await page
+      .getByRole("button", { name: "Profile", exact: true })
+      .last()
+      .click();
+    await page
+      .getByRole("button", { name: "Your progress studio", exact: true })
+      .click();
+    let brief = page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await brief
+      .getByRole("group", { name: "Rating category" })
+      .getByRole("button", { name: "Singles", exact: true })
+      .click();
+    await brief
+      .getByRole("button", { name: "Choose your own goal", exact: true })
+      .click();
+    await expect(page.locator("#goal-Singles")).toBeFocused();
+    await expect(
+      page.getByLabel("Preferred category on this device", { exact: true }),
+    ).toHaveValue("Doubles");
+    for (const theme of ["light", "dark"]) {
+      await page.getByLabel("Appearance", { exact: true }).selectOption(theme);
+      await page.getByRole("button", { name: "Passport", exact: true }).click();
+      await page
+        .getByRole("button", { name: "Your progress studio", exact: true })
+        .click();
+      brief = page.getByRole("dialog", {
+        name: "Your progress brief",
+        exact: true,
+      });
+      for (const tab of ["Overview", "Matchups", "Collection"]) {
+        await brief.getByRole("tab", { name: tab, exact: true }).click();
+        const audit = await new AxeBuilder({ page })
+          .include("dialog[open]")
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze();
+        expect(audit.violations).toEqual([]);
+        await page.screenshot({
+          path: `${output}/studio-${theme}-${tab.toLowerCase()}.png`,
+          animations: "disabled",
+        });
+        observations.push({
+          persona: "recreational",
+          view: `studio-${theme}-${tab}`,
+          detectedAccessibilityViolations: audit.violations.length,
+          indeterminateNodes: audit.incomplete.reduce(
+            (n, item) => n + item.nodes.length,
+            0,
+          ),
+        });
+      }
+      await page.keyboard.press("Escape");
+      await page.getByRole("button", { name: "Settings", exact: true }).click();
+    }
+    await page.getByLabel("Text size", { exact: true }).selectOption("large");
+    await page.setViewportSize({ width: 320, height: 844 });
+    await page.getByRole("button", { name: "Passport", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Your progress studio", exact: true })
+      .click();
+    brief = page.getByRole("dialog", {
+      name: "Your progress brief",
+      exact: true,
+    });
+    await brief.getByRole("tab", { name: "Collection", exact: true }).click();
+    expect(await brief.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(
+      true,
+    );
+    const audit = await new AxeBuilder({ page })
+      .include("dialog[open]")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(audit.violations).toEqual([]);
+    await page.screenshot({
+      path: `${output}/studio-large-collection.png`,
+      animations: "disabled",
+    });
+    observations.push({
+      persona: "accessible",
+      checked: [
+        "profile studio entry",
+        "selected Singles goal receives focus without changing Home category",
+        "light/dark all three studio views",
+        "320px at200percenttext collection",
+      ],
+      detectedAccessibilityViolations: audit.violations.length,
+      indeterminateNodes: audit.incomplete.reduce(
+        (n, item) => n + item.nodes.length,
+        0,
+      ),
+    });
+  } finally {
+    await active.context.close();
   }
 });

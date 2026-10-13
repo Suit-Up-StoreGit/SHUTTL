@@ -1,10 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, Download, ShieldCheck } from "lucide-react";
 import { api, dateLabel, dateTimeLabel, errorMessage } from "../api.ts";
 import { type Category, leagueFor } from "../domain.ts";
 import { ownChange, publishedPlayedAt } from "../experience.ts";
 import { milestoneFor, progressTrace } from "../home-growth.ts";
 import { ShuttleMark } from "./HomeGrowth.tsx";
+import { studioSummary } from "../progress-studio.ts";
+import {
+  EarnedCollection,
+  GoalRoadmap,
+  MatchupExplorer,
+  PeriodComparison,
+  RivalryLens,
+} from "./StudioTools.tsx";
+import "../studio.css";
 import {
   Avatar,
   CategoryTabs,
@@ -20,6 +29,23 @@ function previewInsights(me: any, results: any[], category: Category) {
     .sort((a, b) => publishedPlayedAt(a).localeCompare(publishedPlayedAt(b)));
   const changes = rows.map(ownChange).filter(Boolean),
     visible = changes.filter((c) => c.count >= 5);
+  const studio = studioSummary(
+    rows.map((r) => {
+      const c = ownChange(r);
+      return {
+        unitId: r.id,
+        playedAt: publishedPlayedAt(r),
+        score: c.count >= 5 ? c.after : null,
+        before: c.count > 5 ? c.before : null,
+        count: c.count,
+        won: c.won,
+        delta: c.count > 5 ? c.delta : null,
+      };
+    }),
+    "30",
+    Date.now(),
+    true,
+  );
   return {
     owner: me.id,
     asOf: new Date().toISOString(),
@@ -34,6 +60,7 @@ function previewInsights(me: any, results: any[], category: Category) {
     firstPlayed: rows[0]?.playedAt,
     lastPlayed: rows.at(-1)?.playedAt,
     ...previewConnections(rows, me.id),
+    studio,
     limited: true,
     moments: [...rows]
       .reverse()
@@ -71,9 +98,22 @@ function previewConnections(rows: any[], owner: string) {
       size = roster.length / 2;
     if (index < 0 || ![1, 2].includes(size)) continue;
     const collect = (map: Map<string, any>, player: any) => {
-      const item = map.get(player.id) || { player, count: 0, wins: 0 };
+      const item = map.get(player.id) || {
+        player,
+        count: 0,
+        wins: 0,
+        matches: [],
+      };
       item.count++;
       item.wins += Number(ownChange(row)?.won);
+      const c = ownChange(row);
+      item.matches.push({
+        unitId: row.id,
+        playedAt: publishedPlayedAt(row),
+        won: c.won,
+        score: c.count >= 5 ? c.after : null,
+        delta: c.count > 5 ? c.delta : null,
+      });
       map.set(player.id, item);
     };
     if (size === 2)
@@ -96,15 +136,19 @@ export default function ProgressBrief({
   goals,
   insights,
   openResult,
+  friends = [],
+  compare = () => {},
 }: {
   me: any;
   category: Category;
   results: any[];
   mock: boolean;
   close: () => void;
-  goals: () => void;
-  insights: () => void;
+  goals: (category?: Category) => void;
+  insights: (category?: Category) => void;
   openResult: (id: string) => void;
+  friends?: any[];
+  compare?: (id: string, category: Category) => void;
 }) {
   const [category, setCategory] = useState(initialCategory),
     [period, setPeriod] = useState("30"),
@@ -114,9 +158,24 @@ export default function ProgressBrief({
     [name, setName] = useState(false),
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState("");
+  const [tab, setTab] = useState("overview"),
+    studioId = useId();
+  const [matchupMode, setMatchupMode] = useState("opponents"),
+    [matchupPlayer, setMatchupPlayer] = useState(""),
+    [rivalPlayer, setRivalPlayer] = useState("");
+  useEffect(() => {
+    setMatchupMode("opponents");
+    setMatchupPlayer("");
+    setRivalPlayer("");
+  }, [me.id, category]);
   const alive = useRef(true),
     exporting = useRef(false);
   const rating = me.ratings.find((r: any) => r.category === category);
+  const currentData =
+    data &&
+    data.owner === me.id &&
+    data.category === category &&
+    (mock || data.period === period);
   useEffect(() => {
     alive.current = true;
     return () => {
@@ -167,8 +226,7 @@ export default function ProgressBrief({
       relation: "against",
     },
   ].filter(Boolean);
-  const next = rating.score === null ? null : leagueFor(rating.score).next,
-    goal = me.goals?.[category];
+  const goal = me.goals?.[category];
   const advice =
     rating.score === null
       ? `${Math.max(0, 5 - rating.count)} more confirmed ${category.toLowerCase()} results to reveal your estimate. Record the real outcome, win or loss.`
@@ -183,12 +241,16 @@ export default function ProgressBrief({
               : "Explore your recorded partnerships and opponents. These are match outcomes, rather than a diagnosis of technique or a partner’s contribution.";
   return (
     <Modal title="Your progress brief" close={close} wide>
-      <p className="brief-intro">Your confirmed play, in perspective.</p>
+      <p className="brief-intro">
+        <span className="eyebrow">SHUTTL / PROGRESS STUDIO</span>Your game, with
+        more perspective.
+      </p>
       <CategoryTabs value={category} onChange={setCategory} disabled={busy} />
       <div className="field">
-        <label htmlFor="brief-period">Your playing period</label>
+        <label htmlFor="brief-period">Period</label>
         <select
           id="brief-period"
+          aria-label="Your playing period"
           value={period}
           disabled={busy || mock}
           onChange={(e) => setPeriod(e.target.value)}
@@ -208,9 +270,48 @@ export default function ProgressBrief({
           Retry progress brief
         </button>
       )}
-      {!data && !error && <Spinner />}
-      {data && (
+      {!currentData && !error && <Spinner />}
+      {currentData && (
         <div className="progress-brief">
+          <div
+            className="studio-tabs"
+            role="tablist"
+            aria-label="Progress studio views"
+          >
+            {[
+              { id: "overview", label: "Overview" },
+              { id: "matchups", label: "Matchups" },
+              { id: "collection", label: "Collection" },
+            ].map((t, index) => (
+              <button
+                key={t.id}
+                role="tab"
+                id={`${studioId}-${t.id}-tab`}
+                aria-controls={`${studioId}-${t.id}`}
+                aria-selected={tab === t.id}
+                tabIndex={tab === t.id ? 0 : -1}
+                disabled={busy}
+                onClick={() => setTab(t.id)}
+                onKeyDown={(event) => {
+                  let next = index;
+                  if (event.key === "ArrowRight") next = (index + 1) % 3;
+                  else if (event.key === "ArrowLeft") next = (index + 2) % 3;
+                  else if (event.key === "Home") next = 0;
+                  else if (event.key === "End") next = 2;
+                  else return;
+                  event.preventDefault();
+                  setTab(["overview", "matchups", "collection"][next]);
+                  (
+                    event.currentTarget.parentElement?.querySelectorAll(
+                      "button",
+                    )[next] as HTMLButtonElement
+                  )?.focus();
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
           <div className="brief-snapshot">
             <span>Snapshot {dateTimeLabel(data.asOf, me.timezone)}</span>
             {!mock && (
@@ -224,7 +325,7 @@ export default function ProgressBrief({
             )}
           </div>
           <section
-            className="brief-current"
+            className={`brief-current ${tab !== "overview" ? "studio-current-compact" : ""}`}
             aria-label="Current rating context"
           >
             <ShuttleMark className="brief-shuttle" />
@@ -243,208 +344,251 @@ export default function ProgressBrief({
             </div>
             {rating.score !== null && <Gem league={rating.league} size={52} />}
           </section>
-          <section
-            className="brief-trajectory"
-            aria-label="Published rating trajectory"
+          <div
+            role="tabpanel"
+            id={`${studioId}-overview`}
+            aria-labelledby={`${studioId}-overview-tab`}
+            hidden={tab !== "overview"}
+            className="studio-panel"
           >
-            <div>
-              <h3>
-                {trace?.points.length === 1
-                  ? startingPoint
-                    ? "Your starting point"
-                    : "One point in this period"
-                  : "Your trajectory"}
-              </h3>
-              <span>
-                {trace?.points.length === 1
-                  ? startingPoint
-                    ? "Five-match reveal"
-                    : "Published after confirmed play"
-                  : trace
-                    ? `${trace.low.toLocaleString("en")}–${trace.high.toLocaleString("en")}`
-                    : "Five confirmations unlock this view"}
-              </span>
-            </div>
-            {trace?.points.length === 1 ? (
-              <div className="brief-starting-point">
-                <Gem
-                  league={leagueFor(data.trajectory[0].score).name}
-                  size={40}
-                />
+            <section
+              className="brief-trajectory"
+              aria-label="Published rating trajectory"
+            >
+              <div>
+                <h3>
+                  {trace?.points.length === 1
+                    ? startingPoint
+                      ? "Your starting point"
+                      : "One point in this period"
+                    : "Your trajectory"}
+                </h3>
                 <span>
-                  <strong>
-                    {data.trajectory[0].score.toLocaleString("en")}
-                  </strong>
-                  <span>
-                    {startingPoint
-                      ? "First published estimate"
-                      : "Recorded estimate"}{" "}
-                    · {dateLabel(data.trajectory[0].playedAt, me.timezone)}
-                  </span>
+                  {trace?.points.length === 1
+                    ? startingPoint
+                      ? "Five-match reveal"
+                      : "Published after confirmed play"
+                    : trace
+                      ? `${trace.low.toLocaleString("en")}–${trace.high.toLocaleString("en")}`
+                      : "Five confirmations unlock this view"}
                 </span>
               </div>
-            ) : trace ? (
-              <svg
-                viewBox="-8 -8 336 112"
-                role="img"
-                aria-label={`Published ratings in this period range from ${trace.low} to ${trace.high}; ${trace.points.length} confirmed match points`}
-              >
-                {[0, 48, 96].map((y) => (
-                  <path
-                    key={y}
-                    className="brief-trace-grid"
-                    d={`M0,${y}H320`}
+              {trace?.points.length === 1 ? (
+                <div className="brief-starting-point">
+                  <Gem
+                    league={leagueFor(data.trajectory[0].score).name}
+                    size={40}
                   />
-                ))}
-                <path className="brief-trace-line" d={trace.path} />
-                {[trace.points[0], trace.points.at(-1)!].map((p, i) => (
-                  <circle key={i} cx={p.x} cy={p.y} r="3.5" />
-                ))}
-              </svg>
-            ) : (
-              <p>
-                No visible rating points in this window. Choose a longer period
-                or finish your five-match reveal.
-              </p>
-            )}
-            <p>
-              {data.count
-                ? `${dateLabel(data.firstPlayed, me.timezone)} – ${dateLabel(data.lastPlayed, me.timezone)}. `
-                : ""}
-              {trace?.points.length === 1
-                ? startingPoint
-                  ? "Your next confirmed match adds the next point. No earlier ratings are invented. "
-                  : "This period contains one published estimate. Choose a longer period to see more of your history. "
-                : "Points mark published estimates after actual matches; lines connect those points. "}
-              {trace &&
-                trace.points.length > 1 &&
-                `Chart scale ${Math.round(trace.scaleLow)}–${Math.round(trace.scaleHigh)}; at least 150 points tall to keep small moves in perspective. `}
-              {data.limited
-                ? "A limited history snapshot."
-                : "Your selected period’s published history."}
-            </p>
-          </section>
-          {data.moments?.length > 0 && (
-            <section
-              className="brief-journal"
-              aria-label="Results behind your progress"
-            >
-              <span className="eyebrow">YOUR ON-COURT STORY</span>
-              <h3>Results behind your progress</h3>
-              <p>
-                Open the actual result behind a recent rating or earned moment.
-              </p>
-              {data.moments.map((moment: any, index: number) => (
-                <button
-                  key={moment.unitId}
-                  disabled={busy}
-                  onClick={() => openResult(moment.unitId)}
-                >
-                  <Gem league={leagueFor(moment.score).name} size={28} />
                   <span>
                     <strong>
-                      {moment.milestone === "reveal"
-                        ? "Your rating, revealed"
-                        : moment.milestone === "promotion"
-                          ? `${leagueFor(moment.score).name} reached`
-                          : moment.milestone === "best"
-                            ? "A personal best"
-                            : "Latest published result"}
+                      {data.trajectory[0].score.toLocaleString("en")}
                     </strong>
                     <span>
-                      {dateLabel(moment.playedAt, me.timezone)} · Your side{" "}
-                      {moment.won ? "won" : "lost"}
+                      {startingPoint
+                        ? "First published estimate"
+                        : "Recorded estimate"}{" "}
+                      · {dateLabel(data.trajectory[0].playedAt, me.timezone)}
                     </span>
                   </span>
-                  <span className="brief-journal-score">
-                    <strong>{moment.score.toLocaleString("en")}</strong>
-                    {moment.delta !== null && (
-                      <span>
-                        {moment.delta > 0 ? "+" : ""}
-                        {moment.delta} points
-                      </span>
-                    )}
-                  </span>
-                  <ArrowUpRight size={16} />
-                </button>
-              ))}
-            </section>
-          )}
-          <div className="brief-facts">
-            <div>
-              <strong>{data.count}</strong>
-              <span>confirmed matches</span>
-            </div>
-            <div>
-              <strong>
-                {data.count ? `${data.wins}–${data.count - data.wins}` : "—"}
-              </strong>
-              <span>wins / losses</span>
-            </div>
-            <div>
-              <strong>
-                {data.delta === null
-                  ? "—"
-                  : `${data.delta > 0 ? "+" : ""}${data.delta}`}
-              </strong>
-              <span>visible rating change</span>
-            </div>
-          </div>
-          <section
-            className="brief-connections"
-            aria-label="Your playing connections"
-          >
-            <span className="eyebrow">THE PEOPLE IN YOUR PLAY</span>
-            <h3>Your playing connections</h3>
-            {connections.length ? (
-              connections.map((item: any) => (
-                <div className="brief-connection" key={item.relation}>
-                  <Avatar player={item.player} small />
-                  <div>
-                    <span>{item.label}</span>
-                    <strong>{item.player.name}</strong>
-                    <p>
-                      {item.count} confirmed{" "}
-                      {item.count === 1 ? "match" : "matches"} {item.relation}{" "}
-                      them · your side won {item.wins}.
-                    </p>
-                  </div>
                 </div>
-              ))
-            ) : (
+              ) : trace ? (
+                <svg
+                  viewBox="-8 -8 336 112"
+                  role="img"
+                  aria-label={`Published ratings in this period range from ${trace.low} to ${trace.high}; ${trace.points.length} confirmed match points`}
+                >
+                  {[0, 48, 96].map((y) => (
+                    <path
+                      key={y}
+                      className="brief-trace-grid"
+                      d={`M0,${y}H320`}
+                    />
+                  ))}
+                  <path className="brief-trace-line" d={trace.path} />
+                  {[trace.points[0], trace.points.at(-1)!].map((p, i) => (
+                    <circle key={i} cx={p.x} cy={p.y} r="3.5" />
+                  ))}
+                </svg>
+              ) : (
+                <p>
+                  No visible rating points in this window. Choose a longer
+                  period or finish your five-match reveal.
+                </p>
+              )}
               <p>
-                No playing connections in this period. Choose a longer period,
-                or build this view with your next confirmed match.
+                {data.count
+                  ? `${dateLabel(data.firstPlayed, me.timezone)} – ${dateLabel(data.lastPlayed, me.timezone)}. `
+                  : ""}
+                {trace?.points.length === 1
+                  ? startingPoint
+                    ? "Your next confirmed match adds the next point. No earlier ratings are invented. "
+                    : "This period contains one published estimate. Choose a longer period to see more of your history. "
+                  : "Points mark published estimates after actual matches; lines connect those points. "}
+                {trace &&
+                  trace.points.length > 1 &&
+                  `Chart scale ${Math.round(trace.scaleLow)}–${Math.round(trace.scaleHigh)}; at least 150 points tall to keep small moves in perspective. `}
+                {data.limited
+                  ? "A limited history snapshot."
+                  : "Your selected period’s published history."}
               </p>
+            </section>
+            {data.moments?.length > 0 && (
+              <section
+                className="brief-journal"
+                aria-label="Results behind your progress"
+              >
+                <span className="eyebrow">YOUR ON-COURT STORY</span>
+                <h3>Results behind your progress</h3>
+                <p>
+                  Open the actual result behind a recent rating or earned
+                  moment.
+                </p>
+                {data.moments.map((moment: any, index: number) => (
+                  <button
+                    key={moment.unitId}
+                    disabled={busy}
+                    onClick={() => openResult(moment.unitId)}
+                  >
+                    <Gem league={leagueFor(moment.score).name} size={28} />
+                    <span>
+                      <strong>
+                        {moment.milestone === "reveal"
+                          ? "Your rating, revealed"
+                          : moment.milestone === "promotion"
+                            ? `${leagueFor(moment.score).name} reached`
+                            : moment.milestone === "best"
+                              ? "A personal best"
+                              : "Latest published result"}
+                      </strong>
+                      <span>
+                        {dateLabel(moment.playedAt, me.timezone)} · Your side{" "}
+                        {moment.won ? "won" : "lost"}
+                      </span>
+                    </span>
+                    <span className="brief-journal-score">
+                      <strong>{moment.score.toLocaleString("en")}</strong>
+                      {moment.delta !== null && (
+                        <span>
+                          {moment.delta > 0 ? "+" : ""}
+                          {moment.delta} points
+                        </span>
+                      )}
+                    </span>
+                    <ArrowUpRight size={16} />
+                  </button>
+                ))}
+              </section>
             )}
-            <p>
-              {connections.some((item: any) => item.count < 3)
-                ? "A small sample. "
-                : ""}
-              These are your recorded outcomes, not a measure of another
-              player's contribution. The downloaded card includes your own
-              totals only.
-            </p>
-          </section>
-          <section className="brief-next">
-            <h3>Your next marker</h3>
-            <p>
-              {goal !== undefined
-                ? rating.score !== null && rating.score >= goal
-                  ? `Your ${goal} goal is reached. Choose a fresh target when it feels right.`
-                  : `Your personal goal: ${goal}.`
-                : next !== null && Number.isFinite(next)
-                  ? `${next - rating.score} points to ${leagueFor(next).name}.`
-                  : rating.score !== null
-                    ? "Keep building your own playing history."
-                    : "Your first published rating."}
-            </p>
-            <button className="text-button" disabled={busy} onClick={goals}>
-              {goal === undefined ? "Set a personal goal" : "Review your goal"}
-              <ArrowUpRight size={15} />
-            </button>
-          </section>
-          <section className="brief-context">
+            <div className="brief-facts">
+              <div>
+                <strong>{data.count}</strong>
+                <span>confirmed matches</span>
+              </div>
+              <div>
+                <strong>
+                  {data.count ? `${data.wins}–${data.count - data.wins}` : "—"}
+                </strong>
+                <span>wins / losses</span>
+              </div>
+              <div>
+                <strong>
+                  {data.delta === null
+                    ? "—"
+                    : `${data.delta > 0 ? "+" : ""}${data.delta}`}
+                </strong>
+                <span>visible rating change</span>
+              </div>
+            </div>
+            <PeriodComparison studio={data.studio} />
+            <section
+              className="brief-connections"
+              aria-label="Your playing connections"
+            >
+              <span className="eyebrow">THE PEOPLE IN YOUR PLAY</span>
+              <h3>Your playing connections</h3>
+              {connections.length ? (
+                connections.map((item: any) => (
+                  <div className="brief-connection" key={item.relation}>
+                    <Avatar player={item.player} small />
+                    <div>
+                      <span>{item.label}</span>
+                      <strong>{item.player.name}</strong>
+                      <p>
+                        {item.count} confirmed{" "}
+                        {item.count === 1 ? "match" : "matches"} {item.relation}{" "}
+                        them · your side won {item.wins}.
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>
+                  No playing connections in this period. Choose a longer period,
+                  or build this view with your next confirmed match.
+                </p>
+              )}
+              <p>
+                {connections.some((item: any) => item.count < 3)
+                  ? "A small sample. "
+                  : ""}
+                These are your recorded outcomes, not a measure of another
+                player's contribution. The downloaded card includes your own
+                totals only.
+              </p>
+            </section>
+            <GoalRoadmap
+              rating={rating}
+              goal={goal}
+              disabled={busy}
+              goals={() => goals(category)}
+            />
+            <RivalryLens
+              me={me}
+              friends={friends}
+              category={category}
+              disabled={busy}
+              player={rivalPlayer}
+              setPlayer={setRivalPlayer}
+              compare={(id) => compare(id, category)}
+            />
+          </div>
+          <div
+            role="tabpanel"
+            id={`${studioId}-matchups`}
+            aria-labelledby={`${studioId}-matchups-tab`}
+            hidden={tab !== "matchups"}
+            className="studio-panel"
+          >
+            <MatchupExplorer
+              key={`${me.id}:${category}`}
+              data={data}
+              category={category}
+              timezone={me.timezone}
+              disabled={busy}
+              mode={matchupMode}
+              setMode={setMatchupMode}
+              player={matchupPlayer}
+              setPlayer={setMatchupPlayer}
+              open={openResult}
+            />
+          </div>
+          <div
+            role="tabpanel"
+            id={`${studioId}-collection`}
+            aria-labelledby={`${studioId}-collection-tab`}
+            hidden={tab !== "collection"}
+            className="studio-panel"
+          >
+            <EarnedCollection
+              studio={data.studio}
+              rating={rating}
+              timezone={me.timezone}
+              disabled={busy}
+              open={openResult}
+            />
+          </div>
+          <details className="brief-context studio-context">
+            <summary>Understand these estimates</summary>
             <ShieldCheck size={20} />
             <div>
               <h3>Keep the result in context</h3>
@@ -457,12 +601,44 @@ export default function ProgressBrief({
               <button
                 className="text-button"
                 disabled={busy}
-                onClick={insights}
+                onClick={() => insights(category)}
               >
                 Explore partnerships and opponents <ArrowUpRight size={15} />
               </button>
             </div>
-          </section>
+          </details>
+          <details className="studio-membership">
+            <summary>
+              What the Studio membership adds <span>$20/month proposal</span>
+            </summary>
+            <p>
+              Go beyond your current rating: compare playing periods, explore
+              every recorded matchup, revisit earned league seals and choose a
+              personal next marker. New confirmed results refresh your playing
+              picture.
+            </p>
+            <div>
+              <section>
+                <strong>Your playing foundation</strong>
+                <p>
+                  Recording, confirmation, your three ratings and
+                  familiar-player comparisons.
+                </p>
+              </section>
+              <section>
+                <strong>The Studio toolkit</strong>
+                <p>
+                  Equal-period analysis, individual matchup histories, career
+                  collection, a personal rivalry lens and factual progress
+                  exports.
+                </p>
+              </section>
+            </div>
+            <p>
+              The complete toolkit is available in this preview. This is a
+              proposed membership; no payment is taken here.
+            </p>
+          </details>
           <div className="brief-download">
             <label className="check-row">
               <input
